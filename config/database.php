@@ -2,11 +2,11 @@
 class Database{
  
  // specify your own database credentials
- private $host = "srv-captain--mysql-db";
+ private $host = "www.autocominformatica.com.br";
  private $port = "3306";
- private $dbName = "autocomNFSe";
- private $username = "root";
- private $password = "0004utocom000";
+ private $dbName = "autocom_FC0001";
+ private $username = "autocom_FC0001";
+ private $password = "atcfc@2608";
  public $conn;
 
  // get the database connection
