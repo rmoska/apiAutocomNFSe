@@ -2,10 +2,10 @@
 class Database{
  
  // specify your own database credentials
- private $host = "localhost";
- private $dbName = "autocom_fastconnect";
+ private $host = "beetobe.xyz:1001";
+ private $dbName = "autocomNFSe";
  private $username = "root";
- private $password = "autocom";
+ private $password = "0004utocom000";
  public $conn;
 
  // get the database connection
