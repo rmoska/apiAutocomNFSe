@@ -52,7 +52,7 @@ if(
         http_response_code(201);
  
         // tell the user
-        echo json_encode(array("message" => "Emitente incluído ID=".$emitente->idEmitente, "idEmitente" => $emitente->idEmitente));
+        echo json_encode(array("http_code" => "201", "message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
     }
  
     // if unable to create emitente, tell the user
@@ -62,7 +62,7 @@ if(
         http_response_code(503);
  
         // tell the user
-        echo json_encode(array("message" => "Não foi possível incluir Emitente. Serviço indisponível."));
+        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Emitente. Serviço indisponível."));
     }
 }
  
@@ -73,6 +73,6 @@ else{
     http_response_code(400);
  
     // tell the user
-    echo json_encode(array("message" => "Não foi possível incluir Emitente. Dados incompletos."));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos."));
 }
 ?>
