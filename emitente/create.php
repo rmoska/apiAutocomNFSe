@@ -55,9 +55,8 @@ if(
 
         exit;
     }
-
     // create emitente
-    if($emitente->create()){
+    else if($emitente->create()){
  
         // set response code - 201 created
         http_response_code(201);
