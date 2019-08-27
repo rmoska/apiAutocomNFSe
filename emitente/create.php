@@ -52,7 +52,7 @@ if(
         http_response_code(201);
  
         // tell the user
-        echo json_encode(array("message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
+        echo json_encode(array("message" => "Emitente incluído".$emitente->idEmitente, "idEmitente" => $emitente->idEmitente));
     }
  
     // if unable to create emitente, tell the user
