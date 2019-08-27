@@ -246,10 +246,10 @@ class Emitente{
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
+        $this->documento=htmlspecialchars(strip_tags($this->documento));
     
         // bind
-        $stmt->bindParam(1, $this->idEmitente);
+        $stmt->bindParam(1, $this->documento);
     
         // execute query
         $stmt->execute();
