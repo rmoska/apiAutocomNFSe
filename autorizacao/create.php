@@ -38,7 +38,11 @@ if(
     $autorizacao->senhaWeb = $data->senhaWeb;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
-    
+
+    echo "dados:";
+print_r($data);
+
+
     // create autorizacao
     if($autorizacao->create()){
  
