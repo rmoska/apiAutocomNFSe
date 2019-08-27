@@ -27,7 +27,7 @@ if(
     !empty($data->bairro) &&
     !empty($data->codigoMunicipio) &&
     !empty($data->uf) &&
-    !empty($data->email) &&
+    !empty($data->email) 
 ){
     // set emitente property values
     $emitente->documento = $data->documento;
