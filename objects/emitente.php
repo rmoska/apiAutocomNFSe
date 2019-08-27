@@ -73,7 +73,7 @@ class Emitente{
     
         // execute query
         if($stmt->execute()){
-            $this->idEmitente = $conn->lastInsertId();
+            $this->idEmitente = $this->conn->lastInsertId();
             return true;
         }
     
