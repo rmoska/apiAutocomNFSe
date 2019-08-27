@@ -27,7 +27,7 @@ if(
     !empty($data->bairro) &&
     !empty($data->codigoMunicipio) &&
     !empty($data->uf) &&
-    !empty($data->email)
+    !empty($data->email) &&
 ){
     // set emitente property values
     $emitente->nuDocumento = $data->nuDocumento;
@@ -52,7 +52,7 @@ if(
         http_response_code(201);
  
         // tell the user
-        echo json_encode(array("message" => "Emitente incluído"));
+        echo json_encode(array("message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
     }
  
     // if unable to create emitente, tell the user
