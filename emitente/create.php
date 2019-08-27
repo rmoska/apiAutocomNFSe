@@ -20,7 +20,7 @@ $data = json_decode(file_get_contents("php://input"));
  
 // make sure data is not empty
 if(
-    !empty($data->nuDocumento) &&
+    !empty($data->documento) &&
     !empty($data->nome) &&
     !empty($data->logradouro) &&
     !empty($data->numero) &&
@@ -30,7 +30,7 @@ if(
     !empty($data->email) &&
 ){
     // set emitente property values
-    $emitente->nuDocumento = $data->nuDocumento;
+    $emitente->documento = $data->documento;
     $emitente->nome = $data->nome;
     $emitente->nomeFantasia = $data->nomeFantasia;
     $emitente->logradouro = $data->logradouro;
@@ -52,7 +52,7 @@ if(
         http_response_code(201);
  
         // tell the user
-        echo json_encode(array("message" => "Emitente incluído".$emitente->idEmitente, "idEmitente" => $emitente->idEmitente));
+        echo json_encode(array("message" => "Emitente incluído ID=".$emitente->idEmitente, "idEmitente" => $emitente->idEmitente));
     }
  
     // if unable to create emitente, tell the user
