@@ -146,7 +146,7 @@ class Emitente{
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->id=htmlspecialchars(strip_tags($this->idEmitente));
+        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
     
         // bind id of record to delete
         $stmt->bindParam(1, $this->idEmitente);
@@ -233,6 +233,28 @@ class Emitente{
         $stmt->execute();
     
         return $stmt;
+    }    
+
+    // check emitente
+    function check(){
+    
+        // select query
+        $query = "SELECT e.* FROM " . $this->tableName . " e
+                  WHERE e.documento = ? LIMIT 1";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // sanitize
+        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
+    
+        // bind
+        $stmt->bindParam(1, $this->idEmitente);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt->rowCount();
     }    
 
     // read emitente with pagination
