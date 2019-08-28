@@ -1,0 +1,38 @@
+{
+    "idVenda": "1",
+    "idEmitente": "1",
+    "valorTotal": "10.00",
+    "observacao": "Teste 01",
+    "tomador": {
+        "documento": "01837011940",
+        "nome": "Rodrigo",
+        "codigoMunicipio": "5047",
+        "uf": "SC",
+        "cep": "88025000",
+        "logradouro": "Rua Odilon Fernandes",
+        "numero": "250",
+        "complemento": "apto 101",
+        "bairro": "Trindade",
+        "email": "rodrigo@autocominformatica.com.br"
+    },
+    "itemVenda": [
+    	{
+    		"codigo": "1",
+            "descricao": "Consulta Médica",
+            "cnae": "9139",
+            "nbs": "123012100",
+            "quantidade": 1,
+            "valor": 150.00,
+            "taxaIss": "2.00"
+    	},
+    	{
+    		"codigo": "2",
+    		"descricao": "Exame",
+            "cnae": "9140",
+            "nbs": "123012100",
+            "quantidade": 1,
+            "valor": 30.00,
+            "taxaIss": "2.00"
+    	}
+    ]
+}
