@@ -8,31 +8,52 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 include_once '../config/database.php';
 include_once '../config/http_response_code.php';
-include_once '../objects/emitente.php';
+include_once '../objects/notaFiscal.php';
+include_once '../objects/notaFiscalItem.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
-$emitente = new Emitente($db);
+$notaFiscal = new NotaFiscal($db);
  
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
- 
-print_r($data);
+
+
+idNotaFiscal, numero, serie, chaveNF, docOrigemTipo, docOrigemNumero, docOrigemParcela, idEntradaSaida, destinatarioTipo, destinatarioId, 
+cfop, naturezaOperacao, idFinalidade, chaveNFReferencia, dataInclusao, horaInclusao, dataEmissao, horaEmissao, dataProcessamento, horaProcessamento, 
+situacao, reciboNF, protocoloNF, textoResposta, textoJustificativa, dataCancelamento, horaCancelamento, valorTotalMercadorias, valorTotal, 
+valorFrete, valorSeguro, valorOutrasDespesas, valorDesconto, idTransportador, idFrete, placa, ufPlaca, volume, quantVolume, marca, 
+pesoLiquido, pesoBruto, obsImpostos, dadosAdicionais
+
 
 // make sure data is not empty
 if(
+    !empty($data->idEmitente) &&
+    !empty($data->idVenda) &&
+    !empty($data->valorTotal) &&
     !empty($data->documento) &&
-    !empty($data->nome) &&
-    !empty($data->logradouro) &&
-    !empty($data->numero) &&
-    !empty($data->bairro) &&
     !empty($data->codigoMunicipio) &&
-    !empty($data->uf) &&
     !empty($data->email) 
 ){
-    // set emitente property values
-    $emitente->documento = $data->documento;
+    // check / create tomador
+    if(
+        !empty($data->idEmitente) &&
+        !empty($data->idVenda) &&
+        !empty($data->valorTotal) &&
+        !empty($data->documento) &&
+        !empty($data->codigoMunicipio) &&
+        !empty($data->email) 
+    ){
+    
+
+
+    //check / create itemVenda
+
+
+
+    // set notaFiscal property values
+    $notaFiscal->documento = $data->documento;
     $emitente->nome = $data->nome;
     $emitente->nomeFantasia = $data->nomeFantasia;
     $emitente->logradouro = $data->logradouro;

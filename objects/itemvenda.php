@@ -1,0 +1,96 @@
+<?php
+class itemVenda{
+ 
+    // database connection and table name
+    private $conn;
+    private $tableName = "itemVenda";
+ 
+    // object properties
+    public $idItemVenda;
+    public $descricao;
+    public $cnae;
+    public $ncm;
+
+    // constructor with $db as database connection
+    public function __construct($db){
+        $this->conn = $db;
+    }
+
+    // create itemVenda
+    function create(){
+    
+        // query to insert record
+        $query = "INSERT INTO " . $this->tableName . " SET
+                    descricao=:descricao, cnae=:cnae, ncm=:ncm";
+    
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->descricao=htmlspecialchars(strip_tags($this->descricao));
+        $this->cnae=htmlspecialchars(strip_tags($this->cnae));
+        $this->ncm=htmlspecialchars(strip_tags($this->ncm));
+    
+        // bind values
+        $stmt->bindParam(":descricao", $this->descricao);
+        $stmt->bindParam(":cnae", $this->cnae);
+        $stmt->bindParam(":ncm", $this->ncm);
+    
+        // execute query
+        if($stmt->execute()){
+            $this->idItemVenda = $this->conn->lastInsertId();
+            return true;
+        }
+    
+        return false;
+        
+    }    
+
+    function readOne(){
+ 
+        // query to read single record
+        $query = "SELECT * FROM " . $this->tableName . " WHERE idItemVenda = ? LIMIT 0,1";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare( $query );
+     
+        // bind id of product to be updated
+        $stmt->bindParam(1, $this->idItemVenda);
+     
+        // execute query
+        $stmt->execute();
+     
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+     
+        // set values to object properties
+        $this->idItemVenda = $row['idItemVenda'];
+        $this->descricao = $row['descricao'];
+        $this->cnae = $row['cnae'];
+        $this->ncm = $row['ncm'];
+    }
+    
+    // check itemVenda
+    function check(){
+    
+        // select query
+        $query = "SELECT iv.* FROM " . $this->tableName . " iv
+                  WHERE iv.idItemVenda = ? LIMIT 1";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // sanitize
+        $this->idItemVenda=htmlspecialchars(strip_tags($this->idItemVenda));
+    
+        // bind
+        $stmt->bindParam(1, $this->idItemVenda);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt->rowCount();
+    }    
+
+}
+?>
