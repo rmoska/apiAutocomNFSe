@@ -103,8 +103,6 @@ if(
         exit;
     }
 
-print_r($data->itemServico);
-
     //check / create itemVenda
     foreach ( $data->itemServico as $item )
     {
@@ -120,7 +118,7 @@ print_r($data->itemServico);
 
             $itemVenda = new ItemVenda($db);
             $notaFiscalItem = new NotaFiscalItem($db);
-
+echo '111';
             if (($idItemVenda = $itemVenda->check()) > 0) 
             {
                 $notaFiscalItem->idItemVenda = $idItemVenda;
@@ -130,7 +128,7 @@ print_r($data->itemServico);
                 $itemVenda->descricao = $item->descricao;
                 $itemVenda->cnae = $item->cnae;
                 $itemVenda->ncm = $item->nbs;
-
+print_r($itemVenda);
                 if($itemVenda->create()){
                     // set notaFiscal
                     $notaFiscalItem->idItemVenda = $itemVenda->idItemVenda;
