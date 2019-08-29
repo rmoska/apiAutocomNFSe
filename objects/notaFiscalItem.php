@@ -116,9 +116,6 @@ class NotaFiscalItem{
         $this->valorImpAproxMun=htmlspecialchars(strip_tags($this->valorImpAproxMun));
         $this->observacao=htmlspecialchars(strip_tags($this->observacao));
     
-
-print_r($this);
-
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
         $stmt->bindParam(":numeroOrdem", $this->numeroOrdem);
