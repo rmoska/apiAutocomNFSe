@@ -70,11 +70,9 @@ class NotaFiscalItem{
                     valorFrete=:valorFrete, valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
                     valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, valorImpAproxMun=:valorImpAproxMun, observacao=:observacao";
     
-echo '000<br>';
         // prepare query
         $stmt = $this->conn->prepare($query);
 
-echo '111<br>';
         // sanitize
         $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
         $this->numeroOrdem=htmlspecialchars(strip_tags($this->numeroOrdem));
@@ -117,7 +115,6 @@ echo '111<br>';
         $this->valorImpAproxEst=htmlspecialchars(strip_tags($this->valorImpAproxEst));
         $this->valorImpAproxMun=htmlspecialchars(strip_tags($this->valorImpAproxMun));
         $this->observacao=htmlspecialchars(strip_tags($this->observacao));
-echo '222<br>';
     
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
@@ -165,7 +162,7 @@ echo '222<br>';
         try{
             // execute query
             if($stmt->execute()){
-                $this->idNotaFiscal = $this->conn->lastInsertId();
+//                $this->idNotaFiscal = $this->conn->lastInsertId();
                 return true;
             }
         }catch(PDOException $e){
