@@ -159,10 +159,14 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorImpAproxMun", $this->valorImpAproxMun);
         $stmt->bindParam(":observacao", $this->observacao);
     
-        // execute query
-        if($stmt->execute()){
-            $this->idNotaFiscal = $this->conn->lastInsertId();
-            return true;
+        try{
+            // execute query
+            if($stmt->execute()){
+                $this->idNotaFiscal = $this->conn->lastInsertId();
+                return true;
+            }
+        }catch(PDOException $e){
+            echo $e->getMessage();
         }
     
         return false;
