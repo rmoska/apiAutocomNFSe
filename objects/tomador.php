@@ -59,9 +59,6 @@ class Tomador{
         $stmt->bindParam(":uf", $this->uf);
         $stmt->bindParam(":email", $this->email);
 
-        print_r($stmt);
-
-
         // execute query
         if($stmt->execute()){
             $this->idTomador = $this->conn->lastInsertId();

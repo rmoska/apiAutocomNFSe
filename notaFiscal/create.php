@@ -78,7 +78,7 @@ if(
 
     // check emitente
     $emitente = new Emitente($db);
-    $emitente-> $data->documento;
+    $emitente->documento = $data->documento;
     if (($idEmitente = $emitente->check()) > 0) {
         $notaFiscal->idEmitente = $idEmitente;
     }
