@@ -69,6 +69,7 @@ class NotaFiscalItem{
                     cstCofins=:cstCofins, valorBCCofins=:valorBCCofins, taxaCofins=:taxaCofins, valorCofins=:valorCofins,
                     valorFrete=:valorFrete, valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
                     valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, valorImpAproxMun=:valorImpAproxMun, observacao=:observacao";
+try{
     
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -159,7 +160,6 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorImpAproxMun", $this->valorImpAproxMun);
         $stmt->bindParam(":observacao", $this->observacao);
     
-        try{
             // execute query
             if($stmt->execute()){
                 $this->idNotaFiscal = $this->conn->lastInsertId();
