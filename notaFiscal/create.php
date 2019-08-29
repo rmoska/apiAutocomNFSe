@@ -120,7 +120,7 @@ if(
             $itemVenda = new ItemVenda($db);
             $notaFiscalItem = new NotaFiscalItem($db);
 
-            $itemVenda->idItemVenda = $item->codigo;
+            $itemVenda->codigo = $item->codigo;
             if (($idItemVenda = $itemVenda->check()) > 0) 
             {
                 $notaFiscalItem->idItemVenda = $idItemVenda;
@@ -141,12 +141,13 @@ if(
                     exit;
                 }
              
+                $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
                 $notaFiscalItem->cnae = $item->cnae;
                 $notaFiscalItem->unidade = "UN";
                 $notaFiscalItem->quantidade = $item->quantidade;
                 $notaFiscalItem->valorUnitario = $item->valor;
                 $notaFiscalItem->taxaIss = $item->taxaIss;
-print_r($notaFiscalItem);
+
                 if(!$notaFiscalItem->create()){
                     http_response_code(503);
                     echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));

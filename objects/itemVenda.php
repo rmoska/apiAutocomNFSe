@@ -7,6 +7,7 @@ class ItemVenda{
  
     // object properties
     public $idItemVenda;
+    public $codigo;
     public $descricao;
     public $cnae;
     public $ncm;
@@ -21,17 +22,19 @@ class ItemVenda{
     
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
-                    descricao=:descricao, cnae=:cnae, ncm=:ncm";
+                    codigo=:codigo, descricao=:descricao, cnae=:cnae, ncm=:ncm";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
 
         // sanitize
+        $this->codigo=htmlspecialchars(strip_tags($this->codigo));
         $this->descricao=htmlspecialchars(strip_tags($this->descricao));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
         $this->ncm=htmlspecialchars(strip_tags($this->ncm));
     
         // bind values
+        $stmt->bindParam(":codigo", $this->codigo);
         $stmt->bindParam(":descricao", $this->descricao);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":ncm", $this->ncm);
@@ -65,6 +68,7 @@ class ItemVenda{
      
         // set values to object properties
         $this->idItemVenda = $row['idItemVenda'];
+        $this->codigo = $row['codigo'];
         $this->descricao = $row['descricao'];
         $this->cnae = $row['cnae'];
         $this->ncm = $row['ncm'];
@@ -75,7 +79,7 @@ class ItemVenda{
     
         // select query
         $query = "SELECT iv.* FROM " . $this->tableName . " iv
-                  WHERE iv.idItemVenda = ? LIMIT 1";
+                  WHERE iv.codigo = ? LIMIT 1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
