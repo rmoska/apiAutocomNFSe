@@ -1,6 +1,6 @@
 
 <?php
-class notaFiscalItem{
+class NotaFiscalItem{
  
     // database connection and table name
     private $conn;

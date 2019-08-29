@@ -1,5 +1,5 @@
 <?php
-class notaFiscal{
+class NotaFiscal{
  
     // database connection and table name
     private $conn;
