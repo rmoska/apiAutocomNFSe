@@ -57,8 +57,6 @@ class NotaFiscalItem{
     // create emitente
     function create(){
 
-        echo '000<br>';
-
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
@@ -72,9 +70,11 @@ class NotaFiscalItem{
                     valorFrete=:valorFrete, valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
                     valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, valorImpAproxMun=:valorImpAproxMun, observacao=:observacao";
     
+echo '000<br>';
         // prepare query
         $stmt = $this->conn->prepare($query);
 
+echo '111<br>';
         // sanitize
         $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
         $this->numeroOrdem=htmlspecialchars(strip_tags($this->numeroOrdem));
@@ -117,6 +117,7 @@ class NotaFiscalItem{
         $this->valorImpAproxEst=htmlspecialchars(strip_tags($this->valorImpAproxEst));
         $this->valorImpAproxMun=htmlspecialchars(strip_tags($this->valorImpAproxMun));
         $this->observacao=htmlspecialchars(strip_tags($this->observacao));
+echo '222<br>';
     
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
