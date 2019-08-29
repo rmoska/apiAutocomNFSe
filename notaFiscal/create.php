@@ -96,14 +96,14 @@ if(
     $notaFiscal->valorTotal = $data->valorTotal;
     $notaFiscal->dadosAdicionais = $data->observacao;
 
-    print_r($notaFiscal);
-
     // create notaFiscal
     if(!$notaFiscal->create()){
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal. Serviço indisponível. (I01)"));
         exit;
     }
+
+print_r($data->itemServico);
 
     //check / create itemVenda
     foreach ( $data->itemServico as $item )
@@ -152,17 +152,33 @@ if(
                     echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));
                     exit;
                 }
+                else{
+
+                    $arrayItemNF[] = $notaFiscalItem;
+
+                }
 
             }
-//            $arrayItemVenda[] = $itemVenda;
         }
     }
 
-    // set response code - 201 created
-    http_response_code(201);
+    if (count($arrayItemNF) > 0){
 
-    // tell the user
-    echo json_encode(array("http_code" => "201", "message" => "Nota Fiscal incluída"));
+        // set response code - 201 created
+        http_response_code(201);
+
+        // tell the user
+        echo json_encode(array("http_code" => "201", "message" => "Nota Fiscal incluída"));
+
+    }
+    else{
+
+        http_response_code(503);
+        echo json_encode(array("http_code" => "503", "message" => "Erro na inclusão dos Itens da Nota Fiscal."));
+        exit;
+
+    }
+
     
 }
  
