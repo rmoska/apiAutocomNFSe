@@ -48,14 +48,11 @@ if(
         $tomador->documento = $data->tomador->documento;
     
         // check tomador
-        if ($tomador->check() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $tomador->idTomador = $row['idEmitente'];
+        if ($idTomador = $tomador->check()) > 0) {
+            $tomador->idTomador = $idTomador;
         }
         // create tomador
         else {
-
-print_r($data->tomador);
 
             $tomador->nome = $data->tomador->nome;
             $tomador->logradouro = $data->tomador->logradouro;
@@ -82,10 +79,8 @@ print_r($data->tomador);
     // check emitente
     $emitente = new Emitente($db);
     $emitente-> $data->documento;
-    if ($emitente->check() > 0) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        // set notaFiscal
-        $notaFiscal->idEmitente = $row['idEmitente'];
+    if (($idEmitente = $emitente->check()) > 0) {
+        $notaFiscal->idEmitente = $idEmitente;
     }
     else{
         http_response_code(503);
@@ -123,11 +118,9 @@ print_r($data->tomador);
             $itemVenda = new ItemVenda($db);
             $notaFiscalItem = new NotaFiscalItem($db);
 
-            if ($itemVenda->check() > 0) 
+            if (($idItemVenda = $itemVenda->check()) > 0) 
             {
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                // set notaFiscal
-                $notaFiscalItem->idItemVenda = $row['idItemVenda'];
+                $notaFiscalItem->idItemVenda = $idItemVenda;
             }
             else 
             {

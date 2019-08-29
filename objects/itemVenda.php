@@ -89,7 +89,14 @@ class ItemVenda{
         // execute query
         $stmt->execute();
     
-        return $stmt->rowCount();
+        $idItemVenda = 0;
+        if ($stmt->rowCount() >0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $idItemVenda = $row['idItemVenda'];
+        }
+
+        return $idItemVenda;
+
     }    
 
 }

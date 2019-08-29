@@ -119,7 +119,13 @@ class Tomador{
         // execute query
         $stmt->execute();
     
-        return $stmt->rowCount();
+        $idTomador = 0;
+        if ($stmt->rowCount() >0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $idTomador = $row['idTomador'];
+        }
+
+        return $idTomador;
     }    
 
 }

@@ -254,7 +254,14 @@ class Emitente{
         // execute query
         $stmt->execute();
     
-        return $stmt->rowCount();
+        $idEmitente = 0;
+        if ($stmt->rowCount() >0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $idEmitente = $row['idEmitente'];
+        }
+
+        return $idEmitente;
+        
     }    
 
     // read emitente with pagination
