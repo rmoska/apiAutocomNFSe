@@ -351,9 +351,8 @@ class NotaFiscal{
             $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $vlTotFed = $row['vlTotFed'];
-            $vlTotEst = $row['vlTotEst'];
-            $vlTotMun = $row['vlTotMun'];
+
+            echo "vlMun:".$row['vlTotMun'];
 
             if (($row['vlTotFed']>0) || ($row['vlTotEst']>0) || ($row['vlTotMun']>0)) {
 
@@ -366,7 +365,7 @@ class NotaFiscal{
 
                 // update query
                 $query = "UPDATE notaFiscal SET 
-                            obsImposto = :msgIBPT
+                            obsImpostos = :msgIBPT
                           WHERE idNotaFiscal = :idNotaFiscal";
 
                 // prepare query statement
