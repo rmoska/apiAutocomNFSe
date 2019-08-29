@@ -85,10 +85,10 @@ class ItemVenda{
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->idItemVenda=htmlspecialchars(strip_tags($this->idItemVenda));
+        $this->codigo=htmlspecialchars(strip_tags($this->codigo));
     
         // bind
-        $stmt->bindParam(1, $this->idItemVenda);
+        $stmt->bindParam(1, $this->codigo);
     
         // execute query
         $stmt->execute();
