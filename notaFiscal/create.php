@@ -96,6 +96,11 @@ if(
     $notaFiscal->valorTotal = $data->valorTotal;
     $notaFiscal->dadosAdicionais = $data->observacao;
 
+    if ($tomador->uf != 'SC') $cfps = '9203';
+    else if ($tomador->codigoMunicipio != '5407') $cfps = '9202';
+    else $cfps = '9201';
+    $notaFiscal->cfop = $cfps;
+
     // create notaFiscal
     if(!$notaFiscal->create()){
         http_response_code(503);
@@ -146,7 +151,9 @@ if(
             $notaFiscalItem->unidade = "UN";
             $notaFiscalItem->quantidade = $item->quantidade;
             $notaFiscalItem->valorUnitario = $item->valor;
+            $notaFiscalItem->valorTotal = ($item->valor*$item->quantidade);
             $notaFiscalItem->taxaIss = $item->taxaIss;
+            $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)/($item->taxaIss/100);
 
             if(!$notaFiscalItem->create()){
                 http_response_code(503);
@@ -163,6 +170,8 @@ if(
     }
 
     if (count($arrayItemNF) > 0){
+
+        $notaFiscalItem->calcImpAprox();
 
         // set response code - 201 created
         http_response_code(201);

@@ -1,4 +1,3 @@
-
 <?php
 class NotaFiscalItem{
  
@@ -394,6 +393,35 @@ class NotaFiscalItem{
     
         return $stmt->rowCount();
     }    
+
+    function calcImpAprox(){
+
+
+        // update query
+        $query = "UPDATE notaFiscalItem AS nfi, itemVenda AS iv, impostoIBPT AS ia
+                    SET nfi.valorImpAproxFed = ((nfi.valorTotal * ia.taxaFederal)/100),
+                        nfi.valorImpAproxEst = ((nfi.valorTotal * ia.taxaEstadual)/100),
+                        nfi.valorImpAproxMun = ((nfi.valorTotal * ia.taxaMunicipal)/100)
+                    WHERE (iv.ncm = ia.codigo AND ia.tipoImposto='NBS') AND
+                          nfi.idItemVenda = iv.idItemVenda AND nfi.idNotaFiscal = :idNotaFiscal";
+                          
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // sanitize
+        $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
+    
+        // bind values
+        $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
+
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
+   }
+
 
 }
 ?>
