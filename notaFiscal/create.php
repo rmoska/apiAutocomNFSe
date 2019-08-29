@@ -71,7 +71,7 @@ if(
             }
             else{
                 http_response_code(503);
-                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Emitente. Serviço indisponível."));
+                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Tomador. Serviço indisponível."));
                 exit;
             }
         }

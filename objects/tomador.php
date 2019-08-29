@@ -16,9 +16,6 @@ class Tomador{
     public $cep;
     public $codigoMunicipio;
     public $uf;
-    public $pais;
-    public $fone;
-    public $celular;
     public $email;
  
     // constructor with $db as database connection
@@ -33,7 +30,7 @@ class Tomador{
         $query = "INSERT INTO " . $this->tableName . " SET
                     documento=:documento, nome=:nome, 
                     logradouro=:logradouro, numero=:numero, complemento=:complemento, bairro=:bairro, cep=:cep, 
-                    codigomunicipio=:codigoMunicipio, uf=:uf, pais=:pais, fone=:fone, celular=:celular, email=:email";
+                    codigomunicipio=:codigoMunicipio, uf=:uf, email=:email";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -48,9 +45,6 @@ class Tomador{
         $this->cep=htmlspecialchars(strip_tags($this->cep));
         $this->codigoMunicipio=htmlspecialchars(strip_tags($this->codigoMunicipio));
         $this->uf=htmlspecialchars(strip_tags($this->uf));
-        $this->pais=htmlspecialchars(strip_tags($this->pais));
-        $this->fone=htmlspecialchars(strip_tags($this->fone));
-        $this->celular=htmlspecialchars(strip_tags($this->celular));
         $this->email=htmlspecialchars(strip_tags($this->email));
     
         // bind values
@@ -63,9 +57,6 @@ class Tomador{
         $stmt->bindParam(":cep", $this->cep);
         $stmt->bindParam(":codigoMunicipio", $this->codigoMunicipio);
         $stmt->bindParam(":uf", $this->uf);
-        $stmt->bindParam(":pais", $this->pais);
-        $stmt->bindParam(":fone", $this->fone);
-        $stmt->bindParam(":celular", $this->celular);
         $stmt->bindParam(":email", $this->email);
     
         // execute query
@@ -106,9 +97,6 @@ class Tomador{
         $this->cep = $row['cep'];
         $this->codigoMunicipio = $row['codigoMunicipio'];
         $this->uf = $row['uf'];
-        $this->pais = $row['pais'];
-        $this->fone = $row['fone'];
-        $this->celular = $row['celular'];
         $this->email = $row['email'];
     }
     
