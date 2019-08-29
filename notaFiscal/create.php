@@ -67,7 +67,7 @@ if(
     
             if($tomador->create()){
                 // set notaFiscal
-                $notaFiscal->idTomador => $tomador->idTomador;
+                $notaFiscal->idTomador = $tomador->idTomador;
             }
             else{
                 http_response_code(503);
