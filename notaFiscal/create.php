@@ -107,7 +107,6 @@ if(
     foreach ( $data->itemServico as $item )
     {
 
-print_r($item);
         if(
             !empty($item->codigo) &&
             !empty($item->descricao) &&
@@ -115,13 +114,12 @@ print_r($item);
             !empty($item->nbs) &&
             !empty($item->quantidade) &&
             !empty($item->valor) &&
-            !empty($item->txIss) 
+            !empty($item->taxaIss) 
         ){
 
-echo '000';
             $itemVenda = new ItemVenda($db);
             $notaFiscalItem = new NotaFiscalItem($db);
-echo '111';
+
             if (($idItemVenda = $itemVenda->check()) > 0) 
             {
                 $notaFiscalItem->idItemVenda = $idItemVenda;
@@ -131,7 +129,7 @@ echo '111';
                 $itemVenda->descricao = $item->descricao;
                 $itemVenda->cnae = $item->cnae;
                 $itemVenda->ncm = $item->nbs;
-print_r($itemVenda);
+
                 if($itemVenda->create()){
                     // set notaFiscal
                     $notaFiscalItem->idItemVenda = $itemVenda->idItemVenda;
