@@ -103,6 +103,8 @@ if(
         exit;
     }
 
+echo count($data->itemServico);
+
     //check / create itemVenda
     foreach ( $data->itemServico as $item )
     {
