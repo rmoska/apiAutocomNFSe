@@ -48,7 +48,7 @@ if(
         $tomador->documento = $data->tomador->documento;
     
         // check tomador
-        if ($idTomador = $tomador->check()) > 0) {
+        if (($idTomador = $tomador->check()) > 0) {
             $tomador->idTomador = $idTomador;
         }
         // create tomador
