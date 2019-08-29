@@ -96,10 +96,13 @@ if(
     $notaFiscal->valorTotal = $data->valorTotal;
     $notaFiscal->dadosAdicionais = $data->observacao;
 
+    print_r($notaFiscal);
+
     // create notaFiscal
     if(!$notaFiscal->create()){
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal. Serviço indisponível. (I01)"));
+        exit;
     }
 
     //check / create itemVenda
