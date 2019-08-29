@@ -398,7 +398,7 @@ class NotaFiscalItem{
 
         // update query
         $query = "UPDATE notaFiscalItem AS nfi, itemVenda AS iv, impostoIBPT AS ia
-                    SET nfi.valorImpAproxFed = ((nfi.valorTotal * ia.taxaFederal)/100),
+                    SET nfi.valorImpAproxFed = ((nfi.valorTotal * ia.taxaNacional)/100),
                         nfi.valorImpAproxEst = ((nfi.valorTotal * ia.taxaEstadual)/100),
                         nfi.valorImpAproxMun = ((nfi.valorTotal * ia.taxaMunicipal)/100)
                     WHERE (iv.ncm = ia.codigo AND ia.tipoImposto='NBS') AND
@@ -412,8 +412,6 @@ class NotaFiscalItem{
     
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
-
-echo "NF:".$this->idNotaFiscal;
 
         // execute the query
         if($stmt->execute()){
