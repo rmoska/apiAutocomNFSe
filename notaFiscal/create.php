@@ -116,6 +116,7 @@ if(
             !empty($item->txIss) 
         ){
 
+echo '000';
             $itemVenda = new ItemVenda($db);
             $notaFiscalItem = new NotaFiscalItem($db);
 echo '111';
