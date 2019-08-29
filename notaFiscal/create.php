@@ -64,8 +64,6 @@ if(
             $tomador->uf = $data->tomador->uf;
             $tomador->email = $data->tomador->email;
 
-            print_r($tomador);
-
             if($tomador->create()){
                 // set notaFiscal
                 $notaFiscal->idTomador = $tomador->idTomador;

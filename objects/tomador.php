@@ -35,6 +35,8 @@ class Tomador{
         // prepare query
         $stmt = $this->conn->prepare($query);
 
+        print_r($stmt);
+
         // sanitize
         $this->documento=htmlspecialchars(strip_tags($this->documento));
         $this->nome=htmlspecialchars(strip_tags($this->nome));
