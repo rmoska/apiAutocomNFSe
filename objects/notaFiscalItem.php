@@ -157,14 +157,14 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorImpAproxMun", $this->valorImpAproxMun);
         $stmt->bindParam(":observacao", $this->observacao);
     
-        try{
+//        try{
             // execute query
             if($stmt->execute()){
                 return true;
             }
-        }catch(PDOException $e){
-            echo $e->getMessage();
-        }
+//        }catch(PDOException $e){
+//            echo $e->getMessage();
+//        }
     
         return false;
         
