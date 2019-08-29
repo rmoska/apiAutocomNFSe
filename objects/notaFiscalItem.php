@@ -11,7 +11,7 @@ class NotaFiscalItem{
     public $numeroOrdem; 
     public $idItemVenda; 
     public $unidade; 
-    public $quantEmbalagem; 
+    public $quantidade; 
     public $valorUnitario; 
     public $valorUnitarioLiquido; 
     public $valorTotal; 
@@ -60,7 +60,7 @@ class NotaFiscalItem{
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
                     numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
-                    quantEmbalagem=:quantEmbalagem, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
+                    quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
                     cstISS=:cstISS, cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
                     cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
@@ -77,7 +77,7 @@ class NotaFiscalItem{
         $this->numeroOrdem=htmlspecialchars(strip_tags($this->numeroOrdem));
         $this->idItemVenda=htmlspecialchars(strip_tags($this->idItemVenda));
         $this->unidade=htmlspecialchars(strip_tags($this->unidade));
-        $this->quantEmbalagem=htmlspecialchars(strip_tags($this->quantEmbalagem));
+        $this->quantidade=htmlspecialchars(strip_tags($this->quantidade));
         $this->valorUnitario=htmlspecialchars(strip_tags($this->valorUnitario));
         $this->valorUnitarioLiquido=htmlspecialchars(strip_tags($this->valorUnitarioLiquido));
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
@@ -119,7 +119,7 @@ class NotaFiscalItem{
         $stmt->bindParam(":numeroOrdem", $this->numeroOrdem);
         $stmt->bindParam(":idItemVenda", $this->idItemVenda);
         $stmt->bindParam(":unidade", $this->unidade);
-        $stmt->bindParam(":quantEmbalagem", $this->quantEmbalagem);
+        $stmt->bindParam(":quantidade", $this->quantidade);
         $stmt->bindParam(":valorUnitario", $this->valorUnitario);
         $stmt->bindParam(":valorUnitarioLiquido", $this->valorUnitarioLiquido);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
@@ -173,7 +173,7 @@ class NotaFiscalItem{
         // update query
         $query = "UPDATE " . $this->tableName . " SET
                     numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
-                    quantEmbalagem=:quantEmbalagem, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
+                    quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
                     cstISS=:cstISS, cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
                     cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
@@ -192,7 +192,7 @@ class NotaFiscalItem{
         $this->numeroOrdem=htmlspecialchars(strip_tags($this->numeroOrdem));
         $this->idItemVenda=htmlspecialchars(strip_tags($this->idItemVenda));
         $this->unidade=htmlspecialchars(strip_tags($this->unidade));
-        $this->quantEmbalagem=htmlspecialchars(strip_tags($this->quantEmbalagem));
+        $this->quantidade=htmlspecialchars(strip_tags($this->quantidade));
         $this->valorUnitario=htmlspecialchars(strip_tags($this->valorUnitario));
         $this->valorUnitarioLiquido=htmlspecialchars(strip_tags($this->valorUnitarioLiquido));
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
@@ -234,7 +234,7 @@ class NotaFiscalItem{
         $stmt->bindParam(":numeroOrdem", $this->numeroOrdem);
         $stmt->bindParam(":idItemVenda", $this->idItemVenda);
         $stmt->bindParam(":unidade", $this->unidade);
-        $stmt->bindParam(":quantEmbalagem", $this->quantEmbalagem);
+        $stmt->bindParam(":quantidade", $this->quantidade);
         $stmt->bindParam(":valorUnitario", $this->valorUnitario);
         $stmt->bindParam(":valorUnitarioLiquido", $this->valorUnitarioLiquido);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
