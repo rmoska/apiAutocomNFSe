@@ -120,6 +120,7 @@ if(
             $itemVenda = new ItemVenda($db);
             $notaFiscalItem = new NotaFiscalItem($db);
 
+            $itemVenda->idItemVenda = $item->codigo;
             if (($idItemVenda = $itemVenda->check()) > 0) 
             {
                 $notaFiscalItem->idItemVenda = $idItemVenda;
