@@ -18,11 +18,11 @@ class NotaFiscalItem{
     public $valorTotalLiquido; 
     public $cnae; 
 
+/*
     public $cstISS; 
     public $valorBCIss; 
     public $taxaIss; 
     public $valorIss; 
-/*
     public $cfop; 
     public $origem; 
     public $cstIcms; 
@@ -76,8 +76,7 @@ class NotaFiscalItem{
         $query = "INSERT INTO " . $this->tableName . " SET 
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
-                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae,
-                    cstISS=:cstISS, cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss";
+                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -93,11 +92,11 @@ class NotaFiscalItem{
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
         $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
+/*        
         $this->cstISS=htmlspecialchars(strip_tags($this->cstISS));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
-/*        
         $this->cfop=htmlspecialchars(strip_tags($this->cfop));
         $this->origem=htmlspecialchars(strip_tags($this->origem));
         $this->cstIcms=htmlspecialchars(strip_tags($this->cstIcms));
@@ -137,11 +136,11 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
+/*
         $stmt->bindParam(":cstISS", $this->cstISS);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
-/*
         $stmt->bindParam(":cfop", $this->cfop);
         $stmt->bindParam(":origem", $this->origem);
         $stmt->bindParam(":cstIcms", $this->cstIcms);
