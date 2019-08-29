@@ -54,6 +54,9 @@ if(
         // create tomador
         else {
 
+echo "nome:". $data->tomador->nome;
+
+
             $tomador->nome = $data->tomador->nome;
             $tomador->logradouro = $data->tomador->logradouro;
             $tomador->numero = $data->tomador->numero;
