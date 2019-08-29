@@ -1,6 +1,6 @@
 {
     "idVenda": "1",
-    "idEmitente": "1",
+    "documento": "80449374000128",
     "valorTotal": "10.00",
     "observacao": "Teste 01",
     "tomador": {
@@ -15,7 +15,7 @@
         "bairro": "Trindade",
         "email": "rodrigo@autocominformatica.com.br"
     },
-    "itemVenda": [
+    "itemServico": [
     	{
     		"codigo": "1",
             "descricao": "Consulta Médica",

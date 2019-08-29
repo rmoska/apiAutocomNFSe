@@ -1,5 +1,5 @@
 <?php
-class itemVenda{
+class ItemVenda{
  
     // database connection and table name
     private $conn;

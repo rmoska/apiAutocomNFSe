@@ -14,8 +14,7 @@ class notaFiscal{
     public $docOrigemNumero;
     public $docOrigemParcela;
     public $idEntradaSaida;
-    public $destinatarioTipo;
-    public $destinatarioId;
+    public $idTomador;
     public $cfop;
     public $naturezaOperacao;
     public $idFinalidade;
@@ -48,7 +47,7 @@ class notaFiscal{
         $query = "INSERT INTO " . $this->tableName . " SET
                     numero=:numero, serie=:serie, chaveNF=:chaveNF, 
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
-                    idEntradaSaida=:idEntradaSaida, destinatarioTipo=:destinatarioTipo, destinatarioId=:destinatarioId, 
+                    idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
                     dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
@@ -68,8 +67,7 @@ class notaFiscal{
         $this->docOrigemNumero=htmlspecialchars(strip_tags($this->docOrigemNumero));
         $this->docOrigemParcela=htmlspecialchars(strip_tags($this->docOrigemParcela));
         $this->idEntradaSaida=htmlspecialchars(strip_tags($this->idEntradaSaida));
-        $this->destinatarioTipo=htmlspecialchars(strip_tags($this->destinatarioTipo));
-        $this->destinatarioId=htmlspecialchars(strip_tags($this->destinatarioId));
+        $this->idTomador=htmlspecialchars(strip_tags($this->idTomador));
         $this->cfop=htmlspecialchars(strip_tags($this->cfop));
         $this->naturezaOperacao=htmlspecialchars(strip_tags($this->naturezaOperacao));
         $this->idFinalidade=htmlspecialchars(strip_tags($this->idFinalidade));
@@ -98,8 +96,7 @@ class notaFiscal{
         $stmt->bindParam(":docOrigemNumero", $this->docOrigemNumero);
         $stmt->bindParam(":docOrigemParcela", $this->docOrigemParcela);
         $stmt->bindParam(":idEntradaSaida", $this->idEntradaSaida);
-        $stmt->bindParam(":destinatarioTipo", $this->destinatarioTipo);
-        $stmt->bindParam(":destinatarioId", $this->destinatarioId);
+        $stmt->bindParam(":idTomador", $this->idTomador);
         $stmt->bindParam(":cfop", $this->cfop);
         $stmt->bindParam(":naturezaOperacao", $this->naturezaOperacao);
         $stmt->bindParam(":idFinalidade", $this->idFinalidade);
@@ -137,7 +134,7 @@ class notaFiscal{
         $query = "UPDATE " . $this->tableName . " SET
                     numero=:numero, serie=:serie, chaveNF=:chaveNF, 
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
-                    idEntradaSaida=:idEntradaSaida, destinatarioTipo=:destinatarioTipo, destinatarioId=:destinatarioId, 
+                    idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
                     dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
@@ -159,8 +156,7 @@ class notaFiscal{
         $this->docOrigemNumero=htmlspecialchars(strip_tags($this->docOrigemNumero));
         $this->docOrigemParcela=htmlspecialchars(strip_tags($this->docOrigemParcela));
         $this->idEntradaSaida=htmlspecialchars(strip_tags($this->idEntradaSaida));
-        $this->destinatarioTipo=htmlspecialchars(strip_tags($this->destinatarioTipo));
-        $this->destinatarioId=htmlspecialchars(strip_tags($this->destinatarioId));
+        $this->idTomador=htmlspecialchars(strip_tags($this->idTomador));
         $this->cfop=htmlspecialchars(strip_tags($this->cfop));
         $this->naturezaOperacao=htmlspecialchars(strip_tags($this->naturezaOperacao));
         $this->idFinalidade=htmlspecialchars(strip_tags($this->idFinalidade));
@@ -189,8 +185,7 @@ class notaFiscal{
         $stmt->bindParam(":docOrigemNumero", $this->docOrigemNumero);
         $stmt->bindParam(":docOrigemParcela", $this->docOrigemParcela);
         $stmt->bindParam(":idEntradaSaida", $this->idEntradaSaida);
-        $stmt->bindParam(":destinatarioTipo", $this->destinatarioTipo);
-        $stmt->bindParam(":destinatarioId", $this->destinatarioId);
+        $stmt->bindParam(":idTomador", $this->idTomador);
         $stmt->bindParam(":cfop", $this->cfop);
         $stmt->bindParam(":naturezaOperacao", $this->naturezaOperacao);
         $stmt->bindParam(":idFinalidade", $this->idFinalidade);
@@ -284,8 +279,7 @@ class notaFiscal{
         $this->docOrigemNumero = $row['docOrigemNumero'];
         $this->docOrigemParcela = $row['docOrigemParcela'];
         $this->idEntradaSaida = $row['idEntradaSaida'];
-        $this->destinatarioTipo = $row['destinatarioTipo'];
-        $this->destinatarioId = $row['destinatarioId'];
+        $this->idTomador = $row['idTomador'];
         $this->cfop = $row['cfop'];
         $this->naturezaOperacao = $row['naturezaOperacao'];
         $this->idFinalidade = $row['idFinalidade'];
