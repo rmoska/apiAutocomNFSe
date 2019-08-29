@@ -396,7 +396,6 @@ class NotaFiscalItem{
 
     function calcImpAprox(){
 
-
         // update query
         $query = "UPDATE notaFiscalItem AS nfi, itemVenda AS iv, impostoIBPT AS ia
                     SET nfi.valorImpAproxFed = ((nfi.valorTotal * ia.taxaFederal)/100),
@@ -404,8 +403,6 @@ class NotaFiscalItem{
                         nfi.valorImpAproxMun = ((nfi.valorTotal * ia.taxaMunicipal)/100)
                     WHERE (iv.ncm = ia.codigo AND ia.tipoImposto='NBS') AND
                           nfi.idItemVenda = iv.idItemVenda AND nfi.idNotaFiscal = :idNotaFiscal";
-
-echo $query;
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -415,6 +412,8 @@ echo $query;
     
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
+
+echo "NF:".$this->idNotaFiscal;
 
         // execute the query
         if($stmt->execute()){
