@@ -17,13 +17,14 @@ class NotaFiscalItem{
     public $valorTotal; 
     public $valorTotalLiquido; 
     public $cnae; 
-
 /*
+
     public $cstISS; 
     public $valorBCIss; 
     public $taxaIss; 
     public $valorIss; 
-    public $cfop; 
+*/ 
+public $cfop; 
     public $origem; 
     public $cstIcms; 
     public $valorBCIcms; 
@@ -50,7 +51,6 @@ class NotaFiscalItem{
     public $valorImpAproxEst; 
     public $valorImpAproxMun; 
     public $observacao;
-*/ 
     // constructor with $db as database connection
     public function __construct($db){
         $this->conn = $db;
@@ -76,7 +76,13 @@ class NotaFiscalItem{
         $query = "INSERT INTO " . $this->tableName . " SET 
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
-                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae";
+                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae,
+                    cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
+                    taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST, 
+                    cstPis=:cstPis, valorBCPis=:valorBCPis, taxaPis=:taxaPis, valorPis=:valorPis,
+                    cstCofins=:cstCofins, valorBCCofins=:valorBCCofins, taxaCofins=:taxaCofins, valorCofins=:valorCofins,
+                    valorFrete=:valorFrete, valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
+                    valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, valorImpAproxMun=:valorImpAproxMun, observacao=:observacao";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -97,7 +103,8 @@ class NotaFiscalItem{
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
-        $this->cfop=htmlspecialchars(strip_tags($this->cfop));
+    */
+    $this->cfop=htmlspecialchars(strip_tags($this->cfop));
         $this->origem=htmlspecialchars(strip_tags($this->origem));
         $this->cstIcms=htmlspecialchars(strip_tags($this->cstIcms));
         $this->valorBCIcms=htmlspecialchars(strip_tags($this->valorBCIcms));
@@ -124,7 +131,6 @@ class NotaFiscalItem{
         $this->valorImpAproxEst=htmlspecialchars(strip_tags($this->valorImpAproxEst));
         $this->valorImpAproxMun=htmlspecialchars(strip_tags($this->valorImpAproxMun));
         $this->observacao=htmlspecialchars(strip_tags($this->observacao));
-    */
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
         $stmt->bindParam(":numeroOrdem", $this->numeroOrdem);
@@ -141,6 +147,8 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
+*/        
+
         $stmt->bindParam(":cfop", $this->cfop);
         $stmt->bindParam(":origem", $this->origem);
         $stmt->bindParam(":cstIcms", $this->cstIcms);
@@ -168,7 +176,6 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorImpAproxEst", $this->valorImpAproxEst);
         $stmt->bindParam(":valorImpAproxMun", $this->valorImpAproxMun);
         $stmt->bindParam(":observacao", $this->observacao);
-*/        
     
         try{
             // execute query
