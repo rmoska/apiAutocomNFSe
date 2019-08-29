@@ -58,7 +58,7 @@ class NotaFiscalItem{
     function create(){
 
         // query to insert record
-        $query = "INSERT INTO " . $this->tableName . " SET
+        $query = "INSERT INTO " . $this->tableName . " SET x=y,
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
@@ -162,7 +162,6 @@ class NotaFiscalItem{
         try{
             // execute query
             if($stmt->execute()){
-//                $this->idNotaFiscal = $this->conn->lastInsertId();
                 return true;
             }
         }catch(PDOException $e){
