@@ -55,6 +55,8 @@ if(
         // create tomador
         else {
 
+print_r($data->tomador);
+
             $tomador->nome = $data->tomador->nome;
             $tomador->logradouro = $data->tomador->logradouro;
             $tomador->numero = $data->tomador->numero;
