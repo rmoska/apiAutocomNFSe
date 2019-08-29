@@ -404,7 +404,9 @@ class NotaFiscalItem{
                         nfi.valorImpAproxMun = ((nfi.valorTotal * ia.taxaMunicipal)/100)
                     WHERE (iv.ncm = ia.codigo AND ia.tipoImposto='NBS') AND
                           nfi.idItemVenda = iv.idItemVenda AND nfi.idNotaFiscal = :idNotaFiscal";
-                          
+
+echo $query;
+
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     

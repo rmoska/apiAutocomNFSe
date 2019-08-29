@@ -153,7 +153,7 @@ if(
             $notaFiscalItem->valorUnitario = $item->valor;
             $notaFiscalItem->valorTotal = ($item->valor*$item->quantidade);
             $notaFiscalItem->taxaIss = $item->taxaIss;
-            $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)/($item->taxaIss/100);
+            $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
 
             if(!$notaFiscalItem->create()){
                 http_response_code(503);
