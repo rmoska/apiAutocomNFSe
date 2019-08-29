@@ -140,11 +140,11 @@ if(
                     exit;
                 }
              
-                $notaFiscalItem->cnae = $itemVenda->cnae;
+                $notaFiscalItem->cnae = $item->cnae;
                 $notaFiscalItem->unidade = "UN";
-                $notaFiscalItem->quantidade = $itemVenda->quantidade;
-                $notaFiscalItem->valorUnitario = $itemVenda->valor;
-                $notaFiscalItem->taxaIss = $itemVenda->taxaIss;
+                $notaFiscalItem->quantidade = $item->quantidade;
+                $notaFiscalItem->valorUnitario = $item->valor;
+                $notaFiscalItem->taxaIss = $item->taxaIss;
 
                 if(!$notaFiscalItem->create()){
                     http_response_code(503);
