@@ -323,5 +323,64 @@ class NotaFiscal{
         return $stmt->rowCount();
     }    
 
+    function calcImpAprox(){
+
+        // update query
+        $query = "UPDATE notaFiscalItem AS nfi, itemVenda AS iv, impostoIBPT AS ia
+                    SET nfi.valorImpAproxFed = ((nfi.valorTotal * ia.taxaNacional)/100),
+                        nfi.valorImpAproxEst = ((nfi.valorTotal * ia.taxaEstadual)/100),
+                        nfi.valorImpAproxMun = ((nfi.valorTotal * ia.taxaMunicipal)/100)
+                    WHERE (iv.ncm = ia.codigo AND ia.tipoImposto='NBS') AND
+                          nfi.idItemVenda = iv.idItemVenda AND nfi.idNotaFiscal = :idNotaFiscal";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+        // sanitize
+        $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
+
+        // execute the query
+        if($stmt->execute()){
+
+            // update query
+            $query = "SELECT SUM(nfi.valorImpAproxFed) AS vlTotFed, SUM(nfi.valorImpAproxEst) AS vlTotEst, SUM(nfi.valorImpAproxMun) AS vlTotMun 
+                      FROM notaFiscalItem AS nfi WHERE nfi.idNotaFiscal = :idNotaFiscal";
+
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+            // bind values
+            $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $vlTotFed = $row['vlTotFed'];
+            $vlTotEst = $row['vlTotEst'];
+            $vlTotMun = $row['vlTotMun'];
+
+            if (($row['vlTotFed']>0) || ($row['vlTotEst']>0) || ($row['vlTotMun']>0)) {
+
+                $msgIBPT = 'Trib aprox R$: '. number_format($row["vlTotFed"],2,',','.').' Federal';
+                if ($row['vlTotEst']>0)
+                    $msgIBPT .= ' e '.number_format($row["vlTotEst"],2,',','.').' Estadual';
+                if ($row['vlTotMun']>0)
+                    $msgIBPT .= ' e '.number_format($row["vlTotMun"],2,',','.').' Municipal';
+                $msgIBPT .= ' - Fonte: IBPT aWd7S8.';
+
+                // update query
+                $query = "UPDATE notaFiscal SET 
+                            obsImposto = :msgIBPT
+                          WHERE idNotaFiscal = :idNotaFiscal";
+
+                // prepare query statement
+                $stmt = $this->conn->prepare($query);
+                // bind values
+                $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
+                $stmt->bindParam(":msgIBPT", $msgIBPT);
+                $stmt->execute();
+  
+            }
+        }
+    
+        return false;
+   }
+
 }
 ?>
