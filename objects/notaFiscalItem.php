@@ -17,7 +17,6 @@ class NotaFiscalItem{
     public $valorTotal; 
     public $valorTotalLiquido; 
     public $cnae; 
-/*
     public $cstISS; 
     public $valorBCIss; 
     public $taxaIss; 
@@ -33,6 +32,7 @@ class NotaFiscalItem{
     public $valorBCST; 
     public $taxaST; 
     public $valorST; 
+/*
     public $cstPis; 
     public $valorBCPis; 
     public $taxaPis; 
@@ -75,7 +75,10 @@ class NotaFiscalItem{
         $query = "INSERT INTO " . $this->tableName . " SET 
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
-                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae";
+                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae,
+                    cstISS=:cstISS, cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
+                    cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
+                    taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -90,7 +93,6 @@ class NotaFiscalItem{
         $this->valorUnitarioLiquido=htmlspecialchars(strip_tags($this->valorUnitarioLiquido));
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
         $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
-/*        
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
         $this->cstISS=htmlspecialchars(strip_tags($this->cstISS));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
@@ -107,6 +109,7 @@ class NotaFiscalItem{
         $this->valorBCST=htmlspecialchars(strip_tags($this->valorBCST));
         $this->taxaST=htmlspecialchars(strip_tags($this->taxaST));
         $this->valorST=htmlspecialchars(strip_tags($this->valorST));
+/*        
         $this->cstPis=htmlspecialchars(strip_tags($this->cstPis));
         $this->valorBCPis=htmlspecialchars(strip_tags($this->valorBCPis));
         $this->taxaPis=htmlspecialchars(strip_tags($this->taxaPis));
@@ -135,7 +138,6 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
-/*
         $stmt->bindParam(":cstISS", $this->cstISS);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
@@ -151,6 +153,7 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorBCST", $this->valorBCST);
         $stmt->bindParam(":taxaST", $this->taxaST);
         $stmt->bindParam(":valorST", $this->valorST);
+/*
         $stmt->bindParam(":cstPis", $this->cstPis);
         $stmt->bindParam(":valorBCPis", $this->valorBCPis);
         $stmt->bindParam(":taxaPis", $this->taxaPis);
