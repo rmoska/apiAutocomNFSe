@@ -54,9 +54,6 @@ if(
         // create tomador
         else {
 
-echo "nome:". $data->tomador->nome;
-
-
             $tomador->nome = $data->tomador->nome;
             $tomador->logradouro = $data->tomador->logradouro;
             $tomador->numero = $data->tomador->numero;
@@ -66,7 +63,9 @@ echo "nome:". $data->tomador->nome;
             $tomador->codigoMunicipio = $data->tomador->codigoMunicipio;
             $tomador->uf = $data->tomador->uf;
             $tomador->email = $data->tomador->email;
-    
+
+            print_r($tomador);
+
             if($tomador->create()){
                 // set notaFiscal
                 $notaFiscal->idTomador = $tomador->idTomador;
