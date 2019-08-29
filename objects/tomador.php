@@ -35,8 +35,6 @@ class Tomador{
         // prepare query
         $stmt = $this->conn->prepare($query);
 
-        print_r($stmt);
-
         // sanitize
         $this->documento=htmlspecialchars(strip_tags($this->documento));
         $this->nome=htmlspecialchars(strip_tags($this->nome));
@@ -60,7 +58,10 @@ class Tomador{
         $stmt->bindParam(":codigoMunicipio", $this->codigoMunicipio);
         $stmt->bindParam(":uf", $this->uf);
         $stmt->bindParam(":email", $this->email);
-    
+
+        print_r($stmt);
+
+
         // execute query
         if($stmt->execute()){
             $this->idTomador = $this->conn->lastInsertId();
