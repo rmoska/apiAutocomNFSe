@@ -5,11 +5,6 @@ class notaFiscalItem{
     // database connection and table name
     private $conn;
     private $tableName = "notaFiscalItem";
- 
-    idNotaFiscal, numeroOrdem, idItemVenda, unidade, quantEmbalagem, valorUnitario, valorUnitarioLiquido, valorTotal, valorTotalLiquido, 
-    cnae, cstISS, valorBCIss, taxaIss, valorIss, cfop, origem, cstIcms, valorBCIcms, taxaIcms, valorIcms, taxaReducaoBC, taxaMVA, valorBCST, taxaST, valorST, 
-    cstPis, valorBCPis, taxaPis, valorPis, cstCofins, valorBCCofins, taxaCofins, valorCofins, valorFrete, valorSeguro, valorOutrasDespesas, valorDesconto, 
-    valorImpAproxFed, valorImpAproxEst, valorImpAproxMun, observacao
 
     // object properties
     public $idNotaFiscal; 
