@@ -59,7 +59,7 @@ class NotaFiscalItem{
     
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
-                    numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
+                    idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
                     cstISS=:cstISS, cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
@@ -74,6 +74,7 @@ class NotaFiscalItem{
         $stmt = $this->conn->prepare($query);
 
         // sanitize
+        $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
         $this->numeroOrdem=htmlspecialchars(strip_tags($this->numeroOrdem));
         $this->idItemVenda=htmlspecialchars(strip_tags($this->idItemVenda));
         $this->unidade=htmlspecialchars(strip_tags($this->unidade));
@@ -116,6 +117,7 @@ class NotaFiscalItem{
         $this->observacao=htmlspecialchars(strip_tags($this->observacao));
     
         // bind values
+        $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
         $stmt->bindParam(":numeroOrdem", $this->numeroOrdem);
         $stmt->bindParam(":idItemVenda", $this->idItemVenda);
         $stmt->bindParam(":unidade", $this->unidade);
@@ -172,7 +174,7 @@ class NotaFiscalItem{
     
         // update query
         $query = "UPDATE " . $this->tableName . " SET
-                    numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
+                    idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
                     cstISS=:cstISS, cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
@@ -189,6 +191,7 @@ class NotaFiscalItem{
         $stmt = $this->conn->prepare($query);
     
         // sanitize
+        $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
         $this->numeroOrdem=htmlspecialchars(strip_tags($this->numeroOrdem));
         $this->idItemVenda=htmlspecialchars(strip_tags($this->idItemVenda));
         $this->unidade=htmlspecialchars(strip_tags($this->unidade));
@@ -231,6 +234,7 @@ class NotaFiscalItem{
         $this->observacao=htmlspecialchars(strip_tags($this->observacao));
     
         // bind values
+        $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
         $stmt->bindParam(":numeroOrdem", $this->numeroOrdem);
         $stmt->bindParam(":idItemVenda", $this->idItemVenda);
         $stmt->bindParam(":unidade", $this->unidade);

@@ -106,7 +106,6 @@ if(
     //check / create itemVenda
     foreach ( $data->itemServico as $item )
     {
-
         if(
             !empty($item->codigo) &&
             !empty($item->descricao) &&
@@ -147,7 +146,7 @@ if(
                 $notaFiscalItem->quantidade = $item->quantidade;
                 $notaFiscalItem->valorUnitario = $item->valor;
                 $notaFiscalItem->taxaIss = $item->taxaIss;
-print_r($notaFiscalItem);
+
                 if(!$notaFiscalItem->create()){
                     http_response_code(503);
                     echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));
