@@ -223,7 +223,7 @@ if(
 		if ($vlTotBCST>0)
 			$xml->writeElement("baseCalculoSubstituicao", number_format($vlTotBCST,2,'.',''));
 		$xml->writeElement("cfps", $notaFiscal->cfop);
-		$xml->writeElement("codigoMunicipioTomador", $tomador->codigoMunicipio);
+//		$xml->writeElement("codigoMunicipioTomador", $tomador->codigoMunicipio);
 		$xml->writeElement("codigoPostalTomador", $tomador->cep);
 		if($tomador->complemento > '')
 			$xml->writeElement("complementoEnderecoTomador", $tomador->complemento);
