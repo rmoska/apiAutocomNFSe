@@ -270,7 +270,7 @@ if(
 		$xml->writeElement("logradouroTomador", $tomador->logradouro);
 
         $nuAEDF = $autorizacao->aedf; 
-        if ($autorizacao->ambiente = 0)
+//        if ($autorizacao->ambiente = 0)
             $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
 
         $xml->writeElement("numeroAEDF", $nuAEDF);
