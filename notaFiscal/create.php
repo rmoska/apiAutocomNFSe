@@ -13,6 +13,7 @@ include_once '../objects/notaFiscalItem.php';
 include_once '../objects/itemVenda.php';
 include_once '../objects/emitente.php';
 include_once '../objects/tomador.php';
+include_once '../objects/autorizacao.php';
  
 $database = new Database();
 $db = $database->getConnection();
@@ -172,6 +173,20 @@ if(
     if (count($arrayItemNF) > 0){
 
         $notaFiscal->calcImpAprox();
+
+        $autorizacao = new Autorizacao($db);
+
+        $autorizacao->idEmitente = $notaFiscal->idEmitente;
+
+        $autorizacao->readOne();
+
+        if(!$autorizacao->getToken()){
+
+            http_response_code(503);
+            echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));
+            exit;
+
+        }
 
         // set response code - 201 created
         http_response_code(201);

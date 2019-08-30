@@ -15,6 +15,7 @@ class Autorizacao{
     public $senhaWeb;
     public $certificado;
     public $senha;
+    public $token;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -55,6 +56,14 @@ class Autorizacao{
         // execute query
         if($stmt->execute()){
             return true;
+
+            $nomeArq = "./arquivos/certificadoAutocom2019.pfx";
+            $arqCert = fopen($nomeArq,"r");
+            $contCert = fread($arqCert, filesize($nomeArq));
+            fclose($arqCert);
+            echo base64_encode($contCert);
+            
+
         }
 
         echo "PDO::errorCode(): ", $stmt->errorCode();
@@ -104,4 +113,69 @@ class Autorizacao{
         return false;
     }    
 
+    function readOne(){
+ 
+        // query to read single record
+        $query = "SELECT * FROM " . $this->tableName . " WHERE idEmitente = ? LIMIT 0,1";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare( $query );
+     
+        // bind id of product to be updated
+        $stmt->bindParam(1, $this->idEmitente);
+     
+        // execute query
+        $stmt->execute();
+     
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+     
+        // set values to object properties
+        $this->crt = $row['crt'];
+        $this->aedf = $row['aedf'];
+        $this->cmc = $row['cmc'];
+        $this->senhaWeb = $row['senhaWeb'];
+        $this->certificado = $row['certificado'];
+        $this->senha = $row['senha'];
+
+    }
+
+    function getToken() {
+
+        // busca token autorização
+        $aBasic = base64_encode("autocom-ws-client:93c9fb168c6bc8fa3d9fa8ade999c087");
+        $headers = array("Content-type: application/x-www-form-urlencoded",
+                                         "Authorization: Basic ".$aBasic ); 
+        $pwd = strtoupper(md5($this->senhaWeb));
+        $fields = array(
+        'grant_type' => 'password',
+        'username' => $this->cmc, 
+        'password' => $pwd,
+        'client_id' => 'autocom-ws-client', 
+        'client_secret' => '93c9fb168c6bc8fa3d9fa8ade999c087' 
+        );
+        //
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/autenticacao/oauth/token");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
+        $data = curl_exec($curl);
+        $dados = json_decode($data);
+        if (isset($dados->error)) {
+
+            return false;
+
+        }
+        else {
+
+            $this->token = $dados->access_token;
+            return true;
+
+        }
+    
+    }
+    
 }

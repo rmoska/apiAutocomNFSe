@@ -352,8 +352,6 @@ class NotaFiscal{
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            echo "vlMun:".$row['vlTotMun'];
-
             if (($row['vlTotFed']>0) || ($row['vlTotEst']>0) || ($row['vlTotMun']>0)) {
 
                 $msgIBPT = 'Trib aprox R$: '. number_format($row["vlTotFed"],2,',','.').' Federal';
