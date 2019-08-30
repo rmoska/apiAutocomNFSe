@@ -30,6 +30,7 @@ class SignNFSe {
     private $keyPass;
     private $passPhrase;
     private $arqDir;
+
     public $errMsg='';
     public $errStatus=false;
 
@@ -45,7 +46,7 @@ class SignNFSe {
         //obtem o path da biblioteca
         $this->raizDir = dirname(dirname( __FILE__ )) . '/';
 
-print_r($arraySign);
+echo $arraySign->cnpj;
 
         $this->cnpj = $arraySign->cnpj;
         $this->certName = "cert".$arraySign->cnpj.".pfx";
@@ -262,11 +263,11 @@ print_r($arraySign);
      **/
     protected function __loadCerts(){
         //monta o path completo com o nome da chave privada
-        $this->priKEY = $this->certsDir.$this->cnpj.'_priKEY.pem';
+        $this->priKEY = $this->certsDir."cert".$this->cnpj.'_priKEY.pem';
         //monta o path completo com o nome da chave prublica
-        $this->pubKEY =  $this->certsDir.$this->cnpj.'_pubKEY.pem';
+        $this->pubKEY =  $this->certsDir."cert".$this->cnpj.'_pubKEY.pem';
         //monta o path completo com o nome do certificado (chave publica e privada) em formato pem
-        $this->certKEY = $this->certsDir.$this->cnpj.'_certKEY.pem';
+        $this->certKEY = $this->certsDir."cert".$this->cnpj.'_certKEY.pem';
         //verificar se o nome do certificado e
         //o path foram carregados nas variaveis da classe
         if ($this->certsDir == '' || $this->certName == '') {
