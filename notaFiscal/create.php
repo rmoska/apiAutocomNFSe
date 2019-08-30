@@ -244,7 +244,7 @@ if(
 
 			$xml->startElement("itemServico");
 			$xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
-			$xml->writeElement("cst", $rI['nucst']);
+			$xml->writeElement("cst", $notaFiscalItem->cst);
             //
             
 //            $nmProd = trim(limpaCaractNFe(retiraAcentos($notaFiscalItem->descricao)));
