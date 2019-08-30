@@ -57,7 +57,7 @@ class Autorizacao{
         if($stmt->execute()){
             return true;
 
-            $nomeArq = "./arquivos/certificadoAutocom2019.pfx";
+            $nomeArq = "./certificao/".$this.documento.".pfx";
             $arqCert = fopen($nomeArq,"r");
             $contCert = fread($arqCert, filesize($nomeArq));
             fclose($arqCert);
