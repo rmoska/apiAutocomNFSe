@@ -292,9 +292,6 @@ if(
         $nfse = new SignNFSe($arraySign);
 		$xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 		//
-
-        echo $xmlAss;
-
        	//
         // transmite NFSe	
         $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
@@ -362,14 +359,14 @@ if(
                 $dados = json_decode($result);
                 if (isset($dados->error)) {
                     http_response_code(503);
-                    echo json_encode(array("message" => "Erro no envio da NFPSe ! (".$dados->error.") ".$dados->error_description));
+                    echo json_encode(array("message" => "Erro no envio da NFPSe !", "resposta" => "(".$dados->error.") ".$dados->error_description));
                     exit;
                 }
                 else {
                     $xmlNFRet = simplexml_load_string(trim($result));
                     $msg = utf8_decode($xmlNFRet->message);
                     http_response_code(503);
-                    echo json_encode(array("message" => "Erro no envio da NFPSe ! ".$msg));
+                    echo json_encode(array("message" => "Erro no envio da NFPSe ! ", "resposta" => $msg));
                     exit;
                 }
             }
