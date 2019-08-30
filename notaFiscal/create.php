@@ -293,6 +293,7 @@ if(
 		$xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 		//
 
+        echo $xmlAss;
 
        	//
         // transmite NFSe	
