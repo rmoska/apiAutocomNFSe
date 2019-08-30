@@ -149,6 +149,7 @@ class NotaFiscal{
         $stmt = $this->conn->prepare($query);
     
         // sanitize
+        $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
         $this->numero=htmlspecialchars(strip_tags($this->numero));
         $this->serie=htmlspecialchars(strip_tags($this->serie));
         $this->chaveNF=htmlspecialchars(strip_tags($this->chaveNF));
@@ -178,6 +179,7 @@ class NotaFiscal{
         $this->dadosAdicionais=htmlspecialchars(strip_tags($this->dadosAdicionais));
     
         // bind values
+        $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
         $stmt->bindParam(":numero", $this->numero);
         $stmt->bindParam(":serie", $this->serie);
         $stmt->bindParam(":chaveNF", $this->chaveNF);
