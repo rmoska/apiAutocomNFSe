@@ -171,6 +171,8 @@ if(
             }
             else{
 
+                print_r($notaFiscalItem);
+
                 $arrayItemNF[] = $notaFiscalItem;
 
             }
@@ -241,8 +243,6 @@ if(
         $xml->startElement("itensServico");
         foreach ( $arrayItemNF as $notaFiscalItem ) 
         {
-
-print_r($notaFiscalItem);
 
 			$xml->startElement("itemServico");
 			$xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
