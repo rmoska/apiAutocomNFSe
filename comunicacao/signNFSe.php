@@ -46,7 +46,7 @@ class SignNFSe {
         //obtem o path da biblioteca
         $this->raizDir = dirname(dirname( __FILE__ )) . '/';
 
-echo $arraySign->cnpj;
+echo $arraySign["cnpj"];
 
         $this->cnpj = $arraySign->cnpj;
         $this->certName = "cert".$arraySign->cnpj.".pfx";
