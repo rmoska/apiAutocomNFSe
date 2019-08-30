@@ -47,15 +47,13 @@ if(
 
         // set tomador property values
         $tomador->documento = $data->tomador->documento;
-    
 
-        //ok;
         // check tomador
         if (($idTomador = $tomador->check()) > 0) {
+
+            $tomador->idTomador = $idTomador;
             $notaFiscal->idTomador = $idTomador;
             $tomador->readOne();
-
-print_r($tomador);
 
         }
         // create tomador
