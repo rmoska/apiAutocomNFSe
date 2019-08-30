@@ -55,15 +55,15 @@ class Autorizacao{
     
         // execute query
         if($stmt->execute()){
-            return true;
 
-            $nomeArq = "./certificao/".$this.documento.".pfx";
-            $arqCert = fopen($nomeArq,"r");
-            $contCert = fread($arqCert, filesize($nomeArq));
+            $nomeArq = "./certificado/cert".$this->documento.".pfx";
+            $arqCert = fopen($nomeArq,"w");
+            $certificado = base64_decode($this->certificado);
+            $contCert = fwrite($arqCert, $certificado);
             fclose($arqCert);
-            echo base64_encode($contCert);
-            
 
+            return true;
+            
         }
 
         echo "PDO::errorCode(): ", $stmt->errorCode();
@@ -157,7 +157,8 @@ class Autorizacao{
         //
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/autenticacao/oauth/token");
+        curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/autenticacao/oauth/token"); // homolog
+//        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/autenticacao/oauth/token");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_POST, TRUE);

@@ -192,7 +192,7 @@ if(
         http_response_code(201);
 
         // tell the user
-        echo json_encode(array("http_code" => "201", "message" => "Nota Fiscal incluída"));
+        echo json_encode(array("http_code" => "201", "message" => "Nota Fiscal incluída", "token" => $autorizacao->token));
 
     }
     else{
