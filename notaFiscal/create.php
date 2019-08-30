@@ -242,7 +242,7 @@ if(
         foreach ( $arrayItemNF as $notaFiscalItem ) 
         {
 
-echo 'cst='.$notaFiscalItem->cstIss;
+print_r($notaFiscalItem);
 
 			$xml->startElement("itemServico");
 			$xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
