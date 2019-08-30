@@ -9,6 +9,7 @@ class NotaFiscalItem{
     public $idNotaFiscal; 
     public $numeroOrdem; 
     public $idItemVenda; 
+    public $descricaoItemVenda;
     public $unidade; 
     public $quantidade; 
     public $valorUnitario; 

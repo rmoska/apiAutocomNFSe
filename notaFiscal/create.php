@@ -132,6 +132,8 @@ if(
             }
             else 
             {
+
+                $notaFiscalItem->descricao = $item->descricao;
                 $itemVenda->descricao = $item->descricao;
                 $itemVenda->cnae = $item->cnae;
                 $itemVenda->ncm = $item->nbs;
@@ -170,7 +172,8 @@ if(
         }
     }
 
-    if (count($arrayItemNF) > 0){
+    if (count($arrayItemNF) > 0)
+    {
 
         // calcular Imposto Aproximado IBPT
         $notaFiscal->calcImpAprox();
@@ -194,7 +197,7 @@ if(
 		$vlTotISS = 0; 
 		$vlTotServ = 0; 
 
-        foreach ( $arrayItemNF as $notaFiscalItem )
+        foreach ( $arrayItemNF as $notaFiscalItem ) {
             $vlTotServ += $notaFiscalItem->valorTotal;
 			if ($notaFiscalItem->cstIss != '1') {
 				$vlTotBC += $notaFiscalItem->valorBCIss; 
@@ -230,28 +233,22 @@ if(
 		$it = 0;
 		$qtItem = count($arrayItemNF);
         $xml->startElement("itensServico");
-        foreach ( $arrayItemNF as $notaFiscalItem )
-
+        foreach ( $arrayItemNF as $notaFiscalItem ) 
+        {
 
 			$xml->startElement("itemServico");
 			$xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
 			$xml->writeElement("cst", $rI['nucst']);
             //
             
-
-
-			$nmProd = trim(limpaCaractNFe(retiraAcentos($rI['nmproduto'])));
-			if ($rI['nmprodcompl']>'')
-				$nmProd .= ' - '.trim(limpaCaractNFe(retiraAcentos($rI['nmprodcompl'])));
-
-
-
+//            $nmProd = trim(limpaCaractNFe(retiraAcentos($notaFiscalItem->descricao)));
+            $nmProd = trim($notaFiscalItem->descricao);
 
 			if ($notaFiscalItem->observacao > '')
 				$nmProd .= ' - '.$notaFiscalItem->observacao;
 			$xml->writeElement("descricaoServico", trim($nmProd));
 			//
-			$xml->writeElement("idCNAE", trim(limpaNumerico2($notaFiscalItem->cnae)));
+			$xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
 			$xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
 			if ($notaFiscalItem->taxaIss > 0)
 				$xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorTotal,2,'.',''));
@@ -313,7 +310,8 @@ if(
         //
         $info = curl_getinfo( $curl );
 
-        if ($info['http_code'] == '200') {
+        if ($info['http_code'] == '200') 
+        {
             //
             $xmlNFRet = simplexml_load_string($result);
             $nuNF = $xmlNFRet->numeroSerie;
@@ -351,7 +349,8 @@ if(
 
             
         }
-        else {
+        else 
+        {
             if (substr($info['http_code'],0,1) == '5') {
                 http_response_code(503);
                 echo json_encode(array("message" => "Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
@@ -360,10 +359,11 @@ if(
             else {
                 $msg = $result;
                 $dados = json_decode($result);
-                if (isset($dados->error))
+                if (isset($dados->error)) {
                     http_response_code(503);
                     echo json_encode(array("message" => "Erro no envio da NFPSe ! (".$dados->error.") ".$dados->error_description));
                     exit;
+                }
                 else {
                     $xmlNFRet = simplexml_load_string(trim($result));
                     $msg = utf8_decode($xmlNFRet->message);
