@@ -56,7 +56,7 @@ class Autorizacao{
         // execute query
         if($stmt->execute()){
 
-            $nomeArq = "./certificado/cert".$documento.".pfx";
+            $nomeArq = "../certificado/cert".$documento.".pfx";
             $arqCert = fopen($nomeArq,"w");
             $certificado = base64_decode($this->certificado);
             $contCert = fwrite($arqCert, $certificado);
