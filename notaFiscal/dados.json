@@ -6,7 +6,7 @@
     "tomador": {
         "documento": "01837011940",
         "nome": "Rodrigo",
-        "codigoMunicipio": "5047",
+        "codigoMunicipio": "4205047",
         "uf": "SC",
         "cep": "88025000",
         "logradouro": "Rua Odilon Fernandes",
@@ -23,6 +23,7 @@
             "nbs": "123012100",
             "quantidade": 1,
             "valor": 150.00,
+            "cst": "0",
             "taxaIss": "2.00"
     	},
     	{
@@ -32,6 +33,7 @@
             "nbs": "123012100",
             "quantidade": 1,
             "valor": 30.00,
+            "cst": "0",
             "taxaIss": "2.00"
     	}
     ]

@@ -359,7 +359,7 @@ class NotaFiscal{
                     $msgIBPT .= ' e '.number_format($row["vlTotEst"],2,',','.').' Estadual';
                 if ($row['vlTotMun']>0)
                     $msgIBPT .= ' e '.number_format($row["vlTotMun"],2,',','.').' Municipal';
-                $msgIBPT .= ' - Fonte: IBPT aWd7S8.';
+                $msgIBPT .= ' - Fonte: IBPT';
 
                 // update query
                 $query = "UPDATE notaFiscal SET 

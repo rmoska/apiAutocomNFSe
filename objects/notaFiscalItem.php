@@ -16,7 +16,7 @@ class NotaFiscalItem{
     public $valorTotal; 
     public $valorTotalLiquido; 
     public $cnae; 
-    public $cstISS; 
+    public $cstIss; 
     public $valorBCIss; 
     public $taxaIss; 
     public $valorIss; 
@@ -60,7 +60,7 @@ class NotaFiscalItem{
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
-                    cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
+                    cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
                     cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
                     taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST, 
                     cstPis=:cstPis, valorBCPis=:valorBCPis, taxaPis=:taxaPis, valorPis=:valorPis,
@@ -82,7 +82,7 @@ class NotaFiscalItem{
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
         $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
-        $this->cstISS=htmlspecialchars(strip_tags($this->cstISS));
+        $this->cstIss=htmlspecialchars(strip_tags($this->cstIss));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
@@ -124,7 +124,7 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
-        $stmt->bindParam(":cstISS", $this->cstISS);
+        $stmt->bindParam(":cstIss", $this->cstIss);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
@@ -177,7 +177,7 @@ class NotaFiscalItem{
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
-                    cstISS=:cstISS, cstISS=:cstISS, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
+                    cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
                     cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
                     taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST, 
                     cstPis=:cstPis, valorBCPis=:valorBCPis, taxaPis=:taxaPis, valorPis=:valorPis,
@@ -201,7 +201,7 @@ class NotaFiscalItem{
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
         $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
-        $this->cstISS=htmlspecialchars(strip_tags($this->cstISS));
+        $this->cstIss=htmlspecialchars(strip_tags($this->cstIss));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
@@ -244,7 +244,7 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
-        $stmt->bindParam(":cstISS", $this->cstISS);
+        $stmt->bindParam(":cstIss", $this->cstIss);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
