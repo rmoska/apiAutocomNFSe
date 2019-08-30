@@ -54,6 +54,9 @@ if(
         if (($idTomador = $tomador->check()) > 0) {
             $notaFiscal->idTomador = $idTomador;
             $tomador->readOne();
+
+print_r($tomador);
+
         }
         // create tomador
         else {
@@ -362,14 +365,14 @@ if(
                 $dados = json_decode($result);
                 if (isset($dados->error)) {
                     http_response_code(503);
-                    echo json_encode(array("message" => "Erro no envio da NFPSe !", "resposta" => "(".$dados->error.") ".$dados->error_description));
+                    echo json_encode(array("message" => "Erro no envio da NFPSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
                     exit;
                 }
                 else {
                     $xmlNFRet = simplexml_load_string(trim($result));
                     $msg = utf8_decode($xmlNFRet->message);
                     http_response_code(503);
-                    echo json_encode(array("message" => "Erro no envio da NFPSe ! ", "resposta" => $msg));
+                    echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $msg));
                     exit;
                 }
             }
