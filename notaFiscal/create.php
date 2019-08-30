@@ -370,6 +370,9 @@ if(
                     exit;
                 }
                 else {
+
+print_r($result);
+
                     $xmlNFRet = simplexml_load_string(trim($result));
                     $msg = utf8_decode($xmlNFRet->message);
                     http_response_code(503);
