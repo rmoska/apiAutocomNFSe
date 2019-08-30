@@ -23,7 +23,7 @@ class Autorizacao{
     }
 
     // create autorizacao
-    function create(){
+    function create($documento){
     
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
@@ -56,7 +56,7 @@ class Autorizacao{
         // execute query
         if($stmt->execute()){
 
-            $nomeArq = "./certificado/cert".$this->documento.".pfx";
+            $nomeArq = "./certificado/cert".$documento.".pfx";
             $arqCert = fopen($nomeArq,"w");
             $certificado = base64_decode($this->certificado);
             $contCert = fwrite($arqCert, $certificado);

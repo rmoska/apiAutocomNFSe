@@ -9,6 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../config/http_response_code.php';
 include_once '../objects/autorizacao.php';
+include_once '../objects/emitente.php';
  
 $database = new Database();
 $db = $database->getConnection();
@@ -39,8 +40,13 @@ if(
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
 
+    $emitente = new Emitente($db);
+    $emitente->idEmitente = $data->idEmitente;
+    $emitente->readOne();
+    $documento = $emitente->documento;
+
     // create autorizacao
-    if($autorizacao->create()){
+    if($autorizacao->create($emitente->documento)){
  
         // set response code - 201 created
         http_response_code(201);
