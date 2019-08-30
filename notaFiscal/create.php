@@ -99,6 +99,7 @@ if(
     $notaFiscal->idEntradaSaida = "S";
     $notaFiscal->situacao = "A";
     $notaFiscal->valorTotal = $data->valorTotal;
+    $notaFiscal->dataEmissao = date("Y-m-d");
     $notaFiscal->dadosAdicionais = $data->observacao;
 
     if ($tomador->uf != 'SC') $cfps = '9203';
@@ -159,6 +160,7 @@ if(
             $notaFiscalItem->quantidade = $item->quantidade;
             $notaFiscalItem->valorUnitario = $item->valor;
             $notaFiscalItem->valorTotal = ($item->valor*$item->quantidade);
+            $notaFiscalItem->cstIss = $item->cst;
             $notaFiscalItem->taxaIss = $item->taxaIss;
             $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
 
