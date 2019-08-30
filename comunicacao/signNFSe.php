@@ -26,6 +26,10 @@ class SignNFSe {
      * Path completo para o certificado (chave privada e publica) em formato pem
      */
     private $certKEY='';
+    private $cnpj;
+    private $keyPass;
+    private $passPhrase;
+    private $arqDir;
     public $errMsg='';
     public $errStatus=false;
 
@@ -54,13 +58,11 @@ class SignNFSe {
         if (substr($this->arqDir, -1, 1) != '/'){
             $this->arqDir .= '/';
         }
-        // monta a estrutura de diretorios utilizados na manipulação das NFe
-        $this->assDir=$this->arqDir . 'assinadas' . '/';        
-        $this->aprDir=$this->arqDir . 'aprovadas' . '/';
-        $this->temDir=$this->arqDir . 'temporarias' . '/';
+
         if ( !$retorno = $this->__loadCerts() ) {
             $this->errStatus = true;
         }
+
         return true;
     } //fim __construct
 
