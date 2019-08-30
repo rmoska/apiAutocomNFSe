@@ -291,7 +291,8 @@ if(
 		fclose($arqNFe);
 		//	
         include_once '../comunicacao/signNFSe.php';
-        $nfse = new SignNFSe;
+        $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+        $nfse = new SignNFSe($arraySign);
 		$xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 		//
 

@@ -37,9 +37,16 @@ class SignNFSe {
     private $URLDigestMeth='http://www.w3.org/2000/09/xmldsig#sha1';
 
 
-    function __construct() {
+    function __construct($arraySign) {
         //obtem o path da biblioteca
         $this->raizDir = dirname(dirname( __FILE__ )) . '/';
+
+        $this->cnpj = $arraySign->cnpj;
+        $this->certName = "cert".$arraySign->cnpj.".pfx";
+        $this->keyPass = $arraySign->$keyPass;
+        $this->passPhrase = $passPhrase;
+        $this->arqDir = "../arquivosNFSe/".$arraySign->cnpj;
+
         //carrega o caminho para os certificados
         $this->certsDir =  '../certificado/';
         //verifica o ultimo caracter da variável $arqDir
@@ -63,14 +70,6 @@ class SignNFSe {
      * Assinador TOTALMENTE baseado em PHP para arquivos XML
      * este assinador somente utiliza comandos nativos do PHP para assinar
      * os arquivos XML
-     *
-     * @name signXML
-     * @version 2.10
-     * @package NFePHP
-     * @author Roberto L. Machado <linux.rlm at gmail dot com>
-     * @param	string $docxml String contendo o arquivo XML a ser assinado
-     * @param   string $tagid TAG do XML que devera ser assinada
-     * @return	mixed false se houve erro ou string com o XML assinado
      */
     public function signXML($docxml, $tagid=''){
             if ( $tagid == '' ){
