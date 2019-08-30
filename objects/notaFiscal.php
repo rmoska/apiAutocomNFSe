@@ -211,6 +211,8 @@ class NotaFiscal{
             return true;
         }
     
+        echo "PDO::errorCode(): ", $stmt->errorCode();
+
         return false;
     }    
 

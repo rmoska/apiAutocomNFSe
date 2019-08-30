@@ -371,12 +371,10 @@ if(
                 }
                 else {
 
-print_r($result);
-
                     $xmlNFRet = simplexml_load_string(trim($result));
                     $msg = utf8_decode($xmlNFRet->message);
                     http_response_code(503);
-                    echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $msg));
+                    echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $result));
                     exit;
                 }
             }
