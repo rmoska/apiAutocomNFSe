@@ -169,13 +169,11 @@ if(
                 echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));
                 exit;
             }
-            else{
 
                 print_r($notaFiscalItem);
 
                 $arrayItemNF[] = $notaFiscalItem;
 
-            }
 
         }
     }
