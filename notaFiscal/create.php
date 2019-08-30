@@ -138,7 +138,7 @@ if(
             else 
             {
 
-                $notaFiscalItem->descricao = $item->descricao;
+                $notaFiscalItem->descricaoItemVenda = $item->descricao;
                 $itemVenda->descricao = $item->descricao;
                 $itemVenda->cnae = $item->cnae;
                 $itemVenda->ncm = $item->nbs;
@@ -169,11 +169,12 @@ if(
                 echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));
                 exit;
             }
+            else{
 
                 print_r($notaFiscalItem);
-
                 $arrayItemNF[] = $notaFiscalItem;
 
+            }
 
         }
     }
@@ -248,7 +249,7 @@ if(
             //
             
 //            $nmProd = trim(limpaCaractNFe(retiraAcentos($notaFiscalItem->descricao)));
-            $nmProd = trim($notaFiscalItem->descricao);
+            $nmProd = trim($notaFiscalItem->descricaoItemVenda);
 
 			if ($notaFiscalItem->observacao > '')
 				$nmProd .= ' - '.$notaFiscalItem->observacao;
