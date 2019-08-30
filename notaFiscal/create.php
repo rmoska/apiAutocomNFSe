@@ -51,6 +51,7 @@ if(
         // check tomador
         if (($idTomador = $tomador->check()) > 0) {
             $notaFiscal->idTomador = $idTomador;
+            $tomador->readOne();
         }
         // create tomador
         else {
