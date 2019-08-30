@@ -103,7 +103,7 @@ if(
     $notaFiscal->dadosAdicionais = $data->observacao;
 
     if ($tomador->uf != 'SC') $cfps = '9203';
-    else if ($tomador->codigoMunicipio != '5407') $cfps = '9202';
+    else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
     else $cfps = '9201';
     $notaFiscal->cfop = $cfps;
 
