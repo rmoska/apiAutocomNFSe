@@ -46,13 +46,11 @@ class SignNFSe {
         //obtem o path da biblioteca
         $this->raizDir = dirname(dirname( __FILE__ )) . '/';
 
-echo $arraySign["cnpj"];
-
-        $this->cnpj = $arraySign->cnpj;
-        $this->certName = "cert".$arraySign->cnpj.".pfx";
-        $this->keyPass = $arraySign->$keyPass;
+        $this->cnpj = $arraySign["cnpj"];
+        $this->certName = "cert".$arraySign["cnpj"].".pfx";
+        $this->keyPass = $arraySign["keyPass"];
         $this->passPhrase = $passPhrase;
-        $this->arqDir = "../arquivosNFSe/".$arraySign->cnpj;
+        $this->arqDir = "../arquivosNFSe/".$arraySign["cnpj"];
 
         //carrega o caminho para os certificados
         $this->certsDir =  '../certificado/';
