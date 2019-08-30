@@ -48,6 +48,8 @@ if(
         // set tomador property values
         $tomador->documento = $data->tomador->documento;
     
+
+        //ok;
         // check tomador
         if (($idTomador = $tomador->check()) > 0) {
             $notaFiscal->idTomador = $idTomador;
