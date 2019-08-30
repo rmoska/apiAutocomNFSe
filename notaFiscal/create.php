@@ -172,7 +172,6 @@ if(
             else{
 
                 $notaFiscalItem->descricaoItemVenda = $item->descricao;
-                print_r($notaFiscalItem);
                 $arrayItemNF[] = $notaFiscalItem;
 
             }
