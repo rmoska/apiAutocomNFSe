@@ -382,6 +382,5 @@ class NotaFiscal{
     
         return false;
    }
-
 }
 ?>

@@ -324,6 +324,23 @@ class NotaFiscalItem{
         return $stmt;
     }
 
+    // read notaFiscal
+    function readItemVenda(){
+    
+        // select all query
+        $query = "SELECT * FROM " . $this->tableName . " AS nfi, itemVenda AS iv 
+                  WHERE nfi.idItemVenda = iv.idItemVenda  
+                  ORDER BY nfi.numeroOrdem";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function readOne(){
  
         // query to read single record

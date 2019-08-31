@@ -323,11 +323,17 @@ if(
             $cdVerif = $xmlNFRet->codigoVerificacao;
             $dtProc = substr($xmlNFRet->dataProcessamento,0,10).' '.substr($xmlNFRet->dataProcessamento,11,8);
             //
-            $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/transmitidas/".$emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml","wt");
+            $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
+            $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
+            $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
             fwrite($arqNFe, $result);
             fclose($arqNFe);
             //
+            // gerar pdf
 
+            $notaFiscal->gerarPDF();
+
+            //
             $notaFiscal->numero = $nuNF;
             $notaFiscal->chaveNF = $cdVerif;
             $notaFiscal->situacao = "F";
@@ -341,7 +347,10 @@ if(
             else {
                 // set response code - 201 created
                 http_response_code(201);
-                echo json_encode(array("http_code" => "201", "message" => "Nota Fiscal incluída", "token" => $autorizacao->token));
+                echo json_encode(array("http_code" => "201", 
+                                       "message" => "Nota Fiscal emitida", 
+                                       "xml" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$dirXmlRet.$arqXmlRet,
+                                       "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$dirXmlRet.$arqXmlRet));
                 exit;
             }
 
