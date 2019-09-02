@@ -6,8 +6,8 @@ function danfeNFe($nuNF, $con) {
     $database = new Database();
     $db = $database->getConnection();
 
-	require_once("funcoes.php");
-	require_once("../fpdf/qrcode/qrcode.class.php"); 
+//	require_once("funcoes.php");
+	require_once("../../fpdf/qrcode/qrcode.class.php"); 
 
     // ---------------------------------------------------------------------------
 	// ------------------------------ DADOS EMPRESA ------------------------------
