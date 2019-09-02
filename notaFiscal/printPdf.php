@@ -7,9 +7,6 @@ include_once '../objects/notaFiscalItem.php';
 include_once '../objects/emitente.php';
 include_once '../objects/municipio.php';
 
-//$emitente = new Emitente($db);
-//$emitente->idEmitente = $notaFiscal->idEmitente;
-//$emitente->readOne();
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->idCodigoMunicipio;
 $municipioEmitente->readUFMunicipio();
@@ -32,11 +29,11 @@ if($stmt->rowCount()>0){
 }
 */
 
-//$tomador = new Tomador($db);
-//$tomador->idTomador = $notaFiscal->idTomador;
 $municipioTomador = new Municipio($db);
 $municipioTomador->codigoUFMunicipio = $tomador->idCodigoMunicipio;
 $municipioTomador->readUFMunicipio();
+
+print_r( $municipioTomador);
 
 /*    
 // ---------------------------------------------------------------------------
