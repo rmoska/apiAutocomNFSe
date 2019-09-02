@@ -331,14 +331,15 @@ if(
             //
             // gerar pdf
 
-            include_once '../notaFiscal/printPdf.php';
-//            $notaFiscal->gerarPDF();
 
             //
             $notaFiscal->numero = $nuNF;
             $notaFiscal->chaveNF = $cdVerif;
             $notaFiscal->situacao = "F";
             $notaFiscal->dataProcessamento = $dtProc;
+            include_once '../notaFiscal/printPdf.php';
+//            $notaFiscal->gerarPDF();
+
             // update notaFiscal
             if(!$notaFiscal->update()){
                 http_response_code(503);
