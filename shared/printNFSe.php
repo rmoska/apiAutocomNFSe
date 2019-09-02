@@ -1,10 +1,10 @@
 <?
 // 
-function danfeNFe($nuNF) {
+function danfeNFe($nuNF, $db) {
     //
-    include_once '../config/database.php';
-    $database = new Database();
-    $db = $database->getConnection();
+//    include_once '../config/database.php';
+//    $database = new Database();
+//    $db = $database->getConnection();
 
 //	require_once("funcoes.php");
 	require_once("../../fpdf/qrcode/qrcode.class.php"); 
