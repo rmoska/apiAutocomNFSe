@@ -11,6 +11,9 @@ include_once '../objects/municipio.php';
 //$emitente->idEmitente = $notaFiscal->idEmitente;
 //$emitente->readOne();
 $municipioEmitente = new Municipio($db);
+
+print_r($municipioEmitente);
+
 $municipioEmitente = $emitente->idCodigoMunicipio;
 $municipioEmitente->readUFMunicipio();
 
