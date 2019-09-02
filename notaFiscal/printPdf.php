@@ -10,8 +10,6 @@ include_once '../objects/municipio.php';
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
 
-print_r($municipioEmitente);
-
 $municipioEmitente->readUFMunicipio();
 
 $municipioTomador = new Municipio($db);
