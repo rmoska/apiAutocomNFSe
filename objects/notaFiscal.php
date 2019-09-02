@@ -392,6 +392,10 @@ class NotaFiscal{
         include_once '../objects/notaFiscalItem.php';
         include_once '../objects/emitente.php';
 
+        $emitente = new Emitente($db);
+        $emitente->idEmitente = $this->idEmitente;
+        $emitente->readRegister();
+
         $notaFiscalItem = new NotaFiscalItem($db);
         $notaFiscalItem->idNotaFiscal;
         $stmt = $notaFiscalItem->readItemVenda();
@@ -407,10 +411,6 @@ class NotaFiscal{
             }
 
         }
-
-        $emitente = new Emitente($db);
-        $emitente->idEmitente = $this->idEmitente;
-        $emitente->readRegister();
 
 
         $tomador = new Tomador($db);
