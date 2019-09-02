@@ -26,7 +26,6 @@ if($stmt->rowCount()>0){
 
 }
 
-
 $tomador = new Tomador($db);
 $tomador->idTomador = $notaFiscal->idTomador;
 $tomador->readRegister();

@@ -179,11 +179,17 @@ class Emitente{
     function readRegister(){
     
         // select all query
-        $query = "SELECT * FROM " . $this->tableName . " ORDER BY nome";
+        $query = "SELECT e.*, m.nome FROM " . $this->tableName . " e
+                  LEFT JOIN estado AS uf ON (e.uf = uf.sigla)
+                  LEFT JOIN municipio AS m ON (e.codigoMunicipio = m.codigoUFMunicipio)
+                  WHERE e.idEmitente = ? ";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
+        // bind id of product to be updated
+        $stmt->bindParam(1, $this->idEmitente);
+     
         // execute query
         $stmt->execute();
     

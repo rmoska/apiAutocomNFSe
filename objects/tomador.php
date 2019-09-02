@@ -99,7 +99,28 @@ class Tomador{
         $this->uf = $row['uf'];
         $this->email = $row['email'];
     }
+
+    // read emitente
+    function readRegister(){
+
+        // select all query
+        $query = "SELECT t.*, m.nome FROM " . $this->tableName . " t
+                    LEFT JOIN estado AS uf ON (t.uf = uf.sigla)
+                    LEFT JOIN municipio AS m ON (t.codigoMunicipio = m.codigoUFMunicipio)
+                    WHERE t.idTomador = ? ";
     
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // bind id of product to be updated
+        $stmt->bindParam(1, $this->idTomador);
+
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }    
+   
     // check emitente
     function check(){
     
