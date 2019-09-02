@@ -7,6 +7,7 @@ class NotaFiscal{
  
     // object properties
     public $idNotaFiscal;
+    public $idEmitente;
     public $numero;
     public $serie;
     public $chaveNF;
@@ -45,7 +46,7 @@ class NotaFiscal{
     
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
-                    numero=:numero, serie=:serie, chaveNF=:chaveNF, 
+                    idEmitente=:idEmitente, numero=:numero, serie=:serie, chaveNF=:chaveNF, 
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
@@ -60,6 +61,7 @@ class NotaFiscal{
         $stmt = $this->conn->prepare($query);
 
         // sanitize
+        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
         $this->numero=htmlspecialchars(strip_tags($this->numero));
         $this->serie=htmlspecialchars(strip_tags($this->serie));
         $this->chaveNF=htmlspecialchars(strip_tags($this->chaveNF));
@@ -89,6 +91,7 @@ class NotaFiscal{
         $this->dadosAdicionais=htmlspecialchars(strip_tags($this->dadosAdicionais));
     
         // bind values
+        $stmt->bindParam(":idEmitente", $this->idEmitente);
         $stmt->bindParam(":numero", $this->numero);
         $stmt->bindParam(":serie", $this->serie);
         $stmt->bindParam(":chaveNF", $this->chaveNF);
@@ -132,7 +135,7 @@ class NotaFiscal{
     
         // update query
         $query = "UPDATE " . $this->tableName . " SET
-                    numero=:numero, serie=:serie, chaveNF=:chaveNF, 
+                    idEmitente=:idEmitente, numero=:numero, serie=:serie, chaveNF=:chaveNF, 
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
@@ -150,6 +153,7 @@ class NotaFiscal{
     
         // sanitize
         $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
+        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
         $this->numero=htmlspecialchars(strip_tags($this->numero));
         $this->serie=htmlspecialchars(strip_tags($this->serie));
         $this->chaveNF=htmlspecialchars(strip_tags($this->chaveNF));
@@ -180,6 +184,7 @@ class NotaFiscal{
     
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
+        $stmt->bindParam(":idEmitente", $this->idEmitente);
         $stmt->bindParam(":numero", $this->numero);
         $stmt->bindParam(":serie", $this->serie);
         $stmt->bindParam(":chaveNF", $this->chaveNF);
