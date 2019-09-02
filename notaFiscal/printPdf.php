@@ -152,7 +152,7 @@ $numItens = mysql_num_rows($execItens);
 */
 
 //	
-$pdf->StartPageGroup();
+//$pdf->StartPageGroup();
 while ($item < $numItens) {
     $pdf->AddPage();
     $pdf->SetMargins(0,0,0);
