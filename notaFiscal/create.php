@@ -331,7 +331,7 @@ if(
             //
             // gerar pdf
 
-            include_once '../shared/printPdf.php';
+//            include_once '../shared/printPdf.php';
             $notaFiscal->gerarPDF();
 
             //
