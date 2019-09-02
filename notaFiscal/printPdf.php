@@ -274,6 +274,7 @@ $pdf->StartPageGroup();
     $nuLinhas = 0; $posY=83;
     //
 
+    $vlTotServ = 0;
     $vlTotBC = 0; 
     $vlTotISS = 0; 
     $vlBaseSubst = 0;

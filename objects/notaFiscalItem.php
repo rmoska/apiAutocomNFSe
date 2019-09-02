@@ -329,7 +329,7 @@ class NotaFiscalItem{
     function readItemVenda(){
     
         // select all query
-        $query = "SELECT nfi.*, iv.*, ca.descricao AS nomaCnae 
+        $query = "SELECT nfi.*, iv.*, ca.descricao AS nomeCnae 
                   FROM " . $this->tableName . " AS nfi, itemVenda AS iv, codigoAtividade AS ca
                   WHERE nfi.idItemVenda = iv.idItemVenda AND iv.cnae = ca.cnae AND nfi.idNotaFiscal = ? 
                   ORDER BY nfi.numeroOrdem";

@@ -370,6 +370,7 @@ class NotaFiscal{
                     $msgIBPT .= ' e '.number_format($row["vlTotMun"],2,',','.').' Municipal';
                 $msgIBPT .= ' - Fonte: IBPT';
 
+                $this->obsImpostos = $msgIBPT;
                 // update query
                 $query = "UPDATE notaFiscal SET 
                             obsImpostos = :msgIBPT
