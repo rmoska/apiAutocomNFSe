@@ -10,8 +10,8 @@ include_once '../objects/municipio.php';
 //$emitente = new Emitente($db);
 //$emitente->idEmitente = $notaFiscal->idEmitente;
 //$emitente->readOne();
-$municipioEmitente = new Municipio($db);
-$municipioEmitente = $emitente->idCodigoMunicipio;
+//$municipioEmitente = new Municipio($db);
+//$municipioEmitente = $emitente->idCodigoMunicipio;
 //$municipioEmitente->readUFMunicipio();
 
 /*

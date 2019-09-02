@@ -340,6 +340,10 @@ if(
             $notaFiscal->situacao = "F";
             $notaFiscal->dataProcessamento = $dtProc;
 
+            $municipioEmitente = new Municipio($db);
+            $municipioEmitente = $emitente->idCodigoMunicipio;
+            $municipioEmitente->readUFMunicipio();
+
             include_once '../notaFiscal/printPdf.php';
 
  //           include_once '../shared/printNFSe.php';
