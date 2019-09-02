@@ -6,10 +6,11 @@ include_once "../shared/relatPdfNFe.php";
 include_once '../objects/notaFiscalItem.php';
 include_once '../objects/emitente.php';
 
-$emitente = new Emitente($db);
-$emitente->idEmitente = $notaFiscal->idEmitente;
+//$emitente = new Emitente($db);
+//$emitente->idEmitente = $notaFiscal->idEmitente;
 $emitente->readRegister();
 
+/*
 $notaFiscalItem = new NotaFiscalItem($db);
 $notaFiscalItem->idNotaFiscal;
 $stmt = $notaFiscalItem->readItemVenda();
@@ -25,9 +26,10 @@ if($stmt->rowCount()>0){
     }
 
 }
+*/
 
-$tomador = new Tomador($db);
-$tomador->idTomador = $notaFiscal->idTomador;
+//$tomador = new Tomador($db);
+//$tomador->idTomador = $notaFiscal->idTomador;
 $tomador->readRegister();
 
 /*    
