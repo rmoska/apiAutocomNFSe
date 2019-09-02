@@ -33,7 +33,7 @@ if($stmt->rowCount()>0){
 
 //$tomador = new Tomador($db);
 //$tomador->idTomador = $notaFiscal->idTomador;
-new $municipioTomador = new Municipio();
+$municipioTomador = new Municipio();
 $municipioTomador = $tomador->idCodigoMunicipio;
 $municipioTomador->readUFMunicipio();
 
