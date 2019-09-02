@@ -175,6 +175,21 @@ class Emitente{
         return $stmt;
     }
 
+    // read emitente
+    function readRegister(){
+    
+        // select all query
+        $query = "SELECT * FROM " . $this->tableName . " ORDER BY nome";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function readOne(){
  
         // query to read single record
