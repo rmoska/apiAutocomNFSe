@@ -8,7 +8,7 @@ include_once '../objects/emitente.php';
 include_once '../objects/municipio.php';
 
 $municipioEmitente = new Municipio($db);
-$municipioEmitente->codigoUFMunicipio = $emitente->idCodigoMunicipio;
+$municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
 $municipioEmitente->readUFMunicipio();
 
 /*
@@ -30,10 +30,8 @@ if($stmt->rowCount()>0){
 */
 
 $municipioTomador = new Municipio($db);
-$municipioTomador->codigoUFMunicipio = $tomador->idCodigoMunicipio;
+$municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
 $municipioTomador->readUFMunicipio();
-
-print_r( $municipioTomador);
 
 /*    
 // ---------------------------------------------------------------------------
