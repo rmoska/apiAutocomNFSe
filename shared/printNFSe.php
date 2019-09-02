@@ -20,7 +20,7 @@ $sqlEmp = "SELECT c.nmrazsocial, c.nucpfcgc, c.nmendereco, c.numero, c.nmcomplem
 */
     $sqlEmit = "SELECT * FROM emitente AS e, autorizacao AS a, notafiscal AS nf 
                 WHERE nf.idEmitente = e.idEmitente AND a.idEmitente = nf.idEmitente AND nf.idNotaFiscal = '$nuNF' ";
-    $execEmit = mysql_query($sqlEmit, $db); 
+    $execEmit = mysql_query($sqlEmit); 
 	$rE = mysql_fetch_array($execEmit);
 	$nuCMC = $rE["cmc"];
 	$nuAEDF = $rE["aedf"];
