@@ -177,7 +177,10 @@ $pdf->StartPageGroup();
     $pdf->SetX(100);
     $pdf->Cell(100, 4, 'Autorização: '.$autorizacao->aedf, 0, 1, 'L'); 
     $pdf->SetX(100);
-    $pdf->Cell(100, 4, 'Emissão: '.$notaFiscal->dataEmissao, 0, 1, 'L'); 
+
+    $dtEm = new DateTime($notaFiscal->dataEmissao);
+    $dataEmissao = $dtEm-format('d/m/y');
+    $pdf->Cell(100, 4, 'Emissão: '.$dataEmissao, 0, 1, 'L'); 
     $pdf->SetX(100);
     $nuCodVer = wordwrap($notaFiscal->chaveNF, 4, '-', true);
     $pdf->Cell(100, 4, 'Código de Verificação: '.$nuCodVer, 0, 1, 'L'); 
@@ -287,21 +290,20 @@ $pdf->StartPageGroup();
     $vlTotISS = 0; 
     $vlBaseSubst = 0;
     $vlSubst = 0;
-/*
-    for ($x = $item; $x < $numItens; $x++){
 
-        $rI=mysql_fetch_array($execItens);
-
-        if ($rI['nucst'] == '0') {
-            $vlTotBC += $rI['vlbaseiss']; 
-            $vlTotISS += $rI['vliss']; 
+    foreach ( $arrayItemNF as $notaFiscalItem ) {
+        $vlTotServ += $notaFiscalItem->valorTotal;
+        if ($notaFiscalItem->cstIss != '1') {
+            $vlTotBC += $notaFiscalItem->valorBCIss; 
+            $vlTotISS += $notaFiscalItem->valorIss; 
         }
 
-        $nmProd = '('.$rI['nmcnae'].') '.$rI['nmproduto'];
+//        $nmProd = '('.$rI['nmcnae'].') '.$rI['nmproduto'];
+        $nmProd = '('.$notaFiscalItem->descricao.') '.$notaFiscalItem->descricao;
         $nlDescr = $pdf->numLines(85, $nmProd);
         $nlObs = 0;
-        if ($rI['nmobs'] > '')
-            $nlObs = $pdf->numLines(85, $rI['nmobs']);
+//        if ($rI['nmobs'] > '')
+//            $nlObs = $pdf->numLines(85, $rI['nmobs']);
         $altItem = $nlDescr + $nlObs;
         $nuLinhas += $altItem;
 
@@ -312,31 +314,33 @@ $pdf->StartPageGroup();
 
         $pdf->SetXY(10, $posY);
         $y = $pdf->GetY();
-        $nuProd = $rI['cdatividade'];
+        $nuProd = $notaFiscalItem->cnae;
 //				$pdf->Rect($pdf->GetX(), $pdf->GetY(), 12, ($altItem*4)); 
         $pdf->CellFitScale(20, 4, $nuProd, 0, 0, 'C'); 
 
 //				$pdf->Rect($pdf->GetX(), $pdf->GetY(), 58, ($altItem*4)); 
         $pdf->MultiCell(85, 4, $nmProd, 0, 'L', 0); 
 
-        if ($rI['nmobs'] > '') {
+        /*
+        if ($notaFiscalItem->obs '') {
             $pdf->SetX(27);
             $pdf->MultiCell(85, 4, $rI['nmobs'], 0, 'L', 0); 
         }
+        */
         $posY = $pdf->GetY();
 
-        $qtdItem = number_format($rI['qtunidade'],0,',','.'); 
-        $vlUnit = number_format($rI['vlunitliq'],2,',','.'); 
-        $vlTotItem = number_format($rI['vltotliq'],2,',','.'); 
+        $qtdItem = number_format($notaFiscalItem->quantidade,0,',','.'); 
+        $vlUnit = number_format($notaFiscalItem->valorUnitario,2,',','.'); 
+        $vlTotItem = number_format($notaFiscalItem->valorTotal,2,',','.'); 
 
 //				$pdf->Rect(91, $y, 5, ($altItem*4)); 
         $pdf->SetXY(115,$y);
-        $pdf->Cell(8, 4, $rI['nucst'], 0, 0, 'C'); // cst/csosn
+        $pdf->Cell(8, 4, $notaFiscalItem->cstIss, 0, 0, 'C'); // cst/csosn
 //				$pdf->Rect(96, $y, 7, ($altItem*4)); 
 
 //				$pdf->Rect(186, $y, 7, ($altItem*3.5)); 
         $pdf->SetXY(123,$y);
-        $pdf->CellFitScale(10, 4, number_format($rI['txiss'],2,',','.'), 0, 0, 'R');
+        $pdf->CellFitScale(10, 4, number_format($notaFiscalItem->taxaIss,2,',','.'), 0, 0, 'R');
 
 //				$pdf->Rect(121, $y, 14, ($altItem*3.5)); 
         $pdf->SetXY(133,$y);
@@ -348,9 +352,8 @@ $pdf->StartPageGroup();
         $pdf->SetXY(170,$y);
         $pdf->Cell(30, 4, $vlTotItem, 0, 0, 'R'); 
         $item++;
-    }
-*/    
 
+    }
 
     // impostos serviços
     $pdf->Rect(10, 228, 38, 9, 1, 'DF'); // base calc. icms
@@ -384,7 +387,7 @@ $pdf->StartPageGroup();
     $pdf->SetXY(124,232);
     $pdf->Cell(38, 5, 'R$ '.number_format($vlSubst,2,',','.'), 0, 0, 'C'); 
     $pdf->SetXY(162,232);
-    $pdf->Cell(38, 5, 'R$ '.$notaFiscal->valorTotal, 0, 0, 'C'); 
+    $pdf->Cell(38, 5, 'R$ '.number_format($notaFiscal->valorTotal,2,',','.'), 0, 0, 'C'); 
 
     // dados complementares
     $pdf->Rect(10, 243, 190, 17, 1, 'DF'); // informações complementares
