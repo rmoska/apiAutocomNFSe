@@ -92,6 +92,7 @@ if(
         echo json_encode(array("http_code" => "503", "message" => "Emitente não cadastrado. Nota Fiscal não emitida."));
         exit;
     }
+    $emitente->idEmitente = $idEmitente;
     $emitente->readOne();
 
     // set notaFiscal property values
