@@ -179,7 +179,7 @@ $pdf->StartPageGroup();
     $pdf->SetX(100);
 
     $dtEm = new DateTime($notaFiscal->dataEmissao);
-    $dataEmissao = $dtEm-format('d/m/y');
+    $dataEmissao = $dtEm->format('d/m/y');
     $pdf->Cell(100, 4, 'Emissão: '.$dataEmissao, 0, 1, 'L'); 
     $pdf->SetX(100);
     $nuCodVer = wordwrap($notaFiscal->chaveNF, 4, '-', true);
