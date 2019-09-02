@@ -16,7 +16,7 @@ class Municipio{
         $this->conn = $db;
     }
 
-    function readUFMunicipio(){
+    public function readUFMunicipio(){
  
         // query to read single record
         $query = "SELECT * FROM " . $this->tableName . " WHERE codigoUFMunicipio = ? LIMIT 0,1";
