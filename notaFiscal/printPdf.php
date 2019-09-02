@@ -11,24 +11,6 @@ $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
 $municipioEmitente->readUFMunicipio();
 
-/*
-$notaFiscalItem = new NotaFiscalItem($db);
-$notaFiscalItem->idNotaFiscal;
-$stmt = $notaFiscalItem->readItemVenda();
-
-if($stmt->rowCount()>0){
-
-    // emitente array
-    $arrayNotaFiscalItem=array();
-
-    // retrieve our table contents
-    while ($row = $stmt->fetchAll(PDO::FETCH_ASSOC)){
-        echo $row;
-    }
-
-}
-*/
-
 $municipioTomador = new Municipio($db);
 $municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
 $municipioTomador->readUFMunicipio();
@@ -130,7 +112,7 @@ $numItens = mysql_num_rows($execItens);
 //	
 $pdf=new relatPdfNFe('P','mm','form');
 //setlocale(LC_CTYPE, 'pt_BR.ISO-8859-1');
-setlocale(LC_ALL,'pt_BR');
+//setlocale(LC_ALL,'pt_BR');
 $pdf->SetMargins(0,0);
 $pdf->Open();
 
@@ -179,7 +161,7 @@ $pdf->StartPageGroup();
     $pdf->SetX(100);
 
     $dtEm = new DateTime($notaFiscal->dataEmissao);
-    $dataEmissao = $dtEm->format('d/m/y');
+    $dataEmissao = $dtEm->format('d/m/Y');
     $pdf->Cell(100, 4, 'Emissão: '.$dataEmissao, 0, 1, 'L'); 
     $pdf->SetX(100);
     $nuCodVer = wordwrap($notaFiscal->chaveNF, 4, '-', true);
@@ -229,7 +211,13 @@ $pdf->StartPageGroup();
     $pdf->SetXY(170,52);
     $pdf->Cell(30, 5, $notaFiscal->cfop, 0, 0, 'L'); 
     $pdf->SetXY(10,59);
-    $pdf->CellFitScale(95, 5, $tomador->logradouro, 0, 0, 'L'); 
+
+    $enderecoTomador = $tomador->logradouro;
+    if ($tomador->numero > 0)
+        $enderecoDest .= ' n.:'.$tomador->numero;
+    if ($tomador->complemento > '')
+        $enderecoDest .= ' - '.$tomador->complemento;
+    $pdf->CellFitScale(95, 5, $enderecoTomador, 0, 0, 'L'); 
     $pdf->SetXY(105,59);
     $pdf->Cell(65, 5, $tomador->bairro, 0, 0, 'L'); 
     $pdf->SetXY(170,59);
@@ -297,9 +285,10 @@ $pdf->StartPageGroup();
             $vlTotBC += $notaFiscalItem->valorBCIss; 
             $vlTotISS += $notaFiscalItem->valorIss; 
         }
+        $notaFiscalItem->readItemVenda();
 
 //        $nmProd = '('.$rI['nmcnae'].') '.$rI['nmproduto'];
-        $nmProd = '('.$notaFiscalItem->descricao.') '.$notaFiscalItem->descricao;
+        $nmProd = '('.$notaFiscalItem->descricaoCnae.') '.$notaFiscalItem->descricaoItemVenda;
         $nlDescr = $pdf->numLines(85, $nmProd);
         $nlObs = 0;
 //        if ($rI['nmobs'] > '')

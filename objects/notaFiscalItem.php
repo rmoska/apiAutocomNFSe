@@ -10,6 +10,7 @@ class NotaFiscalItem{
     public $numeroOrdem; 
     public $idItemVenda; 
     public $descricaoItemVenda;
+    public $descricaoCnae;
     public $unidade; 
     public $quantidade; 
     public $valorUnitario; 
@@ -328,8 +329,9 @@ class NotaFiscalItem{
     function readItemVenda(){
     
         // select all query
-        $query = "SELECT * FROM " . $this->tableName . " AS nfi, itemVenda AS iv 
-                  WHERE nfi.idItemVenda = iv.idItemVenda AND nfi.idNotaFiscal = ? 
+        $query = "SELECT nfi.*, iv.*, ca.descricao AS nomaCnae 
+                  FROM " . $this->tableName . " AS nfi, itemVenda AS iv, codigoAtividade AS ca
+                  WHERE nfi.idItemVenda = iv.idItemVenda AND iv.cnae = ca.cnae AND nfi.idNotaFiscal = ? 
                   ORDER BY nfi.numeroOrdem";
     
         // prepare query statement
@@ -340,8 +342,14 @@ class NotaFiscalItem{
 
         // execute query
         $stmt->execute();
-    
-        return $stmt;
+
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // set values to object properties
+        $this->descricaoItemVenda = $row['descricao'];
+        $this->descricaoCnae = $row['nomeCnae'];
+        
     }
 
     function readOne(){
