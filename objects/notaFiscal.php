@@ -643,7 +643,7 @@ class NotaFiscal{
             $pdf->Cell(30, 5, "", 0, 0, 'L'); 
             $pdf->SetXY(135,67);
     //        $pdf->Cell(45, 5, formataDocto($cpfCnpjDest), 0, 0, 'L'); 
-            $pdf->Cell(45, 5, $tomador->documento), 0, 0, 'L'); 
+            $pdf->Cell(45, 5, $tomador->documento, 0, 0, 'L'); 
             $pdf->SetXY(170,67);
             $pdf->Cell(30, 5, '', 0, 0, 'L'); 
             //
