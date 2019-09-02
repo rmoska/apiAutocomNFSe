@@ -34,29 +34,6 @@ $municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
 $municipioTomador->readUFMunicipio();
 
 /*    
-// ---------------------------------------------------------------------------
-// ------------------------------ DADOS EMPRESA ------------------------------
-$sqlEmp = "SELECT c.nmrazsocial, c.nucpfcgc, c.nmendereco, c.numero, c.nmcomplemento,
-                                    c.nmbairro, m.nome AS nmcidade, c.nmsiglaestado, c.nufone, c.nucep, cf.nucmc, cf.nuaedf
-                    FROM confignfe as cf, cliente AS c, municipio AS m, estado AS uf
-                    WHERE c.nmsiglaestado=uf.sigla AND c.numunicipio=m.codigo AND m.cduf=uf.codigo AND 
-                                c.nucliente = '1'";
-$execEmp = mysql_query($sqlEmp); 
-$rE = mysql_fetch_array($execEmp);
-$nuCMC = $rE["nucmc"];
-$nuAEDF = $rE["nuaedf"];
-$nmEmpresa = $rE["nmrazsocial"];
-$fantasiaEmp = $rE["nmfantasia"];
-$cnpjEmp = $rE["nucpfcgc"];
-$inscrEstEmp = $rE["nuinscrestadual"];
-$enderecoEmp = $rE["nmendereco"];
-$numeroEmp = $rE["numero"];
-$complEndEmp = $rE["nmcomplemento"];
-$cepEmp = $rE["nucep"];
-$municipioEmp = $rE["nmcidade"];
-$bairroEmp = $rE["nmbairro"];
-$ufEmp = $rE["nmsiglaestado"];
-$foneEmp = $rE["nufone"];
 
 $item = 0;
 // --------------------------------------------------------------------------------
@@ -152,6 +129,7 @@ $numItens = mysql_num_rows($execItens);
 
 //	
 $pdf=new relatPdfNFe('P','mm','form');
+setlocale(LC_CTYPE, 'pt_BR.ISO-8859-1');
 $pdf->SetMargins(0,0);
 $pdf->Open();
 
@@ -184,7 +162,7 @@ $pdf->StartPageGroup();
 //        $pdf->Cell(90, 4, 'CNPJ: '.formataCnpj($cnpjEmp), 0, 1, 'C'); 
     $pdf->Cell(90, 4, 'CNPJ: '.$emitente->documento, 0, 1, 'C'); 
     $pdf->SetX(10);
-    $pdf->Cell(90, 4, 'CMC: '.$emitente->cmc, 0, 1, 'C'); 
+    $pdf->Cell(90, 4, 'CMC: '.$autorizacao->cmc, 0, 1, 'C'); 
     //
     // Número da NF
     $pdf->SetFont('Arial', 'B', '10');
@@ -196,7 +174,7 @@ $pdf->StartPageGroup();
     $pdf->SetX(100);
     $pdf->Cell(100, 4, 'Número: '.$notaFiscal->numero, 0, 1, 'L'); 
     $pdf->SetX(100);
-    $pdf->Cell(100, 4, 'Autorização: '.$notaFiscal->aedf, 0, 1, 'L'); 
+    $pdf->Cell(100, 4, 'Autorização: '.$autorizacao->aedf, 0, 1, 'L'); 
     $pdf->SetX(100);
     $pdf->Cell(100, 4, 'Emissão: '.$notaFiscal->dataEmissao, 0, 1, 'L'); 
     $pdf->SetX(100);
