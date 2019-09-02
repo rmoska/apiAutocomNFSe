@@ -1,11 +1,11 @@
 <?php 
-require_once ("./relatPdf.php"); 
+require_once ("./relatPDF.php"); 
 class relatPdfNFe extends relatPDF { 
 
     var $nome;          // nome do relatorio 
     var $cabecalho;     // cabecalho para as colunas 
   
-    function relatPDFLimpo($or) { // Construtor: Chama a classe FPDF 
+    function relatPDF($or) { // Construtor: Chama a classe FPDF 
       $this->FPDF($or); 
     } 
   
