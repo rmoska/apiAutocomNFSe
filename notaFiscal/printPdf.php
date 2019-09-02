@@ -8,7 +8,7 @@ include_once '../objects/emitente.php';
 
 //$emitente = new Emitente($db);
 //$emitente->idEmitente = $notaFiscal->idEmitente;
-$emitente->readRegister();
+//$emitente->readRegister();
 
 /*
 $notaFiscalItem = new NotaFiscalItem($db);
