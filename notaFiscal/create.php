@@ -339,8 +339,8 @@ if(
             $notaFiscal->chaveNF = $cdVerif;
             $notaFiscal->situacao = "F";
             $notaFiscal->dataProcessamento = $dtProc;
-            
-            include_once '../shared/printPdf.php';
+
+            include_once '../notaFiscal/printPdf.php';
 
  //           include_once '../shared/printNFSe.php';
  //           $dNFSe = danfeNFe($notaFiscal->idNotaFiscal, $db);
