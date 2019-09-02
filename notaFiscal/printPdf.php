@@ -129,7 +129,8 @@ $numItens = mysql_num_rows($execItens);
 
 //	
 $pdf=new relatPdfNFe('P','mm','form');
-setlocale(LC_CTYPE, 'pt_BR.ISO-8859-1');
+//setlocale(LC_CTYPE, 'pt_BR.ISO-8859-1');
+setlocale(LC_ALL,'pt_BR');
 $pdf->SetMargins(0,0);
 $pdf->Open();
 
