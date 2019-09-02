@@ -329,12 +329,15 @@ class NotaFiscalItem{
     
         // select all query
         $query = "SELECT * FROM " . $this->tableName . " AS nfi, itemVenda AS iv 
-                  WHERE nfi.idItemVenda = iv.idItemVenda  
+                  WHERE nfi.idItemVenda = iv.idItemVenda AND nfi.idNotaFiscal = ? 
                   ORDER BY nfi.numeroOrdem";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
-    
+
+        // bind id of product to be updated
+        $stmt->bindParam(1, $this->idNotaFiscal);
+
         // execute query
         $stmt->execute();
     
