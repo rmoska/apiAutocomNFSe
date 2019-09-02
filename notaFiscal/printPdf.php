@@ -10,9 +10,9 @@ include_once '../objects/municipio.php';
 //$emitente = new Emitente($db);
 //$emitente->idEmitente = $notaFiscal->idEmitente;
 //$emitente->readOne();
-//$municipioEmitente = new Municipio($db);
-//$municipioEmitente = $emitente->idCodigoMunicipio;
-//$municipioEmitente->readUFMunicipio();
+$municipioEmitente = new Municipio($db);
+$municipioEmitente->codigoUFMunicipio = $emitente->idCodigoMunicipio;
+$municipioEmitente->readUFMunicipio();
 
 /*
 $notaFiscalItem = new NotaFiscalItem($db);
@@ -35,8 +35,8 @@ if($stmt->rowCount()>0){
 //$tomador = new Tomador($db);
 //$tomador->idTomador = $notaFiscal->idTomador;
 $municipioTomador = new Municipio($db);
-$municipioTomador = $tomador->idCodigoMunicipio;
-//$municipioTomador->readUFMunicipio();
+$municipioTomador->codigoUFMunicipio = $tomador->idCodigoMunicipio;
+$municipioTomador->readUFMunicipio();
 
 /*    
 // ---------------------------------------------------------------------------
@@ -182,7 +182,7 @@ $pdf->StartPageGroup();
     $pdf->SetXY(10,23);
     $pdf->Cell(90, 4, $emitente->logradouro.', '.$emitente->numero.' - '.$emitente->complemento, 0, 1, 'C'); 
     $pdf->SetX(10);
-    $pdf->Cell(90, 4, $emitente->bairro.' - '.$emitente->municipioNome.' - '.$emitente->uf.' - '.$emitente->cep, 0, 1, 'C'); 
+    $pdf->Cell(90, 4, $emitente->bairro.' - '.$municipioEmitente->nome.' - '.$emitente->uf.' - '.$emitente->cep, 0, 1, 'C'); 
     $pdf->SetX(10);
     $pdf->Cell(90, 4, 'Telefone: '.$emitente->fone, 0, 1, 'C'); 
     $pdf->SetX(10);

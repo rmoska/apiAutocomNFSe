@@ -40,33 +40,5 @@ class Municipio{
 
     }
 
-    // check emitente
-    function check(){
-    
-        // select query
-        $query = "SELECT t.* FROM " . $this->tableName . " t
-                  WHERE t.documento = ? LIMIT 1";
-    
-        // prepare query statement
-        $stmt = $this->conn->prepare($query);
-    
-        // sanitize
-        $this->documento=htmlspecialchars(strip_tags($this->documento));
-    
-        // bind
-        $stmt->bindParam(1, $this->documento);
-    
-        // execute query
-        $stmt->execute();
-    
-        $idTomador = 0;
-        if ($stmt->rowCount() >0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $idTomador = $row['idTomador'];
-        }
-
-        return $idTomador;
-    }    
-
-}
+}    
 ?>
