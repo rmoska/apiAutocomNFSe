@@ -55,10 +55,6 @@ $bairroEmp = $rE["nmbairro"];
 $ufEmp = $rE["nmsiglaestado"];
 $foneEmp = $rE["nufone"];
 
-$pdf=new relatPdfNFe('P','mm','form');
-$pdf->SetMargins(0,0);
-$pdf->Open();
-
 $item = 0;
 // --------------------------------------------------------------------------------
 // ------------------------------ DADOS CABEÇALHO NF ------------------------------
@@ -152,8 +148,13 @@ $numItens = mysql_num_rows($execItens);
 */
 
 //	
-//$pdf->StartPageGroup();
-while ($item < $numItens) {
+$pdf=new relatPdfNFe('P','mm','form');
+$pdf->SetMargins(0,0);
+$pdf->Open();
+
+$pdf->StartPageGroup();
+
+//while ($item < $numItens) {
     $pdf->AddPage();
     $pdf->SetMargins(0,0,0);
     $pdf->SetAutoPageBreak(false);
@@ -454,7 +455,7 @@ while ($item < $numItens) {
         $pdf->Text(30,190,'C A N C E L A D A');
         $pdf->Rotate(0);
     }
-}
+//}
 
 $dirPdf = "arquivosNFSe/".$emitente->documento."/danfpse/";
 $arqPdf = $emitente->documento."_".substr(str_pad($notaFiscal->numero,8,'0',STR_PAD_LEFT),0,8)."-nfse.pdf";
