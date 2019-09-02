@@ -9,7 +9,7 @@ include_once '../objects/emitente.php';
 //$emitente = new Emitente($db);
 //$emitente->idEmitente = $notaFiscal->idEmitente;
 //$emitente->readOne();
-new $municipioEmitente = new Municipio();
+$municipioEmitente = new Municipio();
 $municipioEmitente = $emitente->idCodigoMunicipio;
 $municipioEmitente->readUFMunicipio();
 
