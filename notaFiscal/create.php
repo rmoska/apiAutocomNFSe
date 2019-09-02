@@ -331,8 +331,8 @@ if(
             //
             // gerar pdf
 
-//            include_once '../shared/printPdf.php';
-            $notaFiscal->gerarPDF();
+            include_once '../notaFiscal/printPdf.php';
+//            $notaFiscal->gerarPDF();
 
             //
             $notaFiscal->numero = $nuNF;
