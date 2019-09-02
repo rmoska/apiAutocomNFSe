@@ -1,6 +1,6 @@
 <?
 // 
-function danfeNFe($nuNF, $con) {
+function danfeNFe($nuNF) {
     //
     include_once '../config/database.php';
     $database = new Database();
@@ -20,7 +20,7 @@ $sqlEmp = "SELECT c.nmrazsocial, c.nucpfcgc, c.nmendereco, c.numero, c.nmcomplem
 */
     $sqlEmit = "SELECT * FROM emitente AS e, autorizacao AS a, notafiscal AS nf 
                 WHERE nf.idEmitente = e.idEmitente AND a.idEmitente = nf.idEmitente AND nf.idNotaFiscal = '$nuNF' ";
-    $execEmit = mysql_query($sqlEmit); 
+    $execEmit = mysql_query($sqlEmit, $db); 
 	$rE = mysql_fetch_array($execEmit);
 	$nuCMC = $rE["cmc"];
 	$nuAEDF = $rE["aedf"];
@@ -72,7 +72,7 @@ $sqlCabNF = "SELECT nuseqnota, nunota, nmserie, nuchavenfe, nf.identradasaida, d
                     LEFT JOIN tiponaturezaoperacao AS no ON (nucfop = no.cdnatope)
                     WHERE nuseqnota = '$nuNF'";
 
-        $execCabNF = mysql_query($sqlCabNF,$con);
+        $execCabNF = mysql_query($sqlCabNF, $db);
 		$regCab = mysql_fetch_array($execCabNF);
 		$nuNota = $regCab["numero"];
 		$editSerie = $regCab["serie"];
@@ -120,7 +120,7 @@ $sqlCabNF = "SELECT nuseqnota, nunota, nmserie, nuchavenfe, nf.identradasaida, d
                           t.nmbairro, t.codigoUFMunicipio, t.uf, t.fone, t.cep
                     FROM tomador AS t
                     WHERE t.idTomador = '$nuDest'";
-        $execTom = mysql_query($sqlTom); 
+        $execTom = mysql_query($sqlTom, $db); 
 		if (mysql_num_rows($execTom) > 0) {
 			$rD = mysql_fetch_array($execTom);
 			$nomeDest = $rD["nome"];
@@ -140,13 +140,14 @@ $sqlCabNF = "SELECT nuseqnota, nunota, nmserie, nuchavenfe, nf.identradasaida, d
 		
 		// ----------------------------------------------------------------------------
 		// ------------------------------ DADOS ITENS NF ------------------------------
-		$sqlItens = "SELECT p.nuproduto, p.nmproduto, p.qtunidade AS qtformavenda, tas.cdatividade, tas.nucnae, tas.nmdescricao AS nmcnae,
+/*
+$sqlItens = "SELECT p.nuproduto, p.nmproduto, p.qtunidade AS qtformavenda, tas.cdatividade, tas.nucnae, tas.nmdescricao AS nmcnae,
 												p.nuncm, nfi.nuordem, nfi.qtunidade, nfi.vlunitliq, nfi.vltotliq, 
 												nfi.nucodtribiss AS nucst, nfi.vlbaseiss, nfi.txaliquotaiss AS txiss, nfi.vliss										
 								 FROM notafiscalitem AS nfi, produto AS p, tipoatividadeservico AS tas  
 								 WHERE nfi.nuproduto = p.nuproduto AND nfi.cdatividadeserv = tas.cdatividade AND nfi.nuseqnota = '$nuNF'
 								 ORDER BY p.nmproduto, p.nuproduto";
-
+*/
 
         $sqlItens = "SELECT p.idItemVenda, p.descricao, nfi.unidade AS qtformavenda, nfi.cnae, 
                             p.ncm, nfi.numeroOrdem, nfi.quantidade, nfi.valorUnitario, nfi.valorTotal, 
@@ -154,7 +155,7 @@ $sqlCabNF = "SELECT nuseqnota, nunota, nmserie, nuchavenfe, nf.identradasaida, d
                      FROM notaFiscalItem AS nfi, itemVenda AS p
                      WHERE nfi.idItemVenda = p.idItemVenda AND nfi.idNotaFiscal = '$nuNF'
                      ORDER BY nfi.numeroOrdem, p.descricao, p.idItemVenda";
-        $execItens = mysql_query($sqlItens,$con);//executa busca
+        $execItens = mysql_query($sqlItens, $db);//executa busca
 		$numItens = mysql_num_rows($execItens);
 		//	
 		$pdf->StartPageGroup();
