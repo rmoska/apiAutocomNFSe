@@ -8,7 +8,10 @@ include_once '../objects/emitente.php';
 
 //$emitente = new Emitente($db);
 //$emitente->idEmitente = $notaFiscal->idEmitente;
-//$emitente->readRegister();
+//$emitente->readOne();
+new $municipioEmitente = new Municipio();
+$municipioEmitente = $emitente->idCodigoMunicipio;
+$municipioEmitente->readUFMunicipio();
 
 /*
 $notaFiscalItem = new NotaFiscalItem($db);
@@ -30,7 +33,9 @@ if($stmt->rowCount()>0){
 
 //$tomador = new Tomador($db);
 //$tomador->idTomador = $notaFiscal->idTomador;
-$tomador->readRegister();
+new $municipioTomador = new Municipio();
+$municipioTomador = $tomador->idCodigoMunicipio;
+$municipioTomador->readUFMunicipio();
 
 /*    
 // ---------------------------------------------------------------------------
@@ -252,7 +257,7 @@ $pdf->StartPageGroup();
     $pdf->SetXY(170,59);
     $pdf->Cell(30, 5, $tomador->cep, 0, 0, 'L'); 
     $pdf->SetXY(10,67);
-    $pdf->Cell(75, 5, $tomador->municipioNome, 0, 0, 'L'); 
+    $pdf->Cell(75, 5, $municipioTomador->nome, 0, 0, 'L'); 
     $pdf->SetXY(85,67);
     $pdf->Cell(20, 5, $tomador->uf, 0, 0, 'C'); 
     $pdf->SetXY(105,67);
