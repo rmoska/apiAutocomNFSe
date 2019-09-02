@@ -38,6 +38,7 @@ function gerarPDF($idNotaFiscal) {
     $tomador->idTomador = $notaFiscal->idTomador;
     $tomador->readRegister();
 
+/*    
     // ---------------------------------------------------------------------------
     // ------------------------------ DADOS EMPRESA ------------------------------
     $sqlEmp = "SELECT c.nmrazsocial, c.nucpfcgc, c.nmendereco, c.numero, c.nmcomplemento,
@@ -155,6 +156,9 @@ function gerarPDF($idNotaFiscal) {
                             ORDER BY p.nmproduto, p.nuproduto";
     $execItens = mysql_query($sqlItens,$con);//executa busca
     $numItens = mysql_num_rows($execItens);
+
+*/
+
     //	
     $pdf->StartPageGroup();
     while ($item < $numItens) {
@@ -170,20 +174,21 @@ function gerarPDF($idNotaFiscal) {
         // 
         $pdf->SetFont('Arial', 'B', '10');
         $pdf->SetXY(10,14);
-        $pdf->MultiCell(90, 4, $nmEmpresa, 0, 'C', 0); 
+        $pdf->MultiCell(90, 4, $emitente->nome, 0, 'C', 0); 
 //			$pdf->SetFontSize(7);
 //			$pdf->Image('figuras/logo_nf.jpg', 20, 12, 40); // importa uma imagem 
         $pdf->SetFont('Arial', '', 9);
         $pdf->SetXY(10,23);
-        $pdf->Cell(90, 4, $enderecoEmp.', '.$numeroEmp.' - '.$complEndEmp, 0, 1, 'C'); 
+        $pdf->Cell(90, 4, $emitente->logradouro.', '.$emitente->numero.' - '.$emitente->complemento, 0, 1, 'C'); 
         $pdf->SetX(10);
-        $pdf->Cell(90, 4, $bairroEmp.' - '.$municipioEmp.' - '.$ufEmp.' - '.$cepEmp, 0, 1, 'C'); 
+        $pdf->Cell(90, 4, $emitente->bairro.' - '.$emitente->municipioNome.' - '.$emitente->uf.' - '.$emitente->cep, 0, 1, 'C'); 
         $pdf->SetX(10);
-        $pdf->Cell(90, 4, 'Telefone: '.$foneEmp, 0, 1, 'C'); 
+        $pdf->Cell(90, 4, 'Telefone: '.$emitente->fone, 0, 1, 'C'); 
         $pdf->SetX(10);
-        $pdf->Cell(90, 4, 'CNPJ: '.formataCnpj($cnpjEmp), 0, 1, 'C'); 
+//        $pdf->Cell(90, 4, 'CNPJ: '.formataCnpj($cnpjEmp), 0, 1, 'C'); 
+        $pdf->Cell(90, 4, 'CNPJ: '.$emitente->documento, 0, 1, 'C'); 
         $pdf->SetX(10);
-        $pdf->Cell(90, 4, 'CMC: '.$nuCMC, 0, 1, 'C'); 
+        $pdf->Cell(90, 4, 'CMC: '.$emitente->cmc, 0, 1, 'C'); 
         //
         // Número da NF
         $pdf->SetFont('Arial', 'B', '10');
@@ -193,13 +198,13 @@ function gerarPDF($idNotaFiscal) {
         $pdf->SetX(100);
         $pdf->Cell(100, 5, 'Documento Auxiliar da Nota Fiscal de Prestação de Serviços Eletrônica', 0, 1, 'L'); 
         $pdf->SetX(100);
-        $pdf->Cell(100, 4, 'Número: '.$nuNota, 0, 1, 'L'); 
+        $pdf->Cell(100, 4, 'Número: '.$notaFiscal->numero, 0, 1, 'L'); 
         $pdf->SetX(100);
-        $pdf->Cell(100, 4, 'Autorização: '.$nuAEDF, 0, 1, 'L'); 
+        $pdf->Cell(100, 4, 'Autorização: '.$notaFiscal->aedf, 0, 1, 'L'); 
         $pdf->SetX(100);
-        $pdf->Cell(100, 4, 'Emissão: '.$editDtEmissao, 0, 1, 'L'); 
+        $pdf->Cell(100, 4, 'Emissão: '.$notaFiscal->dataEmissao, 0, 1, 'L'); 
         $pdf->SetX(100);
-        $nuCodVer = wordwrap($nuChaveNFe, 4, '-', true);
+        $nuCodVer = wordwrap($notaFiscal->chaveNF, 4, '-', true);
         $pdf->Cell(100, 4, 'Código de Verificação: '.$nuCodVer, 0, 1, 'L'); 
 
         // 
@@ -242,23 +247,24 @@ function gerarPDF($idNotaFiscal) {
         //
         $pdf->SetFontSize(8);
         $pdf->SetXY(10,52);
-        $pdf->Cell(160, 5, $nomeDest, 0, 0, 'L'); 
+        $pdf->Cell(160, 5, $tomador->nome, 0, 0, 'L'); 
         $pdf->SetXY(170,52);
-        $pdf->Cell(30, 5, $nuCfps, 0, 0, 'L'); 
+        $pdf->Cell(30, 5, $notaFiscal->cfop, 0, 0, 'L'); 
         $pdf->SetXY(10,59);
-        $pdf->CellFitScale(95, 5, $enderecoDest, 0, 0, 'L'); 
+        $pdf->CellFitScale(95, 5, $tomador->logradouro, 0, 0, 'L'); 
         $pdf->SetXY(105,59);
-        $pdf->Cell(65, 5, $bairroDest, 0, 0, 'L'); 
+        $pdf->Cell(65, 5, $tomador->bairro, 0, 0, 'L'); 
         $pdf->SetXY(170,59);
-        $pdf->Cell(30, 5, $cepDest, 0, 0, 'L'); 
+        $pdf->Cell(30, 5, $tomador->cep, 0, 0, 'L'); 
         $pdf->SetXY(10,67);
-        $pdf->Cell(75, 5, $municipioDest, 0, 0, 'L'); 
+        $pdf->Cell(75, 5, $tomador->municipioNome, 0, 0, 'L'); 
         $pdf->SetXY(85,67);
-        $pdf->Cell(20, 5, $ufDest, 0, 0, 'C'); 
+        $pdf->Cell(20, 5, $tomador->uf, 0, 0, 'C'); 
         $pdf->SetXY(105,67);
-        $pdf->Cell(30, 5, $nmPais, 0, 0, 'L'); 
+        $pdf->Cell(30, 5, "", 0, 0, 'L'); 
         $pdf->SetXY(135,67);
-        $pdf->Cell(45, 5, formataDocto($cpfCnpjDest), 0, 0, 'L'); 
+//        $pdf->Cell(45, 5, formataDocto($cpfCnpjDest), 0, 0, 'L'); 
+        $pdf->Cell(45, 5, $tomador->documento), 0, 0, 'L'); 
         $pdf->SetXY(170,67);
         $pdf->Cell(30, 5, '', 0, 0, 'L'); 
         //
@@ -301,8 +307,12 @@ function gerarPDF($idNotaFiscal) {
         $pdf->SetY(83);
         $nuLinhas = 0; $posY=83;
         //
+
         $vlTotBC = 0; 
         $vlTotISS = 0; 
+        $vlBaseSubst = 0;
+        $vlSubst = 0;
+/*
         for ($x = $item; $x < $numItens; $x++){
     
             $rI=mysql_fetch_array($execItens);
@@ -362,10 +372,11 @@ function gerarPDF($idNotaFiscal) {
 //				$pdf->Rect(135, $y, 16, ($altItem*4)); 
             $pdf->SetXY(170,$y);
             $pdf->Cell(30, 4, $vlTotItem, 0, 0, 'R'); 
-    
             $item++;
         }
+*/    
     
+
         // impostos serviços
         $pdf->Rect(10, 228, 38, 9, 1, 'DF'); // base calc. icms
         $pdf->Rect(48, 228, 38, 9, 1, 'DF'); // valor icms
@@ -398,7 +409,7 @@ function gerarPDF($idNotaFiscal) {
         $pdf->SetXY(124,232);
         $pdf->Cell(38, 5, 'R$ '.number_format($vlSubst,2,',','.'), 0, 0, 'C'); 
         $pdf->SetXY(162,232);
-        $pdf->Cell(38, 5, 'R$ '.$editVlTotalNota, 0, 0, 'C'); 
+        $pdf->Cell(38, 5, 'R$ '.$notaFiscal->valorTotal, 0, 0, 'C'); 
 
         // dados complementares
         $pdf->Rect(10, 243, 190, 17, 1, 'DF'); // informações complementares
@@ -409,9 +420,9 @@ function gerarPDF($idNotaFiscal) {
 
         $pdf->SetFont('Arial', '', '7');
         $pdf->SetXY(10,244);
-        if ($nmInfoAdic != '') {
+        if ($notaFiscal->obsImpostos != '') {
 //				$pdf->SetX(11);
-            $pdf->MultiCell(190, 3, $nmInfoAdic, 0, 'L', 0); 
+            $pdf->MultiCell(190, 3, $notaFiscal->obsImpostos, 0, 'L', 0); 
         }
 
 
@@ -428,16 +439,17 @@ function gerarPDF($idNotaFiscal) {
         $pdf->SetX(10);
         $pdf->Cell(85, 4, 'CARIMBO DO TEMPO: PREFEITURA MUNICIPAL DE FLORIANÓPOLIS', 0, 1, 'L'); 
         $pdf->SetX(10);
-        $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$dtCarimbo, 0, 0, 'L'); 
+//        $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$dtCarimbo, 0, 0, 'L'); 
+        $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$notaFiscal->dataProcessamento, 0, 0, 'L'); 
 
         $txt2 = 'A VALIDADE E AUTENTICIDADE DESTE DOCUMENTO AUXILIAR DA NOTA FISCAL DE PRESTAÇÃO DE SERVIÇO ELETRÔNICA PODERÃO SER COMPROVADAS MEDIANTE CONSULTA À PÁGINA DA';
         $txt2 .= 'SECRETARIA MUNICIPAL DA FAZENDA - SMF NA INTERNET, NO ENDEREÇO portal.pmf.sc.gov.br/sites/notaeletronica, EM VERIFICAR AUTENTICIDADE >> PRODUÇÃO, ';
-        $txt2 .= 'INFORMANDO O CÓDIGO DE VERIFICAÇÃO: '.$nuChaveNFe.' E O NÚMERO DE INSCRIÇÃO DO EMITENTE NO CADASTRO MUNICIPAL DE CONTRIBUINTES - CMC: '.$nuCMC;
+        $txt2 .= 'INFORMANDO O CÓDIGO DE VERIFICAÇÃO: '.$notaFiscal->chaveNF.' E O NÚMERO DE INSCRIÇÃO DO EMITENTE NO CADASTRO MUNICIPAL DE CONTRIBUINTES - CMC: '.$notaFiscal->cmc;
         $pdf->SetFont('Arial', '', '6');
         $pdf->SetXY(95,264);
         $pdf->MultiCell(105, 3, $txt2, 0, 'L', 0); 
 
-        $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$nuChaveNFe.'&cmc='.$nuCMC;
+        $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$notaFiscal->cmc;
         $qrcode = new QRcode($chaveQR, 'M'); 
         $qrcode->disableBorder();
         $qrcode->displayFPDF(&$pdf, 175, 22, 20, $background=array(255,255,255), $color=array(0,0,0));
@@ -452,12 +464,11 @@ function gerarPDF($idNotaFiscal) {
         }
     }
 
+    $dirPdf = "arquivosNFSe/".$emitente->documento."/danfpse/";
+    $arqPdf = $emitente->documento."_".substr(str_pad($notaFiscal->numero,8,'0',STR_PAD_LEFT),0,8)."-nfse.pdf";
+    $pdf->Output("../".$dirPdf.$arqPdf,'F');
 
-    $nmArq = 'danfpse_'.$nuNota.'.pdf';
-    $pdf->Output('arquivos/nfse/danfpse/'.$nmArq,'F');
-
-    return $nmArq;
-
+    return $arqPdf;
 
 }
 
