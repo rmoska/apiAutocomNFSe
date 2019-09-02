@@ -1,5 +1,5 @@
 <?php 
-require_once ("./relatPDF.php"); 
+require_once ("./relatPdf.php"); 
 class relatPdfNFe extends relatPDF { 
 
     var $nome;          // nome do relatorio 
