@@ -459,7 +459,7 @@ class NotaFiscal{
             $pdf->SetXY(10,23);
             $pdf->Cell(90, 4, utf8_decode($emitente->logradouro.', '.$emitente->numero.' - '.$emitente->complemento), 0, 1, 'C'); 
             $pdf->SetX(10);
-            $pdf->Cell(90, 4, utf8_decode($emitente->bairro.' - '.$municipioEmitente->nome.' - '.$emitente->uf.' - '.$emitente->cep), 0, 1, 'C'); 
+            $pdf->Cell(90, 4, utf8_decode($emitente->bairro.' - '.$municipioEmitente->nome.' - '.$emitente->uf.' - '.$utilities->mask($emitente->cep,"#####-###")), 0, 1, 'C'); 
             $pdf->SetX(10);
             $pdf->Cell(90, 4, 'Telefone: '.$emitente->fone, 0, 1, 'C'); 
             $pdf->SetX(10);
@@ -543,7 +543,7 @@ class NotaFiscal{
             $pdf->SetXY(105,59);
             $pdf->Cell(65, 5, utf8_decode($tomador->bairro), 0, 0, 'L'); 
             $pdf->SetXY(170,59);
-            $pdf->Cell(30, 5, $tomador->cep, 0, 0, 'L'); 
+            $pdf->Cell(30, 5, $utilities->mask($tomador->cep,"#####-###"), 0, 0, 'L'); 
             $pdf->SetXY(10,67);
             $pdf->Cell(75, 5, utf8_decode($municipioTomador->nome), 0, 0, 'L'); 
             $pdf->SetXY(85,67);
@@ -608,10 +608,8 @@ class NotaFiscal{
 
             foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
                 $vlTotServ += $notaFiscalItem->valorTotal;
-                if ($notaFiscalItem->cstIss != '1') {
-                    $vlTotBC += $notaFiscalItem->valorBCIss; 
-                    $vlTotISS += $notaFiscalItem->valorIss; 
-                }
+                $vlTotBC += $notaFiscalItem->valorBCIss; 
+                $vlTotISS += $notaFiscalItem->valorIss; 
                 $notaFiscalItem->readItemVenda();
 
         //        $nmProd = '('.$rI['nmcnae'].') '.$rI['nmproduto'];

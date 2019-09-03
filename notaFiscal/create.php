@@ -167,8 +167,17 @@ if(
             $notaFiscalItem->valorUnitario = $item->valor;
             $notaFiscalItem->valorTotal = ($item->valor*$item->quantidade);
             $notaFiscalItem->cstIss = $item->cst;
-            $notaFiscalItem->taxaIss = $item->taxaIss;
-            $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
+
+			if (($item->cst != '1') || ($item->cst != '3') || ($item->cst != '6') || ($item->cst != '12') || ($item->cst != '13')) {
+                $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
+                $notaFiscalItem->taxaIss = $item->taxaIss;
+                $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
+            }
+            else {
+                $notaFiscalItem->valorBCIss = 0.00;
+                $notaFiscalItem->taxaIss = 0.00;
+                $notaFiscalItem->valorIss = 0.00;
+            }
 
             if(!$notaFiscalItem->create()){
                 http_response_code(503);
@@ -211,10 +220,8 @@ if(
 
         foreach ( $arrayItemNF as $notaFiscalItem ) {
             $vlTotServ += $notaFiscalItem->valorTotal;
-			if ($notaFiscalItem->cstIss != '1') {
-				$vlTotBC += $notaFiscalItem->valorTotal; 
-				$vlTotISS += $notaFiscalItem->valorIss; 
-			}
+			$vlTotBC += $notaFiscalItem->valorBCIss; 
+			$vlTotISS += $notaFiscalItem->valorIss; 
 		}
 
 		//			
