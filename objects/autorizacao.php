@@ -61,7 +61,7 @@ class Autorizacao{
             $emitente->idEmitente = $this->idEmitente;
             $emitente->readOne();
 
-            if ($this->createDir()){
+            if ($this->createDir($emitente->documento)){
                 $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";
                 $arqCert = fopen($nomeArq,"w");
                 $certificado = base64_decode($this->certificado);
@@ -147,9 +147,9 @@ class Autorizacao{
 
     }
 
-    function createDir() {
+    function createDir($documento) {
 
-        $dirEmit = "arquivosNFSe/".$emitente->documento;
+        $dirEmit = "arquivosNFSe/".$documento;
         if(!is_dir($dirEmit))
             mkdir($dirEmit, 0755);
         if(!is_dir($dirEmit."/certificado"))
