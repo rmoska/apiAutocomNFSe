@@ -57,7 +57,7 @@ if(
         }
         else {
             include_once '../comunicacao/signNFSe.php';
-            $arraySign = array("cnpj" => $documento, "keyPass" => $autorizacao->senha);
+            $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $this->senha);
             $certificado = new SignNFSe($arraySign);
             $validade = $certificado->certDaysToExpire;
         }

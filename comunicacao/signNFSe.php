@@ -52,6 +52,9 @@ class SignNFSe {
         $this->passPhrase = $passPhrase;
         $this->arqDir = "../arquivosNFSe/".$arraySign["cnpj"];
         $this->certsDir =  $this->arqDir."/certificado/";
+
+print_r($this);
+
         //verifica o ultimo caracter da variável $arqDir
         // se não for um DIRECTORY_SEPARATOR então colocar um
         if (substr($this->arqDir, -1, 1) != '/'){
