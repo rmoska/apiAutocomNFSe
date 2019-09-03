@@ -56,9 +56,14 @@ class Autorizacao{
         // execute query
         if($stmt->execute()){
 
+            include_once '../objects/emitente.php';
+            $emitente = new Emitente($this->conn);
+            $emitente->idEmitente = $this->idEmitente;
+            $emitente->readOne();
+
             $this->createDir();
 
-            $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";;
+            $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";
 //            $nomeArq = "../certificado/cert".$documento.".pfx";
             $arqCert = fopen($nomeArq,"w");
             $certificado = base64_decode($this->certificado);
