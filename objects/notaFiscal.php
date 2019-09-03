@@ -731,7 +731,7 @@ class NotaFiscal{
             $txt2 .= 'INFORMANDO O CÓDIGO DE VERIFICAÇÃO: '.$notaFiscal->chaveNF.' E O NÚMERO DE INSCRIÇÃO DO EMITENTE NO CADASTRO MUNICIPAL DE CONTRIBUINTES - CMC: '.$notaFiscal->cmc;
             $pdf->SetFont('Arial', '', '6');
             $pdf->SetXY(95,264);
-            $pdf->MultiCell(105, 3, $txt2, 0, 'L', 0); 
+            $pdf->MultiCell(105, 3, utf8_decode($txt2), 0, 'L', 0); 
 
             $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$notaFiscal->cmc;
             $qrcode = new QRcode($chaveQR, 'M'); 
