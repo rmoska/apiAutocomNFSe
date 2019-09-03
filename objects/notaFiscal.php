@@ -452,9 +452,9 @@ class NotaFiscal{
         //			$pdf->Image('figuras/logo_nf.jpg', 20, 12, 40); // importa uma imagem 
             $pdf->SetFont('Arial', '', 9);
             $pdf->SetXY(10,23);
-            $pdf->Cell(90, 4, $emitente->logradouro.', '.$emitente->numero.' - '.$emitente->complemento, 0, 1, 'C'); 
+            $pdf->Cell(90, 4, utf8_decode($emitente->logradouro.', '.$emitente->numero.' - '.$emitente->complemento), 0, 1, 'C'); 
             $pdf->SetX(10);
-            $pdf->Cell(90, 4, $emitente->bairro.' - '.$municipioEmitente->nome.' - '.$emitente->uf.' - '.$emitente->cep, 0, 1, 'C'); 
+            $pdf->Cell(90, 4, utf8_decode($emitente->bairro.' - '.$municipioEmitente->nome.' - '.$emitente->uf.' - '.$emitente->cep), 0, 1, 'C'); 
             $pdf->SetX(10);
             $pdf->Cell(90, 4, 'Telefone: '.$emitente->fone, 0, 1, 'C'); 
             $pdf->SetX(10);
@@ -469,19 +469,19 @@ class NotaFiscal{
             $pdf->Cell(100, 5, 'DANFPS-E', 0, 1, 'C'); 
             $pdf->SetFont('Arial', 'B', '8');
             $pdf->SetX(100);
-            $pdf->Cell(100, 5, 'Documento Auxiliar da Nota Fiscal de Prestação de Serviços Eletrônica', 0, 1, 'L'); 
+            $pdf->Cell(100, 5, utf8_decode('Documento Auxiliar da Nota Fiscal de Prestação de Serviços Eletrônica'), 0, 1, 'L'); 
             $pdf->SetX(100);
-            $pdf->Cell(100, 4, 'Número: '.$notaFiscal->numero, 0, 1, 'L'); 
+            $pdf->Cell(100, 4, utf8_decode('Número: ').$notaFiscal->numero, 0, 1, 'L'); 
             $pdf->SetX(100);
-            $pdf->Cell(100, 4, 'Autorização: '.$autorizacao->aedf, 0, 1, 'L'); 
+            $pdf->Cell(100, 4, utf8_decode('Autorização: ').$autorizacao->aedf, 0, 1, 'L'); 
             $pdf->SetX(100);
 
             $dtEm = new DateTime($notaFiscal->dataEmissao);
             $dataEmissao = $dtEm->format('d/m/Y');
-            $pdf->Cell(100, 4, 'Emissão: '.$dataEmissao, 0, 1, 'L'); 
+            $pdf->Cell(100, 4, utf8_decode('Emissão: ').$dataEmissao, 0, 1, 'L'); 
             $pdf->SetX(100);
             $nuCodVer = wordwrap($notaFiscal->chaveNF, 4, '-', true);
-            $pdf->Cell(100, 4, 'Código de Verificação: '.$nuCodVer, 0, 1, 'L'); 
+            $pdf->Cell(100, 4, utf8_decode('Código de Verificação: ').$nuCodVer, 0, 1, 'L'); 
 
             // 
             // destinatário
@@ -501,21 +501,21 @@ class NotaFiscal{
             $pdf->Cell(190, 4, 'Dados do Tomador', 0, 0, 'L'); 
             $pdf->SetFont('Arial', '', 5);
             $pdf->SetXY(10,49);
-            $pdf->Cell(160, 3, 'NOME / RAZÃO SOCIAL', 0, 0, 'L'); 
+            $pdf->Cell(160, 3, utf8_decode('NOME / RAZÃO SOCIAL'), 0, 0, 'L'); 
             $pdf->SetXY(170,49);
             $pdf->Cell(30, 3, 'CFPS', 0, 0, 'L'); 
             $pdf->SetXY(10,56);
-            $pdf->Cell(95, 3, 'ENDEREÇO', 0, 0, 'L'); 
+            $pdf->Cell(95, 3, utf8_decode('ENDEREÇO'), 0, 0, 'L'); 
             $pdf->SetXY(105,56);
             $pdf->Cell(65, 3, 'BAIRRO / DISTRITO', 0, 0, 'L'); 
             $pdf->SetXY(170,56);
             $pdf->Cell(30, 3, 'CEP', 0, 0, 'L'); 
             $pdf->SetXY(10,63);
-            $pdf->Cell(75, 3, 'MUNICÍPIO', 0, 0, 'L'); 
+            $pdf->Cell(75, 3, utf8_decode('MUNICÍPIO'), 0, 0, 'L'); 
             $pdf->SetXY(85,63);
             $pdf->Cell(20, 3, 'UF', 0, 0, 'L'); 
             $pdf->SetXY(105,63);
-            $pdf->Cell(30, 3, 'PAÍS', 0, 0, 'L'); 
+            $pdf->Cell(30, 3, utf8_decode('PAÍS'), 0, 0, 'L'); 
             $pdf->SetXY(135,63);
             $pdf->Cell(45, 3, 'CPF/CNPJ/Outros', 0, 0, 'L'); 
             $pdf->SetXY(170,63);
@@ -523,7 +523,7 @@ class NotaFiscal{
             //
             $pdf->SetFontSize(8);
             $pdf->SetXY(10,52);
-            $pdf->Cell(160, 5, $tomador->nome, 0, 0, 'L'); 
+            $pdf->Cell(160, 5, utf8_decode($tomador->nome), 0, 0, 'L'); 
             $pdf->SetXY(170,52);
             $pdf->Cell(30, 5, $notaFiscal->cfop, 0, 0, 'L'); 
             $pdf->SetXY(10,59);
@@ -533,13 +533,13 @@ class NotaFiscal{
                 $enderecoDest .= ' n.:'.$tomador->numero;
             if ($tomador->complemento > '')
                 $enderecoDest .= ' - '.$tomador->complemento;
-            $pdf->CellFitScale(95, 5, $enderecoTomador, 0, 0, 'L'); 
+            $pdf->CellFitScale(95, 5, utf8_decode($enderecoTomador), 0, 0, 'L'); 
             $pdf->SetXY(105,59);
-            $pdf->Cell(65, 5, $tomador->bairro, 0, 0, 'L'); 
+            $pdf->Cell(65, 5, utf8_decode($tomador->bairro), 0, 0, 'L'); 
             $pdf->SetXY(170,59);
             $pdf->Cell(30, 5, $tomador->cep, 0, 0, 'L'); 
             $pdf->SetXY(10,67);
-            $pdf->Cell(75, 5, $municipioTomador->nome, 0, 0, 'L'); 
+            $pdf->Cell(75, 5, utf8_decode($municipioTomador->nome), 0, 0, 'L'); 
             $pdf->SetXY(85,67);
             $pdf->Cell(20, 5, $tomador->uf, 0, 0, 'C'); 
             $pdf->SetXY(105,67);
@@ -568,18 +568,18 @@ class NotaFiscal{
             //
             $pdf->SetFont('Arial', 'B', '6');
             $pdf->SetXY(10,73);
-            $pdf->Cell(190, 4, 'Dados do(s) Serviço(s)', 0, 0, 'L'); 
+            $pdf->Cell(190, 4, utf8_decode('Dados do(s) Serviço(s)'), 0, 0, 'L'); 
             $pdf->SetFont('Arial', '', 8);
             $pdf->SetXY(10,77);
-            $pdf->Cell(20, 5, 'Cód.Atividade', 1, 0, 'L'); 
+            $pdf->Cell(20, 5, utf8_decode('Cód.Atividade'), 1, 0, 'L'); 
             $pdf->SetXY(30,77);
-            $pdf->Cell(85, 5, '(Descrição CNAE) Descrição do Serviço', 1, 0, 'L'); 
+            $pdf->Cell(85, 5, utf8_decode('(Descrição CNAE) Descrição do Serviço'), 1, 0, 'L'); 
             $pdf->SetXY(115,77);
             $pdf->Cell(8, 5, 'CST', 1, 0, 'C'); 
             $pdf->SetXY(123,77);
-            $pdf->Cell(10, 5, 'Alíq.', 1, 0, 'C'); 
+            $pdf->Cell(10, 5, utf8_decode('Alíq.'), 1, 0, 'C'); 
             $pdf->SetXY(133,77);
-            $pdf->Cell(25, 5, 'Valor Unitário', 1, 0, 'C'); 
+            $pdf->Cell(25, 5, utf8_decode('Valor Unitário'), 1, 0, 'C'); 
             $pdf->SetXY(158,77);
             $pdf->Cell(12, 5, 'Qtde', 1, 0, 'C'); 
             $pdf->SetXY(170,77);
@@ -670,18 +670,18 @@ class NotaFiscal{
             //
             $pdf->SetFont('Arial', 'B', '6');
             $pdf->SetXY(10,224);
-            $pdf->Cell(190, 4, 'Cálculo do Imposto', 0, 0, 'L'); 
+            $pdf->Cell(190, 4, utf8_decode('Cálculo do Imposto'), 0, 0, 'L'); 
             $pdf->SetFont('Arial', '', 5);
             $pdf->SetXY(10,228);
-            $pdf->Cell(38, 3, 'Base de Cálculo do ISSQN', 0, 0, 'C'); 
+            $pdf->Cell(38, 3, utf8_decode('Base de Cálculo do ISSQN'), 0, 0, 'C'); 
             $pdf->SetXY(48,228);
             $pdf->Cell(38, 3, 'Valor do ISSQN', 0, 0, 'C'); 
             $pdf->SetXY(86,228);
-            $pdf->Cell(38, 3, 'Base de Cálculo do ISSQN Subst.', 0, 0, 'C'); 
+            $pdf->Cell(38, 3, utf8_decode('Base de Cálculo do ISSQN Subst.'), 0, 0, 'C'); 
             $pdf->SetXY(124,228);
             $pdf->Cell(38, 3, 'Valor do ISSQN Subst.', 0, 0, 'C'); 
             $pdf->SetXY(162,228);
-            $pdf->Cell(38, 3, 'Valor Total dos Serviços', 0, 0, 'C'); 
+            $pdf->Cell(38, 3, utf8_decode('Valor Total dos Serviços'), 0, 0, 'C'); 
             //
             $pdf->SetFontSize(9);
             $pdf->SetXY(10,232);
@@ -716,19 +716,19 @@ class NotaFiscal{
             //
             $pdf->SetFont('Arial', '', '6');
             $pdf->SetXY(10,264);
-            $pdf->CellFitScale(83, 4, 'DANFPS-E DOCUMENTO AUXILIAR DA NOTA FISCAL DE PRESTAÇÃO DE SERVIÇOS ELETRÔNICA', 0, 1, 'L'); 
+            $pdf->CellFitScale(83, 4, utf8_decode('DANFPS-E DOCUMENTO AUXILIAR DA NOTA FISCAL DE PRESTAÇÃO DE SERVIÇOS ELETRÔNICA'), 0, 1, 'L'); 
             $pdf->SetFont('Arial', '', '7');
             $pdf->SetX(10);
-            $pdf->Cell(85, 4, 'SIGNATÁRIO: MUNICÍPIO DE FLORIANÓPOLIS', 0, 1, 'L'); 
+            $pdf->Cell(85, 4, utf8_decode('SIGNATÁRIO: MUNICÍPIO DE FLORIANÓPOLIS'), 0, 1, 'L'); 
             $pdf->SetX(10);
-            $pdf->Cell(85, 4, 'CARIMBO DO TEMPO: PREFEITURA MUNICIPAL DE FLORIANÓPOLIS', 0, 1, 'L'); 
+            $pdf->Cell(85, 4, utf8_decode('CARIMBO DO TEMPO: PREFEITURA MUNICIPAL DE FLORIANÓPOLIS'), 0, 1, 'L'); 
             $pdf->SetX(10);
         //        $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$dtCarimbo, 0, 0, 'L'); 
             $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$notaFiscal->dataProcessamento, 0, 0, 'L'); 
 
             $txt2 = 'A VALIDADE E AUTENTICIDADE DESTE DOCUMENTO AUXILIAR DA NOTA FISCAL DE PRESTAÇÃO DE SERVIÇO ELETRÔNICA PODERÃO SER COMPROVADAS MEDIANTE CONSULTA À PÁGINA DA';
             $txt2 .= 'SECRETARIA MUNICIPAL DA FAZENDA - SMF NA INTERNET, NO ENDEREÇO portal.pmf.sc.gov.br/sites/notaeletronica, EM VERIFICAR AUTENTICIDADE >> PRODUÇÃO, ';
-            $txt2 .= 'INFORMANDO O CÓDIGO DE VERIFICAÇÃO: '.$notaFiscal->chaveNF.' E O NÚMERO DE INSCRIÇÃO DO EMITENTE NO CADASTRO MUNICIPAL DE CONTRIBUINTES - CMC: '.$notaFiscal->cmc;
+            $txt2 .= 'INFORMANDO O CÓDIGO DE VERIFICAÇÃO: '.$notaFiscal->chaveNF.' E O NÚMERO DE INSCRIÇÃO DO EMITENTE NO CADASTRO MUNICIPAL DE CONTRIBUINTES - CMC: '.$emitente->cmc;
             $pdf->SetFont('Arial', '', '6');
             $pdf->SetXY(95,264);
             $pdf->MultiCell(105, 3, utf8_decode($txt2), 0, 'L', 0); 
