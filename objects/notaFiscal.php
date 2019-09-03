@@ -429,6 +429,7 @@ class NotaFiscal{
         $municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
         $municipioTomador->readUFMunicipio();
 
+        $utilities = new Utilities();
         //	
         $pdf=new relatPdfNFe('P','mm','form');
         //setlocale(LC_CTYPE, 'pt_BR.ISO-8859-1');
@@ -464,7 +465,7 @@ class NotaFiscal{
             $pdf->SetX(10);
         //        $pdf->Cell(90, 4, 'CNPJ: '.formataCnpj($cnpjEmp), 0, 1, 'C'); 
 //            $pdf->Cell(90, 4, 'CNPJ: '.$emitente->documento, 0, 1, 'C'); 
-            $pdf->Cell(90, 4, 'CNPJ: '.mask($emitente->documento,"##.###.###/####-##"), 0, 1, 'C'); 
+            $pdf->Cell(90, 4, 'CNPJ: '.$utilities->mask($emitente->documento,"##.###.###/####-##"), 0, 1, 'C'); 
             $pdf->SetX(10);
             $pdf->Cell(90, 4, 'CMC: '.$autorizacao->cmc, 0, 1, 'C'); 
             //
@@ -552,7 +553,7 @@ class NotaFiscal{
             $pdf->SetXY(135,67);
             $docTomador = $tomador->documento;
             if (length($docTomador) == 14)
-                $docTomador = mask($docTomador, "##.###.###/####-##");
+                $docTomador = $utilities->mask($docTomador, "##.###.###/####-##");
             else if (length($docTomador) == 11)
                 $docTomador = mask($docTomador, "###.###.###-##");
             $pdf->Cell(45, 5, $docTomador, 0, 0, 'L'); 
