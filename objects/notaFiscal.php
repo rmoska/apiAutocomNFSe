@@ -397,7 +397,7 @@ class NotaFiscal{
         include_once "../shared/relatPdfNFe.php";
         include_once '../objects/notaFiscalItem.php';
         include_once '../objects/emitente.php';
-        include_once '../objects/autorizcao.php';
+        include_once '../objects/autorizacao.php';
         include_once '../objects/tomador.php';
         include_once '../objects/municipio.php';
 
