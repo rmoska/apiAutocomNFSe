@@ -53,8 +53,6 @@ class SignNFSe {
         $this->arqDir = "../arquivosNFSe/".$arraySign["cnpj"];
         $this->certsDir =  $this->arqDir."/certificado/";
 
-print_r($this);
-
         //verifica o ultimo caracter da variável $arqDir
         // se não for um DIRECTORY_SEPARATOR então colocar um
         if (substr($this->arqDir, -1, 1) != '/'){
@@ -286,7 +284,7 @@ print_r($this);
         $key = file_get_contents($pCert);
         //carrega os certificados e chaves para um array denominado $x509certdata
         if (!openssl_pkcs12_read($key,$x509certdata,$this->keyPass) ){
-                $this->errMsg = 'O certificado não pode ser lido!! Provavelmente corrompido ou com formato inválido!!';
+                $this->errMsg = 'O certificado não pode ser lido!! Provavelmente com formato inválido on senha incorreta !!';
                 $this->errStatus = true;
                 return false;
         }
