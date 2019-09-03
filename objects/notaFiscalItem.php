@@ -385,6 +385,9 @@ class NotaFiscalItem{
         // execute query
         $stmt->execute();
      
+echo 'C='. $stmt->rowCount();
+
+
         // get retrieved row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
