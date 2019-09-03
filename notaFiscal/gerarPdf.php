@@ -25,7 +25,7 @@ $data = json_decode(file_get_contents("php://input"));
 //$notaFiscalItem->idNotaFiscal = $data->idNotaFiscal;
  
 // delete emitente
-if($arqPDF = $notaFiscal->printNFSe($data->idNotaFiscal)){
+if($arqPDF = $notaFiscal->printDanfpse($data->idNotaFiscal, $db)){
  
     // set response code - 200 ok
     http_response_code(200);
