@@ -552,7 +552,7 @@ class NotaFiscal{
             $pdf->Cell(30, 5, "", 0, 0, 'L'); 
             $pdf->SetXY(135,67);
             $docTomador = $tomador->documento;
-            if (length($docTomador) == 14)
+            if (strlen($docTomador) == 14)
                 $docTomador = $utilities->mask($docTomador, "##.###.###/####-##");
             else if (length($docTomador) == 11)
                 $docTomador = mask($docTomador, "###.###.###-##");
