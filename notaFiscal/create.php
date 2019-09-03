@@ -303,6 +303,7 @@ if(
         include_once '../comunicacao/signNFSe.php';
         $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
         $nfse = new SignNFSe($arraySign);
+
 		$xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 		//
        	//

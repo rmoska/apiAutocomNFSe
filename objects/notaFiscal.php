@@ -395,6 +395,7 @@ class NotaFiscal{
 
         include_once "../../fpdf/qrcode/qrcode.class.php"; 
         include_once "../shared/relatPdfNFe.php";
+        include_once "../shared/utilities.php";
         include_once '../objects/notaFiscalItem.php';
         include_once '../objects/emitente.php';
         include_once '../objects/autorizacao.php';
@@ -427,8 +428,6 @@ class NotaFiscal{
         $municipioTomador = new Municipio($db);
         $municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
         $municipioTomador->readUFMunicipio();
-
-        //$item = 0;
 
         //	
         $pdf=new relatPdfNFe('P','mm','form');
@@ -464,7 +463,8 @@ class NotaFiscal{
             $pdf->Cell(90, 4, 'Telefone: '.$emitente->fone, 0, 1, 'C'); 
             $pdf->SetX(10);
         //        $pdf->Cell(90, 4, 'CNPJ: '.formataCnpj($cnpjEmp), 0, 1, 'C'); 
-            $pdf->Cell(90, 4, 'CNPJ: '.$emitente->documento, 0, 1, 'C'); 
+//            $pdf->Cell(90, 4, 'CNPJ: '.$emitente->documento, 0, 1, 'C'); 
+            $pdf->Cell(90, 4, 'CNPJ: '.mask($emitente->documento,"##.###.###/####-##"), 0, 1, 'C'); 
             $pdf->SetX(10);
             $pdf->Cell(90, 4, 'CMC: '.$autorizacao->cmc, 0, 1, 'C'); 
             //
@@ -550,8 +550,12 @@ class NotaFiscal{
             $pdf->SetXY(105,67);
             $pdf->Cell(30, 5, "", 0, 0, 'L'); 
             $pdf->SetXY(135,67);
-        //        $pdf->Cell(45, 5, formataDocto($cpfCnpjDest), 0, 0, 'L'); 
-            $pdf->Cell(45, 5, $tomador->documento, 0, 0, 'L'); 
+            $docTomador = $tomador->documento;
+            if (length($docTomador) == 14)
+                $docTomador = mask($docTomador, "##.###.###/####-##");
+            else if (length($docTomador) == 11)
+                $docTomador = mask($docTomador, "###.###.###-##");
+            $pdf->Cell(45, 5, $docTomador, 0, 0, 'L'); 
             $pdf->SetXY(170,67);
             $pdf->Cell(30, 5, '', 0, 0, 'L'); 
             //

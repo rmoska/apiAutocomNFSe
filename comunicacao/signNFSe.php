@@ -5,7 +5,7 @@ class SignNFSe {
     /**
      * Diretorio onde estão os certificados
      */
-    public $certsDir='';
+    public $certsDir;
     /**
      * diretorio que contem os esquemas de validação
      * estes esquemas devem ser mantidos atualizados
@@ -51,9 +51,7 @@ class SignNFSe {
         $this->keyPass = $arraySign["keyPass"];
         $this->passPhrase = $passPhrase;
         $this->arqDir = "../arquivosNFSe/".$arraySign["cnpj"];
-
-        //carrega o caminho para os certificados
-        $this->certsDir =  '../certificado/';
+        $this->certsDir =  $this->arqDir."/certificado/";
         //verifica o ultimo caracter da variável $arqDir
         // se não for um DIRECTORY_SEPARATOR então colocar um
         if (substr($this->arqDir, -1, 1) != '/'){
