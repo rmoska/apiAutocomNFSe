@@ -64,7 +64,7 @@ if(
 
         // set response code - 201 created
         http_response_code(201);
-        echo json_encode(array("http_code" => 201, "message" => "Autorização incluída", "token" => $autorizacao->token, "validade" => $validade));
+        echo json_encode(array("http_code" => 201, "message" => "Autorização incluída", "token" => $autorizacao->token, "validade" => $validade." dias"));
     }
  
     // if unable to create autorizacao, tell the user
