@@ -51,13 +51,20 @@ if(
         if (!$autorizacao->getToken()){
 
             http_response_code(503);
-            echo json_encode(array("message" => "Autorização com dados inválidos. Comunicação rejeitada."));
-                   
+            echo json_encode(array("http_code" => 503, "message" => "Autorização com dados inválidos. Comunicação rejeitada."));
+            exit;
+
+        }
+        else {
+            include_once '../comunicacao/signNFSe.php';
+            $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+            $certificado = new SignNFSe($arraySign);
+            $validade = $certificado->certDaysToExpire;
         }
 
         // set response code - 201 created
         http_response_code(201);
-        echo json_encode(array("message" => "Autorização incluída", "token" => $autorizacao->token));
+        echo json_encode(array("http_code" => 201, "message" => "Autorização incluída", "token" => $autorizacao->token, "validade" => $validade));
     }
  
     // if unable to create autorizacao, tell the user
@@ -65,7 +72,7 @@ if(
  
         // set response code - 503 service unavailable
         http_response_code(503);
-        echo json_encode(array("message" => "Não foi possível incluir Autorização. Serviço indisponível."));
+        echo json_encode(array("http_code" => 503, "message" => "Não foi possível incluir Autorização. Serviço indisponível."));
 
     }
 }
@@ -77,6 +84,6 @@ else{
     http_response_code(400);
  
     // tell the user
-    echo json_encode(array("message" => "Não foi possível incluir Autorizacao. Dados incompletos."));
+    echo json_encode(array("http_code" => 503, "message" => "Não foi possível incluir Autorizacao. Dados incompletos."));
 }
 ?>
