@@ -397,6 +397,7 @@ class NotaFiscal{
         include_once "../shared/relatPdfNFe.php";
         include_once '../objects/notaFiscalItem.php';
         include_once '../objects/emitente.php';
+        include_once '../objects/autorizcao.php';
         include_once '../objects/tomador.php';
         include_once '../objects/municipio.php';
 
@@ -406,6 +407,10 @@ class NotaFiscal{
 
         $notaFiscalItem = new NotaFiscalItem($db);
         $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
+
+        $autorizacao = new Autorizacao($db);
+        $autorizacao->idEmitente = $notaFiscal->idEmitente;
+        $autorizacao->readOne();
 
         $emitente = new Emitente($db);
         $emitente->idEmitente = $notaFiscal->idEmitente;
@@ -625,7 +630,7 @@ class NotaFiscal{
                 $pdf->CellFitScale(20, 4, $nuProd, 0, 0, 'C'); 
 
         //				$pdf->Rect($pdf->GetX(), $pdf->GetY(), 58, ($altItem*4)); 
-                $pdf->MultiCell(85, 4, $nmProd, 0, 'L', 0); 
+                $pdf->MultiCell(85, 4, utf8_decode($nmProd), 0, 'L', 0); 
 
                 /*
                 if ($notaFiscalItem->obs '') {

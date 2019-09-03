@@ -98,12 +98,12 @@ class Autorizacao{
         // bind new values
         $stmt->bindParam(":documento", $this->idEmitente);
         $stmt->bindParam(":nome", $this->crt);
-        $stmt->bindParam(":nomeFantasia", $this->cnae);
-        $stmt->bindParam(":logradouro", $this->aedf);
-        $stmt->bindParam(":numero", $this->cmc);
-        $stmt->bindParam(":complemento", $this->senhaWeb);
-        $stmt->bindParam(":bairro", $this->certificado);
-        $stmt->bindParam(":cep", $this->senha);
+        $stmt->bindParam(":cnae", $this->cnae);
+        $stmt->bindParam(":aedf", $this->aedf);
+        $stmt->bindParam(":cmc", $this->cmc);
+        $stmt->bindParam(":senhaWeb", $this->senhaWeb);
+        $stmt->bindParam(":certificado", $this->certificado);
+        $stmt->bindParam(":senha", $this->senha);
 
         // execute the query
         if($stmt->execute()){
