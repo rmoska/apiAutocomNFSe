@@ -399,6 +399,8 @@ class NotaFiscal{
         include_once '../objects/tomador.php';
         include_once '../objects/municipio.php';
 
+echo "NF=". $idNotaFiscal;
+
         $notaFiscal = new NotaFiscal($db);
         $notaFiscal->idNotaFiscal = $idNotaFiscal;
         $notaFiscal->readOne();
