@@ -48,11 +48,16 @@ if(
     // create autorizacao
     if($autorizacao->create($emitente->documento)){
  
+        if (!$autorizacao->getToken()){
+
+            http_response_code(503);
+            echo json_encode(array("message" => "Autorização com dados inválidos. Comunicação rejeitada."));
+                   
+        }
+
         // set response code - 201 created
         http_response_code(201);
- 
-        // tell the user
-        echo json_encode(array("message" => "Autorização incluída"));
+        echo json_encode(array("message" => "Autorização incluída", "token" => $autorizacao->token));
     }
  
     // if unable to create autorizacao, tell the user
@@ -60,9 +65,8 @@ if(
  
         // set response code - 503 service unavailable
         http_response_code(503);
- 
-        // tell the user
         echo json_encode(array("message" => "Não foi possível incluir Autorização. Serviço indisponível."));
+
     }
 }
  
