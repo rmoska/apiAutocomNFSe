@@ -281,6 +281,7 @@ class NotaFiscal{
 
         // set values to object properties
         $this->idNotaFiscal = $row['idNotaFiscal'];
+        $this->idEmitente = $row['idEmitente'];
         $this->numero = $row['numero'];
         $this->serie = $row['serie'];
         $this->chaveNF = $row['chaveNF'];
@@ -399,14 +400,9 @@ class NotaFiscal{
         include_once '../objects/tomador.php';
         include_once '../objects/municipio.php';
 
-echo "NF=". $idNotaFiscal;
-
-
         $notaFiscal = new NotaFiscal($db);
         $notaFiscal->idNotaFiscal = $idNotaFiscal;
         $notaFiscal->readOne();
-
-print_r($notaFiscal);
 
         $notaFiscalItem = new NotaFiscalItem($db);
         $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
@@ -417,13 +413,9 @@ print_r($arrayNotaFiscalItem);
         $emitente->idEmitente = $notaFiscal->idEmitente;
         $emitente->readOne();
 
-print_r($emitente);
-
         $tomador = new Tomador($db);
         $tomador->idTomador = $notaFiscal->idTomador;
         $tomador->readOne();
-
-print_r($tomador);
 
         $municipioEmitente = new Municipio($db);
         $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;

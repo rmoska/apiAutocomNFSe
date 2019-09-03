@@ -330,8 +330,8 @@ class NotaFiscalItem{
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
             $notaFiscalItem = new NotaFiscalItem($this->conn);
-            $this->idNotaFiscal = $row['idNotaFiscal'];
-            $this->numeroOrdem = $row['numeroOrdem'];
+            $notaFiscalItem->idNotaFiscal = $row['idNotaFiscal'];
+            $notaFiscalItem->numeroOrdem = $row['numeroOrdem'];
     
             $notaFiscalItem->readOne();
 
