@@ -19,13 +19,13 @@ $db = $database->getConnection();
 $notaFiscal = new NotaFiscal($db);
  
 // get emitente id
-$data = json_decode(file_get_contents("php://input"));
- 
+$notaFiscal->idNotaFiscal = isset($_GET['idNotaFiscal']) ? $_GET['idNotaFiscal'] : die();
+
 // set emitente id to be deleted
 //$notaFiscalItem->idNotaFiscal = $data->idNotaFiscal;
  
 // delete emitente
-if($arqPDF = $notaFiscal->printDanfpse($data->idNotaFiscal, $db)){
+if($arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db)){
  
     // set response code - 200 ok
     http_response_code(200);

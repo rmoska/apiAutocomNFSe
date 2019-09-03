@@ -401,6 +401,7 @@ class NotaFiscal{
 
 echo "NF=". $idNotaFiscal;
 
+
         $notaFiscal = new NotaFiscal($db);
         $notaFiscal->idNotaFiscal = $idNotaFiscal;
         $notaFiscal->readOne();
