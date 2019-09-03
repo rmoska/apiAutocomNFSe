@@ -49,6 +49,7 @@ class NotaFiscalItem{
     public $valorImpAproxEst; 
     public $valorImpAproxMun; 
     public $observacao;
+
     // constructor with $db as database connection
     public function __construct($db){
         $this->conn = $db;
@@ -311,18 +312,34 @@ class NotaFiscalItem{
     }
 
     // read notaFiscal
-    function read(){
+    function read($idNotaFiscal){
     
         // select all query
-        $query = "SELECT * FROM " . $this->tableName . " ORDER BY numeroOrdem";
+        $query = "SELECT numeroOrdem FROM " . $this->tableName . " WHERE idNotaFiscal = ? ORDER BY numeroOrdem";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
-    
+
+        // bind id of record to delete
+        $stmt->bindParam(1, $idNotaFiscal);
+
         // execute query
         $stmt->execute();
     
-        return $stmt;
+        $arrayNFi = array();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+            $notaFiscalItem = new NotaFiscalItem();
+            $this->idNotaFiscal = $row['idNotaFiscal'];
+            $this->numeroOrdem = $row['numeroOrdem'];
+    
+            $notaFiscalItem->readOne();
+
+            $arrayNFi[] = $notaFiscalItem;
+
+        }
+
+        return $arrayNFi;
     }
 
     // read notaFiscal
@@ -331,14 +348,15 @@ class NotaFiscalItem{
         // select all query
         $query = "SELECT nfi.*, iv.*, ca.descricao AS nomeCnae 
                   FROM " . $this->tableName . " AS nfi, itemVenda AS iv, codigoAtividade AS ca
-                  WHERE nfi.idItemVenda = iv.idItemVenda AND iv.cnae = ca.cnae AND nfi.idNotaFiscal = ? 
-                  ORDER BY nfi.numeroOrdem";
+                  WHERE nfi.idItemVenda = iv.idItemVenda AND iv.cnae = ca.cnae AND nfi.idNotaFiscal = ? AND nfi.numeroOrdem = ? 
+                  LIMIT 0,1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
 
         // bind id of product to be updated
         $stmt->bindParam(1, $this->idNotaFiscal);
+        $stmt->bindParam(2, $this->numeroOrdem);
 
         // execute query
         $stmt->execute();
@@ -355,13 +373,14 @@ class NotaFiscalItem{
     function readOne(){
  
         // query to read single record
-        $query = "SELECT * FROM " . $this->tableName . " WHERE idNotaFiscal = ? LIMIT 0,1";
+        $query = "SELECT * FROM " . $this->tableName . " WHERE idNotaFiscal = ?  AND nfi.numeroOrdem = ? LIMIT 0,1";
 
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
      
         // bind id of product to be updated
         $stmt->bindParam(1, $this->idNotaFiscal);
+        $stmt->bindParam(2, $this->numeroOrdem);
      
         // execute query
         $stmt->execute();
@@ -371,34 +390,25 @@ class NotaFiscalItem{
 
         // set values to object properties
         $this->idNotaFiscal = $row['idNotaFiscal'];
-        $this->numero = $row['numero'];
-        $this->serie = $row['serie'];
-        $this->chaveNF = $row['chaveNF'];
-        $this->docOrigemTipo = $row['docOrigemTipo'];
-        $this->docOrigemNumero = $row['docOrigemNumero'];
-        $this->docOrigemParcela = $row['docOrigemParcela'];
-        $this->idEntradaSaida = $row['idEntradaSaida'];
-        $this->destinatarioTipo = $row['destinatarioTipo'];
-        $this->destinatarioId = $row['destinatarioId'];
-        $this->cfop = $row['cfop'];
-        $this->naturezaOperacao = $row['naturezaOperacao'];
-        $this->idFinalidade = $row['idFinalidade'];
-        $this->dataInclusao = $row['dataInclusao'];
-        $this->dataEmissao = $row['dataEmissao'];
-        $this->situacao = $row['situacao'];
-        $this->reciboNF = $row['reciboNF'];
-        $this->protocoloNF = $row['protocoloNF'];
-        $this->textoResposta = $row['textoResposta'];
-        $this->textoJustificativa = $row['textoJustificativa'];
-        $this->dataCancelamento = $row['dataCancelamento'];
-        $this->valorTotalMercadorias = $row['valorTotalMercadorias'];
+        $this->numeroOrdem = $row['numeroOrdem'];
+        $this->idItemVenda = $row['idItemVenda'];
+        $this->unidade = $row['unidade'];
+        $this->quantidade = $row['quantidade'];
+        $this->valorUnitario = $row['valorUnitario'];
         $this->valorTotal = $row['valorTotal'];
-        $this->valorFrete = $row['valorFrete'];
-        $this->valorSeguro = $row['valorSeguro'];
-        $this->valorOutrasDespesas = $row['valorOutrasDespesas'];
+        $this->cnae = $row['cnae'];
+        $this->cstIss = $row['cstIss'];
+        $this->valorBCIss = $row['valorBCIss'];
+        $this->taxaIss = $row['taxaIss'];
+        $this->valorIss = $row['valorIss'];
+        $this->cfop = $row['cfop'];
+        $this->origem = $row['origem'];
         $this->valorDesconto = $row['valorDesconto'];
-        $this->obsImpostos = $row['obsImpostos'];
-        $this->dadosAdicionais = $row['dadosAdicionais'];
+        $this->valorImpAproxFed = $row['valorImpAproxFed'];
+        $this->valorImpAproxEst = $row['valorImpAproxEst'];
+        $this->valorImpAproxMun = $row['valorImpAproxMun'];
+        $this->observacao = $row['observacao'];
+
     }
     
     // check notaFiscal

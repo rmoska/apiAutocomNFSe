@@ -118,8 +118,10 @@ if(
     }
 
     //check / create itemVenda
+    $nfiOrdem = 0;
     foreach ( $data->itemServico as $item )
     {
+        $nfiOrdem++;
         if(
             !empty($item->codigo) &&
             !empty($item->descricao) &&
@@ -158,6 +160,7 @@ if(
             }
 
             $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
+            $notaFiscalItem->numeroOrdem = $nfiOrdem;
             $notaFiscalItem->cnae = $item->cnae;
             $notaFiscalItem->unidade = "UN";
             $notaFiscalItem->quantidade = $item->quantidade;
