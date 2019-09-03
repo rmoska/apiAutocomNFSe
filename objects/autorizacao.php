@@ -56,7 +56,10 @@ class Autorizacao{
         // execute query
         if($stmt->execute()){
 
-            $nomeArq = "../certificado/cert".$documento.".pfx";
+            $this->createDir();
+
+            $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";;
+//            $nomeArq = "../certificado/cert".$documento.".pfx";
             $arqCert = fopen($nomeArq,"w");
             $certificado = base64_decode($this->certificado);
             $contCert = fwrite($arqCert, $certificado);
@@ -137,6 +140,24 @@ class Autorizacao{
         $this->senhaWeb = $row['senhaWeb'];
         $this->certificado = $row['certificado'];
         $this->senha = $row['senha'];
+
+    }
+
+    function createDir() {
+
+        $dirEmit = "arquivosNFSe/".$emitente->documento;
+        if(!is_dir($dirEmit))
+            mkdir($dirEmit, 0755);
+        if(!is_dir($dirEmit."/certificado"))
+            mkdir($dirEmit."/certificado");
+        if(!is_dir($dirEmit."/danfpse"))
+            mkdir($dirEmit."/danfpse");
+        if(!is_dir($dirEmit."/rps"))
+            mkdir($dirEmit."/rps");
+        if(!is_dir($dirEmit."/canceladas"))
+            mkdir($dirEmit."/canceladas");
+        if(!is_dir($dirEmit."/transmitidas"))
+            mkdir($dirEmit."/transmitidas");
 
     }
 

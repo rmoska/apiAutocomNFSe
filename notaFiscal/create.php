@@ -336,21 +336,13 @@ if(
             fclose($arqNFe);
             //
             // gerar pdf
-
-
+            $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
             //
             $notaFiscal->numero = $nuNF;
             $notaFiscal->chaveNF = $cdVerif;
             $notaFiscal->situacao = "F";
             $notaFiscal->dataProcessamento = $dtProc;
-
-            include_once '../notaFiscal/printPdf.php';
-
- //           include_once '../shared/printNFSe.php';
- //           $dNFSe = danfeNFe($notaFiscal->idNotaFiscal, $db);
-
-            //            $notaFiscal->gerarPDF();
-
+            //
             // update notaFiscal
             if(!$notaFiscal->update()){
                 http_response_code(503);
@@ -363,7 +355,7 @@ if(
                 echo json_encode(array("http_code" => "201", 
                                        "message" => "Nota Fiscal emitida", 
                                        "xml" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$dirXmlRet.$arqXmlRet,
-                                       "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$dirXmlRet.$arqXmlRet));
+                                       "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPdf));
                 exit;
             }
 
