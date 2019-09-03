@@ -1,7 +1,7 @@
 {
     "idVenda": "1",
     "documento": "80449374000128",
-    "valorTotal": "10.00",
+    "valorTotal": "180.00",
     "observacao": "Teste 01",
     "tomador": {
         "documento": "01837011940",

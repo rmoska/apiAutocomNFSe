@@ -205,7 +205,6 @@ if(
         }
 
         // montar xml nfse
-
 		$vlTotBC = 0; 
 		$vlTotISS = 0; 
 		$vlTotServ = 0; 
@@ -213,7 +212,7 @@ if(
         foreach ( $arrayItemNF as $notaFiscalItem ) {
             $vlTotServ += $notaFiscalItem->valorTotal;
 			if ($notaFiscalItem->cstIss != '1') {
-				$vlTotBC += $notaFiscalItem->valorBCIss; 
+				$vlTotBC += $notaFiscalItem->valorTotal; 
 				$vlTotISS += $notaFiscalItem->valorIss; 
 			}
 		}
