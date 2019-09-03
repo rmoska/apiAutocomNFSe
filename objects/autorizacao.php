@@ -61,14 +61,13 @@ class Autorizacao{
             $emitente->idEmitente = $this->idEmitente;
             $emitente->readOne();
 
-            $this->createDir();
-
-            $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";
-//            $nomeArq = "../certificado/cert".$documento.".pfx";
-            $arqCert = fopen($nomeArq,"w");
-            $certificado = base64_decode($this->certificado);
-            $contCert = fwrite($arqCert, $certificado);
-            fclose($arqCert);
+            if ($this->createDir()){
+                $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";
+                $arqCert = fopen($nomeArq,"w");
+                $certificado = base64_decode($this->certificado);
+                $contCert = fwrite($arqCert, $certificado);
+                fclose($arqCert);
+            }
 
             return true;
             
@@ -163,6 +162,8 @@ class Autorizacao{
             mkdir($dirEmit."/canceladas");
         if(!is_dir($dirEmit."/transmitidas"))
             mkdir($dirEmit."/transmitidas");
+
+        return true;
 
     }
 
