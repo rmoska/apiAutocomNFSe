@@ -1,7 +1,7 @@
 <?php
 // required headers
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+header("Content-Type: application/json; charset=iso-8859-1");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
@@ -21,9 +21,6 @@ $notaFiscal = new NotaFiscal($db);
 // get emitente id
 $notaFiscal->idNotaFiscal = isset($_GET['idNotaFiscal']) ? $_GET['idNotaFiscal'] : die();
 
-// set emitente id to be deleted
-//$notaFiscalItem->idNotaFiscal = $data->idNotaFiscal;
- 
 // delete emitente
 if($arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db)){
  

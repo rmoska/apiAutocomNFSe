@@ -385,11 +385,6 @@ class NotaFiscalItem{
         // execute query
         $stmt->execute();
      
-//echo 'C='. $stmt->rowCount();
-//echo 'id='.$this->idNotaFiscal;
-//echo 'or='.$this->numeroOrdem.'<br>';
-
-
         // get retrieved row
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
