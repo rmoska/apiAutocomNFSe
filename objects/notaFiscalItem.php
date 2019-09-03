@@ -373,7 +373,7 @@ class NotaFiscalItem{
     function readOne(){
  
         // query to read single record
-        $query = "SELECT * FROM " . $this->tableName . " WHERE idNotaFiscal = ?  AND nfi.numeroOrdem = ? LIMIT 0,1";
+        $query = "SELECT * FROM " . $this->tableName . " WHERE idNotaFiscal = ?  AND numeroOrdem = ? LIMIT 0,1";
 
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
@@ -385,9 +385,9 @@ class NotaFiscalItem{
         // execute query
         $stmt->execute();
      
-echo 'C='. $stmt->rowCount();
-echo 'id='.$this->idNotaFiscal;
-echo 'or='.$this->numeroOrdem.'<br>';
+//echo 'C='. $stmt->rowCount();
+//echo 'id='.$this->idNotaFiscal;
+//echo 'or='.$this->numeroOrdem.'<br>';
 
 
         // get retrieved row
