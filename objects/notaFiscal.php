@@ -407,8 +407,6 @@ class NotaFiscal{
         $notaFiscalItem = new NotaFiscalItem($db);
         $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
 
-print_r($arrayNotaFiscalItem);
-
         $emitente = new Emitente($db);
         $emitente->idEmitente = $notaFiscal->idEmitente;
         $emitente->readOne();
@@ -449,7 +447,7 @@ print_r($arrayNotaFiscalItem);
             // 
             $pdf->SetFont('Arial', 'B', '10');
             $pdf->SetXY(10,14);
-            $pdf->MultiCell(90, 4, $emitente->nome, 0, 'C', 0); 
+            $pdf->MultiCell(90, 4, utf8_decode($emitente->nome), 0, 'C', 0); 
         //			$pdf->SetFontSize(7);
         //			$pdf->Image('figuras/logo_nf.jpg', 20, 12, 40); // importa uma imagem 
             $pdf->SetFont('Arial', '', 9);
