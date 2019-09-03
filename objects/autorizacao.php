@@ -69,6 +69,8 @@ class Autorizacao{
                 fclose($arqCert);
             }
 
+            $this->getToken();
+
             return true;
             
         }

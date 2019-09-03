@@ -342,13 +342,13 @@ if(
             fwrite($arqNFe, $result);
             fclose($arqNFe);
             //
-            // gerar pdf
-            $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
-            //
             $notaFiscal->numero = $nuNF;
             $notaFiscal->chaveNF = $cdVerif;
             $notaFiscal->situacao = "F";
             $notaFiscal->dataProcessamento = $dtProc;
+            //
+            // gerar pdf
+            $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
             //
             // update notaFiscal
             if(!$notaFiscal->update()){
@@ -365,14 +365,6 @@ if(
                                        "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPdf));
                 exit;
             }
-
-
-            //
-//            $idNF = $proxNota; 
-//            include 'nfse_email_envia.php';
-            //
-
-
             
         }
         else 
@@ -411,9 +403,6 @@ if(
             }
 
         }
-    
-
-
 
     }
     else{
@@ -424,7 +413,6 @@ if(
 
     }
 
-    
 }
  
 // tell the user data is incomplete
