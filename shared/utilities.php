@@ -41,7 +41,7 @@ class Utilities{
     }
  
     
-    function mask($val, $mask)
+    public function mask($val, $mask)
     {
         $maskared = '';
         $k = 0;
