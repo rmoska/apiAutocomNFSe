@@ -386,6 +386,8 @@ class NotaFiscalItem{
         $stmt->execute();
      
 echo 'C='. $stmt->rowCount();
+echo 'id='.$this->idNotaFiscal;
+echo 'or='.$this->numeroOrdem.'<br>';
 
 
         // get retrieved row
@@ -411,9 +413,6 @@ echo 'C='. $stmt->rowCount();
         $this->valorImpAproxEst = $row['valorImpAproxEst'];
         $this->valorImpAproxMun = $row['valorImpAproxMun'];
         $this->observacao = $row['observacao'];
-
-        echo "PDO::errorCode(): ", $stmt->errorCode();
-
 
     }
     
