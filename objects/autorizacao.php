@@ -150,6 +150,9 @@ class Autorizacao{
     function createDir($documento) {
 
         $dirEmit = "arquivosNFSe/".$documento;
+
+echo $dirEmit;
+
         if(!is_dir($dirEmit))
             mkdir($dirEmit, 0755);
         if(!is_dir($dirEmit."/certificado"))
