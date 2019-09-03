@@ -385,9 +385,9 @@ class NotaFiscalItem{
         // execute query
         $stmt->execute();
      
-//echo 'C='. $stmt->rowCount();
-//echo 'id='.$this->idNotaFiscal;
-//echo 'or='.$this->numeroOrdem.'<br>';
+echo 'C='. $stmt->rowCount();
+echo 'id='.$this->idNotaFiscal;
+echo 'or='.$this->numeroOrdem.'<br>';
 
 
         // get retrieved row
