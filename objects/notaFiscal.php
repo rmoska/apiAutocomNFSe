@@ -41,7 +41,7 @@ class NotaFiscal{
         $this->conn = $db;
     }
 
-    // create emitente
+    // create nota fiscal
     function create(){
     
         // query to insert record
@@ -119,7 +119,8 @@ class NotaFiscal{
         $stmt->bindParam(":valorDesconto", $this->valorDesconto);
         $stmt->bindParam(":obsImpostos", $this->obsImpostos);
         $stmt->bindParam(":dadosAdicionais", $this->dadosAdicionais);
-    
+
+    /*
         // execute query
         if($stmt->execute()){
             $this->idNotaFiscal = $this->conn->lastInsertId();
@@ -127,7 +128,21 @@ class NotaFiscal{
         }
     
         return false;
-        
+     */   
+
+        // execute query
+        if($stmt->execute()){
+            $this->idNotaFiscal = $this->conn->lastInsertId();
+            return array(true);
+        }
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+
+        }
+
+
     }    
 
     // update emitente

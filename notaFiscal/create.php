@@ -138,9 +138,12 @@ if(
     $notaFiscal->cfop = $cfps;
 
     // create notaFiscal
-    if(!$notaFiscal->create()){
+
+
+    $retorno = $notaFiscal->create();
+    if(!$retorno[0]){
         http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal. Serviço indisponível. (I01)"));
+        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal.(I01)", "erro" => $retorno[1]));
         exit;
     }
 
