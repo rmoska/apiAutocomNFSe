@@ -68,9 +68,8 @@ class Tomador{
 
                 $aErr = $stmt->errorInfo();
 
-echo $stmt->errorCode();
-
-print_r($stmt->errorInfo());
+//print_r($stmt->errorInfo());
+print_r($aErr);
 
                 return $aErr[2];
 
