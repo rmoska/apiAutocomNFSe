@@ -342,8 +342,6 @@ if(
        	//
         // transmite NFSe	
 
-/*
-
         $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
@@ -355,7 +353,6 @@ if(
         curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
         //
 
-*/
         $result = curl_exec($curl);
         //
         $info = curl_getinfo( $curl );
