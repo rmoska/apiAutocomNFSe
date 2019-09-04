@@ -341,16 +341,14 @@ class NotaFiscal{
         $query = "SELECT nf.numero, nf.situacao FROM " . $this->tableName . " nf
                   WHERE nf.docOrigemNumero = ? AND nf.situacao IN ('P','F') LIMIT 1"; // Pendente / Faturada
     
-echo $query;
-
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
+        $this->docOrigemNumero=htmlspecialchars(strip_tags($this->docOrigemNumero));
     
         // bind
-        $stmt->bindParam(1, $this->idNotaFiscal);
+        $stmt->bindParam(1, $this->docOrigemNumero);
     
         // execute query
         $stmt->execute();
