@@ -108,6 +108,9 @@ if(
             if($retorno = $tomador->create()){
                 // set notaFiscal
                 $notaFiscal->idTomador = $tomador->idTomador;
+
+echo 'ok'.$retorno;
+
             }
             else{
                 http_response_code(503);
