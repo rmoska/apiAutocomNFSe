@@ -70,7 +70,9 @@ class Tomador{
         catch(PDOException $e)
         {
 
+
             $aErr = $stmt->errorInfo();
+            print_r($aErr);
             return $aErr[2];
 
         }
