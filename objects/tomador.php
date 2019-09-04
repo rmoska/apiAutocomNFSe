@@ -66,14 +66,7 @@ class Tomador{
             }
             else {
 
-                $aErr = $this->conn->errorInfo();
-
-                print_r($aErr);
-
-echo $stmt->errorCode();
-
-print_r($stmt->errorInfo());
-
+                $aErr = $stmt->errorInfo();
                 return $aErr[2];
 
             }
