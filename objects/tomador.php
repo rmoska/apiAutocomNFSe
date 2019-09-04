@@ -71,8 +71,10 @@ class Tomador{
         {
 
 
-            $aErr = $stmt->errorInfo();
+            $aErr = $this->conn->errorInfo();
+
             print_r($aErr);
+
             return $aErr[2];
 
         }
