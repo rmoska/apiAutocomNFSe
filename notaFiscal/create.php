@@ -65,6 +65,11 @@ if(
         exit;
     }
 
+    
+    echo json_encode(array("http_code" => "500", "message" => "Não Achou Nota Fiscal"));
+    exit;
+
+
     // check / create tomador
     if(
         !empty($data->tomador->documento) &&
