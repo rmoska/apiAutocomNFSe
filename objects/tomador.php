@@ -27,7 +27,7 @@ class Tomador{
     function create(){
     
             // query to insert record
-            $query = "INSERT INTO " . $this->tableName . " SET a=b,
+            $query = "INSERT INTO " . $this->tableName . " SET
                         documento=:documento, nome=:nome, 
                         logradouro=:logradouro, numero=:numero, complemento=:complemento, bairro=:bairro, cep=:cep, 
                         codigomunicipio=:codigoMunicipio, uf=:uf, email=:email";
