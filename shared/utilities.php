@@ -61,6 +61,14 @@ class Utilities{
         return $maskared;
     }
     
-
+    public function limpaEspeciais($texto) {
+        $caractInv = array('&','<','>','"','\'','\´','º','º','ª','Ø','±','µ','²','°','–','²');
+        $caractSub = array('e','-','+',' ',' ',' ','.','.','a','0','~','m','2','.','-','2');
+        for($i=0;$i<count($caractInv);$i++){
+          $texto = ereg_replace($caractInv[$i],$caractSub[$i],$texto);	
+        }
+        return $texto;
+      }
+      
 }
 ?>

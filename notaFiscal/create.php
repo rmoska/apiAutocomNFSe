@@ -257,20 +257,21 @@ if(
             http_response_code(503);
             echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
             exit;
-
         }
 
         // montar xml nfse
 		$vlTotBC = 0; 
 		$vlTotISS = 0; 
 		$vlTotServ = 0; 
-
         foreach ( $arrayItemNF as $notaFiscalItem ) {
             $vlTotServ += $notaFiscalItem->valorTotal;
 			$vlTotBC += $notaFiscalItem->valorBCIss; 
 			$vlTotISS += $notaFiscalItem->valorIss; 
 		}
 
+        include_once '../shared/utilities.php';
+        $utilities = new Utilities();
+        
 		//			
 		$xml = new XMLWriter;
 		$xml->openMemory();
@@ -307,8 +308,8 @@ if(
 			$xml->writeElement("cst", $notaFiscalItem->cstIss);
             //
             
-//            $nmProd = trim(limpaCaractNFe(retiraAcentos($notaFiscalItem->descricao)));
-            $nmProd = trim($notaFiscalItem->descricaoItemVenda);
+            $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
+//            $nmProd = trim($notaFiscalItem->descricaoItemVenda);
 
 			if ($notaFiscalItem->observacao > '')
 				$nmProd .= ' - '.$notaFiscalItem->observacao;
@@ -326,7 +327,7 @@ if(
 		}
 		$xml->endElement(); // ItensServico
 		//
-		$xml->writeElement("logradouroTomador", $tomador->logradouro);
+		$xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
 
         $nuAEDF = $autorizacao->aedf; 
 //        if ($autorizacao->ambiente = 0)
@@ -361,7 +362,6 @@ if(
 		//
        	//
         // transmite NFSe	
-
         $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
