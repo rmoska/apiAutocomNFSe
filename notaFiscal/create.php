@@ -382,9 +382,6 @@ if(
             $notaFiscal->situacao = "F";
             $notaFiscal->dataProcessamento = $dtProc;
             //
-            // gerar pdf
-            $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
-            //
             // update notaFiscal
             if(!$notaFiscal->update()){
                 http_response_code(503);
@@ -392,6 +389,10 @@ if(
                 exit;
             }
             else {
+                //
+                // gerar pdf
+                $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
+
                 // set response code - 201 created
                 http_response_code(201);
                 echo json_encode(array("http_code" => "201", 

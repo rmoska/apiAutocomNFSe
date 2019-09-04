@@ -28,7 +28,7 @@ if($arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db)){
     http_response_code(200);
  
     // tell the user
-    echo json_encode(array("message" => "Arquivo PDF criado", "linkPDF" => $arqPDF));
+    echo json_encode(array("message" => "Arquivo PDF criado", "linkPDF" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
 }
  
 // if unable to delete emitente
