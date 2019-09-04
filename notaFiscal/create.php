@@ -109,9 +109,6 @@ if(
             if($retorno[0]){
                 // set notaFiscal
                 $notaFiscal->idTomador = $tomador->idTomador;
-
-echo 'ok'.$retorno[0];
-
             }
             else{
                 http_response_code(503);
@@ -120,8 +117,6 @@ echo 'ok'.$retorno[0];
             }
         }
     }
-
-exit;
 
     // check emitente
     $emitente = new Emitente($db);
