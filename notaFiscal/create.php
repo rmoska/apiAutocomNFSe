@@ -71,7 +71,6 @@ if(
         !empty($data->tomador->nome) &&
         !empty($data->tomador->logradouro) &&
         !empty($data->tomador->numero) &&
-        !empty($data->tomador->complemento) &&
         !empty($data->tomador->bairro) &&
         !empty($data->tomador->cep) &&
         !empty($data->tomador->codigoMunicipio) &&
@@ -117,7 +116,13 @@ if(
             }
         }
     }
-
+    else{
+ 
+        // set response code - 400 bad request
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos."));
+    }
+    
     // check emitente
     $emitente = new Emitente($db);
     $emitente->documento = $data->documento;
@@ -138,8 +143,6 @@ if(
     $notaFiscal->cfop = $cfps;
 
     // create notaFiscal
-
-
     $retorno = $notaFiscal->create();
     if(!$retorno[0]){
         http_response_code(503);
