@@ -26,7 +26,6 @@ class Tomador{
     // create tomador
     function create(){
     
-        try { 
             // query to insert record
             $query = "INSERT INTO " . $this->tableName . " SET a=b,
                         documento=:documento, nome=:nome, 
@@ -65,19 +64,15 @@ class Tomador{
                 $this->idTomador = $this->conn->lastInsertId();
                 return true;
             }
-            
-        }
-        catch(PDOException $e)
-        {
+else {
 
+    $aErr = $this->conn->errorInfo();
 
-            $aErr = $this->conn->errorInfo();
+    print_r($aErr);
 
-            print_r($aErr);
+    return $aErr[2];
 
-            return $aErr[2];
-
-        }
+}
     
 //        return false;
         
