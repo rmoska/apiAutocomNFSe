@@ -105,7 +105,8 @@ if(
             $tomador->uf = $data->tomador->uf;
             $tomador->email = $data->tomador->email;
 
-            if($retorno[0] = $tomador->create()){
+            $retorno = $tomador->create();
+            if($retorno[0]){
                 // set notaFiscal
                 $notaFiscal->idTomador = $tomador->idTomador;
 
