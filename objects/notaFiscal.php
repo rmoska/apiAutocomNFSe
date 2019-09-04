@@ -120,18 +120,9 @@ class NotaFiscal{
         $stmt->bindParam(":obsImpostos", $this->obsImpostos);
         $stmt->bindParam(":dadosAdicionais", $this->dadosAdicionais);
 
-    /*
         // execute query
         if($stmt->execute()){
-            $this->idNotaFiscal = $this->conn->lastInsertId();
-            return true;
-        }
-    
-        return false;
-     */   
 
-        // execute query
-        if($stmt->execute()){
             $this->idNotaFiscal = $this->conn->lastInsertId();
             return array(true);
         }
@@ -139,10 +130,7 @@ class NotaFiscal{
 
             $aErr = $stmt->errorInfo();
             return array(false, $aErr[2]);
-
         }
-
-
     }    
 
     // update emitente

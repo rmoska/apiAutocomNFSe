@@ -190,15 +190,15 @@ if(
                 $itemVenda->cnae = $item->cnae;
                 $itemVenda->ncm = $item->nbs;
 
-                if($itemVenda->create()){
-                    // set notaFiscal
-                    $notaFiscalItem->idItemVenda = $itemVenda->idItemVenda;
-                }
-                else{
+                $retorno = $itemVenda->create();
+                if(!$retorno[0]){
                     http_response_code(503);
-                    echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Venda. Serviço indisponível."));
+                    echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
                     $db->rollBack();
                     exit;
+                }
+                else{
+                    $notaFiscalItem->idItemVenda = $itemVenda->idItemVenda;
                 }
             }
 
@@ -222,9 +222,10 @@ if(
                 $notaFiscalItem->valorIss = 0.00;
             }
 
-            if(!$notaFiscalItem->create()){
+            $retorno = $notaFiscalItem->create();
+            if(!$retorno[0]){
                 http_response_code(503);
-                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));
+                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", "erro" => $retorno[1]));
                 $db->rollBack();
                 exit;
             }
@@ -232,9 +233,7 @@ if(
 
                 $notaFiscalItem->descricaoItemVenda = $item->descricao;
                 $arrayItemNF[] = $notaFiscalItem;
-
             }
-
         }
     }
     //

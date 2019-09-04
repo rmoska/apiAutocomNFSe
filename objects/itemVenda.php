@@ -38,15 +38,18 @@ class ItemVenda{
         $stmt->bindParam(":descricao", $this->descricao);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":ncm", $this->ncm);
-    
+
         // execute query
         if($stmt->execute()){
+
             $this->idItemVenda = $this->conn->lastInsertId();
-            return true;
+            return array(true);
         }
-    
-        return false;
-        
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     function readOne(){

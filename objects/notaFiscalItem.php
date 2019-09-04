@@ -59,7 +59,7 @@ class NotaFiscalItem{
     function create(){
 
         // query to insert record
-        $query = "INSERT INTO " . $this->tableName . " SET a=b,
+        $query = "INSERT INTO " . $this->tableName . " SET 
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
                     valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
@@ -158,18 +158,17 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorImpAproxEst", $this->valorImpAproxEst);
         $stmt->bindParam(":valorImpAproxMun", $this->valorImpAproxMun);
         $stmt->bindParam(":observacao", $this->observacao);
-    
-//        try{
-            // execute query
-            if($stmt->execute()){
-                return true;
-            }
-//        }catch(PDOException $e){
-//            echo $e->getMessage();
-//        }
-    
-        return false;
-        
+
+        // execute query
+        if($stmt->execute()){
+
+            return array(true);
+        }
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     // update emitente
