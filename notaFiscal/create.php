@@ -397,7 +397,7 @@ if(
                 echo json_encode(array("http_code" => "201", 
                                        "message" => "Nota Fiscal emitida", 
                                        "xml" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$dirXmlRet.$arqXmlRet,
-                                       "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPdf));
+                                       "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
                 exit;
             }
             

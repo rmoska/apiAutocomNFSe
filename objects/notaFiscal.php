@@ -806,7 +806,7 @@ class NotaFiscal{
         $arqPdf = $emitente->documento."_".substr(str_pad($notaFiscal->numero,8,'0',STR_PAD_LEFT),0,8)."-nfse.pdf";
         $pdf->Output("../".$dirPdf.$arqPdf,'F');
 
-        return $arqPdf;
+        return $dirPdf.$arqPdf;
 
     }
 
