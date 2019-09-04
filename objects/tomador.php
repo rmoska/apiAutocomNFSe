@@ -26,6 +26,8 @@ class Tomador{
     // create tomador
     function create(){
     
+echo 'tomador err';
+
         try { 
             // query to insert record
             $query = "INSERT INTO " . $this->tableName . " SET a=b,
