@@ -34,7 +34,9 @@ echo 'tomador err';
                         documento=:documento, nome=:nome, 
                         logradouro=:logradouro, numero=:numero, complemento=:complemento, bairro=:bairro, cep=:cep, 
                         codigomunicipio=:codigoMunicipio, uf=:uf, email=:email";
-        
+
+echo $query;
+
             // prepare query
             $stmt = $this->conn->prepare($query);
 

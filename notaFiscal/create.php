@@ -58,17 +58,12 @@ if(
     $checkNF = $notaFiscal->checkVenda();
     if ($checkNF["existe"] > 0) {
 
-        ($checkNF["existe"] == "F") ? $situacao = "Faturada" : $situacao = "Pendente"; 
+        ($checkNF["situacao"] == "F") ? $situacao = "Faturada" : $situacao = "Pendente"; 
         http_response_code(503);
         echo json_encode(array("http_code" => "500", 
                                "message" => "Nota Fiscal já gerada para esta Venda. NF n. ".$checkNF["numeroNF"]." - Situação ".$situacao));
         exit;
     }
-
-    
-    echo json_encode(array("http_code" => "500", "message" => "Não Achou Nota Fiscal"));
-    exit;
-
 
     // check / create tomador
     if(
@@ -121,6 +116,8 @@ if(
             }
         }
     }
+
+exit;
 
     // check emitente
     $emitente = new Emitente($db);

@@ -353,8 +353,6 @@ class NotaFiscal{
         // execute query
         $stmt->execute();
 
-        echo "PDO::errorCode(): ", $stmt->errorCode();
-
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $situacao = $row['situacao'];
         $nuNF = $row['numero'];
