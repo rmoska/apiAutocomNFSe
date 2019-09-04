@@ -62,14 +62,12 @@ class Tomador{
             // execute query
             if($stmt->execute()){
                 $this->idTomador = $this->conn->lastInsertId();
-                return true;
+                return array(true);
             }
             else {
 
                 $aErr = $stmt->errorInfo();
-
-//echo $aErr[2];
-                return $aErr[2];
+                return array(false, $aErr[2]);
 
             }
     

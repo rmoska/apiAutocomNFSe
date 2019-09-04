@@ -105,16 +105,16 @@ if(
             $tomador->uf = $data->tomador->uf;
             $tomador->email = $data->tomador->email;
 
-            if($retorno = $tomador->create()){
+            if($retorno[0] = $tomador->create()){
                 // set notaFiscal
                 $notaFiscal->idTomador = $tomador->idTomador;
 
-echo 'ok'.$retorno;
+echo 'ok'.$retorno[0];
 
             }
             else{
                 http_response_code(503);
-                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno));
+                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1]));
                 exit;
             }
         }
