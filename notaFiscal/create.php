@@ -121,6 +121,7 @@ if(
         // set response code - 400 bad request
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos."));
+        exit;
     }
     
     // check emitente
@@ -241,7 +242,7 @@ if(
         if(!$autorizacao->getToken()){
 
             http_response_code(503);
-            echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Token não disponível."));
+            echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
             exit;
 
         }
@@ -397,6 +398,8 @@ if(
                 http_response_code(201);
                 echo json_encode(array("http_code" => "201", 
                                        "message" => "Nota Fiscal emitida", 
+                                       "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                       "numeroNF" => $notaFiscal->numero,
                                        "xml" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$dirXmlRet.$arqXmlRet,
                                        "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
                 exit;
