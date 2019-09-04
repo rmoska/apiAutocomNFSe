@@ -64,15 +64,19 @@ class Tomador{
                 $this->idTomador = $this->conn->lastInsertId();
                 return true;
             }
-else {
+            else {
 
-    $aErr = $this->conn->errorInfo();
+                $aErr = $this->conn->errorInfo();
 
-    print_r($aErr);
+                print_r($aErr);
 
-    return $aErr[2];
+echo $stmt->errorCode();
 
-}
+print_r($stmt->errorInfo());
+
+                return $aErr[2];
+
+            }
     
 //        return false;
         
