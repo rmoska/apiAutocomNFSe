@@ -120,6 +120,28 @@ class Autorizacao{
         return false;
     }    
 
+    // check autorizacao 
+    function check(){
+    
+        // select query
+        $query = "SELECT a.* FROM " . $this->tableName . " a
+                  WHERE a.idEmitente = ? LIMIT 1";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // sanitize
+        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
+    
+        // bind
+        $stmt->bindParam(1, $this->idEmitente);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt->rowCount();
+    }    
+
     function readOne(){
  
         // query to read single record

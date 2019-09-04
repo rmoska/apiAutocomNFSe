@@ -45,15 +45,20 @@ if(
     $emitente->readOne();
     $documento = $emitente->documento;
 
+    if ($autorizacao->check() > 0) {
+
+        http_response_code(503);
+        echo json_encode(array("http_code" => 503, "message" => "Já existe Autorização cadastrada para esta Emitente."));
+        exit;
+    }
     // create autorizacao
-    if($autorizacao->create($emitente->documento)){
+    else if($autorizacao->create($emitente->documento)){
  
         if (!$autorizacao->getToken()){
 
             http_response_code(503);
             echo json_encode(array("http_code" => 503, "message" => "Autorização com dados inválidos. Comunicação rejeitada."));
             exit;
-
         }
         else {
             include_once '../comunicacao/signNFSe.php';
