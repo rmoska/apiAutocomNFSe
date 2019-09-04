@@ -65,6 +65,10 @@ if(
         exit;
     }
 
+    //
+    // abre transação tomador - itens - nf - nfitens
+    $db->beginTransaction();
+
     // check / create tomador
     if(
         !empty($data->tomador->documento) &&
@@ -112,6 +116,7 @@ if(
             else{
                 http_response_code(503);
                 echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1]));
+                $db->rollBack();
                 exit;
             }
         }
@@ -121,6 +126,7 @@ if(
         // set response code - 400 bad request
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos."));
+        $db->rollBack();
         exit;
     }
     
@@ -133,6 +139,7 @@ if(
     else{
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
+        $db->rollBack();
         exit;
     }
     $emitente->idEmitente = $idEmitente;
@@ -148,6 +155,7 @@ if(
     if(!$retorno[0]){
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal.(I01)", "erro" => $retorno[1]));
+        $db->rollBack();
         exit;
     }
 
@@ -189,6 +197,7 @@ if(
                 else{
                     http_response_code(503);
                     echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Venda. Serviço indisponível."));
+                    $db->rollBack();
                     exit;
                 }
             }
@@ -216,6 +225,7 @@ if(
             if(!$notaFiscalItem->create()){
                 http_response_code(503);
                 echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal. Serviço indisponível."));
+                $db->rollBack();
                 exit;
             }
             else{
@@ -227,6 +237,10 @@ if(
 
         }
     }
+    //
+    // fecha inclusões
+    $db->commit();
+
 
     if (count($arrayItemNF) > 0)
     {
