@@ -24,12 +24,47 @@ $notaFiscal = new NotaFiscal($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 
+/*
+// make sure data is not empty
+if(
+    empty($data->documento) ||
+    empty($data->idVenda) ||
+    empty($data->valorTotal) 
+){
+
+    // set response code - 400 bad request
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos."));
+*/
+
+
 // make sure data is not empty
 if(
     !empty($data->documento) &&
     !empty($data->idVenda) &&
     !empty($data->valorTotal) 
 ){
+
+    // set notaFiscal property values
+    $notaFiscal->docOrigemTipo = "V"; // Venda
+    $notaFiscal->docOrigemNumero = $data->idVenda;
+    $notaFiscal->idEntradaSaida = "S";
+    $notaFiscal->situacao = "P"; // Pendente
+    $notaFiscal->valorTotal = $data->valorTotal;
+    $notaFiscal->dataEmissao = date("Y-m-d");
+    $notaFiscal->dadosAdicionais = $data->observacao;
+
+    // check NF já gerada para esta Venda
+    $checkNF = $notaFiscal->checkVenda();
+    if ($checkNF["existe"] > 0) {
+
+        ($checkNF["existe"] == "F") $situacao = "Faturada" : $situacao = "Pendente"; 
+        http_response_code(503);
+        echo json_encode(array("http_code" => "500", 
+                               "message" => "Nota Fiscal já gerada para esta Venda. NF n. ".$checkNF["numeroNF"]." - Situação ".$situacao));
+        exit;
+    }
+
     // check / create tomador
     if(
         !empty($data->tomador->documento) &&
@@ -90,20 +125,11 @@ if(
     }
     else{
         http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Emitente não cadastrado. Nota Fiscal não emitida."));
+        echo json_encode(array("http_code" => "503", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
         exit;
     }
     $emitente->idEmitente = $idEmitente;
     $emitente->readOne();
-
-    // set notaFiscal property values
-    $notaFiscal->docOrigemTipo = "V";
-    $notaFiscal->docOrigemNumero = $data->idVenda;
-    $notaFiscal->idEntradaSaida = "S";
-    $notaFiscal->situacao = "A";
-    $notaFiscal->valorTotal = $data->valorTotal;
-    $notaFiscal->dataEmissao = date("Y-m-d");
-    $notaFiscal->dadosAdicionais = $data->observacao;
 
     if ($tomador->uf != 'SC') $cfps = '9203';
     else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
@@ -314,6 +340,9 @@ if(
 		//
        	//
         // transmite NFSe	
+
+/*
+
         $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
@@ -324,6 +353,8 @@ if(
         curl_setopt($curl, CURLOPT_POST, TRUE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
         //
+
+*/
         $result = curl_exec($curl);
         //
         $info = curl_getinfo( $curl );
@@ -375,6 +406,7 @@ if(
                 exit;
             }
             else {
+
                 $msg = $result;
                 $dados = json_decode($result);
                 if (isset($dados->error)) {

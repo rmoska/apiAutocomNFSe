@@ -333,6 +333,35 @@ class NotaFiscal{
         return $stmt->rowCount();
     }    
 
+    //
+    // check notaFiscal Venda.Emitente
+    function checkVenda(){
+    
+        // select query
+        $query = "SELECT nf.numero, nf.situacao FROM " . $this->tableName . " nf
+                  WHERE nf.docOrigemNumero = ? AND nf.situacao IN ('P','F') LIMIT 1"; // Pendente / Faturada
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // sanitize
+        $this->idNotaFiscal=htmlspecialchars(strip_tags($this->idNotaFiscal));
+    
+        // bind
+        $stmt->bindParam(1, $this->idNotaFiscal);
+    
+        // execute query
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $situacao = $row['situacao'];
+        $nuNF = $row['numero'];
+    
+        return array("existe" => $stmt->rowCount(), "situacao" => $situacao, "numeroNF" => $nuNF);
+    }    
+
+    //
+    // calcula Imposto Aproximado na Nota (IBPT)
     function calcImpAprox(){
 
         // update query
@@ -388,9 +417,10 @@ class NotaFiscal{
         }
     
         return false;
-   }
+    }
 
-
+    //
+    // cria PDF da NFSe PMF
     function printDanfpse($idNotaFiscal, $db) {
 
         include_once "../../fpdf/qrcode/qrcode.class.php"; 
