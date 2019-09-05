@@ -113,7 +113,12 @@ class NotaFiscal{
         $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
         $stmt->bindParam(":textoJustificativa", $this->textoJustificativa);
-        $stmt->bindParam(":dataCancelamento", $this->dataCancelamento);
+
+        $dtCanc = $this->dataCancelamento;
+        if ($this->dataCancelamento == "NULL")
+            $dtCanc = NULL;
+        $stmt->bindParam(":dataCancelamento", $dtCanc, PDO::PARAM_NULL);
+
         $stmt->bindParam(":valorTotalMercadorias", $this->valorTotalMercadorias);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorFrete", $this->valorFrete);
