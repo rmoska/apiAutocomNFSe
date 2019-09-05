@@ -44,9 +44,7 @@ if($emitente->update()){
  
     // set response code - 200 ok
     http_response_code(200);
- 
-    // tell the user
-    echo json_encode(array("message" => "Emitente atualizado."));
+    echo json_encode(array("http_code" => "201", "message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
 }
  
 // if unable to update emitente, tell the user
@@ -54,8 +52,6 @@ else{
  
     // set response code - 503 service unavailable
     http_response_code(503);
- 
-    // tell the user
-    echo json_encode(array("message" => "Não foi possível atualizar o Emitente. Serviço indisponível."));
+    echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Emitente. Serviço indisponível."));
 }
 ?>

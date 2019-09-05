@@ -22,11 +22,12 @@ class NotaFiscal{
     public $dataInclusao;
     public $dataEmissao;
     public $situacao;
+    public $homologacao;
     public $reciboNF;
     public $protocoloNF;
     public $textoResposta;
     public $textoJustificativa;
-    public $dataCancelamento;
+    public $dataCancelamento=NULL;
     public $valorTotalMercadorias;
     public $valorTotal;
     public $valorFrete;
@@ -50,7 +51,7 @@ class NotaFiscal{
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
-                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao,
+                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao, homologacao=:homologacao,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
@@ -76,6 +77,7 @@ class NotaFiscal{
         $this->dataInclusao=htmlspecialchars(strip_tags($this->dataInclusao));
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
+        $this->homologacao=htmlspecialchars(strip_tags($this->homologacao));
         $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
         $this->protocoloNF=htmlspecialchars(strip_tags($this->protocoloNF));
         $this->textoResposta=htmlspecialchars(strip_tags($this->textoResposta));
@@ -106,6 +108,7 @@ class NotaFiscal{
         $stmt->bindParam(":dataInclusao", $this->dataInclusao);
         $stmt->bindParam(":dataEmissao", $this->dataEmissao);
         $stmt->bindParam(":situacao", $this->situacao);
+        $stmt->bindParam(":homologacao", $this->homologacao);
         $stmt->bindParam(":reciboNF", $this->reciboNF);
         $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
@@ -142,7 +145,7 @@ class NotaFiscal{
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
-                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao,
+                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao, homologacao=:homologacao,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
@@ -171,6 +174,7 @@ class NotaFiscal{
         $this->dataInclusao=htmlspecialchars(strip_tags($this->dataInclusao));
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
+        $this->homologacao=htmlspecialchars(strip_tags($this->homologacao));
         $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
         $this->protocoloNF=htmlspecialchars(strip_tags($this->protocoloNF));
         $this->textoResposta=htmlspecialchars(strip_tags($this->textoResposta));
@@ -202,6 +206,7 @@ class NotaFiscal{
         $stmt->bindParam(":dataInclusao", $this->dataInclusao);
         $stmt->bindParam(":dataEmissao", $this->dataEmissao);
         $stmt->bindParam(":situacao", $this->situacao);
+        $stmt->bindParam(":homologacao", $this->homologacao);
         $stmt->bindParam(":reciboNF", $this->reciboNF);
         $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);

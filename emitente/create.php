@@ -49,8 +49,6 @@ if(
 
         // set response code - 400 bad request
         http_response_code(400);
-    
-        // tell the user
         echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento));
 
         exit;
@@ -60,8 +58,6 @@ if(
  
         // set response code - 201 created
         http_response_code(201);
- 
-        // tell the user
         echo json_encode(array("http_code" => "201", "message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
     }
  
@@ -70,8 +66,6 @@ if(
  
         // set response code - 503 service unavailable
         http_response_code(503);
- 
-        // tell the user
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Emitente. Serviço indisponível."));
     }
 }
@@ -81,8 +75,6 @@ else{
  
     // set response code - 400 bad request
     http_response_code(400);
- 
-    // tell the user
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos."));
 }
 ?>

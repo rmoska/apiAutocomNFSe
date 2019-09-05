@@ -208,7 +208,7 @@ class Autorizacao{
 
     }
 
-    function getToken() {
+    function getToken($homologacao) {
 
         // busca token autorização
         $aBasic = base64_encode("autocom-ws-client:93c9fb168c6bc8fa3d9fa8ade999c087");
@@ -225,8 +225,10 @@ class Autorizacao{
         //
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-        curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/autenticacao/oauth/token"); // homolog
-//        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/autenticacao/oauth/token");
+        if ($homologacao == "N")
+            curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/autenticacao/oauth/token");
+        else
+            curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/autenticacao/oauth/token"); // ===== HOMOLOGAÇÃO =====
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_POST, TRUE);

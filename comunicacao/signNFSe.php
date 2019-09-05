@@ -304,7 +304,7 @@ class SignNFSe {
             if ( !substr($conteudo,0,30) == substr($x509certdata['pkey'],0,30) ) {
                  //se diferentes gravar o novo
                 if (!file_put_contents($this->priKEY,$x509certdata['pkey']) ){
-                    $this->errMsg = 'Impossivel gravar no diretório!!! Permissão negada!!';
+                    $this->errMsg = 'Impossível gravar no diretório!!! Permissão negada!!';
                     $this->errStatus = true;
                     return false;
                 }
@@ -312,7 +312,7 @@ class SignNFSe {
         } else {
             //salva a chave privada no formato pem para uso so SOAP
             if ( !file_put_contents($this->priKEY,$x509certdata['pkey']) ){
-                   $this->errMsg = 'Impossivel gravar no diretório!!! Permissão negada!!';
+                   $this->errMsg = 'Impossível gravar no diretório!!! Permissão negada!!';
                    $this->errStatus = true;
                    return false;
             }

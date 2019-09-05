@@ -1,4 +1,7 @@
 <?php
+
+// Classe para emissão de NFSe PMF em ambiente de Homologação
+
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=iso-8859-1");
@@ -50,6 +53,7 @@ if(
     $notaFiscal->docOrigemNumero = $data->idVenda;
     $notaFiscal->idEntradaSaida = "S";
     $notaFiscal->situacao = "P"; // Pendente
+    $notaFiscal->homologacao = "S"; // ===== HOMOLOGAÇÃO =====
     $notaFiscal->valorTotal = $data->valorTotal;
     $notaFiscal->dataEmissao = date("Y-m-d");
     $notaFiscal->dadosAdicionais = $data->observacao;
@@ -252,7 +256,7 @@ if(
         $autorizacao->idEmitente = $notaFiscal->idEmitente;
         $autorizacao->readOne();
 
-        if(!$autorizacao->getToken()){
+        if(!$autorizacao->getToken($notaFiscal->homologacao)){
 
             http_response_code(503);
             echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
@@ -307,10 +311,7 @@ if(
 			$xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
 			$xml->writeElement("cst", $notaFiscalItem->cstIss);
             //
-            
             $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
-//            $nmProd = trim($notaFiscalItem->descricaoItemVenda);
-
 			if ($notaFiscalItem->observacao > '')
 				$nmProd .= ' - '.$notaFiscalItem->observacao;
 			$xml->writeElement("descricaoServico", trim($nmProd));
@@ -330,8 +331,8 @@ if(
 		$xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
 
         $nuAEDF = $autorizacao->aedf; 
-//        if ($autorizacao->ambiente = 0)
-            $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
+        // ===== HOMOLOGAÇÃO =====
+        $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
 
         $xml->writeElement("numeroAEDF", $nuAEDF);
 		if ($tomador->numero>0)
@@ -359,12 +360,15 @@ if(
         $nfse = new SignNFSe($arraySign);
 
 		$xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
-		//
+
+/*
+        //
        	//
         // transmite NFSe	
         $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+        // ===== HOMOLOGAÇÃO =====
 //        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
         curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa"); // homologação
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
@@ -373,6 +377,7 @@ if(
         curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
         //
 
+        */
         $result = curl_exec($curl);
         //
         $info = curl_getinfo( $curl );
