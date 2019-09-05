@@ -114,10 +114,10 @@ class NotaFiscal{
         $stmt->bindParam(":textoResposta", $this->textoResposta);
         $stmt->bindParam(":textoJustificativa", $this->textoJustificativa);
 
-        $dtCanc = $this->dataCancelamento;
-        if ($this->dataCancelamento == "NULL")
-            $dtCanc = NULL;
-        $stmt->bindParam(":dataCancelamento", $dtCanc, PDO::PARAM_NULL);
+        if (($this->dataCancelamento == "NULL") || ($this->dataCancelamento == "") || ($this->dataCancelamento == "0000-00-00"))
+            $stmt->bindValue(":dataCancelamento", NULL, PDO::PARAM_NULL);
+        else
+            $stmt->bindParam(":dataCancelamento", $this->dataCancelamento, PDO::PARAM_NULL);
 
         $stmt->bindParam(":valorTotalMercadorias", $this->valorTotalMercadorias);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
