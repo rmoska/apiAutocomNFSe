@@ -92,14 +92,14 @@ class Autorizacao{
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->documento=htmlspecialchars(strip_tags($this->idEmitente));
-        $this->nome=htmlspecialchars(strip_tags($this->crt));
-        $this->nomeFantasia=htmlspecialchars(strip_tags($this->cnae));
-        $this->logradouro=htmlspecialchars(strip_tags($this->aedf));
-        $this->numero=htmlspecialchars(strip_tags($this->cmc));
-        $this->complemento=htmlspecialchars(strip_tags($this->senhaWeb));
-        $this->bairro=htmlspecialchars(strip_tags($this->certificado));
-        $this->cep=htmlspecialchars(strip_tags($this->senha));
+        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
+        $this->crt=htmlspecialchars(strip_tags($this->crt));
+        $this->cnae=htmlspecialchars(strip_tags($this->cnae));
+        $this->aedf=htmlspecialchars(strip_tags($this->aedf));
+        $this->cmc=htmlspecialchars(strip_tags($this->cmc));
+        $this->senhaWeb=htmlspecialchars(strip_tags($this->senhaWeb));
+        $this->certificado=htmlspecialchars(strip_tags($this->certificado));
+        $this->senha=htmlspecialchars(strip_tags($this->senha));
 
         // bind new values
         $stmt->bindParam(":idEmitente", $this->idEmitente);
