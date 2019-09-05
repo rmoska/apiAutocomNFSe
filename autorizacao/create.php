@@ -68,15 +68,23 @@ if(
             exit;
         }
         else {
+
             include_once '../comunicacao/signNFSe.php';
             $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
             $certificado = new SignNFSe($arraySign);
+            if (!is_object($certificado)){
+                http_response_code(503);
+                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado));
+                exit;
+            }
             $validade = $certificado->certDaysToExpire;
+
         }
 
         // set response code - 201 created
         http_response_code(201);
         echo json_encode(array("http_code" => 201, "message" => "Autorização incluída", "token" => $autorizacao->token, "validade" => $validade." dias"));
+        exit;
     }
     else{
 

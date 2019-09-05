@@ -1,4 +1,4 @@
-<? 
+f<? 
 
 class SignNFSe {
 
@@ -60,7 +60,8 @@ class SignNFSe {
         }
 
         if ( !$retorno = $this->__loadCerts() ) {
-            echo $this->errMsg;
+//            echo $this->errMsg;
+            return $this->errMsg;
         }
 
         return true;
