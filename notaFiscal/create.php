@@ -329,8 +329,6 @@ if (count($arrayItemNF) > 0)
     // ===== HOMOLOGAÇÃO =====
     $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
 
-$nuAEDF = '123456';
-
     $xml->writeElement("numeroAEDF", $nuAEDF);
     if ($tomador->numero>0)
         $xml->writeElement("numeroEnderecoTomador", $tomador->numero);
