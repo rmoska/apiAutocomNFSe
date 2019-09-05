@@ -54,19 +54,19 @@ if(
         exit;
     }
     // create emitente
-    else if($emitente->create()){
- 
+    $retorno = $emitente->create();
+    if($retorno[0]){
+
         // set response code - 201 created
         http_response_code(201);
         echo json_encode(array("http_code" => "201", "message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
     }
- 
-    // if unable to create emitente, tell the user
+     // if unable to create emitente, tell the user
     else{
  
         // set response code - 503 service unavailable
         http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Emitente. Serviço indisponível."));
+        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Emitente. Serviço indisponível.", "erro" => $retorno[1]));
     }
 }
  

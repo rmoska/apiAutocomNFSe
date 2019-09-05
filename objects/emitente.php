@@ -74,11 +74,13 @@ class Emitente{
         // execute query
         if($stmt->execute()){
             $this->idEmitente = $this->conn->lastInsertId();
-            return true;
+            return array(true);
         }
-    
-        return false;
-        
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     // update emitente
@@ -128,12 +130,15 @@ class Emitente{
         $stmt->bindParam(":celular", $this->celular);
         $stmt->bindParam(":email", $this->email);
 
-        // execute the query
+        // execute query
         if($stmt->execute()){
-            return true;
+            return array(true);
         }
-    
-        return false;
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     // delete emitente

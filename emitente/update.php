@@ -40,7 +40,8 @@ $emitente->celular = $data->celular;
 $emitente->email = $data->email;
 
 // update emitente
-if($emitente->update()){
+$retorno = $emitente->update();
+if($retorno[0]){
  
     // set response code - 200 ok
     http_response_code(200);
@@ -52,6 +53,6 @@ else{
  
     // set response code - 503 service unavailable
     http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Emitente. Serviço indisponível."));
+    echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Emitente. Serviço indisponível.", "erro" => $retorno[1]));
 }
 ?>
