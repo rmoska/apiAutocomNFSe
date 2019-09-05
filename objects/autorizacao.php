@@ -102,8 +102,8 @@ class Autorizacao{
         $this->cep=htmlspecialchars(strip_tags($this->senha));
 
         // bind new values
-        $stmt->bindParam(":documento", $this->idEmitente);
-        $stmt->bindParam(":nome", $this->crt);
+        $stmt->bindParam(":idEmitente", $this->idEmitente);
+        $stmt->bindParam(":crt", $this->crt);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":aedf", $this->aedf);
         $stmt->bindParam(":cmc", $this->cmc);
