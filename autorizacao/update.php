@@ -61,7 +61,7 @@ if(
  
     if($retorno[0]){
 
-        if (!$autorizacao->getToken()){
+        if (!$autorizacao->getToken("S")){ 
 
             http_response_code(503);
             echo json_encode(array("http_code" => 503, "message" => "Autorização com dados inválidos. Comunicação rejeitada."));
