@@ -263,6 +263,40 @@ class NotaFiscal{
         
     }
 
+    // delete notaFiscal
+    function deleteCompleto(){
+    
+        // delete query
+        $query = "DELETE FROM notaFiscalItem WHERE idNotaFiscal = ?";
+    
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        // bind id of record to delete
+        $stmt->bindParam(1, $this->idNotaFiscal);
+    
+        // execute query
+        if($stmt->execute()){
+
+            // delete query
+            $query = "DELETE FROM " . $this->tableName . " WHERE idNotaFiscal = ?";
+        
+            // prepare query
+            $stmt = $this->conn->prepare($query);
+            // bind id of record to delete
+            $stmt->bindParam(1, $this->idNotaFiscal);
+
+            // execute query
+            if($stmt->execute()){
+
+                return true;
+            }
+
+            return false;
+        }
+    
+        return false;        
+    }
+
     // read notaFiscal
     function read(){
     
