@@ -26,53 +26,49 @@ class Tomador{
     // create tomador
     function create(){
     
-            // query to insert record
-            $query = "INSERT INTO " . $this->tableName . " SET
-                        documento=:documento, nome=:nome, 
-                        logradouro=:logradouro, numero=:numero, complemento=:complemento, bairro=:bairro, cep=:cep, 
-                        codigomunicipio=:codigoMunicipio, uf=:uf, email=:email";
+        // query to insert record
+        $query = "INSERT INTO " . $this->tableName . " SET
+                    documento=:documento, nome=:nome, 
+                    logradouro=:logradouro, numero=:numero, complemento=:complemento, bairro=:bairro, cep=:cep, 
+                    codigomunicipio=:codigoMunicipio, uf=:uf, email=:email";
 
-            // prepare query
-            $stmt = $this->conn->prepare($query);
+        // prepare query
+        $stmt = $this->conn->prepare($query);
 
-            // sanitize
-            $this->documento=htmlspecialchars(strip_tags($this->documento));
-            $this->nome=htmlspecialchars(strip_tags($this->nome));
-            $this->logradouro=htmlspecialchars(strip_tags($this->logradouro));
-            $this->numero=htmlspecialchars(strip_tags($this->numero));
-            $this->complemento=htmlspecialchars(strip_tags($this->complemento));
-            $this->bairro=htmlspecialchars(strip_tags($this->bairro));
-            $this->cep=htmlspecialchars(strip_tags($this->cep));
-            $this->codigoMunicipio=htmlspecialchars(strip_tags($this->codigoMunicipio));
-            $this->uf=htmlspecialchars(strip_tags($this->uf));
-            $this->email=htmlspecialchars(strip_tags($this->email));
-        
-            // bind values
-            $stmt->bindParam(":documento", $this->documento);
-            $stmt->bindParam(":nome", $this->nome);
-            $stmt->bindParam(":logradouro", $this->logradouro);
-            $stmt->bindParam(":numero", $this->numero);
-            $stmt->bindParam(":complemento", $this->complemento);
-            $stmt->bindParam(":bairro", $this->bairro);
-            $stmt->bindParam(":cep", $this->cep);
-            $stmt->bindParam(":codigoMunicipio", $this->codigoMunicipio);
-            $stmt->bindParam(":uf", $this->uf);
-            $stmt->bindParam(":email", $this->email);
-
-            // execute query
-            if($stmt->execute()){
-                $this->idTomador = $this->conn->lastInsertId();
-                return array(true);
-            }
-            else {
-
-                $aErr = $stmt->errorInfo();
-                return array(false, $aErr[2]);
-
-            }
+        // sanitize
+        $this->documento=htmlspecialchars(strip_tags($this->documento));
+        $this->nome=htmlspecialchars(strip_tags($this->nome));
+        $this->logradouro=htmlspecialchars(strip_tags($this->logradouro));
+        $this->numero=htmlspecialchars(strip_tags($this->numero));
+        $this->complemento=htmlspecialchars(strip_tags($this->complemento));
+        $this->bairro=htmlspecialchars(strip_tags($this->bairro));
+        $this->cep=htmlspecialchars(strip_tags($this->cep));
+        $this->codigoMunicipio=htmlspecialchars(strip_tags($this->codigoMunicipio));
+        $this->uf=htmlspecialchars(strip_tags($this->uf));
+        $this->email=htmlspecialchars(strip_tags($this->email));
     
-//        return false;
-        
+        // bind values
+        $stmt->bindParam(":documento", $this->documento);
+        $stmt->bindParam(":nome", $this->nome);
+        $stmt->bindParam(":logradouro", $this->logradouro);
+        $stmt->bindParam(":numero", $this->numero);
+        $stmt->bindParam(":complemento", $this->complemento);
+        $stmt->bindParam(":bairro", $this->bairro);
+        $stmt->bindParam(":cep", $this->cep);
+        $stmt->bindParam(":codigoMunicipio", $this->codigoMunicipio);
+        $stmt->bindParam(":uf", $this->uf);
+        $stmt->bindParam(":email", $this->email);
+
+        // execute query
+        if($stmt->execute()){
+            $this->idTomador = $this->conn->lastInsertId();
+            return array(true);
+        }
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     function readOne(){

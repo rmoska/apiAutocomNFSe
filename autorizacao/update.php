@@ -6,17 +6,19 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
+// include database and object files
 include_once '../config/database.php';
 include_once '../config/http_response_code.php';
 include_once '../objects/autorizacao.php';
-include_once '../objects/emitente.php';
  
+// get database connection
 $database = new Database();
 $db = $database->getConnection();
  
+// prepare emitente object
 $autorizacao = new Autorizacao($db);
  
-// get posted data
+// get id of emitente to be edited
 $data = json_decode(file_get_contents("php://input"));
  
 // make sure data is not empty
@@ -51,14 +53,11 @@ if(
     }
     $documento = $emitente->documento;
 
-    if ($autorizacao->check() > 0) {
-
-        http_response_code(503);
-        echo json_encode(array("http_code" => 503, "message" => "Já existe Autorização cadastrada para esta Emitente."));
-        exit;
-    }
-
-    $retorno = $autorizacao->create($emitente->documento);
+    if ($autorizacao->check() == 0)
+        $retorno = $autorizacao->create($emitente->documento);
+    else 
+        $retorno = $autorizacao->update($emitente->documento);
+ 
     if($retorno[0]){
 
         if (!$autorizacao->getToken()){
@@ -78,18 +77,14 @@ if(
         http_response_code(201);
         echo json_encode(array("http_code" => 201, "message" => "Autorização incluída", "token" => $autorizacao->token, "validade" => $validade." dias"));
     }
+    // if unable to create autorizacao, tell the user
     else{
-
+ 
+        // set response code - 503 service unavailable
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1]));
         exit;
     }
 }
-// tell the user data is incomplete
-else{
- 
-    // set response code - 400 bad request
-    http_response_code(400);
-    echo json_encode(array("http_code" => 503, "message" => "Não foi possível incluir Autorizacao. Dados incompletos."));
-}
+
 ?>

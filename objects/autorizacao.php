@@ -69,14 +69,13 @@ class Autorizacao{
                 fclose($arqCert);
             }
 
-            return true;
-            
+            return array(true);
         }
+        else {
 
-        echo "PDO::errorCode(): ", $stmt->errorCode();
-
-        return false;
-        
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     // update autorizacao
