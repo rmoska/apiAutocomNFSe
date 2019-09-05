@@ -113,12 +113,10 @@ class NotaFiscal{
         $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
         $stmt->bindParam(":textoJustificativa", $this->textoJustificativa);
-
         if (($this->dataCancelamento == "NULL") || ($this->dataCancelamento == "") || ($this->dataCancelamento == "0000-00-00"))
             $stmt->bindValue(":dataCancelamento", NULL, PDO::PARAM_NULL);
         else
             $stmt->bindParam(":dataCancelamento", $this->dataCancelamento, PDO::PARAM_NULL);
-
         $stmt->bindParam(":valorTotalMercadorias", $this->valorTotalMercadorias);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorFrete", $this->valorFrete);
@@ -216,7 +214,10 @@ class NotaFiscal{
         $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
         $stmt->bindParam(":textoJustificativa", $this->textoJustificativa);
-        $stmt->bindParam(":dataCancelamento", $this->dataCancelamento);
+        if (($this->dataCancelamento == "NULL") || ($this->dataCancelamento == "") || ($this->dataCancelamento == "0000-00-00"))
+            $stmt->bindValue(":dataCancelamento", NULL, PDO::PARAM_NULL);
+        else
+            $stmt->bindParam(":dataCancelamento", $this->dataCancelamento, PDO::PARAM_NULL);
         $stmt->bindParam(":valorTotalMercadorias", $this->valorTotalMercadorias);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorFrete", $this->valorFrete);
@@ -226,14 +227,16 @@ class NotaFiscal{
         $stmt->bindParam(":obsImpostos", $this->obsImpostos);
         $stmt->bindParam(":dadosAdicionais", $this->dadosAdicionais);
 
-        // execute the query
+        // execute query
         if($stmt->execute()){
-            return true;
-        }
-    
-        echo "PDO::errorCode(): ", $stmt->errorCode();
 
-        return false;
+            return array(true);
+        }
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     // delete notaFiscal
@@ -784,8 +787,10 @@ class NotaFiscal{
             $pdf->SetXY(95,264);
             $pdf->MultiCell(105, 3, utf8_decode($txt2), 0, 'L', 0); 
 
-//            $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
-            $chaveQR = 'http://nfps-e-hml.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
+            if ($notaFiscal->homologacao == "N") // PRODUÇÃO
+                $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
+            else // HOMOLOGAÇÃO
+                $chaveQR = 'http://nfps-e-hml.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
             $qrcode = new QRcode($chaveQR, 'M'); 
             $qrcode->disableBorder();
             $qrcode->displayFPDF(&$pdf, 175, 22, 20, $background=array(255,255,255), $color=array(0,0,0));

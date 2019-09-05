@@ -45,11 +45,11 @@ if(
     $emitente->celular = $data->celular;
     $emitente->email = $data->email;
     
-    if ($emitente->check() > 0) {
+    if ($idEmitente = $emitente->check() > 0) {
 
         // set response code - 400 bad request
         http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento));
+        echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento, "idEmitente" => $idEmitente));
 
         exit;
     }

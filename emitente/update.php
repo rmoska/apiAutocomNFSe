@@ -44,7 +44,7 @@ if($emitente->update()){
  
     // set response code - 200 ok
     http_response_code(200);
-    echo json_encode(array("http_code" => "201", "message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
+    echo json_encode(array("http_code" => "201", "message" => "Emitente atualizado", "idEmitente" => $emitente->idEmitente));
 }
  
 // if unable to update emitente, tell the user

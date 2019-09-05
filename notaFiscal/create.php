@@ -27,27 +27,21 @@ $notaFiscal = new NotaFiscal($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 
-/*
+//
 // make sure data is not empty
 if(
     empty($data->documento) ||
     empty($data->idVenda) ||
-    empty($data->valorTotal) 
+    empty($data->valorTotal) || 
+    ($data->valorTotal <= 0)
 ){
 
     // set response code - 400 bad request
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos."));
-*/
-
-
-// make sure data is not empty
-if(
-    !empty($data->documento) &&
-    !empty($data->idVenda) &&
-    !empty($data->valorTotal) 
-){
-
+    exit;
+}
+    
     // set notaFiscal property values
     $notaFiscal->docOrigemTipo = "V"; // Venda
     $notaFiscal->docOrigemNumero = $data->idVenda;
@@ -362,7 +356,6 @@ if(
 
 		$xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 
-/*
         //
        	//
         // transmite NFSe	
@@ -378,9 +371,7 @@ if(
         curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
         //
 
-        */
         $result = curl_exec($curl);
-        //
         $info = curl_getinfo( $curl );
 
         if ($info['http_code'] == '200') 
@@ -403,9 +394,10 @@ if(
             $notaFiscal->dataProcessamento = $dtProc;
             //
             // update notaFiscal
-            if(!$notaFiscal->update()){
+            $retorno = $notaFiscal->update();
+            if(!$retorno[0]){
                 http_response_code(503);
-                echo json_encode(array("message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
+                echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
                 exit;
             }
             else {
@@ -423,11 +415,11 @@ if(
                                        "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
                 exit;
             }
-            
         }
         else 
         {
             if (substr($info['http_code'],0,1) == '5') {
+
                 http_response_code(503);
                 echo json_encode(array("message" => "Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
                 exit;
@@ -456,13 +448,12 @@ if(
 
             // update notaFiscal
             if(!$notaFiscal->update()){
+
                 http_response_code(503);
                 echo json_encode(array("message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
                 exit;
             }
-
         }
-
     }
     else{
 
@@ -471,16 +462,6 @@ if(
         exit;
 
     }
+}
 
-}
- 
-// tell the user data is incomplete
-else{
- 
-    // set response code - 400 bad request
-    http_response_code(400);
- 
-    // tell the user
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos."));
-}
 ?>

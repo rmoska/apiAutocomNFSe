@@ -50,6 +50,7 @@ if(
     $notaFiscal->docOrigemNumero = $data->idVenda;
     $notaFiscal->idEntradaSaida = "S";
     $notaFiscal->situacao = "P"; // Pendente
+    $notaFiscal->homologacao = "N"; // ===== PRODUÇÃO =====
     $notaFiscal->valorTotal = $data->valorTotal;
     $notaFiscal->dataEmissao = date("Y-m-d");
     $notaFiscal->dadosAdicionais = $data->observacao;
@@ -252,7 +253,7 @@ if(
         $autorizacao->idEmitente = $notaFiscal->idEmitente;
         $autorizacao->readOne();
 
-        if(!$autorizacao->getToken()){
+        if(!$autorizacao->getToken($notaFiscal->homologacao)){
 
             http_response_code(503);
             echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
