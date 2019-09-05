@@ -239,7 +239,7 @@ foreach ( $data->itemServico as $item )
 
     if ($totalItens != $notaFiscal->valorTotal){
         http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", 
+        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal.(NFi02)", 
                                "erro" => "Valor dos itens não fecha com Valro Total da Nota."));
         $db->rollBack();
         exit;
