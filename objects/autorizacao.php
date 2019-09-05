@@ -79,7 +79,7 @@ class Autorizacao{
     }    
 
     // update autorizacao
-    function update(){
+    function update($documento){
     
         // update query
         $query = "UPDATE " . $this->tableName . " SET
@@ -111,12 +111,29 @@ class Autorizacao{
         $stmt->bindParam(":certificado", $this->certificado);
         $stmt->bindParam(":senha", $this->senha);
 
-        // execute the query
+        // execute query
         if($stmt->execute()){
-            return true;
+
+//            include_once '../objects/emitente.php';
+//            $emitente = new Emitente($this->conn);
+//            $emitente->idEmitente = $this->idEmitente;
+//            $emitente->readOne();
+
+            if ($this->createDir($documento)){
+                $nomeArq = "../arquivosNFSe/".$documento."/certificado/cert".$documento.".pfx";
+                $arqCert = fopen($nomeArq,"w");
+                $certificado = base64_decode($this->certificado);
+                $contCert = fwrite($arqCert, $certificado);
+                fclose($arqCert);
+            }
+
+            return array(true);
         }
-    
-        return false;
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
     }    
 
     // check autorizacao 
