@@ -92,7 +92,6 @@ if(
         $tomador->idTomador = $idTomador;
         $notaFiscal->idTomador = $idTomador;
         $tomador->readOne();
-
     }
     // create tomador
     else {
@@ -159,6 +158,7 @@ if(!$retorno[0]){
 }
 
 //check / create itemVenda
+$totalItens = 0;
 $nfiOrdem = 0;
 foreach ( $data->itemServico as $item )
 {
@@ -210,6 +210,8 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->valorTotal = ($item->valor*$item->quantidade);
         $notaFiscalItem->cstIss = $item->cst;
 
+        $totalItens += $notaFiscalItem->valorTotal;
+
         if (($item->cst != '1') && ($item->cst != '3') && ($item->cst != '6') && ($item->cst != '12') && ($item->cst != '13')) {
             $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
             $notaFiscalItem->taxaIss = $item->taxaIss;
@@ -233,6 +235,14 @@ foreach ( $data->itemServico as $item )
             $notaFiscalItem->descricaoItemVenda = $item->descricao;
             $arrayItemNF[] = $notaFiscalItem;
         }
+    }
+
+    if ($totalItens != $notaFiscal->valorTotal){
+        http_response_code(503);
+        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", 
+                               "erro" => "Valor dos itens não fecha com Valro Total da Nota."));
+        $db->rollBack();
+        exit;
     }
 }
 //
