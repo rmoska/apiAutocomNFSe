@@ -238,15 +238,11 @@ class Autorizacao{
         if (isset($dados->error)) {
 
             return false;
-
         }
         else {
 
             $this->token = $dados->access_token;
             return true;
-
         }
-    
     }
-    
 }
