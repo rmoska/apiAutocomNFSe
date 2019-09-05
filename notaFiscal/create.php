@@ -57,7 +57,6 @@ if(
     $notaFiscal->valorTotal = $data->valorTotal;
     $notaFiscal->dataInclusao = date("Y-m-d");
     $notaFiscal->dataEmissao = date("Y-m-d");
-    $notaFiscal->dataCancelamento = NULL;
     $notaFiscal->dadosAdicionais = $data->observacao;
 
     // check NF já gerada para esta Venda
