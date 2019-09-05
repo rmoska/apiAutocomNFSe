@@ -27,7 +27,7 @@ class NotaFiscal{
     public $protocoloNF;
     public $textoResposta;
     public $textoJustificativa;
-    public $dataCancelamento=NULL;
+    public $dataCancelamento;
     public $valorTotalMercadorias;
     public $valorTotal;
     public $valorFrete;
