@@ -86,12 +86,13 @@ class Autorizacao{
                     idEmitente=:idEmitente, crt=:crt, cnae=:cnae, 
                     aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha
                   WHERE
-                    idAutorizacao = :idAutorizcao";
+                    idAutorizacao = :idAutorizacao";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
         // sanitize
+        $this->idAutorizacao=htmlspecialchars(strip_tags($this->idAutorizacao));
         $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
         $this->crt=htmlspecialchars(strip_tags($this->crt));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
@@ -102,6 +103,7 @@ class Autorizacao{
         $this->senha=htmlspecialchars(strip_tags($this->senha));
 
         // bind new values
+        $stmt->bindParam(":idAutorizacao", $this->idAutorizacao);
         $stmt->bindParam(":idEmitente", $this->idEmitente);
         $stmt->bindParam(":crt", $this->crt);
         $stmt->bindParam(":cnae", $this->cnae);
