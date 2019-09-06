@@ -21,13 +21,13 @@ $autorizacao = new Autorizacao($db);
  
 // get id of emitente to be edited
 $data = json_decode(file_get_contents("php://input"));
- 
+
+//    !empty($data->aedf) // AEDFe é autorização para Produção, então aceita branco para testes de Homologação
 // make sure data is not empty
 if(
     !empty($data->idEmitente) &&
     !empty($data->crt) &&
     !empty($data->cnae) &&
-    !empty($data->aedf) &&
     !empty($data->cmc) &&
     !empty($data->senhaWeb) &&
     !empty($data->certificado) &&

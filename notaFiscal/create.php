@@ -47,6 +47,12 @@ $notaFiscal->docOrigemTipo = "V"; // Venda
 $notaFiscal->docOrigemNumero = $data->idVenda;
 $notaFiscal->idEntradaSaida = "S";
 $notaFiscal->situacao = "P"; // Pendente
+
+
+echo dirname(dirname( __FILE__ ));
+
+
+
 $notaFiscal->homologacao = "S"; // ===== HOMOLOGAÇÃO =====
 $notaFiscal->valorTotal = $data->valorTotal;
 $notaFiscal->dataInclusao = date("Y-m-d");

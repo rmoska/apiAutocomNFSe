@@ -11,6 +11,10 @@ include_once '../config/database.php';
 include_once '../config/http_response_code.php';
 include_once '../objects/notaFiscal.php';
  
+
+echo dirname(dirname( __FILE__ ));
+exit;
+
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
