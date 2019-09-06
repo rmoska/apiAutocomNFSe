@@ -236,14 +236,13 @@ foreach ( $data->itemServico as $item )
             $arrayItemNF[] = $notaFiscalItem;
         }
     }
-
-    if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')){
-        http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal.(NFi02)", 
-                               "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )"));
-        $db->rollBack();
-        exit;
-    }
+}
+if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')){
+    http_response_code(503);
+    echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal.(NFi02)", 
+                           "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )"));
+    $db->rollBack();
+    exit;
 }
 //
 // fecha inclusões
