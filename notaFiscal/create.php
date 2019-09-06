@@ -454,6 +454,10 @@ if (count($arrayItemNF) > 0)
                 $msgRet = $xmlNFRet->message;
 print_r($result);
 
+echo "1:". $xmlNFRet->xmlNfpse;
+
+echo "2:". $xmlNfpse->message;
+
 print_r($xmlNFRet);
 
 print_r($msgRet);
