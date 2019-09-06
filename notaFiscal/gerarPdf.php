@@ -12,7 +12,7 @@ include_once '../config/http_response_code.php';
 include_once '../objects/notaFiscal.php';
  
 
-echo dirname(dirname( __FILE__ ))."   ---   ";
+echo basename(dirname(dirname( __FILE__ )))."   ---   ";
 echo dirname( __FILE__ )."   ---   ";
 echo basename( __DIR__ )."   ---   ";
 exit;
