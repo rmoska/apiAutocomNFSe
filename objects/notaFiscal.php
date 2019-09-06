@@ -843,7 +843,7 @@ class NotaFiscal{
                 $pdf->SetFont('Arial','B',40);
                 $pdf->SetTextColor(240,0,0);
                 $pdf->Rotate(45,48,192);
-                $pdf->Text(30,190,utf8_decode'H O M O L O G A Ç Ã O'));
+                $pdf->Text(30,190,utf8_decode('H O M O L O G A Ç Ã O'));
                 $pdf->Rotate(0);
             }
         //}
