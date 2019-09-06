@@ -50,7 +50,7 @@ $notaFiscal->situacao = "P"; // Pendente
 
 // 
 // quando chamada for na base teste, sempre mandar para homologação
-if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe")
+if ( $dirAPI = basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe")
     $notaFiscal->homologacao = "N"; // ===== PRODUÇÃO =====
 else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
     $notaFiscal->homologacao = "S"; // ===== HOMOLOGAÇÃO =====
@@ -445,8 +445,8 @@ if (count($arrayItemNF) > 0)
                                     "message" => "Nota Fiscal emitida", 
                                     "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                     "numeroNF" => $notaFiscal->numero,
-                                    "xml" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$dirXmlRet.$arqXmlRet,
-                                    "pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
+                                    "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
+                                    "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
             exit;
         }
     }
