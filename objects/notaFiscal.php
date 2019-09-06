@@ -830,11 +830,19 @@ class NotaFiscal{
             $qrcode->displayFPDF(&$pdf, 175, 22, 20, $background=array(255,255,255), $color=array(0,0,0));
 
             //
-            if ($idSitNFe=='X') {
+            if ($notaFiscal->situacao == 'X') {
                 $pdf->SetFont('Arial','B',40);
                 $pdf->SetTextColor(240,0,0);
                 $pdf->Rotate(45,48,192);
                 $pdf->Text(30,190,'C A N C E L A D A');
+                $pdf->Rotate(0);
+            }
+            //
+            if ($notaFiscal->homologacao == 'S') {
+                $pdf->SetFont('Arial','B',40);
+                $pdf->SetTextColor(240,0,0);
+                $pdf->Rotate(45,48,192);
+                $pdf->Text(30,190,'H O M O L O G A Ç Ã O');
                 $pdf->Rotate(0);
             }
         //}
