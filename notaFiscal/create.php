@@ -379,6 +379,9 @@ if (count($arrayItemNF) > 0)
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 
+
+print_r($notaFiscal);
+
     //
     //
     // transmite NFSe	
