@@ -379,9 +379,6 @@ if (count($arrayItemNF) > 0)
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 
-
-print_r($notaFiscal);
-
     //
     //
     // transmite NFSe	
@@ -390,9 +387,9 @@ print_r($notaFiscal);
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
 
     if ($notaFiscal->homologacao == "N") // PRODUÇÃO
-        $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
+        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
     else // HOMOLOGAÇÃO
-        $chaveQR = 'http://nfps-e-hml.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
+        curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
