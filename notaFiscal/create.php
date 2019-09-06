@@ -453,7 +453,7 @@ print_r($result);
 
                 $xmlNFRet = simplexml_load_string(trim($result));
 //                $xmlNFRet = str_replace($xmlNFRet, "\n", "");
-                $msg = utf8_decode($xmlNFRet->message);
+                $msg = utf8_decode($xmlNFRet->xmlNfpse->message);
                 http_response_code(503);
                 echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $result, "resposta2" => $msg));
                 exit;
