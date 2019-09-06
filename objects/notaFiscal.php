@@ -825,8 +825,9 @@ class NotaFiscal{
             $pdf->SetX(10);
             $pdf->Cell(85, 4, utf8_decode('CARIMBO DO TEMPO: PREFEITURA MUNICIPAL DE FLORIANÓPOLIS'), 0, 1, 'L'); 
             $pdf->SetX(10);
-        //        $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$dtCarimbo, 0, 0, 'L'); 
-            $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$notaFiscal->dataProcessamento, 0, 0, 'L'); 
+            $dtC = new DateTime($notaFiscal->dataProcessamento);
+            $dataCarimbo = $dtC->format('d/m/Y H:i:s');
+            $pdf->Cell(85, 4, 'DATA DO CARIMBO: '.$dataCarimbo, 0, 0, 'L'); 
 
             $txt2 = 'A VALIDADE E AUTENTICIDADE DESTE DOCUMENTO AUXILIAR DA NOTA FISCAL DE PRESTAÇÃO DE SERVIÇO ELETRÔNICA PODERÃO SER COMPROVADAS MEDIANTE CONSULTA À PÁGINA DA';
             $txt2 .= 'SECRETARIA MUNICIPAL DA FAZENDA - SMF NA INTERNET, NO ENDEREÇO portal.pmf.sc.gov.br/sites/notaeletronica, EM VERIFICAR AUTENTICIDADE >> PRODUÇÃO, ';
