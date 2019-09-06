@@ -451,7 +451,7 @@ if (count($arrayItemNF) > 0)
 
 
                 $xmlNFRet = simplexml_load_string(trim($result));
-                $msgRet = $xmlNFRet->message[0];
+                $msgRet = $xmlNFRet->message;
 
 print_r($xmlNFRet);
 
