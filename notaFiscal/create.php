@@ -50,7 +50,8 @@ $notaFiscal->situacao = "P"; // Pendente
 
 // 
 // quando chamada for na base teste, sempre mandar para homologação
-if ( $dirAPI = basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe")
+$dirAPI = basename(dirname(dirname( __FILE__ )));
+if ($dirAPI == "apiAutocomNFSe")
     $notaFiscal->homologacao = "N"; // ===== PRODUÇÃO =====
 else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
     $notaFiscal->homologacao = "S"; // ===== HOMOLOGAÇÃO =====
