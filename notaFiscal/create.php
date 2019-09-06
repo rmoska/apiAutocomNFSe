@@ -456,7 +456,7 @@ print_r($result);
 
 echo "1:". $xmlNFRet->xmlNfpse;
 
-echo "2:". $message->0;
+echo "2:". $msgRet->0;
 
 print_r($xmlNFRet);
 
