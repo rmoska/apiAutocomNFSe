@@ -48,12 +48,13 @@ $notaFiscal->docOrigemNumero = $data->idVenda;
 $notaFiscal->idEntradaSaida = "S";
 $notaFiscal->situacao = "P"; // Pendente
 
+// 
+// quando chamada for na base teste, sempre mandar para homologação
+if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe")
+    $notaFiscal->homologacao = "N"; // ===== PRODUÇÃO =====
+else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
+    $notaFiscal->homologacao = "S"; // ===== HOMOLOGAÇÃO =====
 
-echo dirname(dirname( __FILE__ ));
-
-
-
-$notaFiscal->homologacao = "S"; // ===== HOMOLOGAÇÃO =====
 $notaFiscal->valorTotal = $data->valorTotal;
 $notaFiscal->dataInclusao = date("Y-m-d");
 $notaFiscal->dataEmissao = date("Y-m-d");
@@ -266,7 +267,13 @@ if (count($arrayItemNF) > 0)
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
     $autorizacao->readOne();
 
-    if(!$autorizacao->getToken($notaFiscal->homologacao)){
+    if(($notaFiscal->homologacao!="S") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
+
+        http_response_code(503);
+        echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado."));
+        exit;
+    }
+    else if(!$autorizacao->getToken($notaFiscal->homologacao)){
 
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
@@ -340,9 +347,10 @@ if (count($arrayItemNF) > 0)
     //
     $xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
 
-    $nuAEDF = $autorizacao->aedf; 
-    // ===== HOMOLOGAÇÃO =====
-    $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
+    if ($notaFiscal->homologacao == "N") // PRODUÇÃO
+        $nuAEDF = $autorizacao->aedf; 
+    else // HOMOLOGAÇÃO
+        $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
 
     $xml->writeElement("numeroAEDF", $nuAEDF);
     if ($tomador->numero>0)
@@ -377,9 +385,12 @@ if (count($arrayItemNF) > 0)
     $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-    // ===== HOMOLOGAÇÃO =====
-//        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
-    curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa"); // homologação
+
+    if ($notaFiscal->homologacao == "N") // PRODUÇÃO
+        $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
+    else // HOMOLOGAÇÃO
+        $chaveQR = 'http://nfps-e-hml.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
+
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($curl, CURLOPT_POST, TRUE);
