@@ -21,6 +21,7 @@ class NotaFiscal{
     public $idFinalidade;
     public $dataInclusao;
     public $dataEmissao;
+    public $dataProcessamento;
     public $situacao;
     public $homologacao;
     public $reciboNF;
@@ -51,7 +52,8 @@ class NotaFiscal{
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
-                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao, homologacao=:homologacao,
+                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, dataProcessamento=:dataProcessamento,
+                    situacao=:situacao, homologacao=:homologacao,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
@@ -76,6 +78,7 @@ class NotaFiscal{
         $this->idFinalidade=htmlspecialchars(strip_tags($this->idFinalidade));
         $this->dataInclusao=htmlspecialchars(strip_tags($this->dataInclusao));
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
+        $this->dataProcessamento=htmlspecialchars(strip_tags($this->dataProcessamento));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
         $this->homologacao=htmlspecialchars(strip_tags($this->homologacao));
         $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
@@ -107,6 +110,10 @@ class NotaFiscal{
         $stmt->bindParam(":idFinalidade", $this->idFinalidade);
         $stmt->bindParam(":dataInclusao", $this->dataInclusao);
         $stmt->bindParam(":dataEmissao", $this->dataEmissao);
+        if (($this->dataProcessamento == "NULL") || ($this->dataProcessamento == "") || ($this->dataProcessamento == "0000-00-00"))
+            $stmt->bindValue(":dataProcessamento", NULL, PDO::PARAM_NULL);
+        else
+            $stmt->bindParam(":dataProcessamento", $this->dataProcessamento, PDO::PARAM_NULL);
         $stmt->bindParam(":situacao", $this->situacao);
         $stmt->bindParam(":homologacao", $this->homologacao);
         $stmt->bindParam(":reciboNF", $this->reciboNF);
@@ -148,7 +155,8 @@ class NotaFiscal{
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
-                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, situacao=:situacao, homologacao=:homologacao,
+                    dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, dataProcessamento=:dataProcessamento,
+                    situacao=:situacao, homologacao=:homologacao,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
@@ -176,6 +184,7 @@ class NotaFiscal{
         $this->idFinalidade=htmlspecialchars(strip_tags($this->idFinalidade));
         $this->dataInclusao=htmlspecialchars(strip_tags($this->dataInclusao));
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
+        $this->dataProcessamento=htmlspecialchars(strip_tags($this->dataProcessamento));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
         $this->homologacao=htmlspecialchars(strip_tags($this->homologacao));
         $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
@@ -208,6 +217,10 @@ class NotaFiscal{
         $stmt->bindParam(":idFinalidade", $this->idFinalidade);
         $stmt->bindParam(":dataInclusao", $this->dataInclusao);
         $stmt->bindParam(":dataEmissao", $this->dataEmissao);
+        if (($this->dataProcessamento == "NULL") || ($this->dataProcessamento == "") || ($this->dataProcessamento == "0000-00-00"))
+            $stmt->bindValue(":dataProcessamento", NULL, PDO::PARAM_NULL);
+        else
+            $stmt->bindParam(":dataProcessamento", $this->dataProcessamento, PDO::PARAM_NULL);
         $stmt->bindParam(":situacao", $this->situacao);
         $stmt->bindParam(":homologacao", $this->homologacao);
         $stmt->bindParam(":reciboNF", $this->reciboNF);
@@ -345,6 +358,7 @@ class NotaFiscal{
         $this->idFinalidade = $row['idFinalidade'];
         $this->dataInclusao = $row['dataInclusao'];
         $this->dataEmissao = $row['dataEmissao'];
+        $this->dataProcessamento = $row['dataProcessamento'];
         $this->situacao = $row['situacao'];
         $this->homologacao = $row['homologacao'];
         $this->reciboNF = $row['reciboNF'];
@@ -630,7 +644,7 @@ class NotaFiscal{
             $pdf->SetXY(85,67);
             $pdf->Cell(20, 5, $tomador->uf, 0, 0, 'C'); 
             $pdf->SetXY(105,67);
-            $pdf->Cell(30, 5, "", 0, 0, 'L'); 
+            $pdf->Cell(30, 5, "BRASIL", 0, 0, 'L'); 
             $pdf->SetXY(135,67);
             $docTomador = $tomador->documento;
             if (strlen($docTomador) == 14)
@@ -798,7 +812,6 @@ class NotaFiscal{
                 $pdf->MultiCell(190, 3, $notaFiscal->obsImpostos, 0, 'L', 0); 
             }
 
-
             // dados complementares
             $pdf->Rect(10, 263, 83, 20, 1, 'DF'); // informações complementares
             $pdf->Rect(95, 263, 105, 20, 1, 'DF'); // reservado ao fisco
@@ -854,7 +867,6 @@ class NotaFiscal{
         $pdf->Output("../".$dirPdf.$arqPdf,'F');
 
         return $dirPdf.$arqPdf;
-
     }
 
 }
