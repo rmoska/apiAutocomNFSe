@@ -212,13 +212,6 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->numeroOrdem = $nfiOrdem;
         $notaFiscalItem->cnae = $item->cnae;
         $notaFiscalItem->unidade = "UN";
-
-echo 'valor='.$item->valor;
-echo 'quant='.$item->quantidade;
-
-echo 'vf='. floatval($item->valor);
-echo 'qf='. floatval($item->quantidade);
-
         $notaFiscalItem->quantidade = floatval($item->quantidade);
         $notaFiscalItem->valorUnitario = floatval($item->valor);
         $notaFiscalItem->valorTotal = (floatval($item->valor)*floatval($item->quantidade));
@@ -249,6 +242,14 @@ echo 'qf='. floatval($item->quantidade);
             $notaFiscalItem->descricaoItemVenda = $item->descricao;
             $arrayItemNF[] = $notaFiscalItem;
         }
+    }
+    else{
+
+        // set response code - 400 bad request
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos."));
+        $db->rollBack();
+        exit;
     }
 }
 if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
