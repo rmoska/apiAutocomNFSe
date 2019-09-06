@@ -548,7 +548,7 @@ class NotaFiscal{
 //            $pdf->Cell(90, 4, 'CNPJ: '.$emitente->documento, 0, 1, 'C'); 
             $pdf->Cell(90, 4, 'CNPJ: '.$utilities->mask($emitente->documento,"##.###.###/####-##"), 0, 1, 'C'); 
             $pdf->SetX(10);
-            $pdf->Cell(90, 4, 'CMC: '.$autorizacao->cmc, 0, 1, 'C'); 
+            $pdf->Cell(90, 4, 'CMC: '.$utilities->mask($autorizacao->cmc,"###.###-#"), 0, 1, 'C'); 
             //
             // Número da NF
             $pdf->SetFont('Arial', 'B', '10');
