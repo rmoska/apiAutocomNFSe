@@ -841,10 +841,10 @@ class NotaFiscal{
             //
             else if ($notaFiscal->homologacao == 'S') {
                 $pdf->SetFont('Arial','B',40);
-                $pdf->SetTextColor(255,51,51);
+                $pdf->SetTextColor(255,100,100);
                 $pdf->Rotate(45,48,192);
                 $pdf->Text(30,190,utf8_decode('VERSÃO DE HOMOLOGAÇÃO'));
-                $pdf->Text(45,195,utf8_decode('(sem valor fiscal))'));
+                $pdf->Text(45,205,utf8_decode('(sem valor fiscal)'));
                 $pdf->Rotate(0);
             }
         //}
