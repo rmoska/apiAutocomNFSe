@@ -449,17 +449,8 @@ if (count($arrayItemNF) > 0)
 
                 $notaFiscal->deleteCompleto();
 
-
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
-//print_r($result);
-
-echo "2:". $msgRet;
-
-print_r($xmlNFRet);
-
-print_r($msgRet);
-
                 http_response_code(503);
                 echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $msgRet));
                 exit;
