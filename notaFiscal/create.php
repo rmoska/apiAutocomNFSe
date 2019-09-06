@@ -452,9 +452,10 @@ if (count($arrayItemNF) > 0)
 
                 $xmlNFRet = simplexml_load_string(trim($result));
                 print_r($xmlNFRet);
+echo $xmlNFRet->message;
 
                 //                $xmlNFRet = str_replace($xmlNFRet, "\n", "");
-                $msg = utf8_decode($xmlNFRet->xmlNfpse->message);
+                $msg = $xmlNFRet->message;
                 http_response_code(503);
                 echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $result, "resposta2" => $msg));
                 exit;
