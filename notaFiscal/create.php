@@ -322,10 +322,10 @@ if (count($arrayItemNF) > 0)
         //
         $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
         $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
-        if ($notaFiscalItem->taxaIss > 0)
-            $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorTotal,2,'.',''));
-        else
-            $xml->writeElement("baseCalculo", number_format(0,2,'.',''));
+//        if ($notaFiscalItem->taxaIss > 0)
+            $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,2,'.',''));
+//        else
+//            $xml->writeElement("baseCalculo", number_format(0,2,'.',''));
         $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,2,'.',''));
         $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,2,'.',''));
         $xml->endElement(); // ItemServico
