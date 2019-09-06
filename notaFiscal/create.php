@@ -449,7 +449,7 @@ if (count($arrayItemNF) > 0)
 
                 $notaFiscal->deleteCompleto();
 
-                $result = strreplace($result, "\n", "");
+                $result = str_replace($result, "\n", "");
 
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msg = utf8_decode($xmlNFRet->message);
