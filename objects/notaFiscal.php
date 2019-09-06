@@ -346,6 +346,7 @@ class NotaFiscal{
         $this->dataInclusao = $row['dataInclusao'];
         $this->dataEmissao = $row['dataEmissao'];
         $this->situacao = $row['situacao'];
+        $this->homologacao = $row['homologacao'];
         $this->reciboNF = $row['reciboNF'];
         $this->protocoloNF = $row['protocoloNF'];
         $this->textoResposta = $row['textoResposta'];
@@ -838,7 +839,7 @@ class NotaFiscal{
                 $pdf->Rotate(0);
             }
             //
-            if ($notaFiscal->homologacao == 'S') {
+            else if ($notaFiscal->homologacao == 'S') {
                 $pdf->SetFont('Arial','B',40);
                 $pdf->SetTextColor(240,0,0);
                 $pdf->Rotate(45,48,192);
