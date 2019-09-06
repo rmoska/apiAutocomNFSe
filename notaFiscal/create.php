@@ -212,9 +212,9 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->numeroOrdem = $nfiOrdem;
         $notaFiscalItem->cnae = $item->cnae;
         $notaFiscalItem->unidade = "UN";
-        $notaFiscalItem->quantidade = $item->quantidade;
-        $notaFiscalItem->valorUnitario = $item->valor;
-        $notaFiscalItem->valorTotal = ($item->valor*$item->quantidade);
+        $notaFiscalItem->quantidade = floatval($item->quantidade);
+        $notaFiscalItem->valorUnitario = floatval($item->valor);
+        $notaFiscalItem->valorTotal = (floatval($item->valor)*floatval($item->quantidade));
         $notaFiscalItem->cstIss = $item->cst;
 
         $totalItens += floatval($notaFiscalItem->valorTotal);
