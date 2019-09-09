@@ -87,7 +87,7 @@ if ($notaFiscal->ambiente == "P") // PRODUÇÃO
     $nuAEDF = $autorizacao->aedf; 
 else // HOMOLOGAÇÃO
     $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
-$xml->writeElement("numeroAEDF", $nuAEDF);
+$xml->writeElement("nuAedf", $nuAEDF);
 
 $xml->writeElement("nuNotaFiscal", $notaFiscal->numero);
 $xml->writeElement("codigoVerificacao", $notaFiscal->chaveNF);
