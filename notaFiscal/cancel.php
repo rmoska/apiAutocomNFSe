@@ -133,8 +133,8 @@ if ($info['http_code'] == '200')
     $xmlNFRet = simplexml_load_string($result);
     $dtCanc = substr($xmlNFRet->dataCancelamento,0,10).' '.substr($xmlNFRet->dataCancelamento,11,8);
     //
-    $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
-    $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
+    $dirXmlRet = "arquivosNFSe/".$emitente->documento."/canceladas/";
+    $arqXmlRet = $emitente->documento."_".substr(str_pad($notaFiscal->numero,8,'0',STR_PAD_LEFT),0,8)."-nfse-canc.xml";
     $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
     fwrite($arqNFe, $result);
     fclose($arqNFe);
@@ -158,7 +158,7 @@ if ($info['http_code'] == '200')
         // set response code - 201 created
         http_response_code(201);
         echo json_encode(array("http_code" => "201", 
-                                "message" => "Nota Fiscal emitida", 
+                                "message" => "Nota Fiscal CANCELADA", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                 "numeroNF" => $notaFiscal->numero,
                                 "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
