@@ -846,10 +846,10 @@ class NotaFiscal{
 
             //
             if ($notaFiscal->situacao == 'X') {
-                $pdf->SetFont('Arial','B',40);
+                $pdf->SetFont('Arial','B',50);
                 $pdf->SetTextColor(255,100,100);
                 $pdf->Rotate(45,48,192);
-                $pdf->Text(50,190,'C A N C E L A D A');
+                $pdf->Text(60,190,'C A N C E L A D A');
                 $pdf->Rotate(0);
             }
             //
