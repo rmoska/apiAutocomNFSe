@@ -21,38 +21,64 @@ $emitente = new Emitente($db);
 // get id of emitente to be edited
 $data = json_decode(file_get_contents("php://input"));
  
-// set ID property of emitente to be edited
-$emitente->idEmitente = $data->idEmitente;
- 
-// set emitente property values
-$emitente->nome = $data->nome;
-$emitente->nomeFantasia = $data->nomeFantasia;
-$emitente->logradouro = $data->logradouro;
-$emitente->numero = $data->numero;
-$emitente->complemento = $data->complemento;
-$emitente->bairro = $data->bairro;
-$emitente->cep = $data->cep;
-$emitente->uf = $data->uf;
-$emitente->codigoMunicipio = $data->codigoMunicipio;
-$emitente->pais = $data->pais;
-$emitente->fone = $data->fone;
-$emitente->celular = $data->celular;
-$emitente->email = $data->email;
+if(
+    !empty($data->idEmitente) &&
+    !empty($data->nome) &&
+    !empty($data->logradouro) &&
+    !empty($data->numero) &&
+    !empty($data->bairro) &&
+    !empty($data->cep) &&
+    !empty($data->uf) &&
+    !empty($data->codigoMunicipio) &&
+    !empty($data->email)
+){
 
-// update emitente
-$retorno = $emitente->update();
-if($retorno[0]){
- 
-    // set response code - 200 ok
-    http_response_code(200);
-    echo json_encode(array("http_code" => "201", "message" => "Emitente atualizado", "idEmitente" => $emitente->idEmitente));
+    // set ID property of emitente to be edited
+    $emitente->idEmitente = $data->idEmitente;
+    
+    // set emitente property values
+    $emitente->nome = $data->nome;
+    $emitente->nomeFantasia = $data->nomeFantasia;
+    $emitente->logradouro = $data->logradouro;
+    $emitente->numero = $data->numero;
+    $emitente->complemento = $data->complemento;
+    $emitente->bairro = $data->bairro;
+    $emitente->cep = $data->cep;
+    $emitente->uf = $data->uf;
+    $emitente->codigoMunicipio = $data->codigoMunicipio;
+    $emitente->pais = $data->pais;
+    $emitente->fone = $data->fone;
+    $emitente->celular = $data->celular;
+    $emitente->email = $data->email;
+
+    // update emitente
+    $retorno = $emitente->update();
+    if($retorno[0]){
+    
+        // set response code - 200 ok
+        http_response_code(200);
+        echo json_encode(array("http_code" => "201", "message" => "Emitente atualizado", "idEmitente" => $emitente->idEmitente));
+        exit;
+    }
+    
+    // if unable to update emitente, tell the user
+    else{
+    
+        // set response code - 503 service unavailable
+        http_response_code(503);
+        echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Emitente. Serviço indisponível.", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Emitente. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
 }
- 
-// if unable to update emitente, tell the user
 else{
  
-    // set response code - 503 service unavailable
-    http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Emitente. Serviço indisponível.", "erro" => $retorno[1]));
+    // set response code - 400 bad request
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível atualizar Emitente. Dados incompletos."));
+    $strData = json_encode($data);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Emitente. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    exit;
 }
+
 ?>

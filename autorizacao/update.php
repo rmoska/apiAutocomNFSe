@@ -49,7 +49,7 @@ if(
     if (is_null($emitente->documento)) {
 
         http_response_code(503);
-        echo json_encode(array("http_code" => 503, "message" => "Emitente inválido para esta Autorização."));
+        echo json_encode(array("http_code" => 503, "message" => "Emitente não cadastrado para esta Autorização."));
         exit;
     }
     $documento = $emitente->documento;
@@ -64,7 +64,8 @@ if(
         if (!$autorizacao->getToken("S")){ 
 
             http_response_code(503);
-            echo json_encode(array("http_code" => 503, "message" => "Autorização com dados inválidos. Comunicação rejeitada."));
+            echo json_encode(array("http_code" => 503, "message" => "Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado."));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
         else {
@@ -75,6 +76,7 @@ if(
             if ($certificado->errMsg > ''){
                 http_response_code(503);
                 echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg));
+                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
                 exit;
             }
             $validade = $certificado->certDaysToExpire;
@@ -90,6 +92,8 @@ if(
         // set response code - 503 service unavailable
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1]));
+        $strData = json_encode($data);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Dados = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
 }
