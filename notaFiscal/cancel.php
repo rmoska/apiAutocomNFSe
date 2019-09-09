@@ -42,7 +42,7 @@ $notaFiscal->textoJustificativa = $data->motivo;
 
 // check NF já gerada para esta Venda
 $notaFiscal->readOne();
-if (!($notaFiscal["numero"] > 0)) {
+if (!($notaFiscal->numero > 0)) {
 
     http_response_code(503);
     echo json_encode(array("http_code" => "500", 
