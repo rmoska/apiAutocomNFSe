@@ -81,7 +81,7 @@ $xml->openMemory();
 //
 // Inicia o cabeçalho do documento XML
 $xml->startElement("xmlCancelamentoNfpse");
-$xml->writeElement("motivoCancelamento", trim($utilities->limpaEspeciais($notaFiscal->motivoCancela)));
+$xml->writeElement("motivoCancelamento", trim($utilities->limpaEspeciais($notaFiscal->textoJustificativa)));
 
 if ($notaFiscal->ambiente == "P") // PRODUÇÃO
     $nuAEDF = $autorizacao->aedf; 
@@ -97,7 +97,7 @@ $xmlNFe = $xml->outputMemory(true);
 $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 //
 $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
-$arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."canc-nfse.xml","wt");
+$arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse-canc.xml","wt");
 fwrite($arqNFe, $xmlNFe);
 fclose($arqNFe);
 //	
@@ -189,7 +189,7 @@ else
             $xmlNFRet = simplexml_load_string(trim($result));
             $msgRet = (string) $xmlNFRet->message;
             http_response_code(503);
-            echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $msgRet, "resposta2" => $result));
+            echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $msgRet));
             exit;
         }
     }
