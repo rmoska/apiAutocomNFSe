@@ -50,9 +50,7 @@ if(
         // set response code - 400 bad request
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento, "idEmitente" => $idEmitente));
-
-        error_log("Emitente já existe para este Documento:".$emitente->documento." idEmitente=".$idEmitente, 3, "../arquivosNFSe/apiErrors.log");
-
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente já existe para este Documento:".$emitente->documento." idEmitente=".$idEmitente), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
     // create emitente
