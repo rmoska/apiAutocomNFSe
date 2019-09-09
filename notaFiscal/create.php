@@ -1,6 +1,6 @@
 <?php
 
-// Classe para emissão de NFSe PMF em ambiente de Homologação
+// Classe para emissão de NFSe PMF Homologação / Produção
 
 // required headers
 header("Access-Control-Allow-Origin: *");
