@@ -38,7 +38,6 @@ if(
     
 // set notaFiscal property values
 $notaFiscal->idNotaFiscal = $data->idNotaFiscal;
-$notaFiscal->textoJustificativa = $data->motivo;
 
 // check NF já gerada para esta Venda
 $notaFiscal->readOne();
@@ -49,6 +48,7 @@ if (!($notaFiscal->numero > 0)) {
                             "message" => "Nota Fiscal não encontrada. Não foi possível cancelar."));
     exit;
 }
+$notaFiscal->textoJustificativa = $data->motivo;
 
 // check emitente
 $emitente = new Emitente($db);
