@@ -23,7 +23,7 @@ class NotaFiscal{
     public $dataEmissao;
     public $dataProcessamento;
     public $situacao;
-    public $homologacao;
+    public $ambiente;
     public $reciboNF;
     public $protocoloNF;
     public $textoResposta;
@@ -53,7 +53,7 @@ class NotaFiscal{
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
                     dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, dataProcessamento=:dataProcessamento,
-                    situacao=:situacao, homologacao=:homologacao,
+                    situacao=:situacao, ambiente=:ambiente,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
@@ -80,7 +80,7 @@ class NotaFiscal{
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
         $this->dataProcessamento=htmlspecialchars(strip_tags($this->dataProcessamento));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
-        $this->homologacao=htmlspecialchars(strip_tags($this->homologacao));
+        $this->ambiente=htmlspecialchars(strip_tags($this->ambiente));
         $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
         $this->protocoloNF=htmlspecialchars(strip_tags($this->protocoloNF));
         $this->textoResposta=htmlspecialchars(strip_tags($this->textoResposta));
@@ -115,7 +115,7 @@ class NotaFiscal{
         else
             $stmt->bindParam(":dataProcessamento", $this->dataProcessamento, PDO::PARAM_NULL);
         $stmt->bindParam(":situacao", $this->situacao);
-        $stmt->bindParam(":homologacao", $this->homologacao);
+        $stmt->bindParam(":ambiente", $this->ambiente);
         $stmt->bindParam(":reciboNF", $this->reciboNF);
         $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
@@ -156,7 +156,7 @@ class NotaFiscal{
                     idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
                     cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
                     dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, dataProcessamento=:dataProcessamento,
-                    situacao=:situacao, homologacao=:homologacao,
+                    situacao=:situacao, ambiente=:ambiente,
                     reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
@@ -186,7 +186,7 @@ class NotaFiscal{
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
         $this->dataProcessamento=htmlspecialchars(strip_tags($this->dataProcessamento));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
-        $this->homologacao=htmlspecialchars(strip_tags($this->homologacao));
+        $this->ambiente=htmlspecialchars(strip_tags($this->ambiente));
         $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
         $this->protocoloNF=htmlspecialchars(strip_tags($this->protocoloNF));
         $this->textoResposta=htmlspecialchars(strip_tags($this->textoResposta));
@@ -222,7 +222,7 @@ class NotaFiscal{
         else
             $stmt->bindParam(":dataProcessamento", $this->dataProcessamento, PDO::PARAM_NULL);
         $stmt->bindParam(":situacao", $this->situacao);
-        $stmt->bindParam(":homologacao", $this->homologacao);
+        $stmt->bindParam(":ambiente", $this->ambiente);
         $stmt->bindParam(":reciboNF", $this->reciboNF);
         $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
@@ -360,7 +360,7 @@ class NotaFiscal{
         $this->dataEmissao = $row['dataEmissao'];
         $this->dataProcessamento = $row['dataProcessamento'];
         $this->situacao = $row['situacao'];
-        $this->homologacao = $row['homologacao'];
+        $this->ambiente = $row['ambiente'];
         $this->reciboNF = $row['reciboNF'];
         $this->protocoloNF = $row['protocoloNF'];
         $this->textoResposta = $row['textoResposta'];
@@ -836,7 +836,7 @@ class NotaFiscal{
             $pdf->SetXY(95,264);
             $pdf->MultiCell(105, 3, utf8_decode($txt2), 0, 'L', 0); 
 
-            if ($notaFiscal->homologacao == "N") // PRODUÇÃO
+            if ($notaFiscal->ambiente == "P") // PRODUÇÃO
                 $chaveQR = 'http://nfps-e.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
             else // HOMOLOGAÇÃO
                 $chaveQR = 'http://nfps-e-hml.pmf.sc.gov.br/consulta-frontend/#!/consulta?cod='.$notaFiscal->chaveNF.'&cmc='.$autorizacao->cmc;
@@ -853,7 +853,7 @@ class NotaFiscal{
                 $pdf->Rotate(0);
             }
             //
-            else if ($notaFiscal->homologacao == 'S') {
+            else if ($notaFiscal->ambiente == 'H') {
                 $pdf->SetFont('Arial','B',40);
                 $pdf->SetTextColor(255,100,100);
                 $pdf->Rotate(45,48,192);

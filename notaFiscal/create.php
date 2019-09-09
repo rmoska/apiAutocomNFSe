@@ -52,9 +52,9 @@ $notaFiscal->situacao = "P"; // Pendente
 // quando chamada for na base teste, sempre mandar para homologação
 $dirAPI = basename(dirname(dirname( __FILE__ )));
 if ($dirAPI == "apiAutocomNFSe")
-    $notaFiscal->homologacao = "N"; // ===== PRODUÇÃO =====
+    $notaFiscal->ambiente = "P"; // ===== PRODUÇÃO =====
 else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
-    $notaFiscal->homologacao = "S"; // ===== HOMOLOGAÇÃO =====
+    $notaFiscal->ambiente = "H"; // ===== HOMOLOGAÇÃO =====
 
 $notaFiscal->valorTotal = $data->valorTotal;
 $notaFiscal->dataInclusao = date("Y-m-d");
@@ -199,6 +199,7 @@ foreach ( $data->itemServico as $item )
 
             $retorno = $itemVenda->create();
             if(!$retorno[0]){
+
                 http_response_code(503);
                 echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
                 $db->rollBack();
@@ -233,6 +234,7 @@ foreach ( $data->itemServico as $item )
 
         $retorno = $notaFiscalItem->create();
         if(!$retorno[0]){
+
             http_response_code(503);
             echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", "erro" => $retorno[1]));
             $db->rollBack();
@@ -264,7 +266,6 @@ if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal
 // fecha inclusões
 $db->commit();
 
-
 if (count($arrayItemNF) > 0)
 {
 
@@ -276,13 +277,13 @@ if (count($arrayItemNF) > 0)
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
     $autorizacao->readOne();
 
-    if(($notaFiscal->homologacao!="S") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
+    if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
 
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado."));
         exit;
     }
-    else if(!$autorizacao->getToken($notaFiscal->homologacao)){
+    else if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
         http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
@@ -320,7 +321,7 @@ if (count($arrayItemNF) > 0)
     $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
     $xml->writeElement("dataEmissao", $notaFiscal->dataEmissao);
     $xml->writeElement("emailTomador", $tomador->email);
-//			$xml->writeElement("homologacao", 'true');
+//			$xml->writeElement("ambiente", 'true');
     $xml->writeElement("identificacao", $notaFiscal->idNotaFiscal);
     $xml->writeElement("identificacaoTomador", $tomador->documento);
 //		if($tomador->inscricaoMunicipal > '')
@@ -356,7 +357,7 @@ if (count($arrayItemNF) > 0)
     //
     $xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
 
-    if ($notaFiscal->homologacao == "N") // PRODUÇÃO
+    if ($notaFiscal->ambiente == "P") // PRODUÇÃO
         $nuAEDF = $autorizacao->aedf; 
     else // HOMOLOGAÇÃO
         $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
@@ -395,7 +396,7 @@ if (count($arrayItemNF) > 0)
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
 
-    if ($notaFiscal->homologacao == "N") // PRODUÇÃO
+    if ($notaFiscal->ambiente == "P") // PRODUÇÃO
         curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
     else // HOMOLOGAÇÃO
         curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
@@ -405,7 +406,6 @@ if (count($arrayItemNF) > 0)
     curl_setopt($curl, CURLOPT_POST, TRUE);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
     //
-
     $result = curl_exec($curl);
     $info = curl_getinfo( $curl );
 
@@ -468,7 +468,7 @@ if (count($arrayItemNF) > 0)
                 $notaFiscal->deleteCompleto();
 
                 http_response_code(503);
-                echo json_encode(array("message" => "Erro no envio da NFPSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
+                echo json_encode(array("message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
                 exit;
             }
             else {
@@ -478,7 +478,7 @@ if (count($arrayItemNF) > 0)
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
                 http_response_code(503);
-                echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $msgRet, "resposta2" => $result));
+                echo json_encode(array("message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet, "resposta2" => $result));
                 exit;
             }
         }
@@ -500,7 +500,6 @@ else{
     http_response_code(503);
     echo json_encode(array("http_code" => "503", "message" => "Erro na inclusão dos Itens da Nota Fiscal."));
     exit;
-
 }
 
 ?>
