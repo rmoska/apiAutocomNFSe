@@ -53,7 +53,8 @@ if (!($notaFiscal->numero > 0)) {
 // check emitente
 $emitente = new Emitente($db);
 $emitente->idEmitente = $notaFiscal->idEmitente;
-if ($emitente->check() > 0) {
+$emitente->readOne();
+if (!($emitente->documento > '')) {
     $notaFiscal->idEmitente = $idEmitente;
 }
 else{
