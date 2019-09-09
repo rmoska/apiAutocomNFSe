@@ -51,7 +51,7 @@ if(
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento, "idEmitente" => $idEmitente));
 
-        error_log("Emitente já existe para este Documento:".$emitente->documento." idEmitente=".$idEmitente, 3, "../apiErrors.log");
+        error_log("Emitente já existe para este Documento:".$emitente->documento." idEmitente=".$idEmitente, 3, "../arquivosNFSe/apiErrors.log");
 
         exit;
     }
