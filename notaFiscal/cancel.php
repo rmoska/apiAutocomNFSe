@@ -55,9 +55,7 @@ $emitente = new Emitente($db);
 $emitente->idEmitente = $notaFiscal->idEmitente;
 $emitente->readOne();
 if (!($emitente->documento > '')) {
-    $notaFiscal->idEmitente = $idEmitente;
-}
-else{
+
     http_response_code(503);
     echo json_encode(array("http_code" => "503", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
     exit;
