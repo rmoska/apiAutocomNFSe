@@ -66,7 +66,7 @@ else{
 $autorizacao = new Autorizacao($db);
 $autorizacao->idEmitente = $notaFiscal->idEmitente;
 $autorizacao->readOne();
-else if(!$autorizacao->getToken($notaFiscal->ambiente)){
+if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
     http_response_code(503);
     echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
