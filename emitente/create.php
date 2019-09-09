@@ -76,7 +76,8 @@ else{
     // set response code - 400 bad request
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos."));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Dados incompletos. ".$data."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $strData = print_r($data);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
 ?>
