@@ -83,16 +83,15 @@ class Autorizacao{
     
         // update query
         $query = "UPDATE " . $this->tableName . " SET
-                    idEmitente=:idEmitente, crt=:crt, cnae=:cnae, 
+                    crt=:crt, cnae=:cnae, 
                     aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha
                   WHERE
-                    idAutorizacao = :idAutorizacao";
-echo $query;    
+                    idEmitente = :idEmitente";
+
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
         // sanitize
-        $this->idAutorizacao=htmlspecialchars(strip_tags($this->idAutorizacao));
         $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
         $this->crt=htmlspecialchars(strip_tags($this->crt));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
@@ -103,7 +102,6 @@ echo $query;
         $this->senha=htmlspecialchars(strip_tags($this->senha));
 
         // bind new values
-        $stmt->bindParam(":idAutorizacao", $this->idAutorizacao);
         $stmt->bindParam(":idEmitente", $this->idEmitente);
         $stmt->bindParam(":crt", $this->crt);
         $stmt->bindParam(":cnae", $this->cnae);
@@ -115,7 +113,7 @@ echo $query;
 
         // execute query
         if($stmt->execute()){
-echo 'ok';
+
             include_once '../objects/emitente.php';
             $emitente = new Emitente($this->conn);
             $emitente->idEmitente = $this->idEmitente;
@@ -132,7 +130,7 @@ echo 'ok';
             return array(true);
         }
         else {
-echo 'err';
+
             $aErr = $stmt->errorInfo();
             return array(false, $aErr[2]);
         }
