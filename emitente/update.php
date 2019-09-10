@@ -55,9 +55,8 @@ if(
     $retorno = $emitente->update();
     if($retorno[0]){
     
-        // set response code - 200 ok
         http_response_code(200);
-        echo json_encode(array("http_code" => "201", "message" => "Emitente atualizado", "idEmitente" => $emitente->idEmitente));
+        echo json_encode(array("http_code" => "200", "message" => "Emitente atualizado", "idEmitente" => $emitente->idEmitente));
         exit;
     }
     
@@ -65,8 +64,8 @@ if(
     else{
     
         // set response code - 503 service unavailable
-        http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Emitente. Serviço indisponível.", "erro" => $retorno[1]));
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Emitente. Serviço indisponível.", "erro" => $retorno[1]));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Emitente. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }

@@ -30,9 +30,10 @@ if(
     empty($data->motivo) 
 ){
 
-    // set response code - 400 bad request
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não será possível CANCELAR Nota Fiscal. Dados incompletos."));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos."));
+    $strData = json_encode($data);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
     
@@ -43,9 +44,9 @@ $notaFiscal->idNotaFiscal = $data->idNotaFiscal;
 $notaFiscal->readOne();
 if (!($notaFiscal->numero > 0)) {
 
-    http_response_code(503);
-    echo json_encode(array("http_code" => "500", 
-                            "message" => "Nota Fiscal não encontrada. Não foi possível cancelar."));
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", 
+                            "message" => "Nota Fiscal não encontrada. Não foi possível cancelar. idNF=".$data->idNotaFiscal));
     exit;
 }
 $notaFiscal->textoJustificativa = $data->motivo;
@@ -56,8 +57,8 @@ $emitente->idEmitente = $notaFiscal->idEmitente;
 $emitente->readOne();
 if (!($emitente->documento > '')) {
 
-    http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
     exit;
 }
 
@@ -67,8 +68,8 @@ $autorizacao->idEmitente = $notaFiscal->idEmitente;
 $autorizacao->readOne();
 if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
-    http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token não disponível."));
+    http_response_code(401);
+    echo json_encode(array("http_code" => "401", "message" => "Não foi possível cancelar Nota Fiscal. Token não disponível."));
     exit;
 }
 
@@ -145,12 +146,14 @@ if ($info['http_code'] == '200')
     // update notaFiscal
     $retorno = $notaFiscal->update();
     if(!$retorno[0]){
-        http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
+
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
     else {
-        //
+
         // gerar pdf
         $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
 
@@ -171,7 +174,8 @@ else
     if (substr($info['http_code'],0,1) == '5') {
 
         http_response_code(503);
-        echo json_encode(array("message" => "Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
+        echo json_encode(array("http_code" => "503", "message" => "Erro no cancelamento da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
     else {
@@ -180,16 +184,18 @@ else
         $dados = json_decode($result);
         if (isset($dados->error)) {
 
-            http_response_code(503);
-            echo json_encode(array("message" => "Erro no envio da NFPSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
         else {
 
             $xmlNFRet = simplexml_load_string(trim($result));
             $msgRet = (string) $xmlNFRet->message;
-            http_response_code(503);
-            echo json_encode(array("message" => "Erro no envio da NFPSe !(2)", "resposta" => $msgRet));
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
     }

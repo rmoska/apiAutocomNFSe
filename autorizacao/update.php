@@ -48,8 +48,9 @@ if(
     $emitente->readOne();
     if (is_null($emitente->documento)) {
 
-        http_response_code(503);
-        echo json_encode(array("http_code" => 503, "message" => "Emitente não cadastrado para esta Autorização."));
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado para esta Autorização."));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado para esta Autorização. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
     $documento = $emitente->documento;
@@ -63,8 +64,8 @@ if(
 
         if (!$autorizacao->getToken("P")){ 
 
-            http_response_code(503);
-            echo json_encode(array("http_code" => 503, "message" => "Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado."));
+            http_response_code(401);
+            echo json_encode(array("http_code" => 401, "message" => "Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado."));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
@@ -74,24 +75,21 @@ if(
             $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
             $certificado = new SignNFSe($arraySign);
             if ($certificado->errStatus){
-                http_response_code(503);
-                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg));
+                http_response_code(401);
+                echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
                 exit;
             }
             $validade = $certificado->certDaysToExpire;
         }
 
-        // set response code - 201 created
         http_response_code(201);
         echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", "token" => $autorizacao->token, "validade" => $validade." dias"));
     }
-    // if unable to create autorizacao, tell the user
     else{
  
-        // set response code - 503 service unavailable
-        http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1]));
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1]));
         $strData = json_encode($data);
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Dados = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
@@ -99,7 +97,6 @@ if(
 }
 else{
  
-    // set response code - 400 bad request
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
     $strData = json_encode($data);

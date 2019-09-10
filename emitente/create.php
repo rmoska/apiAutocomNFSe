@@ -47,32 +47,27 @@ if(
     
     if ($idEmitente = $emitente->check() > 0) {
 
-        // set response code - 400 bad request
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento, "idEmitente" => $idEmitente));
         exit;
     }
-    // create emitente
+
     $retorno = $emitente->create();
     if($retorno[0]){
 
-        // set response code - 201 created
         http_response_code(201);
         echo json_encode(array("http_code" => "201", "message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
     }
-     // if unable to create emitente, tell the user
     else{
  
-        // set response code - 503 service unavailable
-        http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Emitente. Serviço indisponível.", "erro" => $retorno[1]));
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Emitente. Serviço indisponível.", "erro" => $retorno[1]));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
 }
 else{
  
-    // set response code - 400 bad request
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos."));
     $strData = json_encode($data);
