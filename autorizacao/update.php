@@ -61,7 +61,7 @@ if(
  
     if($retorno[0]){
 
-        if (!$autorizacao->getToken("S")){ 
+        if (!$autorizacao->getToken("P")){ 
 
             http_response_code(503);
             echo json_encode(array("http_code" => 503, "message" => "Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado."));

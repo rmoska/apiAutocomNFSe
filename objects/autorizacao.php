@@ -116,10 +116,10 @@ class Autorizacao{
         // execute query
         if($stmt->execute()){
 
-//            include_once '../objects/emitente.php';
-//            $emitente = new Emitente($this->conn);
-//            $emitente->idEmitente = $this->idEmitente;
-//            $emitente->readOne();
+            include_once '../objects/emitente.php';
+            $emitente = new Emitente($this->conn);
+            $emitente->idEmitente = $this->idEmitente;
+            $emitente->readOne();
 
             if ($this->createDir($documento)){
                 $nomeArq = "../arquivosNFSe/".$documento."/certificado/cert".$documento.".pfx";
