@@ -414,6 +414,9 @@ else {
     //	
     include_once '../comunicacao/signNFSe.php';
     $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+
+echo 'PWD='.$autorizacao->senha;
+
     $nfse = new SignNFSe($arraySign);
     if(!$nfse) {
 
