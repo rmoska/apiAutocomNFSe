@@ -416,7 +416,7 @@ else {
     $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
 
     $nfse = new SignNFSe($arraySign);
-    if(!$nfse) {
+    if($nfse->errMsg) {
 
         $db->rollBack();
         http_response_code(401);
@@ -426,7 +426,7 @@ else {
     }
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
-    if (!$nfse) {
+    if ($nfse->errMsg) {
 
         $db->rollBack();
         http_response_code(401);
