@@ -133,16 +133,14 @@ if(
         $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
         $xmlAss = $certificado->signXML($xmlNFe, 'xmlProcessamentoNfpse');
-/*
         if ($certificado->errStatus) {
     
-            $db->rollBack();
             http_response_code(401);
-            echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$certificado->errMsg));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
-  */  
+
         //
         // transmite NFSe	
         $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
@@ -158,12 +156,10 @@ if(
         $info = curl_getinfo( $curl );
 
         if ($info['http_code'] == '200') {
-
             //
             $xmlNFRet = simplexml_load_string($result);
             $nuNF = $xmlNFRet->numeroSerie;
             $cdVerif = $xmlNFRet->codigoVerificacao;
-            //
         }
         else {
 
@@ -197,12 +193,12 @@ if(
             }
         }
 
-
-
-
-
         http_response_code(201);
-        echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", "token" => $autorizacao->token, "validade" => $validade." dias"));
+        echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
+                               "token" => $autorizacao->token, 
+                               "validade" => $validade." dias",
+                               "nf-homolog" => $nuNF,
+                               "verificacao-homolog" => $cdVerif));
     }
     else{
  
