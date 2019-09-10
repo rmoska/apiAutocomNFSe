@@ -93,26 +93,34 @@ if(
 
     // set tomador property values
     $tomador->documento = $data->tomador->documento;
+    $tomador->nome = $data->tomador->nome;
+    $tomador->logradouro = $data->tomador->logradouro;
+    $tomador->numero = $data->tomador->numero;
+    $tomador->complemento = $data->tomador->complemento;
+    $tomador->bairro = $data->tomador->bairro;
+    $tomador->cep = $data->tomador->cep;
+    $tomador->codigoMunicipio = $data->tomador->codigoMunicipio;
+    $tomador->uf = $data->tomador->uf;
+    $tomador->email = $data->tomador->email;
 
     // check tomador
     if (($idTomador = $tomador->check()) > 0) {
 
         $tomador->idTomador = $idTomador;
         $notaFiscal->idTomador = $idTomador;
-        $tomador->readOne();
+
+        $retorno = $tomador->update();
+        if(!$retorno[0]){
+
+            $db->rollBack();
+            http_response_code(503);
+            echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1]));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            exit;
+        }
     }
     // create tomador
     else {
-
-        $tomador->nome = $data->tomador->nome;
-        $tomador->logradouro = $data->tomador->logradouro;
-        $tomador->numero = $data->tomador->numero;
-        $tomador->complemento = $data->tomador->complemento;
-        $tomador->bairro = $data->tomador->bairro;
-        $tomador->cep = $data->tomador->cep;
-        $tomador->codigoMunicipio = $data->tomador->codigoMunicipio;
-        $tomador->uf = $data->tomador->uf;
-        $tomador->email = $data->tomador->email;
 
         $retorno = $tomador->create();
         if($retorno[0]){
