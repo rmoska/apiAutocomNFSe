@@ -66,8 +66,8 @@ $checkNF = $notaFiscal->checkVenda();
 if ($checkNF["existe"] > 0) {
 
     ($checkNF["situacao"] == "F") ? $situacao = "Faturada" : $situacao = "Pendente"; 
-    http_response_code(503);
-    echo json_encode(array("http_code" => "500", 
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", 
                             "message" => "Nota Fiscal já gerada para esta Venda. NF n. ".$checkNF["numeroNF"]." - Situação ".$situacao));
     exit;
 }
@@ -113,8 +113,8 @@ if(
         if(!$retorno[0]){
 
             $db->rollBack();
-            http_response_code(503);
-            echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1]));
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1]));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
@@ -130,8 +130,8 @@ if(
         else{
 
             $db->rollBack();
-            http_response_code(503);
-            echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1]));
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1]));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
@@ -156,8 +156,8 @@ if (($idEmitente = $emitente->check()) > 0) {
 else{
 
     $db->rollBack();
-    http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
     exit;
 }
 $emitente->idEmitente = $idEmitente;
@@ -173,8 +173,8 @@ $retorno = $notaFiscal->create();
 if(!$retorno[0]){
 
     $db->rollBack();
-    http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal.(I01)", "erro" => $retorno[1]));
+    http_response_code(500);
+    echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Nota Fiscal.(I01)", "erro" => $retorno[1]));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal.(I01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
@@ -215,8 +215,8 @@ foreach ( $data->itemServico as $item )
             if(!$retorno[0]){
 
                 $db->rollBack();
-                http_response_code(503);
-                echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
+                http_response_code(500);
+                echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Venda.(I01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
                 exit;
             }
@@ -251,8 +251,8 @@ foreach ( $data->itemServico as $item )
         if(!$retorno[0]){
 
             $db->rollBack();
-            http_response_code(503);
-            echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", "erro" => $retorno[1]));
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", "erro" => $retorno[1]));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Nota Fiscal.(I01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
@@ -276,8 +276,8 @@ foreach ( $data->itemServico as $item )
 if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
 
     $db->rollBack();
-    http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Nota Fiscal.(NFi02)", 
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal.(NFi02)", 
                            "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )"));
     exit;
 }
@@ -285,8 +285,18 @@ if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal
 // fecha inclusões
 $db->commit();
 
-if (count($arrayItemNF) > 0)
-{
+// se houve problema na inclusão dos itens
+if (count($arrayItemNF) == 0) {
+
+    http_response_code(500);
+    echo json_encode(array("http_code" => "500", "message" => "Erro na inclusão dos Itens da Nota Fiscal."));
+    $strData = json_encode($data);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro na inclusão dos Itens da Nota Fiscal. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    exit;
+}
+// 
+// cria e transmite nota fiscal
+else {
 
     // calcular Imposto Aproximado IBPT
     $notaFiscal->calcImpAprox();
@@ -298,14 +308,14 @@ if (count($arrayItemNF) > 0)
 
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
 
-        http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado."));
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado."));
         exit;
     }
     else if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
-        http_response_code(503);
-        echo json_encode(array("http_code" => "503", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF)."));
+        http_response_code(401);
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF)."));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
@@ -351,8 +361,7 @@ if (count($arrayItemNF) > 0)
     $it = 0;
     $qtItem = count($arrayItemNF);
     $xml->startElement("itensServico");
-    foreach ( $arrayItemNF as $notaFiscalItem ) 
-    {
+    foreach ( $arrayItemNF as $notaFiscalItem ) {
 
         $xml->startElement("itemServico");
         $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
@@ -406,6 +415,13 @@ if (count($arrayItemNF) > 0)
     include_once '../comunicacao/signNFSe.php';
     $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $nfse = new SignNFSe($arraySign);
+    if(!$nfse) {
+
+        http_response_code(401);
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura com Certificado."));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura com Certificado. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 
@@ -429,8 +445,8 @@ if (count($arrayItemNF) > 0)
     $result = curl_exec($curl);
     $info = curl_getinfo( $curl );
 
-    if ($info['http_code'] == '200') 
-    {
+    if ($info['http_code'] == '200') {
+
         //
         $xmlNFRet = simplexml_load_string($result);
         $nuNF = $xmlNFRet->numeroSerie;
@@ -450,9 +466,10 @@ if (count($arrayItemNF) > 0)
         //
         // update notaFiscal
         $retorno = $notaFiscal->update();
-        if(!$retorno[0]){
-            http_response_code(503);
-            echo json_encode(array("http_code" => "503", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
+        if(!$retorno[0]) {
+
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
@@ -472,61 +489,55 @@ if (count($arrayItemNF) > 0)
             exit;
         }
     }
-    else 
-    {
+    else {
+
         if (substr($info['http_code'],0,1) == '5') {
 
+            //
+            $notaFiscal->situacao = "T";
+            $notaFiscal->textoJustificativa = "Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
+
+            // update notaFiscal
+            $retorno = $notaFiscal->update();
+            if($retorno[0]){
+
+                $notaFiscal->deleteCompleto();
+
+                http_response_code(500);
+                echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
+                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+                exit;
+            }
+
             http_response_code(503);
-            echo json_encode(array("message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
+            echo json_encode(array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
         else {
 
+            $notaFiscal->deleteCompleto();
+
             $msg = $result;
             $dados = json_decode($result);
             if (isset($dados->error)) {
 
-                $notaFiscal->deleteCompleto();
-
-                http_response_code(503);
-                echo json_encode(array("message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
+                http_response_code(500);
+                echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
                 exit;
             }
             else {
 
-                $notaFiscal->deleteCompleto();
-
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
-                http_response_code(503);
-                echo json_encode(array("message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet));
+                http_response_code(500);
+                echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
                 exit;
             }
         }
-        //
-        $notaFiscal->situacao = "R";
-        $notaFiscal->textoJustificativa = $msg;
-
-        // update notaFiscal
-        if(!$notaFiscal->update()){
-
-            http_response_code(503);
-            echo json_encode(array("message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            exit;
-        }
     }
-}
-else{
-
-    http_response_code(503);
-    echo json_encode(array("http_code" => "503", "message" => "Erro na inclusão dos Itens da Nota Fiscal."));
-    $strData = json_encode($data);
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro na inclusão dos Itens da Nota Fiscal. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    exit;
 }
 
 ?>
