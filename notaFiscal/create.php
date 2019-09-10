@@ -415,8 +415,6 @@ else {
     include_once '../comunicacao/signNFSe.php';
     $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
 
-echo 'PWD='.$autorizacao->senha;
-
     $nfse = new SignNFSe($arraySign);
     if(!$nfse) {
 
@@ -428,15 +426,14 @@ echo 'PWD='.$autorizacao->senha;
     }
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
-}
-//
-if (!$nfse) {
+    if (!$nfse) {
 
-    $db->rollBack();
-    http_response_code(401);
-    echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML."));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    exit;
+        $db->rollBack();
+        http_response_code(401);
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML."));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
 }
 //
 // fecha atualizações
