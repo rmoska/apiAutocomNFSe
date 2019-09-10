@@ -158,8 +158,8 @@ if(
         if ($info['http_code'] == '200') {
             //
             $xmlNFRet = simplexml_load_string($result);
-            $nuNF = $xmlNFRet->numeroSerie;
-            $cdVerif = $xmlNFRet->codigoVerificacao;
+            $nuNF = (string) $xmlNFRet->numeroSerie;
+            $cdVerif = (string) $xmlNFRet->codigoVerificacao;
         }
         else {
 
