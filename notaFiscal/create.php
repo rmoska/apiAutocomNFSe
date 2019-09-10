@@ -419,25 +419,26 @@ else {
 
         $db->rollBack();
         http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas com Certificado. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado.".$nfse->msg));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->msg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
 }
 //
-// fecha atualizações
-$db->commit();
+if (!$nfse) {
 
-if (!$xmlAss) {
-
+    $db->rollBack();
     http_response_code(401);
     echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML."));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-else {
+//
+// fecha atualizações
+$db->commit();
+
     //
     //
     // transmite NFSe	
@@ -551,6 +552,5 @@ else {
             }
         }
     }
-}
 
 ?>

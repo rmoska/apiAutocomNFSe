@@ -60,7 +60,8 @@ class SignNFSe {
         }
 
         if ( !$retorno = $this->__loadCerts() ) {
-            return $this->errMsg;
+            return false;
+//            return $this->errMsg;
         }
 
         return true;
