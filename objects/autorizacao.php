@@ -87,7 +87,7 @@ class Autorizacao{
                     aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha
                   WHERE
                     idAutorizacao = :idAutorizacao";
-    
+echo $query;    
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
@@ -115,7 +115,7 @@ class Autorizacao{
 
         // execute query
         if($stmt->execute()){
-
+echo 'ok';
             include_once '../objects/emitente.php';
             $emitente = new Emitente($this->conn);
             $emitente->idEmitente = $this->idEmitente;
@@ -132,7 +132,7 @@ class Autorizacao{
             return array(true);
         }
         else {
-
+echo 'err';
             $aErr = $stmt->errorInfo();
             return array(false, $aErr[2]);
         }
