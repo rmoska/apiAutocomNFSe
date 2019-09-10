@@ -73,7 +73,7 @@ if(
             include_once '../comunicacao/signNFSe.php';
             $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
             $certificado = new SignNFSe($arraySign);
-            if ($certificado->errMsg > ''){
+            if ($certificado->errStatus){
                 http_response_code(503);
                 echo json_encode(array("http_code" => "503", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
