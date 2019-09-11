@@ -202,7 +202,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     if ($nfse->errStatus) {
 
         $statusErr = 1;
-        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg));
+        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg);
         continue;
     }
 
