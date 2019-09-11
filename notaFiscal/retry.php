@@ -1,16 +1,8 @@
 <?php
 
-// Classe para emissão de NFSe PMF Homologação / Produção
+// Classe para repetir tentativa de emissão de NFSe PMF pendentes por Servidor Indisponível / Timeout
 
-// required headers
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=iso-8859-1");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
 include_once '../config/database.php';
-include_once '../config/http_response_code.php';
 include_once '../objects/notaFiscal.php';
 include_once '../objects/notaFiscalItem.php';
 include_once '../objects/itemVenda.php';
@@ -24,8 +16,13 @@ $db = $database->getConnection();
  
 $notaFiscal = new NotaFiscal($db);
  
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
+
+
+
+
+
+
+
 
 //
 if(
@@ -515,7 +512,7 @@ $db->commit();
             $retorno = $notaFiscal->update();
             if($retorno[0]){
 
-                $notaFiscal->deleteCompletoTransaction();
+                $notaFiscal->deleteCompleto();
 
                 http_response_code(500);
                 echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
@@ -530,7 +527,7 @@ $db->commit();
         }
         else {
 
-            $notaFiscal->deleteCompletoTransaction();
+            $notaFiscal->deleteCompleto();
 
             $msg = $result;
             $dados = json_decode($result);
