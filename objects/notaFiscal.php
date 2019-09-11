@@ -410,11 +410,8 @@ class NotaFiscal{
     // check notaFiscal
     function check(){
     
-        // select query
-        $query = "SELECT nf.* FROM " . $this->tableName . " nf
+        $query = "SELECT nf.numero, nf.situacao FROM " . $this->tableName . " nf
                   WHERE nf.idNotaFiscal = ? LIMIT 1";
-    
-        // prepare query statement
         $stmt = $this->conn->prepare($query);
     
         // sanitize
@@ -426,18 +423,19 @@ class NotaFiscal{
         // execute query
         $stmt->execute();
     
-        return $stmt->rowCount();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $situacao = $row['situacao'];
+        $nuNF = $row['numero'];
+    
+        return array("existe" => $stmt->rowCount(), "situacao" => $situacao, "numeroNF" => $nuNF);
     }    
 
     //
     // check notaFiscal Venda.Emitente
     function checkVenda(){
     
-        // select query
         $query = "SELECT nf.numero, nf.situacao FROM " . $this->tableName . " nf
                   WHERE nf.docOrigemNumero = ? AND nf.situacao IN ('T','F') LIMIT 1"; // Pendente Timeout / Faturada
-    
-        // prepare query statement
         $stmt = $this->conn->prepare($query);
     
         // sanitize

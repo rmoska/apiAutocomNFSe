@@ -19,7 +19,7 @@ $notaFiscal = new NotaFiscal($db);
  
 $notaFiscal->idNotaFiscal = isset($_GET['idNotaFiscal']) ? $_GET['idNotaFiscal'] : die();
 
-$checkNF = $notaFiscal->checkVenda();
+$checkNF = $notaFiscal->check();
 if ($checkNF["existe"] == 0) {
 
     http_response_code(400);
