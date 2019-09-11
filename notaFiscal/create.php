@@ -525,7 +525,7 @@ $db->commit();
         }
         else {
 
-            $notaFiscal->deleteCompletoTransaction();
+//            $notaFiscal->deleteCompletoTransaction();
 
             $msg = $result;
             $dados = json_decode($result);
