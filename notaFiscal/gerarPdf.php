@@ -15,29 +15,32 @@ include_once '../objects/notaFiscal.php';
 $database = new Database();
 $db = $database->getConnection();
  
-// prepare emitente object
 $notaFiscal = new NotaFiscal($db);
  
-// get emitente id
 $notaFiscal->idNotaFiscal = isset($_GET['idNotaFiscal']) ? $_GET['idNotaFiscal'] : die();
 
-// delete emitente
-if($arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db)){
- 
-    // set response code - 200 ok
-    http_response_code(200);
- 
-    // tell the user
-    echo json_encode(array("message" => "Arquivo PDF criado", "linkPDF" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
+$checkNF = $notaFiscal->checkVenda();
+if ($checkNF["existe"] == 0) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", 
+                            "message" => "Nota Fiscal não encontrada. idNotaFiscal=".$notaFiscal->idNotaFiscal));
 }
- 
-// if unable to delete emitente
 else{
- 
-    // set response code - 503 service unavailable
-    http_response_code(503);
- 
-    // tell the user
-    echo json_encode(array("message" => "Não foi possível gerar arquivo PDF."));
+
+    if($arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db)){
+    
+        http_response_code(200);
+        echo json_encode(array("http_code" => "200", 
+                                "message" => "Arquivo PDF criado", "linkPDF" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
+    }
+    
+    // if unable to delete emitente
+    else{
+    
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", 
+                                "message" => "Não foi possível gerar arquivo PDF. idNotaFiscal=".$notaFiscal->idNotaFiscal));
+    }
 }
 ?>
