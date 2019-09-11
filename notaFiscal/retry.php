@@ -22,7 +22,7 @@ $stmt = $notaFiscal->readPendente();
 
 //
 // se não encontrou registros, encerra processamento
-if($stmt->rowCount() > 0)
+if($stmt->rowCount() == 0)
     exit;
  
 //
