@@ -8,7 +8,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // include database and object file
 include_once '../config/database.php';
-include_once '../config/http_response_code.php';
+include_once '../shared/http_response_code.php';
 include_once '../objects/emitente.php';
  
 // get database connection

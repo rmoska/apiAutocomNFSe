@@ -247,6 +247,23 @@ class NotaFiscal{
     }    
 
     //
+    // update emergencial
+    function updateSituacao($situacao){
+    
+        $query = "UPDATE notaFiscal set situacao = '".$situacao."' WHERE idNotaFiscal = ?";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(1, $this->idNotaFiscal);
+    
+        // execute query
+        if($stmt->execute()){
+
+            return true;
+        }
+        return false;        
+    }
+
+    //
     // delete notaFiscal
     function delete(){
     
@@ -418,7 +435,7 @@ class NotaFiscal{
     
         // select query
         $query = "SELECT nf.numero, nf.situacao FROM " . $this->tableName . " nf
-                  WHERE nf.docOrigemNumero = ? AND nf.situacao IN ('P','F') LIMIT 1"; // Pendente / Faturada
+                  WHERE nf.docOrigemNumero = ? AND nf.situacao IN ('T','F') LIMIT 1"; // Pendente Timeout / Faturada
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -444,7 +461,7 @@ class NotaFiscal{
     function readPendente(){
     
         // select all query
-        $query = "SELECT * FROM " . $this->tableName . " WHERE situacao = 'T' ORDER BY idNotaFiscal";
+        $query = "SELECT idNotaFiscal FROM " . $this->tableName . " WHERE situacao = 'T' ORDER BY idNotaFiscal";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -518,7 +535,7 @@ class NotaFiscal{
     function printDanfpse($idNotaFiscal, $db) {
 
         include_once "../../fpdf/qrcode/qrcode.class.php"; 
-        include_once "../shared/relatPdfNFe.php";
+        include_once "../shared/relatPDFNFe.php";
         include_once "../shared/utilities.php";
         include_once '../objects/notaFiscalItem.php';
         include_once '../objects/emitente.php';
@@ -555,7 +572,7 @@ class NotaFiscal{
 
         $utilities = new Utilities();
         //	
-        $pdf=new relatPdfNFe('P','mm','form');
+        $pdf=new relatPDFNFe('P','mm','form');
         $pdf->SetMargins(0,0);
         $pdf->Open();
 

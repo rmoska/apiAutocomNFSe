@@ -10,7 +10,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
 include_once '../config/database.php';
-include_once '../config/http_response_code.php';
+include_once '../shared/http_response_code.php';
 include_once '../objects/notaFiscal.php';
 include_once '../objects/notaFiscalItem.php';
 include_once '../objects/itemVenda.php';
@@ -351,15 +351,10 @@ else {
     $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
     $xml->writeElement("dataEmissao", $notaFiscal->dataEmissao);
     $xml->writeElement("emailTomador", $tomador->email);
-//			$xml->writeElement("ambiente", 'true');
     $xml->writeElement("identificacao", $notaFiscal->idNotaFiscal);
     $xml->writeElement("identificacaoTomador", $tomador->documento);
-//		if($tomador->inscricaoMunicipal > '')
-//			$xml->writeElement("inscricaoMunicipalTomador", $tomador->inscricaoMunicipal);
     //		
     // ITENS
-    $it = 0;
-    $qtItem = count($arrayItemNF);
     $xml->startElement("itensServico");
     foreach ( $arrayItemNF as $notaFiscalItem ) {
 
@@ -374,10 +369,7 @@ else {
         //
         $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
         $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
-//        if ($notaFiscalItem->taxaIss > 0)
-            $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,2,'.',''));
-//        else
-//            $xml->writeElement("baseCalculo", number_format(0,2,'.',''));
+        $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,2,'.',''));
         $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,2,'.',''));
         $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,2,'.',''));
         $xml->endElement(); // ItemServico
@@ -481,6 +473,9 @@ $db->commit();
         // update notaFiscal
         $retorno = $notaFiscal->update();
         if(!$retorno[0]) {
+
+            // força update simples
+            $notaFiscal->updateSituacao("F");
 
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));

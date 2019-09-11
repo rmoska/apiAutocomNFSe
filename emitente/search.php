@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../config/http_response_code.php';
+include_once '../shared/http_response_code.php';
 include_once '../objects/emitente.php';
  
 // instantiate database and product object

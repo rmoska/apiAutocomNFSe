@@ -1,6 +1,6 @@
 <?php 
 require_once ("relatPDF.php"); 
-class relatPdfNFe extends relatPDF { 
+class relatPDFNFe extends relatPDF { 
 
     var $nome;          // nome do relatorio 
     var $cabecalho;     // cabecalho para as colunas 
