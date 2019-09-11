@@ -139,7 +139,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     //		
     // ITENS
     $xml->startElement("itensServico");
-    foreach ( $arrayItemNF as $notaFiscalItem ) {
+    foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
         $xml->startElement("itemServico");
         $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
