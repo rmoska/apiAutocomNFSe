@@ -21,7 +21,7 @@ function logErro($statusErr, $arrMsg, $objNF){
             $objNF->deleteCompletoTransaction();
             $strData = json_encode($arrMsg);
     //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+            error_log("[".date("Y-m-d H:i:s")."] ".$strData."\n", 3, "../backup/apiRetry.log");
         }
         else if ($statusErr == 3) {
     
