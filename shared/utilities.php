@@ -71,12 +71,13 @@ class Utilities{
     }
 
     public function logRetry($msg) {
-        
-        $arqLog = fopen("apiRetry.log", "a");
-//        $arqLog = fopen("../backup/apiRetry.log", "a");
+
+echo 'Teste msg retry';
+
+        $arqLog = fopen("../backup/apiRetry.log", "a");
         $escreve = fwrite($arqLog, $msg);
         fclose($arqLog);
     }
-      
+
 }
 ?>
