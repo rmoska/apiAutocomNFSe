@@ -8,7 +8,7 @@
 // 1 = situação mantida, erro autorização
 // 2 = erro no processamento, nf excluída 
 // 3 = emitida com sucesso
-private function logErro($statusErr, $arrMsg, $objNF){
+function logErro($statusErr, $arrMsg, $objNF){
 
         // retorna msg erro / sucesso / situação mantida
         if ($statusErr == 1) {
