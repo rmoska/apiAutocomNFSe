@@ -72,6 +72,8 @@ class Utilities{
 
     public function logRetry($msg) {
 
+echo $msg;
+
         $arqLog = fopen("../backup/apiRetry.log", "a");
         $escreve = fwrite($arqLog, $msg);
         fclose($arqLog);

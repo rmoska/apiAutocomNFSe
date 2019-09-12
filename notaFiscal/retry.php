@@ -46,8 +46,8 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         $notaFiscal->deleteCompletoTransaction();
         $strData = json_encode($arrErr);
- //       $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
+//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     }
     else if ($statusErr == 3) {
 
