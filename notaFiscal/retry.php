@@ -8,7 +8,7 @@
 // 1 = situação mantida, erro autorização
 // 2 = erro no processamento, nf excluída 
 // 3 = emitida com sucesso
-private function logErro($statusErr, $arrMsg){
+private function logErro($statusErr, $arrMsg, $objNF){
 
         // retorna msg erro / sucesso / situação mantida
         if ($statusErr == 1) {
@@ -18,7 +18,7 @@ private function logErro($statusErr, $arrMsg){
         }
         else if ($statusErr == 2) {
     
-            $notaFiscal->deleteCompletoTransaction();
+            $objNF->deleteCompletoTransaction();
             $strData = json_encode($arrMsg);
     //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
@@ -95,7 +95,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         $arrErr = array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal.(NFi02)", 
                                 "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )");
-        logErro("2", $arrErr);
+        logErro("2", $arrErr, $notaFiscal);
         continue;
     }
     
@@ -292,7 +292,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
             if (isset($dados->error)) {
 
                 $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description);
-                logErro("2", $arrErr);
+                logErro("2", $arrErr, $notaFiscal);
                 continue;
             }
             else {
@@ -300,7 +300,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
                 $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet);
-                logErro("2", $arrErr);
+                logErro("2", $arrErr, $notaFiscal);
                 continue;
             }
         }
