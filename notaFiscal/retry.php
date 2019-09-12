@@ -1,5 +1,7 @@
 <?php
 
+setlocale(LC_ALL, "pt_BR", "pt_BR.iso-8859-1", "pt_BR.utf-8", "portuguese");
+
 // Classe para repetir tentativa de emissão de NFSe PMF pendentes por Servidor Indisponível / Timeout
 
 //
@@ -10,28 +12,24 @@
 // 3 = emitida com sucesso
 function logErro($statusErr, $arrMsg, $objNF){
 
-        // retorna msg erro / sucesso / situação mantida
-        if ($statusErr == 1) {
-            $strData = json_encode($arrMsg);
-    //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
-        }
-        else if ($statusErr == 2) {
-    
-            $objNF->deleteCompletoTransaction();
-            $strData = json_encode($arrMsg);
-    //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-            error_log("[".date("Y-m-d H:i:s")."] ".$strData."\n", 3, "../backup/apiRetry.log");
-        }
-        else if ($statusErr == 3) {
-    
-            $strData = json_encode($arrMsg);
-    //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
-        }
-    
-}
+    // retorna msg erro / sucesso / situação mantida
+    if ($statusErr == 1) {
 
+        $strData = json_encode($arrMsg);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+    }
+    else if ($statusErr == 2) {
+
+        $objNF->deleteCompletoTransaction();
+        $strData = json_encode($arrMsg);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+    }
+    else if ($statusErr == 3) {
+
+        $strData = json_encode($arrMsg);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+    }   
+}
 
 include_once '../config/database.php';
 include_once '../objects/notaFiscal.php';
@@ -120,9 +118,6 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         continue;
     }
 
-    include_once '../shared/utilities.php';
-    $utilities = new Utilities();
-    
     //			
     $xml = new XMLWriter;
     $xml->openMemory();
