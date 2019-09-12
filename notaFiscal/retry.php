@@ -2,6 +2,37 @@
 
 // Classe para repetir tentativa de emissão de NFSe PMF pendentes por Servidor Indisponível / Timeout
 
+//
+// statusErr 
+// 0 = situação mantida (timeout)
+// 1 = situação mantida, erro autorização
+// 2 = erro no processamento, nf excluída 
+// 3 = emitida com sucesso
+private function logErro($statusErr, $arrMsg){
+
+        // retorna msg erro / sucesso / situação mantida
+        if ($statusErr == 1) {
+            $strData = json_encode($arrMsg);
+    //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        }
+        else if ($statusErr == 2) {
+    
+            $notaFiscal->deleteCompletoTransaction();
+            $strData = json_encode($arrMsg);
+    //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        }
+        else if ($statusErr == 3) {
+    
+            $strData = json_encode($arrMsg);
+    //        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        }
+    
+}
+
+
 include_once '../config/database.php';
 include_once '../objects/notaFiscal.php';
  
@@ -27,36 +58,7 @@ include_once '../objects/autorizacao.php';
 include_once '../shared/utilities.php';
 $utilities = new Utilities();
 
-//
-// statusErr 
-// 0 = situação mantida (timeout)
-// 1 = situação mantida, erro autorização
-// 2 = erro no processamento, nf excluída 
-// 3 = emitida com sucesso
-$statusErr = 0;
 while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
-
-    // retorna msg erro / sucesso / situação mantida
-    if ($statusErr == 1) {
-        $strData = json_encode($arrErr);
-        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
-    }
-    else if ($statusErr == 2) {
-
-        $notaFiscal->deleteCompletoTransaction();
-        $strData = json_encode($arrErr);
-        $utilities->logRetry("NF excluída");
-//        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    }
-    else if ($statusErr == 3) {
-
-        $strData = json_encode($arrOK);
-        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData));
-//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
-    }
-    $statusErr = 0;
 
     $notaFiscal = new NotaFiscal($db);
     $notaFiscal->idNotaFiscal = $rNF["idNotaFiscal"];
@@ -91,9 +93,9 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
    }
     if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
 
-        $statusErr = 2;
         $arrErr = array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal.(NFi02)", 
                                 "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )");
+        logErro("2", $arrErr);
         continue;
     }
     
@@ -107,14 +109,14 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
 
-        $statusErr = 1;
         $arrErr = array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.");
+        logErro("1", $arrErr);
         continue;
     }
     else if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
-        $statusErr = 1;
         $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).");
+        logErro("1", $arrErr);
         continue;
     }
 
@@ -198,16 +200,16 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $nfse = new SignNFSe($arraySign);
     if($nfse->errStatus) {
 
-        $statusErr = 1;
         $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg);
+        logErro("1", $arrErr);
         continue;
     }
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
     if ($nfse->errStatus) {
 
-        $statusErr = 1;
         $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg);
+        logErro("1", $arrErr);
         continue;
     }
 
@@ -256,8 +258,8 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
             // força update simples
             $notaFiscal->updateSituacao("F");
 
-            $statusErr = 1;
             $arrErr = array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]);
+            logErro("1", $arrErr);
             continue;
         }
         else {
@@ -265,14 +267,13 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
             // gerar pdf
             $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
 
-            // set response code - 201 created
-            $statusErr = 3;
             $arrOK = array("http_code" => "201", 
                            "message" => "Nota Fiscal emitida", 
                            "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                            "numeroNF" => $notaFiscal->numero,
                            "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
                            "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF);
+            logErro("3", $arrOK);
             continue;
         }
     }
@@ -280,28 +281,26 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         if (substr($info['http_code'],0,1) == '5') {
 
-            $statusErr = 0;
             $arrErr = array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !");
+            logErro("0", $arrErr);
             continue;
         }
         else {
-
-            $notaFiscal->deleteCompleto();
 
             $msg = $result;
             $dados = json_decode($result);
             if (isset($dados->error)) {
 
-                $statusErr = 2;
                 $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description);
+                logErro("2", $arrErr);
                 continue;
             }
             else {
 
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
-                $statusErr = 2;
                 $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet);
+                logErro("2", $arrErr);
                 continue;
             }
         }
