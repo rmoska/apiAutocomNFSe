@@ -68,7 +68,14 @@ class Utilities{
           $texto = ereg_replace($caractInv[$i],$caractSub[$i],$texto);	
         }
         return $texto;
-      }
+    }
+
+    public function logRetry($msg) {
+        
+        $arqLog = fopen("../backup/apiRetry.log", "a");
+        $escreve = fwrite($arqLog, $msg);
+        fclose($arqLog);
+    }
       
 }
 ?>

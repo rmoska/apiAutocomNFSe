@@ -4,12 +4,6 @@
 
 include_once '../config/database.php';
 include_once '../objects/notaFiscal.php';
-include_once '../objects/notaFiscalItem.php';
-include_once '../objects/itemVenda.php';
-include_once '../objects/emitente.php';
-include_once '../objects/tomador.php';
-include_once '../objects/autorizacao.php';
-include_once '../objects/municipio.php';
  
 $database = new Database();
 $db = $database->getConnection();
@@ -25,6 +19,14 @@ $stmt = $notaFiscal->readPendente();
 if($stmt->rowCount() == 0)
     exit;
  
+include_once '../objects/notaFiscalItem.php';
+include_once '../objects/itemVenda.php';
+include_once '../objects/emitente.php';
+include_once '../objects/tomador.php';
+include_once '../objects/autorizacao.php';
+include_once '../shared/utilities.php';
+$utilities = new Utilities();
+
 //
 // statusErr 
 // 0 = situação mantida (timeout)
@@ -37,19 +39,21 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     // retorna msg erro / sucesso / situação mantida
     if ($statusErr == 1) {
         $strData = json_encode($arrErr);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData);
+//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
     }
     else if ($statusErr == 2) {
 
         $notaFiscal->deleteCompletoTransaction();
         $strData = json_encode($arrErr);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData);
+//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
     }
     else if ($statusErr == 3) {
 
         $strData = json_encode($arrOK);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
-
+        $utilities->logRetry(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData);
+//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
     }
     $statusErr = 0;
 
