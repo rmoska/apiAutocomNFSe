@@ -72,9 +72,10 @@ class Utilities{
 
     public function logRetry($msg) {
 
-echo $msg;
+//        /home/autocom/public_html/apiAutocomNFSe-teste/backup/error_log.txt 
 
-        $arqLog = fopen("../backup/apiRetry.log", "a");
+        $arqLog = fopen("/home/autocom/public_html/apiAutocomNFSe-teste/backup/error_log.txt", "a");
+//        $arqLog = fopen("../backup/apiRetry.log", "a");
         $escreve = fwrite($arqLog, $msg);
         fclose($arqLog);
     }
