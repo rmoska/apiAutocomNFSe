@@ -37,18 +37,18 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     // retorna msg erro / sucesso / situação mantida
     if ($statusErr == 1) {
         $strData = json_encode($arrErr);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
     }
     else if ($statusErr == 2) {
 
         $notaFiscal->deleteCompletoTransaction();
         $strData = json_encode($arrErr);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
     }
     else if ($statusErr == 3) {
 
         $strData = json_encode($arrOK);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
 
     }
     $statusErr = 0;
