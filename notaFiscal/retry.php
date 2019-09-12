@@ -1,6 +1,6 @@
 <?php
 
-setlocale(LC_ALL, "pt_BR.utf-8");
+setlocale(LC_ALL, "pt_BR.iso-8859-1");
 //setlocale(LC_ALL, "pt_BR.iso-8859-1", "pt_BR.utf-8");
 
 // Classe para repetir tentativa de emissão de NFSe PMF pendentes por Servidor Indisponível / Timeout
