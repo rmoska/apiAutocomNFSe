@@ -268,46 +268,6 @@ class comunicaAbrasf
      */
     private $URLPortal = 'http://www.portalfiscal.inf.br/nfe';
     /**
-     * aliaslist
-     * Lista dos aliases para os estados que usam Sefaz própria ou Sefaz Virtual
-     * @var array
-     */
-    private $aliaslist = array(
-        //unidades da Federação:
-        'AC'=>'SVRS',
-        'AL'=>'SVRS',
-        'AM'=>'AM',
-        'AN'=>'AN',
-        'AP'=>'SVRS',
-        'BA'=>'SVRS',
-        'CE'=>'CE',
-        'DF'=>'SVRS',
-        'ES'=>'SVRS',
-        'GO'=>'GO',
-        'MA'=>'SVAN',
-        'MG'=>'MG',
-        'MS'=>'MS',
-        'MT'=>'MT',
-        'PA'=>'SVAN',
-        'PB'=>'SVRS',
-        'PE'=>'PE',
-        'PI'=>'SVAN',
-        'PR'=>'PR',
-        'RJ'=>'SVRS',
-        'RN'=>'SVRS',
-        'RO'=>'SVRS',
-        'RR'=>'SVRS',
-        'RS'=>'RS',
-        'SC'=>'SVRS',
-        'SE'=>'SVRS',
-        'SP'=>'SP',
-        'TO'=>'SVRS',
-        //demais autorizadores do projeto NF-e:
-        'SVAN'=>'SVAN',
-        'SVRS'=>'SVRS',
-        'SVCAN'=>'SVCAN',
-        'SVCRS'=>'SVCRS');
-    /**
      * cUFlist
      * Lista dos numeros identificadores dos estados
      * @var array
@@ -342,39 +302,6 @@ class comunicaAbrasf
         'SVAN'=>'91'); // TODO fmertins 22/08: não existe código da SVRS?
     
     
-    /**
-     * siglaUFList
-     * Lista dos numeros identificadores dos estados
-     * @var array
-     */
-    private $siglaUFList = array('11'=>'RO',
-                                 '12'=>'AC',
-                                 '13'=>'AM',
-                                 '14'=>'RR',
-                                 '15'=>'PA',
-                                 '16'=>'AP',
-                                 '17'=>'TO',
-                                 '21'=>'MA',
-                                 '22'=>'PI',
-                                 '23'=>'CE',
-                                 '24'=>'RN',
-                                 '25'=>'PB',
-                                 '26'=>'PE',
-                                 '27'=>'AL',
-                                 '28'=>'SE',
-                                 '29'=>'BA',
-                                 '31'=>'MG',
-                                 '32'=>'ES',
-                                 '33'=>'RJ',
-                                 '35'=>'SP',
-                                 '41'=>'PR',
-                                 '42'=>'SC',
-                                 '43'=>'RS',
-                                 '50'=>'MS',
-                                 '51'=>'MT',
-                                 '52'=>'GO',
-                                 '53'=>'DF',
-                                 '91'=>'SVAN');
     /**
      * exceptions
      * Ativa ou desativa o uso de exceções para transporte de erros
@@ -1043,17 +970,7 @@ class comunicaAbrasf
                 $tpAmb = self::AMBIENTE_HOMOLOGACAO;
                 $sAmbiente = 'homologacao';
             }
-            //valida e extrai a variável cUF da lista
-            if (!isset($this->aliaslist[$sUF])) {
-                throw new nfephpException("UF \"$sUF\" nao encontrada na lista de alias");
-            }
-            $alias = $this->aliaslist[$sUF];
-            //verifica se deve habilitar SVAN ou SVRS (ambos por padrão iniciam desabilitados)
-            if ($alias == self::SVAN) {
-                $this->enableSVAN = true;
-            } elseif ($alias == self::SVRS) {
-                $this->enableSVRS = true;
-            }
+
             //estabelece a expressão xpath de busca
             $xpathExpression = "/WS/UF[sigla='$alias']/$sAmbiente";
             //para cada "nó" no xml que atenda aos critérios estabelecidos
