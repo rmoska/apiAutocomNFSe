@@ -6,6 +6,9 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
+include_once '../config/database.php';
+include_once '../shared/http_response_code.php';
+include_once '../objects/notaFiscal.php';
 //
 $codigoMunicipio = $_GET['idMunicipio'];
 
@@ -19,16 +22,13 @@ else {
     if (file_exists($fileClass)) {
         include $fileClass;
 
-        // include database and object file
-        include_once '../objects/notaFiscal.php';
-        
         // get database connection
         $database = new Database();
         $db = $database->getConnection();
         
         $notaFiscal = new NotaFiscal($db);
         
-        $notaFiscal->idNotaFiscal = isset($_GET['idNotaFiscal']) ? $_GET['idNotaFiscal'] : die();
+        $notaFiscal->idNotaFiscal = $_GET['idNotaFiscal'];
 
         $checkNF = $notaFiscal->check();
         if ($checkNF["existe"] == 0) {
