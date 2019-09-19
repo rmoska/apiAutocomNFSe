@@ -16,7 +16,7 @@ if (!isset($codigoMunicipio)) {
 
     echo json_encode(array("http_code" => "400", "message" => "Parâmetro idMunicipio não informado"));
 }
-elseif {
+else if {
 
     $fileClass = './'.$codigoMunicipio.'/create.php';
     if (file_exists($fileClass))
