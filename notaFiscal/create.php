@@ -76,6 +76,22 @@ if ($checkNF["existe"] > 0) {
 // abre transação tomador - itens - nf - nfitens
 $db->beginTransaction();
 
+// check emitente
+$emitente = new Emitente($db);
+$emitente->documento = $data->documento;
+if (($idEmitente = $emitente->check()) > 0) {
+    $notaFiscal->idEmitente = $idEmitente;
+}
+else{
+
+    $db->rollBack();
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
+    exit;
+}
+$emitente->idEmitente = $idEmitente;
+$emitente->readOne();
+
 // check / create tomador
 if(
     !empty($data->tomador->documento) &&
@@ -146,22 +162,6 @@ else{
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-
-// check emitente
-$emitente = new Emitente($db);
-$emitente->documento = $data->documento;
-if (($idEmitente = $emitente->check()) > 0) {
-    $notaFiscal->idEmitente = $idEmitente;
-}
-else{
-
-    $db->rollBack();
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
-    exit;
-}
-$emitente->idEmitente = $idEmitente;
-$emitente->readOne();
 
 if ($tomador->uf != 'SC') $cfps = '9203';
 else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
