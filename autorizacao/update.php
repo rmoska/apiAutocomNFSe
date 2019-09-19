@@ -155,6 +155,9 @@ if(
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
 
+        $nuNF = 0;
+        $cdVerif = '';
+
         if ($info['http_code'] == '200') {
             //
             $xmlNFRet = simplexml_load_string($result);
@@ -165,10 +168,8 @@ if(
 
             if (substr($info['http_code'],0,1) == '5') {
 
-                http_response_code(503);
-                echo json_encode(array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
+                $cdVerif = "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
-                exit;
             }
             else {
         
@@ -176,19 +177,15 @@ if(
                 $dados = json_decode($result);
                 if (isset($dados->error)) {
     
-                    http_response_code(500);
-                    echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description));
+                    $cdVerif = "Erro no envio da NFSe ! (".$dados->error.") ".$dados->error_description;
                     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                    exit;
                 }
                 else {
     
                     $xmlNFRet = simplexml_load_string(trim($result));
                     $msgRet = (string) $xmlNFRet->message;
-                    http_response_code(500);
-                    echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet));
+                    $cdVerif = "Erro no envio da NFSe ! ".$msgRet;
                     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-                    exit;
                 }
             }
         }
