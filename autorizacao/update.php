@@ -23,6 +23,4 @@ elseif {
 
 }
 
-//include './4205407/update.php';
-
 ?>
