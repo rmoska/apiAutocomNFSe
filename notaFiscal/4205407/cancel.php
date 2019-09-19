@@ -148,7 +148,10 @@ if ($info['http_code'] == '200')
     else {
 
         // gerar pdf
-        $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
+        include './'.$emitente->codigoMunicipio.'/gerarPdf.php';
+        $gerarPdf = new gerarPdf();
+
+        $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
 
         $dirAPI = basename(dirname(dirname( __FILE__ )));
         // set response code - 201 created
