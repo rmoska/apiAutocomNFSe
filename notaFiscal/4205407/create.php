@@ -478,7 +478,7 @@ $db->commit();
         else {
             //
             // gerar pdf
-            include './gerarPdf.php';
+            include './'.$emitente->codigoMunicipio.'/gerarPdf.php';
             $gerarPdf = new gerarPdf();
 
             $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
