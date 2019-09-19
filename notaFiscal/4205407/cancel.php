@@ -2,13 +2,6 @@
 
 // Classe para emissão de NFSe PMF em ambiente de Homologação
 
-// required headers
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=iso-8859-1");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
 include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
 include_once '../objects/notaFiscal.php';
