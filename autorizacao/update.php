@@ -31,8 +31,6 @@ $emitente = new Emitente($db);
 $emitente->idEmitente = $data->idEmitente;
 $emitente->readOne();
 
-print_r($emitente);
-
 if (is_null($emitente->documento)) {
 
     http_response_code(400);
@@ -48,20 +46,21 @@ if (!isset($emitente->codigoMunicipio)) {
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente sem Município definido no cadastro. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-else {
-echo 'M='.$emitente->$codigoMunicipio;
-    $fileClass = './'.$emitente->$codigoMunicipio.'/update.php';
-    if (file_exists($fileClass)) {
 
-        include $fileClass;
-    }
-    else {
+print_r($emitente);
 
-        http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
-    }
+$fileClass = './'.$emitente->$codigoMunicipio.'/update.php';
+if (file_exists($fileClass)) {
+
+    include $fileClass;
 }
+else {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe."));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    exit;
+}
+
 
 ?>
