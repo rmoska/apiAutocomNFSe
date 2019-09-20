@@ -2,24 +2,15 @@
 
 // Classe para emissão de NFSe PMF Homologação / Produção
 
-include_once '../config/database.php';
-include_once '../shared/http_response_code.php';
 include_once '../objects/notaFiscal.php';
 include_once '../objects/notaFiscalItem.php';
 include_once '../objects/itemVenda.php';
-include_once '../objects/emitente.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
 include_once '../objects/municipio.php';
  
-$database = new Database();
-$db = $database->getConnection();
- 
 $notaFiscal = new NotaFiscal($db);
  
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
-
 //
 if(
     empty($data->documento) ||
@@ -68,22 +59,6 @@ if ($checkNF["existe"] > 0) {
 //
 // abre transação tomador - itens - nf - nfitens
 $db->beginTransaction();
-
-// check emitente
-$emitente = new Emitente($db);
-$emitente->documento = $data->documento;
-if (($idEmitente = $emitente->check()) > 0) {
-    $notaFiscal->idEmitente = $idEmitente;
-}
-else{
-
-    $db->rollBack();
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
-    exit;
-}
-$emitente->idEmitente = $idEmitente;
-$emitente->readOne();
 
 // check / create tomador
 if(
