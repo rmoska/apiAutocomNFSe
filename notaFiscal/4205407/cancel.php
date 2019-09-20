@@ -2,20 +2,8 @@
 
 // Classe para emissão de NFSe PMF em ambiente de Homologação
 
-include_once '../config/database.php';
-include_once '../shared/http_response_code.php';
-include_once '../objects/notaFiscal.php';
-include_once '../objects/emitente.php';
 include_once '../objects/autorizacao.php';
  
-$database = new Database();
-$db = $database->getConnection();
- 
-$notaFiscal = new NotaFiscal($db);
- 
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
-
 //
 // make sure data is not empty
 if(
