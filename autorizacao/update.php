@@ -7,7 +7,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 //
-if(empty($data->idEmitente) {
+if(empty($data->idEmitente)) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado."));
