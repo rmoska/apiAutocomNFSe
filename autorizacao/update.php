@@ -42,6 +42,8 @@ if (!isset($emitente->codigoMunicipio)) {
 }
 else {
 
+    echo 'ok';
+
     $fileClass = './'.$emitente->$codigoMunicipio.'/update.php';
     if (file_exists($fileClass)) {
 
