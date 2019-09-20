@@ -19,7 +19,7 @@ $data = json_decode(file_get_contents("php://input"));
 
 $idNotaFiscal = $data->idNotaFiscal;
 
-if (!empty($idNotaFiscal)) {
+if (empty($idNotaFiscal)) {
 
     echo json_encode(array("http_code" => "400", "message" => "Parâmetro idNotaFiscal não informado"));
     exit;
