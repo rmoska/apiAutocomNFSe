@@ -39,8 +39,6 @@ if (is_null($emitente->documento)) {
     exit;
 }
 
-echo 'm1='.$emitente->codigoMunicipio;
-
 if (!isset($emitente->codigoMunicipio)) {
 
     http_response_code(400);
@@ -49,11 +47,7 @@ if (!isset($emitente->codigoMunicipio)) {
     exit;
 }
 
-//print_r($emitente);
-echo 'm2='.$emitente->codigoMunicipio;
-
-$fileClass = './'.$emitente->$codigoMunicipio.'/update.php';
-
+$fileClass = './'.$emitente->codigoMunicipio.'/update.php';
 if (file_exists($fileClass)) {
 
     include $fileClass;
