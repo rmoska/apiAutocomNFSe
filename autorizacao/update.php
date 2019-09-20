@@ -31,6 +31,8 @@ $emitente = new Emitente($db);
 $emitente->idEmitente = $data->idEmitente;
 $emitente->readOne();
 
+print_r($emitente);
+
 if (is_null($emitente->documento)) {
 
     http_response_code(400);
