@@ -84,7 +84,7 @@ if(
         $xml->writeElement("dataEmissao", $dtEm);
         $xml->writeElement("emailTomador", "rodrigo@autocominformatica.com.br");
         $xml->writeElement("identificacao", 1);
-        $xml->writeElement("identificacaoTomador", "03118290071");
+        $xml->writeElement("identificacaoTomador", "03118290072");
         //		
         // ITENS
         $xml->startElement("itensServico");
