@@ -22,9 +22,12 @@ if(empty($data->idEmitente)) {
     exit;
 }
 
+echo '1';
 $emitente = new Emitente($db);
 $emitente->idEmitente = $data->idEmitente;
 $emitente->readOne();
+echo '2';
+
 if (is_null($emitente->documento)) {
 
     http_response_code(400);
@@ -41,8 +44,6 @@ if (!isset($emitente->codigoMunicipio)) {
     exit;
 }
 else {
-
-    echo 'ok';
 
     $fileClass = './'.$emitente->$codigoMunicipio.'/update.php';
     if (file_exists($fileClass)) {
