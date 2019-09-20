@@ -29,7 +29,7 @@ $database = new Database();
 $db = $database->getConnection();
  
 $notaFiscal = new NotaFiscal($db);
-$notaFiscal->idNotaFiscal = $_GET['idNotaFiscal'];
+$notaFiscal->idNotaFiscal = $idNotaFiscal;
 
 $checkNF = $notaFiscal->check();
 if ($checkNF["existe"] == 0) {
