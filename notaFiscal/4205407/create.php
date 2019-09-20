@@ -137,6 +137,7 @@ else $cfps = '9201';
 $notaFiscal->cfop = $cfps;
 
 // create notaFiscal
+$notaFiscal->idEmitente = $emitente->idEmitente;
 $retorno = $notaFiscal->create();
 if(!$retorno[0]){
 
