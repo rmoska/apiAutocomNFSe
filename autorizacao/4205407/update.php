@@ -36,7 +36,7 @@ if(
     $autorizacao->senhaWeb = $data->senhaWeb;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
-
+/*
     $emitente = new Emitente($db);
     $emitente->idEmitente = $data->idEmitente;
     $emitente->readOne();
@@ -47,8 +47,7 @@ if(
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado para esta Autorização. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
-    $documento = $emitente->documento;
-
+*/
     if ($autorizacao->check() == 0)
         $retorno = $autorizacao->create($emitente->documento);
     else 
