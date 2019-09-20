@@ -1,12 +1,7 @@
 <?php
  
 // include database and object files
-include_once '../config/database.php';
 include_once '../objects/autorizacao.php';
- 
-// get database connection
-$database = new Database();
-$db = $database->getConnection();
  
 // prepare emitente object
 $autorizacao = new Autorizacao($db);

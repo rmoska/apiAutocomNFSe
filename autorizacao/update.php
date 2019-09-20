@@ -6,9 +6,14 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
 include_once '../objects/emitente.php';
 
+// get database connection
+$database = new Database();
+$db = $database->getConnection();
+ 
 // get id of emitente to be edited
 $data = json_decode(file_get_contents("php://input"));
 
@@ -22,11 +27,9 @@ if(empty($data->idEmitente)) {
     exit;
 }
 
-echo '1';
 $emitente = new Emitente($db);
 $emitente->idEmitente = $data->idEmitente;
 $emitente->readOne();
-echo '2';
 
 if (is_null($emitente->documento)) {
 
