@@ -11,9 +11,6 @@ $db = $database->getConnection();
 // prepare emitente object
 $autorizacao = new Autorizacao($db);
  
-// get id of emitente to be edited
-$data = json_decode(file_get_contents("php://input"));
-
 //    !empty($data->aedf) // AEDFe é autorização para Produção, então aceita branco para testes de Homologação
 // make sure data is not empty
 if(

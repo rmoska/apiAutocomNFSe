@@ -8,6 +8,10 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 include_once '../shared/http_response_code.php';
 include_once '../objects/emitente.php';
+
+// get id of emitente to be edited
+$data = json_decode(file_get_contents("php://input"));
+
 //
 if(empty($data->idEmitente)) {
 
