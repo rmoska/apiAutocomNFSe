@@ -47,8 +47,9 @@ if (!isset($emitente->codigoMunicipio)) {
     exit;
 }
 else {
-
+echo '1';
     $fileClass = './'.$emitente->$codigoMunicipio.'/update.php';
+echo '2';
     if (file_exists($fileClass)) {
 
         include $fileClass;
