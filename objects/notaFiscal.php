@@ -530,7 +530,7 @@ class NotaFiscal{
 
     //
     // cria PDF da NFSe PMF
-    function printDanfpse($idNotaFiscal, $db) {
+    function XprintDanfpse($idNotaFiscal, $db) {
 
         include_once "../../fpdf/qrcode/qrcode.class.php"; 
         include_once "../shared/relatPDFNFe.php";
