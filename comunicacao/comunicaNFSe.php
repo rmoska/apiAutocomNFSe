@@ -426,6 +426,7 @@ class comunicaNFSe {
     public function gerarNFSe($sxml) 
     {
 
+print_r($sxml);
         try {
             //retorno do método em array (esta estrutura espelha a estrutura do XML retornado pelo webservice
             //IMPORTANTE: esta estrutura varia parcialmente conforme o $indSinc
@@ -456,7 +457,7 @@ class comunicaNFSe {
             $namespace = $this->URLPortal.'/wsdl/'.$operation;
 
 
-            $metodo = 'GerarNfseEnvio';
+            $metodo = 'GerarNfse';
 
 
             //valida o parâmetro da string do XML da NF-e
@@ -569,8 +570,8 @@ print_r($retorno);
 
     protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo) {
 
-        $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse?wsdl';
-        $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse';
+        $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'?wsdl';
+        $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 

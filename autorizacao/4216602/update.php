@@ -46,7 +46,7 @@ if(
         //
         // Inicia o cabeçalho do documento XML
         $xml->startElement("GerarNfseEnvio");
-        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-ws");
+        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
             $xml->startElement("Rps");
                 $xml->startElement("InfDeclaracaoPrestacaoServico");
                 $xml->writeAttribute("Id", "lote1");
@@ -79,7 +79,7 @@ if(
         $xmlNFe = $xml->outputMemory(true);
         $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-        $xmlAss = $objNFSe->signXML($xmlNFe, 'Rps');
+        $xmlAss = $objNFSe->signXML($xmlNFe, 'GerarNfseEnvio');
         if ($objNFSe->errStatus) {
     
             http_response_code(401);
