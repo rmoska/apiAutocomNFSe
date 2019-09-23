@@ -1422,6 +1422,47 @@ print_r($retorno);
     }//fim cleanCerts
 
 
+
+//    protected function __sendSOAP($urlsefaz,$namespace,$cabecalho,$dados,$metodo,$ambiente,$UF=''){
+      protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo)
+
+        $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse?wsdl';
+        $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse';
+        $certificate = $this->certKEY;
+        $password = $this->priKEY;
+
+
+        $options = array(
+            'location' => $endpoint,
+            'keep_alive' => true,
+            'trace' => true,
+            'local_cert' => $certificate,
+            'passphrase' => $password,
+            'cache_wsdl' => WSDL_CACHE_NONE
+        );
+        
+        try {
+        
+            $client = new SoapClient($wsdl, $options);
+            $function = 'GerarNfse';
+            $arguments = ['GerarNfse' => ['xml'=>$dados]];
+            
+            $options = [];
+            $result = $client -> __soapCall($function, $arguments, $options);
+        } catch(Exception $e){
+            $result = false;
+        }        
+        
+        if($result!==false){
+            return $result->return;
+        }else{
+            return false;
+        }
+
+
+    } //fim __sendSOAP
+
+
     /**
      * pSendSOAP
      * Função alternativa para estabelecer comunicaçao com servidor SOAP 1.2 da SEFAZ,
@@ -1438,7 +1479,7 @@ print_r($retorno);
      * @param string $siglaUF sem uso mantido apenas para compatibilidade com sendSOAP
      * @return mixed false se houve falha ou o retorno em xml do SEFAZ
      */
-    protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo)
+    protected function pSendSOAP2($urlsefaz, $namespace, $dados, $metodo)
     {
 //        try {
             if ($urlsefaz == '') {
