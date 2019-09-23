@@ -27,18 +27,11 @@ if(
 }
     
 // set notaFiscal property values
+$notaFiscal->ambiente = $ambiente;
 $notaFiscal->docOrigemTipo = "V"; // Venda
 $notaFiscal->docOrigemNumero = $data->idVenda;
 $notaFiscal->idEntradaSaida = "S";
 $notaFiscal->situacao = "P"; // Pendente
-
-// 
-// quando chamada for na base teste, sempre mandar para homologação
-$dirAPI = basename(dirname(dirname( __FILE__ )));
-if ($dirAPI == "apiAutocomNFSe")
-    $notaFiscal->ambiente = "P"; // ===== PRODUÇÃO =====
-else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
-    $notaFiscal->ambiente = "H"; // ===== HOMOLOGAÇÃO =====
 
 $notaFiscal->valorTotal = $data->valorTotal;
 $notaFiscal->dataInclusao = date("Y-m-d");

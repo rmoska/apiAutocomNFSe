@@ -13,6 +13,14 @@ include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
 include_once '../objects/emitente.php';
 
+// 
+// quando chamada for na base teste, sempre mandar para homologação
+$dirAPI = basename(dirname(dirname( __FILE__ )));
+if ($dirAPI == "apiAutocomNFSe")
+    $ambiente = "P"; // ===== PRODUÇÃO =====
+else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
+    $ambiente = "H"; // ===== HOMOLOGAÇÃO =====
+
 $database = new Database();
 $db = $database->getConnection();
 
