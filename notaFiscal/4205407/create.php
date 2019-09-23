@@ -491,7 +491,9 @@ $db->commit();
             }
 
             http_response_code(503);
-            echo json_encode(array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
+            echo json_encode(array("http_code" => "503", 
+                                   "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                   "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
