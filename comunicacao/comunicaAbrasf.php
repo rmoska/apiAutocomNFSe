@@ -1473,8 +1473,9 @@ print_r($retorno);
             curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-test-ws");
 //            curl_setopt($oCurl, CURLOPT_PORT, 80);
             curl_setopt($oCurl, CURLOPT_VERBOSE, 1);
+            curl_setopt($oCurl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
             curl_setopt($oCurl, CURLOPT_HEADER, 1); //retorna o cabeçalho de resposta
-			curl_setopt($oCurl, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1_2'); // 6 
+			curl_setopt($oCurl, CURLOPT_SSLVERSION, 6); //'CURL_SSLVERSION_TLSv1_2'); // 6 
 //            curl_setopt($oCurl, CURLOPT_SSLVERSION, 0); // 3 com erro na produçao SP
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, 2); // verifica o host evita MITM
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, 0);
