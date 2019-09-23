@@ -475,7 +475,7 @@ class ComunicaAbrasf
     public function gerarNFSe($sxml) 
     {
 
-//print_r($sxml);
+print_r($sxml);
 
         try {
             //retorno do método em array (esta estrutura espelha a estrutura do XML retornado pelo webservice
@@ -507,7 +507,7 @@ class ComunicaAbrasf
             $namespace = $this->URLPortal.'/wsdl/'.$operation;
 
 
-            $metodo = 'GerarNfseEnvio';
+            $metodo = 'GerarNfse';
 
 
             //valida o parâmetro da string do XML da NF-e
@@ -1440,7 +1440,9 @@ print_r($retorno);
             'passphrase' => $password,
             'cache_wsdl' => WSDL_CACHE_NONE
         );
-        
+
+print_r($options);
+
         try {
         
             $client = new SoapClient($wsdl, $options);
