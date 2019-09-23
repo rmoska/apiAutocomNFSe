@@ -525,15 +525,16 @@ class ComunicaAbrasf
             $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
-							/*---*/
+							/*
 //							$arqErro = fopen($this->arqDir."/nfe/msgerrnfe.txt","at");  # append
 							$arqErro = fopen($this->raizDir.'public_html/aquarius_lite/'.$dirCli.'/nfe/msgErrNFe.txt',"at");  # append
 							fwrite($arqErro, $this->soapDebug); 
 							fwrite($arqErro, $retorno); 
 							fwrite($arqErro, "\n--------------------------------------------------------------------------------\n"); 
 							fclose($arqErro);
-							/*---*/
-                throw new nfephpException("Nao houve retorno Soap verifique a mensagem de erro e o debug!!");
+
+                            throw new nfephpException("Nao houve retorno Soap verifique a mensagem de erro e o debug!!");
+                */
             }
 
 
@@ -1444,12 +1445,12 @@ print_r($doc);
 
             $data = '';
             $data .= '<?xml version="1.0" encoding="utf-8"?>';
-            $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
+            $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-test-ws">';
             $data .= '<soapenv:Header/>';
             $data .= '<e:'.$metodo.'>';
             $data .= '<nfseCabecMsg>';
             $data .= '<![CDATA[';
-            $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
+            $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-test-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
             $data .= ']]>';
             $data .= '</nfseCabecMsg>';
             $data .= '<nfseDadosMsg>';
@@ -1464,13 +1465,13 @@ print_r($doc);
             $tamanho = strlen($data);
             $parametros = array(
                 'Content-Type: application/soap+xml;charset=utf-8;',
-                'SOAPAction: "http://www.betha.com.br/e-nota-contribuinte-ws/'.$metodo.'"',
+                'SOAPAction: "http://www.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'"',
                 "Content-length: $tamanho");
             
             $oCurl = curl_init();
             curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $this->soapTimeout);
-            curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-ws");
-            curl_setopt($oCurl, CURLOPT_PORT, 443);
+            curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-test-ws");
+            curl_setopt($oCurl, CURLOPT_PORT, 80);
             curl_setopt($oCurl, CURLOPT_VERBOSE, 1);
             curl_setopt($oCurl, CURLOPT_HEADER, 1); //retorna o cabeçalho de resposta
 			curl_setopt($oCurl, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1_2'); // 6 
