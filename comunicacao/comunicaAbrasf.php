@@ -1448,12 +1448,12 @@ print_r($retorno);
 
             $data = '';
             $data .= '<?xml version="1.0" encoding="utf-8"?>';
-            $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-test-ws">';
+            $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
             $data .= '<soapenv:Header/>';
             $data .= '<e:'.$metodo.'>';
             $data .= '<nfseCabecMsg>';
             $data .= '<![CDATA[';
-            $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-test-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
+            $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
             $data .= ']]>';
             $data .= '</nfseCabecMsg>';
             $data .= '<nfseDadosMsg>';
@@ -1469,12 +1469,12 @@ print_r($retorno);
             $tamanho = strlen($data);
             $parametros = array(
                 'Content-Type: application/soap+xml;charset=utf-8;',
-                'SOAPAction: "http://www.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'"',
+                'SOAPAction: "http://www.betha.com.br/e-nota-contribuinte-ws/'.$metodo.'"',
                 "Content-length: $tamanho");
             
             $oCurl = curl_init();
             curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $this->soapTimeout);
-            curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-test-ws");
+            curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-ws/".$metodo);
 //            curl_setopt($oCurl, CURLOPT_PORT, 80);
             curl_setopt($oCurl, CURLOPT_VERBOSE, 1);
 //            curl_setopt($oCurl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
