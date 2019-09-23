@@ -77,8 +77,8 @@ if(
 
         //
         $xmlNFe = $xml->outputMemory(true);
-        $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
-
+/*        $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
+*/
         $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico');
         if ($objNFSe->errStatus) {
     
