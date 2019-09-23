@@ -1496,13 +1496,13 @@ print_r($doc);
                 //não houve retorno
                 $msg = curl_error($oCurl);
                 if (isset($info['http_code'])) {
-                    $msg .= $info['http_code']];
+                    $msg .= $info['http_code'];
                 }
                 throw new nfephpException($msg);
             } else {
                 //houve retorno mas ainda pode ser uma mensagem de erro do webservice
                 if ($info['http_code'] > 300) {
-                    $msg = $info['http_code']];
+                    $msg = $info['http_code'];
                     $this->pSetError($msg);
                 }
             }
