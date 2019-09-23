@@ -426,7 +426,7 @@ class comunicaNFSe {
     public function gerarNFSe($sxml) 
     {
 
-print_r($sxml);
+//print_r($sxml);
         try {
             //retorno do método em array (esta estrutura espelha a estrutura do XML retornado pelo webservice
             //IMPORTANTE: esta estrutura varia parcialmente conforme o $indSinc
