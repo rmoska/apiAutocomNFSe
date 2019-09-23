@@ -613,6 +613,55 @@ print_r($result);
     } //fim __sendSOAP
 
 
+    protected function pSendSOAPCurl($urlsefaz, $namespace, $dados, $metodo) {
+
+        $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'?wsdl';
+        $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
+        $certificate = $this->certKEY;
+        $password = $this->keyPass;
+
+
+        $options = array(
+            'location' => $endpoint,
+            'keep_alive' => true,
+            'trace' => true,
+            'local_cert' => $certificate,
+            'passphrase' => $password,
+            'cache_wsdl' => WSDL_CACHE_NONE
+        );
+
+//print_r($options);
+
+     
+
+
+        $headers = array( "Content-type: application/xml" ); 
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+    
+        if ($notaFiscal->ambiente == "P") // PRODUÇÃO
+            curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
+        else // HOMOLOGAÇÃO
+            curl_setopt($curl, CURLOPT_URL, 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
+    
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
+        curl_setopt($oCurl, CURLOPT_SSLCERT, $this->certKEY);
+        curl_setopt($oCurl, CURLOPT_SSLKEY, $this->priKEY);
+    //
+        $result = curl_exec($curl);
+        $info = curl_getinfo( $curl );
+    
+echo $result;
+
+
+
+    } //fim __sendSOAP
+
+
+
 
 } 
 

@@ -45,8 +45,8 @@ if(
         $xml->openMemory();
         //
         // Inicia o cabeçalho do documento XML
-//        $xml->startElement("GerarNfseEnvio");
-//        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
+        $xml->startElement("GerarNfseEnvio");
+        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
             $xml->startElement("Rps");
                 $xml->startElement("InfDeclaracaoPrestacaoServico");
                 $xml->writeAttribute("Id", "lote1");
@@ -72,7 +72,7 @@ if(
                     $xml->writeElement("IncentivoFiscal", 2);
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
             $xml->endElement(); // Rps
-//        $xml->endElement(); // GerarNfseEnvio
+        $xml->endElement(); // GerarNfseEnvio
 
 
         //
