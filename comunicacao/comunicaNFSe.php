@@ -572,7 +572,7 @@ print_r($retorno);
         $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse?wsdl';
         $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse';
         $certificate = $this->certKEY;
-        $password = $this->priKEY;
+        $password = $this->keyPass;
 
 
         $options = array(
