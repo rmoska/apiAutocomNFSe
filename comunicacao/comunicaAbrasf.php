@@ -1474,7 +1474,7 @@ print_r($retorno);
             
             $oCurl = curl_init();
             curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $this->soapTimeout);
-            curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-ws/".$metodo);
+            curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-ws/?wsdl");
 //            curl_setopt($oCurl, CURLOPT_PORT, 80);
             curl_setopt($oCurl, CURLOPT_VERBOSE, 1);
 //            curl_setopt($oCurl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
