@@ -475,7 +475,7 @@ print_r($sxml);
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAPCurl ($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
 							/*
@@ -648,8 +648,8 @@ print_r($result);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_POST, TRUE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-        curl_setopt($oCurl, CURLOPT_SSLCERT, $this->certKEY);
-        curl_setopt($oCurl, CURLOPT_SSLKEY, $this->priKEY);
+        curl_setopt($curl, CURLOPT_SSLCERT, $this->certKEY);
+        curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
     //
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
