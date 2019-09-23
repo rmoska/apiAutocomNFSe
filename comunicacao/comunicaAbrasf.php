@@ -1471,7 +1471,7 @@ print_r($retorno);
             $oCurl = curl_init();
             curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $this->soapTimeout);
             curl_setopt($oCurl, CURLOPT_URL, "http://www.betha.com.br/e-nota-contribuinte-test-ws");
-            curl_setopt($oCurl, CURLOPT_PORT, 80);
+//            curl_setopt($oCurl, CURLOPT_PORT, 80);
             curl_setopt($oCurl, CURLOPT_VERBOSE, 1);
             curl_setopt($oCurl, CURLOPT_HEADER, 1); //retorna o cabeçalho de resposta
 			curl_setopt($oCurl, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1_2'); // 6 
