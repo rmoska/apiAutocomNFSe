@@ -1452,7 +1452,10 @@ print_r($retorno);
         } catch(Exception $e){
             $result = false;
         }        
-        
+
+print_r($result);
+
+
         if($result!==false){
             return $result->return;
         }else{
