@@ -79,7 +79,7 @@ if(
         $xmlNFe = $xml->outputMemory(true);
         $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-        $xmlAss = $certificado->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico');
+        $xmlAss = $certificado->signXML($xmlNFe, 'Rps');
         if ($certificado->errStatus) {
     
             http_response_code(401);

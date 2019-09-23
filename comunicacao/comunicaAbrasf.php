@@ -517,7 +517,7 @@ print_r($sxml);
 
 
             // limpa a variavel
-            $sNFe = $xml;
+            $sNFe = $sxml;
             //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
             $sNFe = preg_replace("/<\?xml.*\?>/", "", $sNFe);
             $sNFe = str_replace(array("\r","\n","\s"), "", $sNFe);
