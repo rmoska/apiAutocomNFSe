@@ -541,9 +541,9 @@ class ComunicaAbrasf
             //tratar dados de retorno
 //            $doc = new DomDocumentNFePHP();
 //            $doc->loadXML($retorno, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
-            $doc = simplexml_load_string($retorno);
+            //$doc = simplexml_load_string($retorno);
 
-print_r($doc);
+print_r($retorno);
 
 /*
             $cStat = $this->pSimpleGetValue($doc, "cStat");
