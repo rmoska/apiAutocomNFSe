@@ -1424,7 +1424,7 @@ print_r($retorno);
 
 
 //    protected function __sendSOAP($urlsefaz,$namespace,$cabecalho,$dados,$metodo,$ambiente,$UF=''){
-      protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo)
+      protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo) {
 
         $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse?wsdl';
         $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/GerarNfse';
