@@ -584,7 +584,7 @@ print_r($retorno);
             'cache_wsdl' => WSDL_CACHE_NONE
         );
 
-print_r($options);
+//print_r($options);
 
         try {
         
@@ -595,6 +595,7 @@ print_r($options);
             $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
         } catch(Exception $e){
+ echo 'false';
             $result = false;
         }        
 
