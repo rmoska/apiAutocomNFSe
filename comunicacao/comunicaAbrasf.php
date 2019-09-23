@@ -1435,10 +1435,10 @@ print_r($doc);
      */
     protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo)
     {
-        try {
+//        try {
             if ($urlsefaz == '') {
                 $msg = "URL do webservice não disponível no arquivo xml das URLs da SEFAZ.";
-                throw new nfephpException($msg);
+//                throw new nfephpException($msg);
             }
 
             $data = '';
@@ -1508,13 +1508,15 @@ print_r($doc);
             }
             curl_close($oCurl);
             return $xml;
-        } catch (nfephpException $e) {
+/*            
+        } catch ($e) {
             $this->pSetError($e->getMessage());
             if ($this->exceptions) {
                 throw $e;
             }
             return false;
         }
+*/
     } //fim sendSOAP
 
 
