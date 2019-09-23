@@ -77,8 +77,9 @@ if(
 
         //
         $xmlNFe = $xml->outputMemory(true);
+        $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-        $xmlAss = $objNFSe->signXML($xmlNFe, 'Rps');
+        $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico');
         if ($objNFSe->errStatus) {
     
             http_response_code(401);
@@ -89,8 +90,6 @@ if(
 
 //        include_once '../comunicacao/comunicaAbrasf.php';
 //        $enviaXml = new ComunicaAbrasf();
-
-        $xmlAss = '<?xml version="1.0" encoding="utf-8"?><GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">'.$xmlAss."</GerarNfseEnvio>";
         $objNFSe->gerarNFSe($xmlAss);
 
 /*
