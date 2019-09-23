@@ -13,7 +13,7 @@ if (!defined('PATH_ROOT')) {
 }
 
 
-class comunicaAbrasf 
+class ComunicaAbrasf 
 {
     /**
      * Tipo de ambiente produção
@@ -467,6 +467,153 @@ class comunicaAbrasf
 
         return true;
     } //fim construct
+
+
+
+
+
+    public function gerarNFSe($sxml) 
+    {
+        try {
+            //retorno do método em array (esta estrutura espelha a estrutura do XML retornado pelo webservice
+            //IMPORTANTE: esta estrutura varia parcialmente conforme o $indSinc
+            //dados do protocolo de recebimento da NF-e
+            $aRetorno['protNFe'] = array(
+                'versao'=>'',
+                'infProt'=>array( //informações do protocolo de autorização da NF-e
+                    'tpAmb'=>'',
+                    'verAplic'=>'',
+                    'chNFe'=>'',
+                    'dhRecbto'=>'',
+                    'nProt'=>'',
+                    'digVal'=>'',
+                    'cStat'=>'',
+                    'xMotivo'=>''));
+
+
+            //identificação do serviço: autorização de NF-e
+            $servico = 'NfeAutorizacao';
+            //recuperação da versão
+            $versao = $aURL[$servico]['version'];
+            //recuperação da url do serviço
+            $urlservico = $aURL[$servico]['URL'];
+            //recuperação do método
+            $metodo = $aURL[$servico]['method'];
+            //montagem do namespace do serviço
+            $operation = $aURL[$servico]['operation'];
+            $namespace = $this->URLPortal.'/wsdl/'.$operation;
+
+
+            $metodo = 'GerarNfseEnvio';
+
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sxml) || ! simplexml_load_string($sxml)) {
+                throw new nfephpException("XML de NF-e para autorizacao recebido no parametro parece invalido, verifique");
+            }
+
+
+            // limpa a variavel
+            $sNFe = $xml;
+            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+            $sNFe = preg_replace("/<\?xml.*\?>/", "", $sNFe);
+            $sNFe = str_replace(array("\r","\n","\s"), "", $sNFe);
+
+
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
+            //verifica o retorno
+            if (! $retorno) {
+							/*---*/
+//							$arqErro = fopen($this->arqDir."/nfe/msgerrnfe.txt","at");  # append
+							$arqErro = fopen($this->raizDir.'public_html/aquarius_lite/'.$dirCli.'/nfe/msgErrNFe.txt',"at");  # append
+							fwrite($arqErro, $this->soapDebug); 
+							fwrite($arqErro, $retorno); 
+							fwrite($arqErro, "\n--------------------------------------------------------------------------------\n"); 
+							fclose($arqErro);
+							/*---*/
+                throw new nfephpException("Nao houve retorno Soap verifique a mensagem de erro e o debug!!");
+            }
+
+
+            //tratar dados de retorno
+            $doc = new DomDocumentNFePHP();
+            $doc->loadXML($retorno, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+
+print_r($doc);
+
+/*
+            $cStat = $this->pSimpleGetValue($doc, "cStat");
+            $xMotivo = $this->pSimpleGetValue($doc, "xMotivo");
+            //verifica o codigo do status da resposta, se vazio houve erro
+            if ($cStat == '') {
+                throw new nfephpException("O retorno nao contem cStat verifique o debug do soap !!");
+            } elseif ($indSinc === 0 && $cStat == '103') { //103-Lote recebido com sucesso
+                $aRetorno['bStat'] = true;
+            } elseif ($indSinc === 1 && $cStat == '104') { //104-Lote processado, podendo ter ou não o protNFe (#AR11 no layout)
+                $aRetorno['bStat'] = true;
+            } else {
+                throw new nfephpException(sprintf("%s - %s", $cStat, $xMotivo));
+            }
+            // status da resposta do webservice
+            $aRetorno['cStat'] = $cStat;
+            // motivo da resposta (opcional)
+            $aRetorno['xMotivo'] = $this->pSimpleGetValue($doc, "xMotivo");
+            // data e hora da mensagem (opcional)
+            if ($dhRecbto = $this->pSimpleGetValue($doc, "dhRecbto")) {
+                $aRetorno['dhRecbto'] = date("d/m/Y H:i:s", $this->pConvertTime($dhRecbto));
+            }
+            //tipo do ambiente, versão do aplicativo e código da UF
+            $aRetorno['tpAmb'] = $this->pSimpleGetValue($doc, "tpAmb");
+            $aRetorno['verAplic'] = $this->pSimpleGetValue($doc, "verAplic");
+            $aRetorno['cUF'] = $this->pSimpleGetValue($doc, "cUF");
+            if ($indSinc == 1) {
+                //retorno síncrono do webservice: dados do protocolo da NF-e
+                $nodeProtNFe = $doc->getElementsByTagName('protNFe')->item(0);
+                $nodeInfProt = $doc->getElementsByTagName('infProt')->item(0);
+                $aRetorno['protNFe']['versao'] = $nodeProtNFe->getAttribute('versao');
+                $infProt = array();
+                $infProt['tpAmb'] = $this->pSimpleGetValue($nodeInfProt, "tpAmb");
+                $infProt['verAplic'] = $this->pSimpleGetValue($nodeInfProt, "verAplic");
+                $infProt['chNFe'] = $this->pSimpleGetValue($nodeInfProt, "chNFe");
+                $dhRecbto = $this->pSimpleGetValue($nodeInfProt, "dhRecbto");
+                $infProt['dhRecbto'] = date("d/m/Y H:i:s", $this->pConvertTime($dhRecbto));
+                $infProt['digVal'] = $this->pSimpleGetValue($nodeInfProt, "digVal");
+                $infProt['cStat'] = $this->pSimpleGetValue($nodeInfProt, "cStat");
+                $infProt['xMotivo'] = $this->pSimpleGetValue($nodeInfProt, "xMotivo");
+                //número do protocolo de autorização (opcional)
+                $infProt['nProt'] = $this->pSimpleGetValue($nodeInfProt, "nProt");
+                $aRetorno['protNFe']['infProt'] = $infProt;
+                //nome do arquivo de retorno: chave da NF-e com sufixo "-prot"
+                $nome = $this->temDir.$infProt['chNFe'].'-prot.xml';
+            } else {
+                //retorno assíncrono do webservice: dados do recibo do lote
+                $aRetorno['infRec'] = array();
+                $aRetorno['infRec']['nRec'] = $this->pSimpleGetValue($doc, "nRec");
+                $aRetorno['infRec']['tMed'] = $this->pSimpleGetValue($doc, "tMed");
+                //nome do arquivo de retorno: ID do lote com sufixo "-prot"
+                $nome = $this->temDir.$idLote.'-rec.xml';
+            }
+            //grava o retorno na pasta de temporários
+            $nome = $doc->save($nome);
+*/
+
+        } catch (nfephpException $e) {
+            $this->pSetError($e->getMessage());
+            if ($this->exceptions) {
+                throw $e;
+            }
+            return false;
+        }
+
+        return $retorno;
+
+    }
+
+
+
+
 
 
     /**
@@ -1286,15 +1433,12 @@ class comunicaAbrasf
      * @param string $siglaUF sem uso mantido apenas para compatibilidade com sendSOAP
      * @return mixed false se houve falha ou o retorno em xml do SEFAZ
      */
-    protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo, $ambiente = '')
+    protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo)
     {
         try {
             if ($urlsefaz == '') {
                 $msg = "URL do webservice não disponível no arquivo xml das URLs da SEFAZ.";
                 throw new nfephpException($msg);
-            }
-            if ($ambiente == '') {
-                $ambiente = $this->tpAmb;
             }
 
             $data = '';
