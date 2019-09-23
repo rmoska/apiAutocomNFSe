@@ -475,7 +475,7 @@ print_r($sxml);
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
 							/*
