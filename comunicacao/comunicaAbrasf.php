@@ -474,6 +474,9 @@ class ComunicaAbrasf
 
     public function gerarNFSe($sxml) 
     {
+
+print_r($sxml);
+
         try {
             //retorno do método em array (esta estrutura espelha a estrutura do XML retornado pelo webservice
             //IMPORTANTE: esta estrutura varia parcialmente conforme o $indSinc
@@ -1462,8 +1465,6 @@ print_r($retorno);
             $data .= '</soapenv:Body>';
             $data .= '</soapenv:Envelope>';
 
-            
-print_r($data);
 
             $tamanho = strlen($data);
             $parametros = array(
