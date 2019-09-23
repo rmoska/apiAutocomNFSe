@@ -79,7 +79,7 @@ if(
         $xmlNFe = $xml->outputMemory(true);
         $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-        $xmlAss = $objNFSe->signXML($xmlNFe, 'GerarNfseEnvio');
+        $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico');
         if ($objNFSe->errStatus) {
     
             http_response_code(401);
