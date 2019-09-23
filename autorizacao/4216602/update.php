@@ -27,16 +27,16 @@ if(
  
     if($retorno[0]){
 
-        include_once '../comunicacao/signNFSe.php';
+        include_once '../comunicacao/comunicaNFSe.php';
         $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
-        $certificado = new SignNFSe($arraySign);
-        if ($certificado->errStatus){
+        $objNFSe = new ComunicaNFSe($arraySign);
+        if ($objNFSe->errStatus){
             http_response_code(401);
             echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
-        $validade = $certificado->certDaysToExpire;
+        $validade = $objNFSe->certDaysToExpire;
 
         //
         // emite nota de teste
@@ -79,18 +79,18 @@ if(
         $xmlNFe = $xml->outputMemory(true);
         $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-        $xmlAss = $certificado->signXML($xmlNFe, 'Rps');
-        if ($certificado->errStatus) {
+        $xmlAss = $objNFSe->signXML($xmlNFe, 'Rps');
+        if ($objNFSe->errStatus) {
     
             http_response_code(401);
-            echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$certificado->errMsg));
+            echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$objNFSe->errMsg));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
 
-        include_once '../comunicacao/comunicaAbrasf.php';
-        $enviaXml = new ComunicaAbrasf();
-        $enviaXml->gerarNFSe($xmlAss);
+//        include_once '../comunicacao/comunicaAbrasf.php';
+//        $enviaXml = new ComunicaAbrasf();
+        $objNFSe->gerarNFSe($xmlAss);
 
 /*
 
