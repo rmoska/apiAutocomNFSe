@@ -456,7 +456,7 @@ class comunicaNFSe {
             $namespace = $this->URLPortal.'/wsdl/'.$operation;
 
 
-            $metodo = 'GerarNfse';
+            $metodo = 'GerarNfseEnvio';
 
 
             //valida o parâmetro da string do XML da NF-e
@@ -589,8 +589,8 @@ print_r($retorno);
         try {
         
             $client = new SoapClient($wsdl, $options);
-            $function = 'GerarNfse';
-            $arguments = array('GerarNfse' => array('xml'=>$dados));
+            $function = $metodo;
+            $arguments = array($metodo => array('xml'=>$dados));
             
             $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
