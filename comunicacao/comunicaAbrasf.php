@@ -1445,9 +1445,9 @@ print_r($retorno);
         
             $client = new SoapClient($wsdl, $options);
             $function = 'GerarNfse';
-            $arguments = ['GerarNfse' => ['xml'=>$dados]];
+            $arguments = array('GerarNfse' => array('xml'=>$dados));
             
-            $options = [];
+            $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
         } catch(Exception $e){
             $result = false;
