@@ -639,10 +639,7 @@ print_r($result);
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
 
-
         $tamanho = strlen($data);
-        $parametros = array(
-
 
         $headers = array( "Content-type: application/xml; charset=utf-8", 
                           "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo."Envio'",
