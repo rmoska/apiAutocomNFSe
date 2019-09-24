@@ -571,7 +571,7 @@ print_r($retorno);
     protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo) {
 
         $data = '';
-        $data .= '<?xml version="1.0" encoding="utf-8"?>';
+/*        $data .= '<?xml version="1.0" encoding="utf-8"?>';*/
         $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
