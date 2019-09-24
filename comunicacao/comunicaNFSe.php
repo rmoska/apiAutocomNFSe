@@ -496,8 +496,6 @@ class comunicaNFSe {
 //            $doc->loadXML($retorno, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
             //$doc = simplexml_load_string($retorno);
 
-print_r($retorno);
-
 /*
             $cStat = $this->pSimpleGetValue($doc, "cStat");
             $xMotivo = $this->pSimpleGetValue($doc, "xMotivo");
@@ -571,27 +569,30 @@ print_r($retorno);
     protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo) {
 
         $data = '';
-/*        $data .= '<?xml version="1.0" encoding="utf-8"?>';*/
+        $data .= '<?xml version="1.0" encoding="utf-8"?>';*/
         $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
         $data .= '<e:'.$metodo.'>';
-        $data .= '<nfseCabecMsg>';
-//        $data .= '<![CDATA[';
+        $data .= '<nfseCabecMsg>?';
+/*
+        $data .= '<![CDATA[';
         $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
-//        $data .= ']]>';
+        $data .= ']]>';
+*/
         $data .= '</nfseCabecMsg>';
-        $data .= '<nfseDadosMsg>';
-//        $data .= '<![CDATA[';
+        $data .= '<nfseDadosMsg>?';
+/*
+        $data .= '<![CDATA[';
         $data .= $dados;
-//        $data .= ']]>';
+        $data .= ']]>';
+*/
         $data .= '</nfseDadosMsg>';
         $data .= '</e:'.$metodo.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
 
 print_r($data);
-
 
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
         $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
