@@ -597,7 +597,7 @@ print_r($data);
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
         $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
         $certificate = $this->certKEY;
-        $password = $this->keyPass;
+        $password = 'xxx'; //$this->keyPass;
 
 
         $options = array(
