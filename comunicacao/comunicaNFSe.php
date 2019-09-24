@@ -599,7 +599,12 @@ print_r($data);
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
+        $options = array(
+            'location' => $endpoint,
+            'keep_alive' => true,
+            'trace' => true);
 
+/*
         $options = array(
             'location' => $endpoint,
             'keep_alive' => true,
@@ -608,7 +613,7 @@ print_r($data);
             'passphrase' => $password,
             'cache_wsdl' => WSDL_CACHE_NONE
         );
-
+*/
 print_r($options);
         try {
         
