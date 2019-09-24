@@ -599,9 +599,6 @@ print_r($data);
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
-        $options = array();
-
-/*
         $options = array(
             'location' => $endpoint,
             'keep_alive' => true,
@@ -610,18 +607,17 @@ print_r($data);
             'passphrase' => $password,
             'cache_wsdl' => WSDL_CACHE_NONE
         );
-*/
-print_r($options);
+
         try {
         
             $client = new SoapClient($wsdl, $options);
-            $function = $metodo;
+            $function = $metodo.'Envio';
             $arguments = array($metodo => array('xml'=>$data));
             
             $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
         } catch(Exception $e){
- echo 'false';
+
             $result = false;
         }        
 
