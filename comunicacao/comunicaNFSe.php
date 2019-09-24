@@ -592,10 +592,10 @@ class comunicaNFSe {
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
 
-print_r($data);
+//print_r($data);
 
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
-        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
+        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo; //nfseWS';
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
@@ -612,8 +612,7 @@ print_r($data);
         
             $client = new SoapClient($wsdl, $options);
             $function = $metodo;
-//            $arguments = array($metodo => array('xml' => $data));
-            $arguments = array($metodo =>  $data);
+            $arguments = array($metodo => array('xml' => $data));
             
             $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
