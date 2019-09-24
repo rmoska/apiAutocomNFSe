@@ -600,9 +600,7 @@ print_r($data);
         $password = $this->keyPass;
 
         $options = array(
-            'location' => $endpoint,
-            'keep_alive' => true,
-            'trace' => true);
+            'location' => $endpoint);
 
 /*
         $options = array(
