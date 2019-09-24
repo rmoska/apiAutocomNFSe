@@ -475,7 +475,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl ($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
 							/*
@@ -570,8 +570,8 @@ print_r($retorno);
 
     protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo) {
 
-        $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'?wsdl';
-        $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
+        $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'?wsdl';
+        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
