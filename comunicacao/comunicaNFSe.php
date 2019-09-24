@@ -597,7 +597,7 @@ print_r($data);
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
         $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
         $certificate = $this->certKEY;
-        $password = 'xxx'; //$this->keyPass;
+        $password = $this->keyPass;
 
 
         $options = array(
@@ -609,7 +609,7 @@ print_r($data);
             'cache_wsdl' => WSDL_CACHE_NONE
         );
 
-
+print_r($options);
         try {
         
             $client = new SoapClient($wsdl, $options);
