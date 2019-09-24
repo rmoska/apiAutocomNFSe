@@ -612,7 +612,7 @@ print_r($data);
         
             $client = new SoapClient($wsdl, $options);
             $function = $metodo;
-            $arguments = array($metodo => array('xml' => $dados));
+//            $arguments = array($metodo => array('xml' => $dados));
             
             $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
