@@ -615,13 +615,15 @@ print_r($result);
 
     protected function pSendSOAPCurl($urlsefaz, $namespace, $dados, $metodo) {
 
-        $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'?wsdl';
+        $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
         $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
 
-        $headers = array( "Content-type: application/xml; charset=utf-8", 'Content-Length: '.strlen($dados) ); 
+        $headers = array( "Content-type: application/xml; charset=utf-8", 
+                          "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo."Envio'",
+                          "Content-Length: ".strlen($dados) ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
