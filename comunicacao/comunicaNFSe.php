@@ -570,8 +570,27 @@ print_r($retorno);
 
     protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo) {
 
+        $data = '';
+        $data .= '<?xml version="1.0" encoding="utf-8"?>';
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
+        $data .= '<soapenv:Header/>';
+        $data .= '<e:'.$metodo.'>';
+        $data .= '<nfseCabecMsg>';
+        $data .= '<![CDATA[';
+        $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
+        $data .= ']]>';
+        $data .= '</nfseCabecMsg>';
+        $data .= '<nfseDadosMsg>';
+        $data .= '<![CDATA[';
+        $data .= $dados;
+        $data .= ']]>';
+        $data .= '</nfseDadosMsg>';
+        $data .= '</e:'.$metodo.'>';
+        $data .= '</soapenv:Body>';
+        $data .= '</soapenv:Envelope>';
+
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
-        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
+        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
@@ -591,7 +610,7 @@ print_r($retorno);
         
             $client = new SoapClient($wsdl, $options);
             $function = $metodo;
-            $arguments = array($metodo => array('xml'=>$dados));
+            $arguments = array($metodo => array('xml'=>$data));
             
             $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
