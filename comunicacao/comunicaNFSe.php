@@ -599,8 +599,7 @@ print_r($data);
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
-        $options = array(
-            'location' => $endpoint);
+        $options = array();
 
 /*
         $options = array(
