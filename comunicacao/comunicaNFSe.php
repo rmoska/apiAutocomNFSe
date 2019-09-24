@@ -457,7 +457,7 @@ class comunicaNFSe {
             $namespace = $this->URLPortal.'/wsdl/'.$operation;
 
 
-            $metodo = 'GerarNfseResponse';
+            $metodo = 'GerarNfse';
 
 
             //valida o parâmetro da string do XML da NF-e
@@ -621,21 +621,19 @@ print_r($result);
         $password = $this->keyPass;
 
 
-        $headers = array( "Content-type: text/xml; charset=utf-8", 'Content-Length: '.strlen($dados) ); 
+        $headers = array( "Content-type: application/xml; charset=utf-8", 'Content-Length: '.strlen($dados) ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-            curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
+        curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
     
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 40);
-        curl_setopt($curl, CURLOPT_TIMEOUT,        86400);//24 horas
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($curl, CURLOPT_POST, TRUE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-//        curl_setopt($curl, CURLOPT_SSLCERT, $this->certKEY);
-//        curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
+        curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
+        curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
     //
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
