@@ -45,7 +45,7 @@ if(
         $xml->openMemory();
         //
         // Inicia o cabeçalho do documento XML
-        $xml->startElement("GerarNfse");
+        $xml->startElement("GerarNfseEnvio");
         $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
             $xml->startElement("Rps");
                 $xml->startElement("InfDeclaracaoPrestacaoServico");
