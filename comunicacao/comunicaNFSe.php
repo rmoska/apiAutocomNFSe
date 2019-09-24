@@ -612,7 +612,7 @@ print_r($data);
         
             $client = new SoapClient($wsdl, $options);
             $function = 'ConsultarLoteRps'; //$metodo;
-            $arguments = array($metodo => array('xml'=>$data));
+            $arguments = array($metodo => array('xml' => $dados));
             
             $options = array();
             $result = $client -> __soapCall($function, $arguments, $options);
