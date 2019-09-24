@@ -475,7 +475,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
 							/*
@@ -595,7 +595,7 @@ class comunicaNFSe {
 //print_r($data);
 
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
-        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo; //nfseWS';
+        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
@@ -637,7 +637,7 @@ print_r($result);
     protected function pSendSOAPCurl($urlsefaz, $namespace, $dados, $metodo) {
 
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
-        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
+        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
@@ -663,12 +663,12 @@ print_r($result);
         $tamanho = strlen($data);
 
         $headers = array( "Content-type: application/xml; charset=utf-8", 
-                          "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo."Envio'",
+                          "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo,
                           "Content-Length: ".$tamanho ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-        curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
+        curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS');
     
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
