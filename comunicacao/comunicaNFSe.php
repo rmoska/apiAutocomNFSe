@@ -457,7 +457,7 @@ class comunicaNFSe {
             $namespace = $this->URLPortal.'/wsdl/'.$operation;
 
 
-            $metodo = 'GerarNfse';
+            $metodo = 'GerarNfseResponse';
 
 
             //valida o parâmetro da string do XML da NF-e
@@ -621,27 +621,10 @@ print_r($result);
         $password = $this->keyPass;
 
 
-        $options = array(
-            'location' => $endpoint,
-            'keep_alive' => true,
-            'trace' => true,
-            'local_cert' => $certificate,
-            'passphrase' => $password,
-            'cache_wsdl' => WSDL_CACHE_NONE
-        );
-
-//print_r($options);
-
-     
-
-
         $headers = array( "Content-type: text/xml; charset=utf-8", 'Content-Length: '.strlen($dados) ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-        if ($notaFiscal->ambiente == "P") // PRODUÇÃO
-            curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
-        else // HOMOLOGAÇÃO
             curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
     
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 40);
@@ -651,8 +634,8 @@ print_r($result);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_POST, TRUE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-        curl_setopt($curl, CURLOPT_SSLCERT, $this->certKEY);
-        curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
+//        curl_setopt($curl, CURLOPT_SSLCERT, $this->certKEY);
+//        curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
     //
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
