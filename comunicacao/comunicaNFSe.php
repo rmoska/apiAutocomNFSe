@@ -475,7 +475,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
 							/*
