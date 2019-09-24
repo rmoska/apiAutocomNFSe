@@ -475,7 +475,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
 							/*
@@ -635,7 +635,7 @@ print_r($result);
      
 
 
-        $headers = array( "Content-type: application/xml" ); 
+        $headers = array( "Content-type: text/xml; charset=utf-8", 'Content-Length: '.strlen($dados) ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
@@ -644,8 +644,11 @@ print_r($result);
         else // HOMOLOGAÇÃO
             curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
     
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 40);
+        curl_setopt($curl, CURLOPT_TIMEOUT,        86400);//24 horas
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_POST, TRUE);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
         curl_setopt($curl, CURLOPT_SSLCERT, $this->certKEY);
@@ -655,6 +658,8 @@ print_r($result);
         $info = curl_getinfo( $curl );
     
 echo $result;
+
+
 
 
 
