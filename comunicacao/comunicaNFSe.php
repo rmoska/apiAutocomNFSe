@@ -686,9 +686,9 @@ print_r($result);
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
 
-        $xmlNFRet = simplexml_load_string(trim($result));
+//        $xmlNFRet = simplexml_load_string(trim($result));
 
-        echo $xmlNFRet;
+        echo $result;
 
 
 
