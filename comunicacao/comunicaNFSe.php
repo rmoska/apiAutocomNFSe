@@ -475,7 +475,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAP($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $metodo);
             //verifica o retorno
             if (! $retorno) {
 							/*
@@ -620,21 +620,43 @@ print_r($result);
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
+        $data = '';
+        $data .= '<?xml version="1.0" encoding="utf-8"?>';
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
+        $data .= '<soapenv:Header/>';
+        $data .= '<e:'.$metodo.'>';
+        $data .= '<nfseCabecMsg>';
+        $data .= '<![CDATA[';
+        $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
+        $data .= ']]>';
+        $data .= '</nfseCabecMsg>';
+        $data .= '<nfseDadosMsg>';
+        $data .= '<![CDATA[';
+        $data .= $dados;
+        $data .= ']]>';
+        $data .= '</nfseDadosMsg>';
+        $data .= '</e:'.$metodo.'>';
+        $data .= '</soapenv:Body>';
+        $data .= '</soapenv:Envelope>';
+
+
+        $tamanho = strlen($data);
+        $parametros = array(
+
 
         $headers = array( "Content-type: application/xml; charset=utf-8", 
                           "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo."Envio'",
-                          "Content-Length: ".strlen($dados) ); 
+                          "Content-Length: ".$tamanho ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-        curl_setopt($curl, CURLOPT_URL, 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
+        curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
     
-        curl_setopt($oCurl, CURLOPT_PORT , 443);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($curl, CURLOPT_POST, TRUE);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
         curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
     //
