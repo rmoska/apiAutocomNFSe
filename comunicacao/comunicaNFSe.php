@@ -589,6 +589,9 @@ print_r($retorno);
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
 
+print_r($data);
+
+
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
         $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
         $certificate = $this->certKEY;
@@ -604,7 +607,6 @@ print_r($retorno);
             'cache_wsdl' => WSDL_CACHE_NONE
         );
 
-//print_r($options);
 
         try {
         
