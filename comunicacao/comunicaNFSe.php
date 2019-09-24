@@ -663,7 +663,7 @@ print_r($result);
         $tamanho = strlen($data);
 
         $headers = array( "Content-type: application/xml; charset=utf-8", 
-                          "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo,
+                          "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo."'",
                           "Content-Length: ".$tamanho ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
