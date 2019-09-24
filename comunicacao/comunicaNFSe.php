@@ -467,10 +467,10 @@ class comunicaNFSe {
 
 
             // limpa a variavel
-            $sNFe = $sxml;
+            $sNFSe = $sxml;
             //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
-            $sNFe = preg_replace("/<\?xml.*\?>/", "", $sNFe);
-            $sNFe = str_replace(array("\r","\n","\s"), "", $sNFe);
+            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
 
 
