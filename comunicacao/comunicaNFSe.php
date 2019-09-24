@@ -615,8 +615,8 @@ print_r($result);
 
     protected function pSendSOAPCurl($urlsefaz, $namespace, $dados, $metodo) {
 
-        $wsdl = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'?wsdl';
-        $endpoint = 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
+        $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo.'?wsdl';
+        $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo;
         $certificate = $this->certKEY;
         $password = $this->keyPass;
 
@@ -642,7 +642,7 @@ print_r($result);
         if ($notaFiscal->ambiente == "P") // PRODUÇÃO
             curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
         else // HOMOLOGAÇÃO
-            curl_setopt($curl, CURLOPT_URL, 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
+            curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
     
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
