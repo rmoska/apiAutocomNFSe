@@ -625,8 +625,9 @@ print_r($result);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-        curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
+        curl_setopt($curl, CURLOPT_URL, 'https://e-gov.betha.com.br/e-nota-contribuinte-test-ws/'.$metodo);
     
+        curl_setopt($oCurl, CURLOPT_PORT , 443);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
