@@ -647,15 +647,19 @@ print_r($result);
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
         $data .= '<e:'.$metodo.'>';
-        $data .= '<nfseCabecMsg>';
+        $data .= '<nfseCabecMsg>?';
+/*
         $data .= '<![CDATA[';
         $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
         $data .= ']]>';
+*/
         $data .= '</nfseCabecMsg>';
-        $data .= '<nfseDadosMsg>';
+        $data .= '<nfseDadosMsg>?';
+/*
         $data .= '<![CDATA[';
         $data .= $dados;
         $data .= ']]>';
+*/
         $data .= '</nfseDadosMsg>';
         $data .= '</e:'.$metodo.'>';
         $data .= '</soapenv:Body>';
@@ -681,8 +685,10 @@ print_r($result);
     //
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
-    
-echo $result;
+
+        $xmlNFRet = simplexml_load_string(trim($result));
+
+        echo $xmlNFRet;
 
 
 
