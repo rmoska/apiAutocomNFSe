@@ -28,7 +28,7 @@ if(
     if($retorno[0]){
 
         include_once '../comunicacao/comunicaNFSe.php';
-        $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+        $arraySign = array("sisEmit" => 0, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
         $objNFSe = new ComunicaNFSe($arraySign);
         if ($objNFSe->errStatus){
             http_response_code(401);

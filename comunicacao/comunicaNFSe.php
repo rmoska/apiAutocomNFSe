@@ -3,6 +3,17 @@
 class comunicaNFSe {
 
     /**
+     * Empresa do Sistema de Emissão
+     * 0 = Betha
+     * 
+     */
+    protected $sisEmit;
+    /**
+     * tpAmb
+     * Tipo de ambiente P-produção H-homologação
+     */
+    protected $tpAmb = '';
+    /**
      * Diretorio onde estão os certificados
      */
     public $certsDir;
@@ -28,7 +39,6 @@ class comunicaNFSe {
     private $certKEY='';
     private $cnpj;
     private $keyPass;
-    private $passPhrase;
     private $arqDir;
 
     public $errMsg='';
@@ -46,10 +56,11 @@ class comunicaNFSe {
         //obtem o path da biblioteca
         $this->raizDir = dirname(dirname( __FILE__ )) . '/';
 
+        $this->sisEmit = $arraySign["sisEmit"];
+        $this->tpAmb = $arraySign["tpAmb"];
         $this->cnpj = $arraySign["cnpj"];
         $this->certName = "cert".$arraySign["cnpj"].".pfx";
         $this->keyPass = $arraySign["keyPass"];
-        $this->passPhrase = $passPhrase;
         $this->arqDir = "../arquivosNFSe/".$arraySign["cnpj"];
         $this->certsDir =  $this->arqDir."/certificado/";
 
@@ -452,43 +463,24 @@ class comunicaNFSe {
     {
 
         try {
-            //retorno do método em array (esta estrutura espelha a estrutura do XML retornado pelo webservice
-            //IMPORTANTE: esta estrutura varia parcialmente conforme o $indSinc
-            //dados do protocolo de recebimento da NF-e
-            $aRetorno['protNFe'] = array(
-                'versao'=>'',
-                'infProt'=>array( //informações do protocolo de autorização da NF-e
-                    'tpAmb'=>'',
-                    'verAplic'=>'',
-                    'chNFe'=>'',
-                    'dhRecbto'=>'',
-                    'nProt'=>'',
-                    'digVal'=>'',
-                    'cStat'=>'',
-                    'xMotivo'=>''));
 
-
-            //identificação do serviço: autorização de NF-e
-            $servico = 'NfeAutorizacao';
-            //recuperação da versão
-            $versao = $aURL[$servico]['version'];
-            //recuperação da url do serviço
-            $urlservico = $aURL[$servico]['URL'];
-            //recuperação do método
-            $metodo = $aURL[$servico]['method'];
-            //montagem do namespace do serviço
-            $operation = $aURL[$servico]['operation'];
-            $namespace = $this->URLPortal.'/wsdl/'.$operation;
-
-
+            //identificação do serviço: emissão de NFSe
             $servico = 'GerarNfse';
+            switch ($this->sisEmit) {
+                case 0:
+                    $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
+                    $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
+                    break;
+                default:
+                    return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
+                    break;
+            }
 
-            error_log($sXml, 3, "../arquivosNFSe/nfseteste.xml");
-
+//            error_log($sXml, 3, "../arquivosNFSe/nfseteste.xml");
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
-                throw new nfephpException("XML de NF-e para autorizacao recebido no parametro parece invalido, verifique");
+                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
             }
 
 
@@ -501,7 +493,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $servico);
+            $retorno = $this->pSendSOAPCurl($url, $namespace, $servico, $sNFSe);
             //verifica o retorno
             if (! $retorno) {
 							/*
@@ -642,12 +634,12 @@ class comunicaNFSe {
     } //fim __sendSOAP
 
 
-    protected function pSendSOAPCurl($url, $namespace, $dados, $servico) {
+    protected function pSendSOAPCurl($url, $namespace, $servico, $dados) {
 
 
         $data = '';
         $data .= '<?xml version="1.0" encoding="utf-8"?>';
-        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="'.$this->namespace.'">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
         $data .= '<e:'.$servico.'>';
@@ -678,7 +670,7 @@ class comunicaNFSe {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-        curl_setopt($curl, CURLOPT_URL, 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl');
+        curl_setopt($curl, CURLOPT_URL, $this->url);
     
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
