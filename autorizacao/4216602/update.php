@@ -111,6 +111,7 @@ $DomXml=new DOMDocument('1.0', 'utf-8');
 $DomXml->loadXML($respEnv);
 $xmlResp = $DomXml->textContent;
 $msgResp = simplexml_load_string($xmlResp);
+print_r($msgResp);
 echo $msgResp->Codigo.' - '.$msgResp->Mensagem.' - '.$msgResp->Correcao;
 
         
