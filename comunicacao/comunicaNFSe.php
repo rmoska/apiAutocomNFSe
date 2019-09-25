@@ -672,7 +672,7 @@ class comunicaNFSe {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-        curl_setopt($curl, CURLOPT_URL, $this->url.'xx');
+        curl_setopt($curl, CURLOPT_URL, 'http://www.betha.com.br/e-nota-contribuinte-test-ws');//$this->url);
     
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
