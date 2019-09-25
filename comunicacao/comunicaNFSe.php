@@ -467,7 +467,7 @@ class comunicaNFSe {
             //identificação do serviço: emissão de NFSe
             $servico = 'GerarNfse';
             switch ($this->sisEmit) {
-                case 0:
+                case 0: // Betha
                     $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
                     $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
                     break;
@@ -685,7 +685,7 @@ class comunicaNFSe {
 
 //        $xmlNFRet = simplexml_load_string(trim($result));
 
-        echo $result;
+        return $result;
 
 
 

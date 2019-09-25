@@ -103,23 +103,48 @@ if(
         $xmlEnv .= ']]>';
         $xmlEnv .= '</nfseDadosMsg>';
 
-        $objNFSe->gerarNFSe($xmlEnv, "H");
+        $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
 
-/*
 
-        //
-        // transmite NFSe	
-        $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-        curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($curl, CURLOPT_POST, TRUE);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
-        //
-        $result = curl_exec($curl);
-        $info = curl_getinfo( $curl );
+
+        //erro na comunicacao SOAP
+        if(strstr($respEnv,'Fault')){
+
+            $DomFaultXml=new DOMDocument('1.0', 'utf-8');
+            $DomFaultXml->loadXML($soap_response);
+            $error_msg='';
+            foreach ($DomFaultXml->getElementsByTagName('faultstring') as $key => $value) {
+                $error_msg.=$value->nodeValue.'<br/>';
+            }
+
+            //retornamos false indicando o erro e as mensagens de erro
+//            return array(false,$error_msg);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $error_msg));
+        }
+        //erros de validacao do webservice
+        if(strstr($soap_response,'Correcao')){
+            $DomXml=new DOMDocument('1.0', 'utf-8');
+            $DomXml->loadXML($soap_response);
+            $error_msg='';
+            foreach ($DomXml->getElementsByTagName('Correcao') as $key => $value) {
+                $error_msg.=$value->nodeValue.'<br/>';
+            }
+
+            //retornamos false indicando o erro e as mensagens de erro
+//            return array(false,$error_msg);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $error_msg));
+        }
+        //se retornar o protocolo, o envio funcionou corretamente
+        if(strstr($respEnv,'Protocolo')){
+            //retornamos false indicando o erro e as mensagens de erro
+            //echo htmlentities($soap_response);exit();
+            return array(true,$soap_response);
+//            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $respEnv));
+        }
+
+exit;
+
+//
 
         $nuNF = 0;
         $cdVerif = '';
@@ -154,8 +179,7 @@ if(
                     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
                 }
             }
-        }
-*/                               
+        }                             
 
         http_response_code(201);
         echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
