@@ -119,12 +119,15 @@ if(
 
             //retornamos false indicando o erro e as mensagens de erro
 //            return array(false,$error_msg);
-            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $error_msg));
+            echo json_encode(array("http_code" => "500", "message" => "Erro ! Não foi possível incluir Autorização.", "erro" => $error_msg));
         }
         //erros de validacao do webservice
         if(strstr($respEnv,'Correcao')){
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
+
+print_r($DomXml);
+
             $error_msg='';
             foreach ($DomXml->getElementsByTagName('Correcao') as $key => $value) {
                 $error_msg.=$value->nodeValue.'<br/>';
@@ -132,14 +135,14 @@ if(
 
             //retornamos false indicando o erro e as mensagens de erro
 //            return array(false,$error_msg);
-            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $error_msg));
+            echo json_encode(array("http_code" => "500", "message" => "Aviso ! Não foi possível incluir Autorização.", "erro" => $error_msg));
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'Protocolo')){
             //retornamos false indicando o erro e as mensagens de erro
             //echo htmlentities($respEnv);exit();
 //            return array(true,$respEnv);
-            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $respEnv));
+            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $respEnv));
         }
 
         echo $respEnv;
