@@ -105,7 +105,7 @@ if(
 
         $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
 
-        error_log(urldecode($respEnv), 3, "../arquivosNFSe/respEnv.log");
+        error_log(htmlspecialchars_decode ($respEnv), 3, "../arquivosNFSe/respEnv.log");
 
         $objResp = simplexml_load_string($respEnv);
 
