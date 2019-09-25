@@ -644,9 +644,14 @@ class comunicaNFSe {
 
     protected function pSendSOAPCurl($urlsefaz, $namespace, $dados, $metodo) {
 
+
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" soapenv:encodingStyle="http://www.w3.org/2001/12/soap-encoding">';
+
+
         $data = '';
         $data .= '<?xml version="1.0" encoding="utf-8"?>';
-        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
+//        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" soapenv:encodingStyle="http://www.w3.org/2001/12/soap-encoding">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
         $data .= '<e:'.$metodo.'>';
