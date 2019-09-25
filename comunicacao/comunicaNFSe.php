@@ -483,7 +483,7 @@ class comunicaNFSe {
 
             $servico = 'GerarNfse';
 
-//            error_log($sxml, 3, "../arquivosNFSe/nfseteste.xml");
+            error_log($sXml, 3, "../arquivosNFSe/nfseteste.xml");
 
 
             //valida o parâmetro da string do XML da NF-e
