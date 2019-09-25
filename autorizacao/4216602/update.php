@@ -111,8 +111,8 @@ $DomXml=new DOMDocument('1.0', 'utf-8');
 $DomXml->loadXML($respEnv);
 $xmlResp = $DomXml->textContent;
 $msgResp = simplexml_load_string($xmlResp);
-print_r($msgResp);
-echo $msgResp->MensagemRetorno->Codigo.' - '.$msgResp->MensagemRetorno->Mensagem.' - '.$msgResp->MensagemRetorno->Correcao;
+print_r($msgResp->MensagemRetorno);
+//echo $msgResp->MensagemRetorno->Codigo.' - '.$msgResp->MensagemRetorno->Mensagem.' - '.$msgResp->MensagemRetorno->Correcao;
 
         
         //erro na comunicacao SOAP
