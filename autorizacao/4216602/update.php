@@ -105,7 +105,7 @@ if(
 
         $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
 
-        $objResp = simplexml_load_string($DomXml);
+        $objResp = simplexml_load_string($respEnv);
 
         print_r($objResp);
 
