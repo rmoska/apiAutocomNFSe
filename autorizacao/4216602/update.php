@@ -111,7 +111,7 @@ if(
         if(strstr($respEnv,'Fault')){
 
             $DomFaultXml=new DOMDocument('1.0', 'utf-8');
-            $DomFaultXml->loadXML($soap_response);
+            $DomFaultXml->loadXML($respEnv);
             $error_msg='';
             foreach ($DomFaultXml->getElementsByTagName('faultstring') as $key => $value) {
                 $error_msg.=$value->nodeValue.'<br/>';
@@ -122,9 +122,9 @@ if(
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $error_msg));
         }
         //erros de validacao do webservice
-        if(strstr($soap_response,'Correcao')){
+        if(strstr($respEnv,'Correcao')){
             $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML($soap_response);
+            $DomXml->loadXML($respEnv);
             $error_msg='';
             foreach ($DomXml->getElementsByTagName('Correcao') as $key => $value) {
                 $error_msg.=$value->nodeValue.'<br/>';
@@ -137,8 +137,8 @@ if(
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'Protocolo')){
             //retornamos false indicando o erro e as mensagens de erro
-            //echo htmlentities($soap_response);exit();
-//            return array(true,$soap_response);
+            //echo htmlentities($respEnv);exit();
+//            return array(true,$respEnv);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $respEnv));
         }
 

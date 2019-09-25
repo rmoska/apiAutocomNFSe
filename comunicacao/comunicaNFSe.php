@@ -580,7 +580,6 @@ class comunicaNFSe {
             return false;
         }
 
-        echo 'OK='.$retorno;
         return $retorno;
 
     }
