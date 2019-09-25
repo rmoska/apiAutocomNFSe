@@ -45,8 +45,8 @@ if(
         $xml->openMemory();
         //
         // Inicia o cabeçalho do documento XML
-//        $xml->startElement("GerarNfseEnvio");
-//        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
+        $xml->startElement("GerarNfseEnvio");
+        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
             $xml->startElement("Rps");
                 $xml->startElement("InfDeclaracaoPrestacaoServico");
                 $xml->writeAttribute("Id", "lote1");
@@ -72,7 +72,7 @@ if(
                     $xml->writeElement("IncentivoFiscal", 2);
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
             $xml->endElement(); // Rps
-//        $xml->endElement(); // GerarNfseEnvio
+        $xml->endElement(); // GerarNfseEnvio
 
 
         //
@@ -91,9 +91,9 @@ if(
 //        include_once '../comunicacao/comunicaAbrasf.php';
 //        $enviaXml = new ComunicaAbrasf();
 
-        $xmlAss = preg_replace("/<\?xml.*\?>/", "", $xmlAss);
+/*        $xmlAss = preg_replace("/<\?xml.*\?>/", "", $xmlAss);
         $xmlAss = '<?xml version="1.0" encoding="utf-8"?><GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">'.$xmlAss.'</GerarNfseEnvio>';
-
+*/
         $objNFSe->gerarNFSe($xmlAss, "H");
 
 /*

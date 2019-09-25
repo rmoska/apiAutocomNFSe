@@ -483,7 +483,7 @@ class comunicaNFSe {
 
             $metodo = 'GerarNfse';
 
-//            error_log($sxml, 3, "../arquivosNFSe/nfseteste.xml");
+            error_log($sxml, 3, "../arquivosNFSe/nfseteste.xml");
 
 
             //valida o parâmetro da string do XML da NF-e
@@ -642,15 +642,16 @@ class comunicaNFSe {
     } //fim __sendSOAP
 
 
-    protected function pSendSOAPCurl($urlsefaz, $namespace, $dados, $metodo) {
+    protected function pSendSOAPCurl($url, $namespace, $dados, $metodo) {
 
 
         $data = '';
         $data .= '<?xml version="1.0" encoding="utf-8"?>';
-        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-test-ws">';
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
         $data .= '<e:'.$metodo.'>';
+
         $data .= '<nfseCabecMsg>';
         $data .= '<![CDATA[';
         $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
@@ -661,6 +662,7 @@ class comunicaNFSe {
         $data .= $dados;
         $data .= ']]>';
         $data .= '</nfseDadosMsg>';
+
         $data .= '</e:'.$metodo.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
