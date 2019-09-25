@@ -113,8 +113,8 @@ $xmlResp = $DomXml->textContent;
 $msgResp = simplexml_load_string($xmlResp);
 //print_r($msgResp->ListaMensagemRetorno->MensagemRetorno);
 echo (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-echo (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem;
-echo (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao;
+echo (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+echo (string) htmlspecialchars_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
 //echo $msgResp->MensagemRetorno->Codigo.' - '.$msgResp->MensagemRetorno->Mensagem.' - '.$msgResp->MensagemRetorno->Correcao;
 
         
