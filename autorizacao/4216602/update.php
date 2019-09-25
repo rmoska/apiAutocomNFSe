@@ -45,8 +45,8 @@ if(
         $xml->openMemory();
         //
         // Inicia o cabeçalho do documento XML
-        $xml->startElement("GerarNfseEnvio");
-        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
+//        $xml->startElement("GerarNfseEnvio");
+//        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
             $xml->startElement("Rps");
                 $xml->startElement("InfDeclaracaoPrestacaoServico");
                 $xml->writeAttribute("Id", "lote1");
@@ -72,12 +72,11 @@ if(
                     $xml->writeElement("IncentivoFiscal", 2);
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
             $xml->endElement(); // Rps
-        $xml->endElement(); // GerarNfseEnvio
+//        $xml->endElement(); // GerarNfseEnvio
 
 
         //
         $xmlNFe = $xml->outputMemory(true);
-/*        $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;*/
 
         $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico');
         if ($objNFSe->errStatus) {
@@ -88,13 +87,23 @@ if(
             exit;
         }
 
-//        include_once '../comunicacao/comunicaAbrasf.php';
-//        $enviaXml = new ComunicaAbrasf();
-
-/*        $xmlAss = preg_replace("/<\?xml.*\?>/", "", $xmlAss);
+        $xmlAss = preg_replace("/<\?xml.*\?>/", "", $xmlAss);
         $xmlAss = '<?xml version="1.0" encoding="utf-8"?><GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">'.$xmlAss.'</GerarNfseEnvio>';
-*/
-        $objNFSe->gerarNFSe($xmlAss, "H");
+
+        //
+        // monta bloco padrão Betha
+        $xmlEnv = '<nfseCabecMsg>';
+        $xmlEnv .= '<![CDATA[';
+        $xmlEnv .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
+        $xmlEnv .= ']]>';
+        $xmlEnv .= '</nfseCabecMsg>';
+        $xmlEnv .= '<nfseDadosMsg>';
+        $xmlEnv .= '<![CDATA[';
+        $xmlEnv .= $xmlAss;
+        $xmlEnv .= ']]>';
+        $xmlEnv .= '</nfseDadosMsg>';
+
+        $objNFSe->gerarNFSe($xmlEnv, "H");
 
 /*
 

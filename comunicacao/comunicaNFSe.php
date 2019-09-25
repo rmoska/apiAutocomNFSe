@@ -481,9 +481,9 @@ class comunicaNFSe {
             $namespace = $this->URLPortal.'/wsdl/'.$operation;
 
 
-            $metodo = 'GerarNfse';
+            $servico = 'GerarNfse';
 
-            error_log($sxml, 3, "../arquivosNFSe/nfseteste.xml");
+//            error_log($sxml, 3, "../arquivosNFSe/nfseteste.xml");
 
 
             //valida o parâmetro da string do XML da NF-e
@@ -501,7 +501,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $metodo);
+            $retorno = $this->pSendSOAPCurl($urlservico, $namespace, $sNFSe, $servico);
             //verifica o retorno
             if (! $retorno) {
 							/*
@@ -642,7 +642,7 @@ class comunicaNFSe {
     } //fim __sendSOAP
 
 
-    protected function pSendSOAPCurl($url, $namespace, $dados, $metodo) {
+    protected function pSendSOAPCurl($url, $namespace, $dados, $servico) {
 
 
         $data = '';
@@ -650,8 +650,8 @@ class comunicaNFSe {
         $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
-        $data .= '<e:'.$metodo.'>';
-
+        $data .= '<e:'.$servico.'>';
+/*
         $data .= '<nfseCabecMsg>';
         $data .= '<![CDATA[';
         $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
@@ -659,17 +659,19 @@ class comunicaNFSe {
         $data .= '</nfseCabecMsg>';
         $data .= '<nfseDadosMsg>';
         $data .= '<![CDATA[';
+*/
         $data .= $dados;
+/*
         $data .= ']]>';
         $data .= '</nfseDadosMsg>';
-
-        $data .= '</e:'.$metodo.'>';
+*/
+        $data .= '</e:'.$servico.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
 
         $tamanho = strlen($data);
 
-//        "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$metodo."'",
+//        "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$servico."'",
 
         $headers = array( "Content-type: text/xml; charset=utf-8", 
                           "Content-Length: ".$tamanho ); 
