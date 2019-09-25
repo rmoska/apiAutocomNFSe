@@ -105,7 +105,9 @@ if(
 
         $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
 
+        $objResp = simplexml_load_string($DomXml);
 
+        print_r($objResp);
 
         //erro na comunicacao SOAP
         if(strstr($respEnv,'Fault')){
@@ -126,12 +128,9 @@ if(
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
 
-print_r($DomXml);
 
             $error_msg='';
             foreach ($DomXml->getElementsByTagName('Correcao') as $key => $value) {
-
-echo $value;
 
                 $error_msg.=$value->nodeValue.'<br/>';
             }
