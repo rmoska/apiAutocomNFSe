@@ -138,10 +138,11 @@ if(
         if(strstr($respEnv,'Protocolo')){
             //retornamos false indicando o erro e as mensagens de erro
             //echo htmlentities($soap_response);exit();
-            return array(true,$soap_response);
-//            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $respEnv));
+//            return array(true,$soap_response);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $respEnv));
         }
 
+        echo $respEnv;
 exit;
 
 //

@@ -496,6 +496,8 @@ class comunicaNFSe {
             $retorno = $this->pSendSOAPCurl($url, $namespace, $servico, $sNFSe);
             //verifica o retorno
             if (! $retorno) {
+
+                echo 'ERR='.$retorno;
 							/*
 //							$arqErro = fopen($this->arqDir."/nfe/msgerrnfe.txt","at");  # append
 							$arqErro = fopen($this->raizDir.'public_html/aquarius_lite/'.$dirCli.'/nfe/msgErrNFe.txt',"at");  # append
@@ -578,6 +580,7 @@ class comunicaNFSe {
             return false;
         }
 
+        echo 'OK='.$retorno;
         return $retorno;
 
     }
