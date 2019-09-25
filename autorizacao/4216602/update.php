@@ -111,11 +111,10 @@ $DomXml=new DOMDocument('1.0', 'utf-8');
 $DomXml->loadXML($respEnv);
 $xmlResp = $DomXml->textContent;
 $msgResp = simplexml_load_string($xmlResp);
-//print_r($msgResp->ListaMensagemRetorno->MensagemRetorno);
-echo (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-echo (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-echo (string) htmlspecialchars_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
-//echo $msgResp->MensagemRetorno->Codigo.' - '.$msgResp->MensagemRetorno->Mensagem.' - '.$msgResp->MensagemRetorno->Correcao;
+$codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
+$msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+$correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
+echo $codigo.' - '.$msg.' - '.$correcao;
 
         
         //erro na comunicacao SOAP
