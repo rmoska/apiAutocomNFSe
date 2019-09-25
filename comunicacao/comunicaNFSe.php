@@ -487,13 +487,13 @@ class comunicaNFSe {
 
 
             //valida o parâmetro da string do XML da NF-e
-            if (empty($sxml) || ! simplexml_load_string($sxml)) {
+            if (empty($sXml) || ! simplexml_load_string($sXml)) {
                 throw new nfephpException("XML de NF-e para autorizacao recebido no parametro parece invalido, verifique");
             }
 
 
             // limpa a variavel
-            $sNFSe = $sxml;
+            $sNFSe = $sXml;
             //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
