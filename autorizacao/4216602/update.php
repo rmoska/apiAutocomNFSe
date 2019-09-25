@@ -65,7 +65,7 @@ if(
                     $xml->endElement(); // Servico
                     $xml->startElement("Prestador");
                         $xml->startElement("CpfCnpj");
-                            $xml->writeElement("Cnpj", 45111111111100);
+                            $xml->writeElement("Cnpj", 80449374000128);
                         $xml->endElement(); // CpfCnpj
                     $xml->endElement(); // Prestador
                     $xml->writeElement("OptanteSimplesNacional", 2);
