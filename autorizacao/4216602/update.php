@@ -109,6 +109,9 @@ if(
 
 $DomXml=new DOMDocument('1.0', 'utf-8');
 $DomXml->loadXML($respEnv);
+
+print_r($DomXml);
+
 $xmlResp = $DomXml->textContent;
 $msgResp = simplexml_load_string($xmlResp);
 $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
