@@ -130,6 +130,9 @@ print_r($DomXml);
 
             $error_msg='';
             foreach ($DomXml->getElementsByTagName('Correcao') as $key => $value) {
+
+echo $value;
+
                 $error_msg.=$value->nodeValue.'<br/>';
             }
 
@@ -145,7 +148,7 @@ print_r($DomXml);
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $respEnv));
         }
 
-        echo $respEnv;
+//        echo $respEnv;
 exit;
 
 //
