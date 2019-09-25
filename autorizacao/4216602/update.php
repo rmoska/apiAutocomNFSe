@@ -109,9 +109,9 @@ if(
 
 $DomXml=new DOMDocument('1.0', 'utf-8');
 $DomXml->loadXML($respEnv);
-//print_r($DomXml);
-
-echo $DomXml->textContent;
+$xmlResp = $DomXml->textContent;
+$msgResp = simplexml_load_string($xmlResp);
+print_r($msgResp);
         
         //erro na comunicacao SOAP
         if(strstr($respEnv,'Fault')){
