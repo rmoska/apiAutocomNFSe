@@ -113,7 +113,8 @@ $xmlResp = $DomXml->textContent;
 $msgResp = simplexml_load_string($xmlResp);
 print_r($msgResp);
 echo '---->>>';
-print_r($msgResp->MensagemRetorno);
+print_r($msgResp->ListaMensagemRetorno->MensagemRetorno);
+print_r($msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo);
 //echo $msgResp->MensagemRetorno->Codigo.' - '.$msgResp->MensagemRetorno->Mensagem.' - '.$msgResp->MensagemRetorno->Correcao;
 
         
