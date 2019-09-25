@@ -75,6 +75,136 @@ class comunicaNFSe {
      * os arquivos XML
      */
     public function signXML($docxml, $tagid=''){
+        if($tagid==''){
+            $this->errMsg = "Uma tag deve ser indicada para que seja assinada!!\n";
+            $this->errStatus = true;
+            return false;
+        }
+        if($docxml==''){
+            $this->errMsg = "Um xml deve ser passado para que seja assinado!!\n";
+            $this->errStatus = true;
+            return false;
+        }
+        // obter o chave privada para a ssinatura
+        $fp = fopen($this->priKEY, "r");
+        //var_dump('a',fread($fp));exit();
+        $priv_key=fread($fp, 8192);
+        fclose($fp);
+        $pkeyid=openssl_get_privatekey($priv_key);
+        // limpeza do xml com a retirada dos CR, LF, TAB, Tag de abertura e espacos desnecessarios
+        $order=array("\r\n", "\n", "\r", "\t");
+        $replace='';
+	//mesa história dita antes, esse trecho realmente se repete muito, hoje vejo isso =/
+        $docxml=str_replace($order, $replace, $docxml);
+        $docxml=str_replace('<?xml version="1.0" encoding="UTF-8"?>','<?xml version="1.0" encoding="UTF-8" standalone="no"?>',$docxml);
+        $docxml=str_replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>','',$docxml);
+        $docxml=str_replace('<?xml version="1.0" encoding="UTF-8"?>','',$docxml);
+        $docxml=str_replace('<?xml version="1.0"?>','',$docxml);
+        $docxml=str_replace("\n","",$docxml);
+        $docxml=str_replace("  "," ",$docxml);
+        $docxml=str_replace("> <","><",$docxml);
+        // carrega o documento no DOM
+        $xmldoc=new DOMDocument('1.0', 'utf-8');
+        $xmldoc->preservWhiteSpace=false; //elimina espaços em branco
+        $xmldoc->formatOutput=false;
+        // MUITO IMPORTANTE: Deixar ativadas as opcoes para limpar os espacos em branco e as tags vazias
+        $xmldoc->loadXML($docxml,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+        $root=$xmldoc->documentElement;
+        //extrair a tag com os dados a serem assinados
+        $node = $xmldoc->getElementsByTagName($tagid)->item(0);
+        if (!isset($node)){
+            $this->errMsg = "A tag < $tagid > nao existe no XML!";
+            $this->errStatus = true;
+            return false;
+         }
+         $id = trim($node->getAttribute("Id"));
+         $idnome = preg_replace('/[^0-9]/','', $id);
+         //extrai os dados da tag para uma string
+         $dados = $node->C14N(false,false,NULL,NULL);
+         $dados=str_replace(' >', '>', $dados);
+         //echo htmlentities($dados);exit();
+         //calcular o hash dos dados
+         $hashValue = hash('sha1',$dados,true);
+         //converte o valor para base64 para serem colocados no xml
+         $digValue = base64_encode($hashValue);
+         //monta a tag da assinatura digital
+         $Signature = $xmldoc->createElementNS($this->URLdsig,'Signature');
+         $root->appendChild($Signature);
+         //$node->appendChild($Signature);
+         $SignedInfo = $xmldoc->createElement('SignedInfo');
+         $Signature->appendChild($SignedInfo);
+         //Cannocalization
+         $newNode = $xmldoc->createElement('CanonicalizationMethod');
+         $SignedInfo->appendChild($newNode);
+         $newNode->setAttribute('Algorithm', $this->URLCanonMeth);
+         //SignatureMethod
+         $newNode = $xmldoc->createElement('SignatureMethod');
+         $SignedInfo->appendChild($newNode);
+         $newNode->setAttribute('Algorithm', $this->URLSigMeth);
+         //Reference
+         $Reference = $xmldoc->createElement('Reference');
+         $SignedInfo->appendChild($Reference);
+         $Reference->setAttribute('URI', '#'.$id);
+         //Transforms
+         $Transforms = $xmldoc->createElement('Transforms');
+         $Reference->appendChild($Transforms);
+         //Transform
+         $newNode = $xmldoc->createElement('Transform');
+         $Transforms->appendChild($newNode);
+         $newNode->setAttribute('Algorithm', $this->URLTransfMeth_1);
+         //Transform
+         $newNode = $xmldoc->createElement('Transform');
+         $Transforms->appendChild($newNode);
+         $newNode->setAttribute('Algorithm', $this->URLTransfMeth_2);
+         //DigestMethod
+         $newNode = $xmldoc->createElement('DigestMethod');
+         $Reference->appendChild($newNode);
+         $newNode->setAttribute('Algorithm', $this->URLDigestMeth);
+         //DigestValue
+         $newNode = $xmldoc->createElement('DigestValue',$digValue);
+         $Reference->appendChild($newNode);
+         // extrai os dados a serem assinados para uma string
+         $dados = $SignedInfo->C14N(false,false,NULL,NULL);
+         //inicializa a variavel que irÃ¡ receber a assinatura
+         $signature = '';
+         //executa a assinatura digital usando o resource da chave privada
+         $resp = openssl_sign($dados,$signature,$pkeyid);
+         //codifica assinatura para o padrao base64
+         $signatureValue = base64_encode($signature);
+         //SignatureValue
+         $newNode = $xmldoc->createElement('SignatureValue',$signatureValue);
+         $Signature->appendChild($newNode);
+         //KeyInfo
+         $KeyInfo = $xmldoc->createElement('KeyInfo');
+         $Signature->appendChild($KeyInfo);
+         //X509Data
+         $X509Data = $xmldoc->createElement('X509Data');
+         $KeyInfo->appendChild($X509Data);
+         //carrega o certificado sem as tags de inicio e fim
+         $cert = $this->__cleanCerts($this->pubKEY);
+         //X509Certificate
+         $newNode = $xmldoc->createElement('X509Certificate',$cert);
+         $X509Data->appendChild($newNode);
+         //grava na string o objeto DOM
+         $xml = $xmldoc->saveXML();
+         // libera a memoria
+         openssl_free_key($pkeyid);
+         //e olha essa m** aqui de novo, precisamos melhorar isso galera =/
+         $xml = str_replace('<?xml version="1.0" encoding="UTF-8"?>','<?xml version="1.0" encoding="UTF-8" standalone="no"?>',$xml);
+         $xml = str_replace('<?xml version="1.0" encoding="UTF-8" standalone="no"?>','',$xml);
+         $xml = str_replace('<?xml version="1.0" encoding="UTF-8"?>','',$xml);
+         $xml = str_replace('<?xml version="1.0"?>','',$xml);
+         $xml = str_replace("\n","",$xml);
+         $xml = str_replace("  "," ",$xml);
+         $xml = str_replace("> <","><",$xml);
+         //retorna o documento assinado
+         //echo htmlentities($xml);exit();
+         return $xml;
+    } //fim signXML
+
+
+
+    public function signXMLerr($docxml, $tagid=''){
             if ( $tagid == '' ){
                 $this->errMsg = 'Uma tag deve ser indicada para que seja assinada!!';
                 $this->errStatus = true;
