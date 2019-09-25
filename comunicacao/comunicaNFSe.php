@@ -487,7 +487,7 @@ class comunicaNFSe {
 
 
             //valida o parâmetro da string do XML da NF-e
-            if (empty($sXml) || ! simplexml_load_string($sXml)) {
+            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
                 throw new nfephpException("XML de NF-e para autorizacao recebido no parametro parece invalido, verifique");
             }
 
