@@ -107,9 +107,9 @@ if(
 
 //        error_log(htmlspecialchars_decode ($respEnv), 3, "../arquivosNFSe/respEnv.log");
 
-        $objResp = simplexml_load_string(htmlspecialchars_decode($respEnv));
-
-        print_r($objResp);
+$DomXml=new DOMDocument('1.0', 'utf-8');
+$DomXml->loadXML($respEnv);
+print_r($DomXml);
 
         
         //erro na comunicacao SOAP
