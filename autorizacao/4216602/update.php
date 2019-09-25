@@ -104,10 +104,13 @@ if(
         $xmlEnv .= '</nfseDadosMsg>';
 
         $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
+echo "<pre>";
+        print_r($objResp);
 
         $objResp = simplexml_load_string($respEnv);
 
         print_r($objResp);
+        echo "<pre/>";
 
         //erro na comunicacao SOAP
         if(strstr($respEnv,'Fault')){
