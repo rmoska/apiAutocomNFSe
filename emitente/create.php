@@ -67,9 +67,20 @@ if(
     }
 }
 else{
- 
+
+    $descErr = '';
+    if (empty($data->documento)) $descErr .= 'documento / ';
+    if (empty($data->nome)) $descErr .= 'nome / ';
+    if (empty($data->logradouro)) $descErr .= 'logradouro / ';
+    if (empty($data->numero)) $descErr .= 'numero / ';
+    if (empty($data->bairro)) $descErr .= 'bairro / ';
+    if (empty($data->codigoMunicipio)) $descErr .= 'codigoMunicipio / ';
+    if (empty($data->uf)) $descErr .= 'uf / ';
+    if (empty($data->email)) $descErr .= 'email / '; 
+    $descErr = substr($descErr, 0, -3);
+
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos."));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos. Campo(s): ".$descErr));
     $strData = json_encode($data);
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
