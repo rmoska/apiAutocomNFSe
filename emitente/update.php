@@ -74,6 +74,7 @@ if(
 else{
  
     $descErr = '';
+    if (empty($data->idEmitente)) $descErr .= 'idEmitente / ';
     if (empty($data->documento)) $descErr .= 'documento / ';
     if (empty($data->nome)) $descErr .= 'nome / ';
     if (empty($data->logradouro)) $descErr .= 'logradouro / ';
