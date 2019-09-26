@@ -16,6 +16,7 @@ class Autorizacao{
     public $certificado;
     public $senha;
     public $token;
+    public $nfhomologada;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -86,7 +87,7 @@ class Autorizacao{
         // update query
         $query = "UPDATE " . $this->tableName . " SET
                     crt=:crt, cnae=:cnae, 
-                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, dthralt=:dthralt
+                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, nfhomologada=:nfhomologada, dthralt=:dthralt
                   WHERE
                     idEmitente = :idEmitente";
 
@@ -102,6 +103,7 @@ class Autorizacao{
         $this->senhaWeb=htmlspecialchars(strip_tags($this->senhaWeb));
         $this->certificado=htmlspecialchars(strip_tags($this->certificado));
         $this->senha=htmlspecialchars(strip_tags($this->senha));
+        $this->nfhomologada=htmlspecialchars(strip_tags($this->nfhomologada));
 
         // bind new values
         $stmt->bindParam(":idEmitente", $this->idEmitente);
@@ -112,6 +114,7 @@ class Autorizacao{
         $stmt->bindParam(":senhaWeb", $this->senhaWeb);
         $stmt->bindParam(":certificado", $this->certificado);
         $stmt->bindParam(":senha", $this->senha);
+        $stmt->bindParam(":nfhomologada", $this->nfhomologada);
         $dthr = date('Y-m-d H:i:s');
         $stmt->bindParam(":dthralt", $dthr);
 
