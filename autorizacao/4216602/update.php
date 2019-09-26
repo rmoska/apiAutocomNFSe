@@ -104,57 +104,34 @@ if(
         $xmlEnv .= '</nfseDadosMsg>';
 
         $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
-
-//        error_log(htmlspecialchars_decode ($respEnv), 3, "../arquivosNFSe/respEnv.log");
-
-$DomXml=new DOMDocument('1.0', 'utf-8');
-$DomXml->loadXML($respEnv);
-
-print_r($DomXml);
-
-$xmlResp = $DomXml->textContent;
-$msgResp = simplexml_load_string($xmlResp);
-$codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-$msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-$correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
-echo $codigo.' - '.$msg.' - '.$correcao;
-
-        
+       
         //erro na comunicacao SOAP
         if(strstr($respEnv,'Fault')){
 
-            $DomFaultXml=new DOMDocument('1.0', 'utf-8');
-            $DomFaultXml->loadXML($respEnv);
-            $error_msg='';
-            foreach ($DomFaultXml->getElementsByTagName('faultstring') as $key => $value) {
-                $error_msg.=$value->nodeValue.'<br/>';
-            }
-
-            //retornamos false indicando o erro e as mensagens de erro
-//            return array(false,$error_msg);
-            echo json_encode(array("http_code" => "500", "message" => "Erro ! Não foi possível incluir Autorização.", "erro" => $error_msg));
+            $DomXml=new DOMDocument('1.0', 'utf-8');
+            $DomXml->loadXML($respEnv);
+            $xmlResp = $DomXml->textContent;
+            $msgResp = simplexml_load_string($xmlResp);
+            $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
+            $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+            $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
+            $cdVerif = $codigo.' - '.$msg.' - '.$falha;
         }
         //erros de validacao do webservice
         if(strstr($respEnv,'Correcao')){
+
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
-
-
-            $error_msg='';
-            foreach ($DomXml->getElementsByTagName('Correcao') as $key => $value) {
-
-                $error_msg.=$value->nodeValue.'<br/>';
-            }
-
-            //retornamos false indicando o erro e as mensagens de erro
-//            return array(false,$error_msg);
-            echo json_encode(array("http_code" => "500", "message" => "Aviso ! Não foi possível incluir Autorização.", "erro" => $error_msg));
+            $xmlResp = $DomXml->textContent;
+            $msgResp = simplexml_load_string($xmlResp);
+            $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
+            $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+            $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
+            $cdVerif = $codigo.' - '.$msg.' - '.$falha;
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'Protocolo')){
-            //retornamos false indicando o erro e as mensagens de erro
-            //echo htmlentities($respEnv);exit();
-//            return array(true,$respEnv);
+
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $respEnv));
         }
 
