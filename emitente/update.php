@@ -55,7 +55,7 @@ if(
     $retorno = $emitente->update();
     if($retorno[0]){
     
-        http_response_code(200);
+        http_response_code(201);
         echo json_encode(array("http_code" => "200", "message" => "Emitente atualizado", "idEmitente" => $emitente->idEmitente));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente atualizado. idEmitente=".$emitente->idEmitente."\n"), 3, "../arquivosNFSe/apiOK.log");
         exit;
