@@ -93,7 +93,7 @@ class Emitente{
                     nome = :nome, nomeFantasia = :nomeFantasia, 
                     logradouro = :logradouro, numero = :numero, complemento = :complemento,
                     cep = :cep, bairro = :bairro, uf = :uf, codigoMunicipio = :codigoMunicipio,
-                    pais = :pais, fone = :fone, celular = :celular, email = :email, dthrinc=:dthrinc
+                    pais = :pais, fone = :fone, celular = :celular, email = :email, dthralt=:dthralt
                 WHERE
                     idEmitente = :idEmitente";
     
@@ -132,7 +132,7 @@ class Emitente{
         $stmt->bindParam(":celular", $this->celular);
         $stmt->bindParam(":email", $this->email);
         $dthr = date('Y-m-d H:i:s');
-        $stmt->bindParam(":dthrinc", $dthr);
+        $stmt->bindParam(":dthralt", $dthr);
 
         // execute query
         if($stmt->execute()){

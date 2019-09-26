@@ -28,7 +28,7 @@ class Autorizacao{
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
                     idEmitente=:idEmitente, crt=:crt, cnae=:cnae, 
-                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha";
+                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, dthrinc=:dthrinc";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -52,6 +52,8 @@ class Autorizacao{
         $stmt->bindParam(":senhaWeb", $this->senhaWeb);
         $stmt->bindParam(":certificado", $this->certificado);
         $stmt->bindParam(":senha", $this->senha);
+        $dthr = date('Y-m-d H:i:s');
+        $stmt->bindParam(":dthrinc", $dthr);
     
         // execute query
         if($stmt->execute()){
@@ -84,7 +86,7 @@ class Autorizacao{
         // update query
         $query = "UPDATE " . $this->tableName . " SET
                     crt=:crt, cnae=:cnae, 
-                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha
+                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, dthralt=:dthralt
                   WHERE
                     idEmitente = :idEmitente";
 
@@ -110,6 +112,8 @@ class Autorizacao{
         $stmt->bindParam(":senhaWeb", $this->senhaWeb);
         $stmt->bindParam(":certificado", $this->certificado);
         $stmt->bindParam(":senha", $this->senha);
+        $dthr = date('Y-m-d H:i:s');
+        $stmt->bindParam(":dthralt", $dthr);
 
         // execute query
         if($stmt->execute()){
