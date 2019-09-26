@@ -34,7 +34,7 @@ class Emitente{
         $query = "INSERT INTO " . $this->tableName . " SET
                     documento=:documento, nome=:nome, nomefantasia=:nomeFantasia, 
                     logradouro=:logradouro, numero=:numero, complemento=:complemento, bairro=:bairro, cep=:cep, 
-                    codigomunicipio=:codigoMunicipio, uf=:uf, pais=:pais, fone=:fone, celular=:celular, email=:email";
+                    codigomunicipio=:codigoMunicipio, uf=:uf, pais=:pais, fone=:fone, celular=:celular, email=:email, dthrinc=:dthrinc";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -70,6 +70,8 @@ class Emitente{
         $stmt->bindParam(":fone", $this->fone);
         $stmt->bindParam(":celular", $this->celular);
         $stmt->bindParam(":email", $this->email);
+        $dthr = date('Y-m-d H:i:s');
+        $stmt->bindParam(":dthrinc", $dthr);
     
         // execute query
         if($stmt->execute()){
@@ -91,7 +93,7 @@ class Emitente{
                     nome = :nome, nomeFantasia = :nomeFantasia, 
                     logradouro = :logradouro, numero = :numero, complemento = :complemento,
                     cep = :cep, bairro = :bairro, uf = :uf, codigoMunicipio = :codigoMunicipio,
-                    pais = :pais, fone = :fone, celular = :celular, email = :email
+                    pais = :pais, fone = :fone, celular = :celular, email = :email, dthrinc=:dthrinc
                 WHERE
                     idEmitente = :idEmitente";
     
@@ -129,6 +131,8 @@ class Emitente{
         $stmt->bindParam(":fone", $this->fone);
         $stmt->bindParam(":celular", $this->celular);
         $stmt->bindParam(":email", $this->email);
+        $dthr = date('Y-m-d H:i:s');
+        $stmt->bindParam(":dthrinc", $dthr);
 
         // execute query
         if($stmt->execute()){
