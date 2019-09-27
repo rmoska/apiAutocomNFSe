@@ -135,7 +135,7 @@ if(
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $respEnv));
         }
 
-//        echo $respEnv;
+        echo $respEnv;
 exit;
 
 //
