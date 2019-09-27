@@ -157,7 +157,7 @@ if(
         fwrite($arqNFe, $xmlNFe);
         fclose($arqNFe);
 
-        $arqNFSe = dirname($arqNFe);
+        $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
 
         $xmlAss = $certificado->signXML($xmlNFe, 'nfse');
         if ($certificado->errStatus) {
@@ -184,6 +184,8 @@ if(
         //
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
+
+print_r($result);
 
         $nuNF = 0;
         $cdVerif = '';

@@ -10,6 +10,8 @@ include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
 include_once '../objects/emitente.php';
 
+$dirAPI = basename(dirname(dirname( __FILE__ )));
+
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
