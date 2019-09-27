@@ -113,6 +113,8 @@ if(
         // transmite NFSe	
         $headers = array( "Content-type: application/xml" ); 
 
+        echo $arqNFSe;
+
         $params = "login=".$emitente->documento."&senha=".$autorizacao->senhaWeb."&cidade=8233&fl=".$arqNFSe;
 
 echo $params;
