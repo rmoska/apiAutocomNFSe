@@ -113,7 +113,7 @@ if(
         // transmite NFSe	
         $headers = array( "Content-type: application/xml" ); 
 
-        $params = "login=".$emitente->documento."&senha=".$autorizacao->senhaWeb."&cidade=8233&fl=".$arqNFSe);
+        $params = "login=".$emitente->documento."&senha=".$autorizacao->senhaWeb."&cidade=8233&fl=".$arqNFSe;
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
