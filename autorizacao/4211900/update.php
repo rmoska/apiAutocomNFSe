@@ -117,7 +117,7 @@ if(
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-        curl_setopt($curl, CURLOPT_URL, "http://sync.nfs-e.net/datacenter/include/nfe/importa_nfe/nfe_import_upload.php?eletron=1");
+        curl_setopt($curl, CURLOPT_URL, "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_POST, TRUE);
@@ -127,6 +127,7 @@ if(
         $info = curl_getinfo( $curl );
 
 print_r($result);
+exit;
 
         $nuNF = 0;
         $cdVerif = '';
