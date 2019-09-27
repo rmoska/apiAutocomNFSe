@@ -54,8 +54,8 @@ if(
 
         $dtEm = date('d/m/Y');
         $tipoTomador = 'F';
-        if (strlen(trim(tomador->documento))==14)
-            $tipoTomador = 'J';
+//        if (strlen(trim($tomador->documento))==14)
+//            $tipoTomador = 'J';
 
         $xml->startElement("nfse");
             $xml->writeElement("nfse_teste", "1"); // ambiente homologação
