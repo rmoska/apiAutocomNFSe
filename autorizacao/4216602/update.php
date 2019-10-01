@@ -79,7 +79,7 @@ if(
         //
         $xmlNFe = $xml->outputMemory(true);
 
-        $xmlAss = $objNFSe->signXML($xmlNFe, 'GerarNfseEnvio');
+        $xmlAss = $objNFSe->signXML($xmlNFe, 'Rps');
         if ($objNFSe->errStatus) {
     
             http_response_code(401);

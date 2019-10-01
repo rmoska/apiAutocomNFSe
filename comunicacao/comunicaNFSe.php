@@ -130,6 +130,9 @@ class comunicaNFSe {
          }
          $id = trim($node->getAttribute("Id"));
          $idnome = preg_replace('/[^0-9]/','', $id);
+
+echo 'id='.$id.'  - idnome='.$idnome;
+
          //extrai os dados da tag para uma string
          $dados = $node->C14N(false,false,NULL,NULL);
          $dados=str_replace(' >', '>', $dados);
