@@ -16,6 +16,7 @@ if(
 ){
     // set autorizacao property values
     $autorizacao->idEmitente = $data->idEmitente;
+    $autorizacao->codigoMunicipio = "4216602"; // São José/SC
     $autorizacao->crt = $data->crt;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;

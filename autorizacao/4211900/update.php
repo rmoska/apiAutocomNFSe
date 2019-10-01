@@ -19,6 +19,7 @@ if(
 ){
     // set autorizacao property values
     $autorizacao->idEmitente = $data->idEmitente;
+    $autorizacao->codigoMunicipio = "4211900"; // Palhoça/SC
     $autorizacao->aedf = $data->aedf;
     $autorizacao->senhaWeb = $data->senhaWeb;
     $autorizacao->certificado = $data->certificado;

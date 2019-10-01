@@ -264,6 +264,7 @@ else {
     // buscar token conexão
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
+    $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
     $autorizacao->readOne();
 
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {

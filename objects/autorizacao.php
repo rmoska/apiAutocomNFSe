@@ -8,6 +8,7 @@ class Autorizacao{
     // object properties
     public $idAutorizacao;
     public $idEmitente;
+    public $codigoMunicipio;
     public $crt;
     public $cnae;
     public $aedf;
@@ -28,7 +29,7 @@ class Autorizacao{
     
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
-                    idEmitente=:idEmitente, crt=:crt, cnae=:cnae, 
+                    idEmitente=:idEmitente, codigoMunicipio=:codigoMunicipio, crt=:crt, cnae=:cnae, 
                     aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, dthrinc=:dthrinc";
     
         // prepare query
@@ -46,6 +47,7 @@ class Autorizacao{
     
         // bind values
         $stmt->bindParam(":idEmitente", $this->idEmitente);
+        $stmt->bindParam(":codigoMunicipio", $this->codigoMunicipio);
         $stmt->bindParam(":crt", $this->crt);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":aedf", $this->aedf);
@@ -87,7 +89,8 @@ class Autorizacao{
         // update query
         $query = "UPDATE " . $this->tableName . " SET
                     crt=:crt, cnae=:cnae, 
-                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, nfhomologada=:nfhomologada, dthralt=:dthralt
+                    codigoMunicipio=:codigoMunicipio, aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, 
+                    certificado=:certificado, senha=:senha, nfhomologada=:nfhomologada, dthralt=:dthralt
                   WHERE
                     idEmitente = :idEmitente";
 
@@ -107,6 +110,7 @@ class Autorizacao{
 
         // bind new values
         $stmt->bindParam(":idEmitente", $this->idEmitente);
+        $stmt->bindParam(":codigoMunicipio", $this->codigoMunicipio);
         $stmt->bindParam(":crt", $this->crt);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":aedf", $this->aedf);
@@ -168,13 +172,14 @@ class Autorizacao{
     function readOne(){
  
         // query to read single record
-        $query = "SELECT * FROM " . $this->tableName . " WHERE idEmitente = ? LIMIT 0,1";
+        $query = "SELECT * FROM " . $this->tableName . " WHERE idEmitente = ? AND codigoMunicipio = ? LIMIT 0,1";
 
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
      
         // bind id of product to be updated
         $stmt->bindParam(1, $this->idEmitente);
+        $stmt->bindParam(2, $this->codigoMunicipio);
      
         // execute query
         $stmt->execute();

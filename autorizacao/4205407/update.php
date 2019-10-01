@@ -19,6 +19,7 @@ if(
 ){
     // set autorizacao property values
     $autorizacao->idEmitente = $data->idEmitente;
+    $autorizacao->codigoMunicipio = "4205407"; // Florianópolis/SC
     $autorizacao->crt = $data->crt;
     $autorizacao->cnae = $data->cnae;
     $autorizacao->aedf = $data->aedf;
