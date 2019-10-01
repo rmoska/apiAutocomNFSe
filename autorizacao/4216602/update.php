@@ -88,6 +88,21 @@ if(
             exit;
         }
 
+
+        libxml_use_internal_errors(true);
+        $objDom = new DomDocument();
+        $objDom->preserveWhiteSpace=false;
+        $objDom->formatOutput = true;
+        $objDom->load(utf8_encode($xmlAss));
+    
+        // Tenta validar os dados utilizando o arquivo XSD
+        if (!$objDom->schemaValidate("arquivosNFSe-teste/arquivosNFSe/nfse_v202.xsd")) {
+            $arrayAllErrors = libxml_get_errors();
+            fwrite($arqErro, print_r($arrayAllErrors, true));
+            error_log(print_r($arrayAllErrors, true), 3, "../arquivosNFSe/schemaErr.log");
+        }
+            
+
 /*        $xmlAss = preg_replace("/<\?xml.*\?>/", "", $xmlAss);
         $xmlAss = '<?xml version="1.0" encoding="utf-8"?>';
 */
