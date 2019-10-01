@@ -79,7 +79,7 @@ if(
         //
         $xmlNFe = $xml->outputMemory(true);
 
-        $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico');
+        $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico', 'Rps');
         if ($objNFSe->errStatus) {
     
             http_response_code(401);

@@ -85,7 +85,7 @@ class comunicaNFSe {
      * este assinador somente utiliza comandos nativos do PHP para assinar
      * os arquivos XML
      */
-    public function signXML($docxml, $tagid=''){
+    public function signXML($docxml, $tagid='', $tagapp=''){
         if($tagid==''){
             $this->errMsg = "Uma tag deve ser indicada para que seja assinada!!\n";
             $this->errStatus = true;
@@ -121,6 +121,18 @@ class comunicaNFSe {
         // MUITO IMPORTANTE: Deixar ativadas as opcoes para limpar os espacos em branco e as tags vazias
         $xmldoc->loadXML($docxml,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
         $root=$xmldoc->documentElement;
+
+        if ($tagapp > '') {
+            //extrair a tag onde será anexada a assinatura
+            $root = $xmldoc->getElementsByTagName($tagapp)->item(0);
+            if (!isset($node)){
+                $this->errMsg = "A tag < $tagapp > nao existe no XML!";
+                $this->errStatus = true;
+                return false;
+            }
+
+        }
+
         //extrair a tag com os dados a serem assinados
         $node = $xmldoc->getElementsByTagName($tagid)->item(0);
         if (!isset($node)){
