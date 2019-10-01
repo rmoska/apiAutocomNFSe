@@ -47,7 +47,7 @@ if(
         //
         // Inicia o cabeçalho do documento XML
         $xml->startElement("GerarNfseEnvio");
-        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-test-ws");
+        $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-ws");
             $xml->startElement("Rps");
                 $xml->startElement("InfDeclaracaoPrestacaoServico");
                 $xml->writeAttribute("Id", "lote1");
