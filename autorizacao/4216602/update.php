@@ -88,12 +88,14 @@ if(
             exit;
         }
 
+        error_log($xmlAss, 3, "../arquivosNFSe/xmlAss.xml");
+
 
         libxml_use_internal_errors(true);
         $objDom = new DomDocument();
         $objDom->preserveWhiteSpace=false;
         $objDom->formatOutput = true;
-        $objDom->load(utf8_encode($xmlAss));
+        $objDom->load(utf8_encode("../arquivosNFSe/xmlAss.xml"));
     
         // Tenta validar os dados utilizando o arquivo XSD
         if (!$objDom->schemaValidate("../arquivosNFSe/nfse_v202.xsd")) {
@@ -108,7 +110,6 @@ if(
 //        $xmlAss = '<GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">'.$xmlAss.'</GerarNfseEnvio>';
 
 
-error_log($xmlAss, 3, "../arquivosNFSe/xmlAss.xml");
 
         //
         // monta bloco padrão Betha
