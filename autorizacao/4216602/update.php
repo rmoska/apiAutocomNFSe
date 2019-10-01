@@ -69,7 +69,7 @@ if(
                             $xml->writeElement("Cnpj", $emitente->documento);
                         $xml->endElement(); // CpfCnpj
                     $xml->endElement(); // Prestador
-                    $xml->writeElement("RegimeEspecialTributacao", 3);
+                    $xml->writeElement("RegimeEspecialTributacao", $emitente->crt);
                     $xml->writeElement("OptanteSimplesNacional", 2);
                     $xml->writeElement("IncentivoFiscal", 2);
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico

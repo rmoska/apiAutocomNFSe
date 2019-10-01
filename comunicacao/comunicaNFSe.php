@@ -500,7 +500,7 @@ class comunicaNFSe {
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
-echo $url;
+echo 'url='. $url;
 
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($url, $namespace, $servico, $sNFSe);
