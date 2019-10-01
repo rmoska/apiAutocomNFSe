@@ -58,15 +58,15 @@ if(
                             $xml->writeElement("ValorServicos", 10.00);
                         $xml->endElement(); // Valores
                         $xml->writeElement("IssRetido", 2);
-                        $xml->writeElement("ItemListaServico", "0702");
-                        $xml->writeElement("Discriminacao", "Programacao");
+                        $xml->writeElement("ItemListaServico", "0402");
+                        $xml->writeElement("Discriminacao", "Consulta clinica");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602
                         $xml->writeElement("ExigibilidadeISS", 1);
                         $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                     $xml->endElement(); // Servico
                     $xml->startElement("Prestador");
                         $xml->startElement("CpfCnpj");
-                            $xml->writeElement("Cnpj", 80449374000128);
+                            $xml->writeElement("Cnpj", $emitente->documento);
                         $xml->endElement(); // CpfCnpj
                     $xml->endElement(); // Prestador
                     $xml->writeElement("OptanteSimplesNacional", 2);

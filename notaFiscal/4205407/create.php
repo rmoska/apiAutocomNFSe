@@ -123,10 +123,12 @@ else{
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-
+/*
 if ($tomador->uf != 'SC') $cfps = '9203';
 else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
 else $cfps = '9201';
+*/
+$cfps = '9201'; // emitente FLN + serviço executado em FLN
 $notaFiscal->cfop = $cfps;
 
 // create notaFiscal
