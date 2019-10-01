@@ -122,30 +122,22 @@ class comunicaNFSe {
         $xmldoc->loadXML($docxml,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
         $root=$xmldoc->documentElement;
         //extrair a tag com os dados a serem assinados
-        $node = $xmldoc->getElementsByTagName($tagid)->item(0);
-//echo 'node=';
-//print_r($node);
-        if (!isset($node)){
-            $this->errMsg = "A tag < $tagid > nao existe no XML!";
-            $this->errStatus = true;
-            return false;
-         }
-
-
-         if ($tagapp > '') {
+        if ($tagapp > '') {
             //extrair a tag onde será anexada a assinatura
             $newroot = $xmldoc->getElementsByTagName($tagapp)->item(0);
-//         echo 'newroot=';
-//         print_r($newroot);
-         if (!isset($newroot)){
+             if (!isset($newroot)){
                 $this->errMsg = "A tag < $tagapp > nao existe no XML!";
                 $this->errStatus = true;
                 return false;
             }
             $root = $newroot;
         }
-
-
+        $node = $xmldoc->getElementsByTagName($tagid)->item(0);
+        if (!isset($node)){
+            $this->errMsg = "A tag < $tagid > nao existe no XML!";
+            $this->errStatus = true;
+            return false;
+         }
          $id = trim($node->getAttribute("Id"));
          $idnome = preg_replace('/[^0-9]/','', $id);
          //extrai os dados da tag para uma string
