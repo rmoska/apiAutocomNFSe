@@ -89,8 +89,7 @@ if(
             exit;
         }
 
-//        error_log($xmlAss, 3, "../arquivosNFSe/xmlAss.xml");
-
+        error_log($xmlAss, 3, "../arquivosNFSe/xmlAss.xml");
 
         //
         // monta bloco padrão Betha

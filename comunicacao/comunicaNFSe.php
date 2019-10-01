@@ -500,10 +500,10 @@ class comunicaNFSe {
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
-echo 'url='. $url;
+echo 'url='. $this->url;
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($url, $namespace, $servico, $sNFSe);
+            $retorno = $this->pSendSOAPCurl($servico, $sNFSe);
             //verifica o retorno
             if (! $retorno) {
 
@@ -646,8 +646,7 @@ echo 'url='. $url;
     } //fim __sendSOAP
 
 
-    protected function pSendSOAPCurl($url, $namespace, $servico, $dados) {
-
+    protected function pSendSOAPCurl($servico, $dados) {
 
         $data = '';
         $data .= '<?xml version="1.0" encoding="utf-8"?>';
