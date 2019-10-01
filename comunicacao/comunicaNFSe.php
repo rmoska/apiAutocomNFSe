@@ -123,7 +123,8 @@ class comunicaNFSe {
         $root=$xmldoc->documentElement;
         //extrair a tag com os dados a serem assinados
         $node = $xmldoc->getElementsByTagName($tagid)->item(0);
-echo 'node='.$node;
+echo 'node=';
+print_r($node);
         if (!isset($node)){
             $this->errMsg = "A tag < $tagid > nao existe no XML!";
             $this->errStatus = true;
@@ -134,8 +135,9 @@ echo 'node='.$node;
          if ($tagapp > '') {
             //extrair a tag onde será anexada a assinatura
             $newroot = $xmldoc->getElementsByTagName($tagapp)->item(0);
-         echo 'newroot='.$newroot;
-            if (!isset($newroot)){
+         echo 'newroot=';
+         print_r($newroot);
+         if (!isset($newroot)){
                 $this->errMsg = "A tag < $tagapp > nao existe no XML!";
                 $this->errStatus = true;
                 return false;
