@@ -69,6 +69,7 @@ if(
                             $xml->writeElement("Cnpj", $emitente->documento);
                         $xml->endElement(); // CpfCnpj
                     $xml->endElement(); // Prestador
+                    $xml->writeElement("RegimeEspecialTributacao", 3);
                     $xml->writeElement("OptanteSimplesNacional", 2);
                     $xml->writeElement("IncentivoFiscal", 2);
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
@@ -88,27 +89,7 @@ if(
             exit;
         }
 
-        error_log($xmlAss, 3, "../arquivosNFSe/xmlAss.xml");
-
-
-        libxml_use_internal_errors(true);
-        $objDom = new DomDocument();
-        $objDom->preserveWhiteSpace=false;
-        $objDom->formatOutput = true;
-        $objDom->load(utf8_encode("../arquivosNFSe/xmlAss.xml"));
-    
-        // Tenta validar os dados utilizando o arquivo XSD
-        if (!$objDom->schemaValidate("../arquivosNFSe/nfse_v202.xsd")) {
-            $arrayAllErrors = libxml_get_errors();
-            error_log(print_r($arrayAllErrors, true), 3, "../arquivosNFSe/schemaErr.log");
-        }
-            
-
-/*        $xmlAss = preg_replace("/<\?xml.*\?>/", "", $xmlAss);
-        $xmlAss = '<?xml version="1.0" encoding="utf-8"?>';
-*/
-//        $xmlAss = '<GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">'.$xmlAss.'</GerarNfseEnvio>';
-
+//        error_log($xmlAss, 3, "../arquivosNFSe/xmlAss.xml");
 
 
         //
