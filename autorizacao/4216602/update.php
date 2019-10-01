@@ -96,9 +96,8 @@ if(
         $objDom->load(utf8_encode($xmlAss));
     
         // Tenta validar os dados utilizando o arquivo XSD
-        if (!$objDom->schemaValidate("../arquivosNFSe-teste/arquivosNFSe/nfse_v202.xsd")) {
+        if (!$objDom->schemaValidate("../arquivosNFSe-teste/nfse_v202.xsd")) {
             $arrayAllErrors = libxml_get_errors();
-            fwrite($arqErro, print_r($arrayAllErrors, true));
             error_log(print_r($arrayAllErrors, true), 3, "../arquivosNFSe-teste/schemaErr.log");
         }
             
