@@ -89,7 +89,9 @@ if(
         }
 
         $xmlAss = preg_replace("/<\?xml.*\?>/", "", $xmlAss);
-        $xmlAss = '<?xml version="1.0" encoding="utf-8"?><GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">'.$xmlAss.'</GerarNfseEnvio>';
+/*        $xmlAss = '<?xml version="1.0" encoding="utf-8"?>';
+*/
+        $xmlAss = '<GerarNfseEnvio xmlns="http://www.betha.com.br/e-nota-contribuinte-ws">'.$xmlAss.'</GerarNfseEnvio>';
 
 
 error_log($xmlAss, 3, "../arquivosNFSe/xmlAss.xml");
