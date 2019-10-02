@@ -508,16 +508,6 @@ class comunicaNFSe {
             if (! $retorno) {
 
                 echo 'ERR='.$retorno;
-							/*
-//							$arqErro = fopen($this->arqDir."/nfe/msgerrnfe.txt","at");  # append
-							$arqErro = fopen($this->raizDir.'public_html/aquarius_lite/'.$dirCli.'/nfe/msgErrNFe.txt',"at");  # append
-							fwrite($arqErro, $this->soapDebug); 
-							fwrite($arqErro, $retorno); 
-							fwrite($arqErro, "\n--------------------------------------------------------------------------------\n"); 
-							fclose($arqErro);
-
-                            throw new nfephpException("Nao houve retorno Soap verifique a mensagem de erro e o debug!!");
-                */
             }
 
 
