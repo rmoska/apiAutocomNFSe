@@ -41,6 +41,8 @@ if(
 
         foreach($aAutoChave as $chave => $valor) {
 
+            $autorizacaoChave = new AutorizacaoChave($db);
+            $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
             $autorizacaoChave->chave = $chave;
             $autorizacaoChave->valor = $valor;
             $autorizacaoChave->update();
@@ -84,6 +86,7 @@ if(
                     $xml->startElement("Servico");
                         $xml->startElement("Valores");
                             $xml->writeElement("ValorServicos", 10.00);
+                            $xml->writeElement("ValorIss", 10.00);
                             $xml->writeElement("Aliquota", 0.00); 
                         $xml->endElement(); // Valores
                         $xml->writeElement("IssRetido", 2);
