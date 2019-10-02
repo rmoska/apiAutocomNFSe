@@ -2,19 +2,25 @@
  
 // include database and object files
 include_once '../objects/autorizacao.php';
+include_once '../objects/autorizacaoChave.php';
  
-// prepare emitente object
 $autorizacao = new Autorizacao($db);
  
-//    !empty($data->aedf) // AEDFe é autorização para Produção, então aceita branco para testes de Homologação
-// make sure data is not empty
+/**
+ * crt : Regime Tributario (0|1|2|3|4|5|6)
+ * optanteSN : Simples Nacional 1=sim 2=nao
+ * incentivoFiscal : 1=sim 2=nao
+ */
 if(
     !empty($data->idEmitente) &&
     !empty($data->crt) &&
     !empty($data->certificado) &&
-    !empty($data->senha)
+    !empty($data->senha) &&
+    !empty($data->optanteSN) &&
+    !empty($data->incentivoFiscal) &&
+    !empty($data->codigoServico)
 ){
-    // set autorizacao property values
+
     $autorizacao->idEmitente = $data->idEmitente;
     $autorizacao->codigoMunicipio = "4216602"; // São José/SC
     $autorizacao->crt = $data->crt;
@@ -28,6 +34,28 @@ if(
  
     if($retorno[0]){
 
+        $aAutoChave = array("optanteSN" => $data->optanteSN, "incentivoFiscal" => $data->incentivoFiscal, "codigoServico" => $data->codigoServico);
+
+        $autorizacaoChave = new AutorizacaoChave($db);
+        $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
+
+        foreach($aAutoChave as $chave => $valor) {
+
+            $autorizacaoChave->chave = $chave;
+            $autorizacaoChave->valor = $valor;
+            $autorizacaoChave->update();
+        }
+/*
+        $autorizacaoChave->chave = "optanteSN";
+        $autorizacaoChave->valor = $data->optanteSN;
+        $autorizacaoChave->update();
+        $autorizacaoChave->chave = "incentivoFiscal";
+        $autorizacaoChave->valor = $data->incentivoFiscal;
+        $autorizacaoChave->update();
+        $autorizacaoChave->chave = "codigoServico";
+        $autorizacaoChave->valor = $data->codigoServico;
+        $autorizacaoChave->update();
+*/
         include_once '../comunicacao/comunicaNFSe.php';
         $arraySign = array("sisEmit" => 0, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
         $objNFSe = new ComunicaNFSe($arraySign);
@@ -58,7 +86,7 @@ if(
                             $xml->writeElement("ValorServicos", 10.00);
                         $xml->endElement(); // Valores
                         $xml->writeElement("IssRetido", 2);
-                        $xml->writeElement("ItemListaServico", "0402");
+                        $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
                         $xml->writeElement("Discriminacao", "Consulta clinica");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602
                         $xml->writeElement("ExigibilidadeISS", 1);
@@ -70,8 +98,8 @@ if(
                         $xml->endElement(); // CpfCnpj
                     $xml->endElement(); // Prestador
                     $xml->writeElement("RegimeEspecialTributacao", $autorizacao->crt);
-                    $xml->writeElement("OptanteSimplesNacional", 1);
-                    $xml->writeElement("IncentivoFiscal", 2);
+                    $xml->writeElement("OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1-Sim/2-Não
+                    $xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
             $xml->endElement(); // Rps
         $xml->endElement(); // GerarNfseEnvio
