@@ -93,7 +93,7 @@ if(
                         $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
                         $xml->writeElement("Discriminacao", "Consulta clinica");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602
-                        $xml->writeElement("ExigibilidadeISS", 1);
+                        $xml->writeElement("ExigibilidadeISS", 3); // isento
 //                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                     $xml->endElement(); // Servico
                     $xml->startElement("Prestador");
