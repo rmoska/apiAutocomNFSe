@@ -84,10 +84,10 @@ if(
                     $xml->startElement("Servico");
                         $xml->startElement("Valores");
                             $xml->writeElement("ValorServicos", 10.00);
+                            $xml->writeElement("Aliquota", 0.00); 
                         $xml->endElement(); // Valores
                         $xml->writeElement("IssRetido", 2);
                         $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
-                        $xml->writeElement("Aliquota", 0.00); // 4216602
                         $xml->writeElement("Discriminacao", "Consulta clinica");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602
                         $xml->writeElement("ExigibilidadeISS", 1);
