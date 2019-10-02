@@ -99,7 +99,7 @@ if(
                     $xml->endElement(); // Prestador
                     $xml->writeElement("RegimeEspecialTributacao", $autorizacao->crt);
                     $xml->writeElement("OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1-Sim/2-Não
-                    $xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
+                    //$xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
             $xml->endElement(); // Rps
         $xml->endElement(); // GerarNfseEnvio
