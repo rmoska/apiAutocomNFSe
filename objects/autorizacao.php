@@ -194,6 +194,8 @@ class Autorizacao{
         $this->senhaWeb = $row['senhaWeb'];
         $this->certificado = $row['certificado'];
         $this->senha = $row['senha'];
+        $this->token = $row['token'];
+        $this->nfhomologada = $row['nfhomologada'];
 
     }
 
