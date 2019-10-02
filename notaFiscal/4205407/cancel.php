@@ -46,6 +46,7 @@ if (!($emitente->documento > '')) {
 // buscar token conexão
 $autorizacao = new Autorizacao($db);
 $autorizacao->idEmitente = $notaFiscal->idEmitente;
+$autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
 $autorizacao->readOne();
 
 print_r($autorizacao);
