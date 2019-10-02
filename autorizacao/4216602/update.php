@@ -94,7 +94,7 @@ if(
                         $xml->writeElement("Discriminacao", "Consulta clinica");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602
                         $xml->writeElement("ExigibilidadeISS", 1);
-                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
+//                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                     $xml->endElement(); // Servico
                     $xml->startElement("Prestador");
                         $xml->startElement("CpfCnpj");
@@ -152,7 +152,7 @@ if(
             echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
         }
         //erros de validacao do webservice
-        if(strstr($respEnv,'Correcao')){
+        if(strstr($respEnv,'Correcao') || strstr($respEnv,'Mensagem')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
@@ -161,7 +161,7 @@ if(
             $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
             $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
             $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
-            $cdVerif = $codigo.' - '.$msg.' - '.$falha;
+            $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
         }
         //se retornar o protocolo, o envio funcionou corretamente
