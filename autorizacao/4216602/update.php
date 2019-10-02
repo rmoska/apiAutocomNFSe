@@ -99,7 +99,7 @@ if(
                     $xml->endElement(); // Prestador
                     $xml->writeElement("RegimeEspecialTributacao", $autorizacao->crt);
                     $xml->writeElement("OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1-Sim/2-Não
-                    //$xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
+                    $xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
             $xml->endElement(); // Rps
         $xml->endElement(); // GerarNfseEnvio
@@ -145,6 +145,7 @@ if(
             $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
             $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
             $cdVerif = $codigo.' - '.$msg.' - '.$falha;
+            echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
         }
         //erros de validacao do webservice
         if(strstr($respEnv,'Correcao')){
@@ -157,6 +158,7 @@ if(
             $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
             $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$falha;
+            echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'Protocolo')){
@@ -164,7 +166,7 @@ if(
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $respEnv));
         }
 
-        echo $respEnv;
+        echo $cdVerif;
 exit;
 
 //
