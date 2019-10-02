@@ -48,10 +48,6 @@ $autorizacao = new Autorizacao($db);
 $autorizacao->idEmitente = $notaFiscal->idEmitente;
 $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
 $autorizacao->readOne();
-
-print_r($autorizacao);
-echo 'A='.$notaFiscal->ambiente;
-
 if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
     http_response_code(401);
