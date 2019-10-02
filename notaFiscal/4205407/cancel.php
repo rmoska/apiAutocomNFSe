@@ -47,6 +47,10 @@ if (!($emitente->documento > '')) {
 $autorizacao = new Autorizacao($db);
 $autorizacao->idEmitente = $notaFiscal->idEmitente;
 $autorizacao->readOne();
+
+print_r($autorizacao);
+echo 'A='.$notaFiscal->ambiente;
+
 if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
     http_response_code(401);
