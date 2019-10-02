@@ -25,6 +25,8 @@ if (empty($idNotaFiscal)) {
     exit;
 }
 
+$dirAPI = basename(dirname(dirname( __FILE__ )));
+
 $database = new Database();
 $db = $database->getConnection();
  

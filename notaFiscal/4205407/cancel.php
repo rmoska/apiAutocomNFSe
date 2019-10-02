@@ -142,7 +142,6 @@ if ($info['http_code'] == '200')
 
         $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
 
-        $dirAPI = basename(dirname(dirname( __FILE__ )));
         // set response code - 201 created
         http_response_code(201);
         echo json_encode(array("http_code" => "201", 
