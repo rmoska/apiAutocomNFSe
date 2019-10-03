@@ -166,28 +166,14 @@ if(
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
-            $msgResp = simplexml_load_string($xmlResp);
-
-
-
-            $xmlResp2=new DOMDocument('1.0', 'utf-8');
-            $xmlResp2->preservWhiteSpace=false; //elimina espaços em branco
-            $xmlResp2->formatOutput=false;
-            $xmlResp2->loadXML($xmlResp,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
-            $nodeXml = $xmlResp2->getElementsByTagName('CompNfse');
-            $xml = $xmlResp2->saveXML($nodeXml);
-
-print_r($xmlResp2);
-
+//            $msgResp = simplexml_load_string($xmlResp);
 
 //print_r($xml);
 
-//            $xmlNFSe = (string) $msgResp->ListaNfse->CompNfse;
-
-            error_log($xml."\n", 3, "../arquivosNFSe/xmlNFSe.xml");
+            error_log($xmlResp."\n", 3, "../arquivosNFSe/xmlNFSe.xml");
 
 
-            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => utf8_decode($respEnv)));
+            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $xmlResp));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Nota Fiscal homologação emitida."."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
 
