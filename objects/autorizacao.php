@@ -61,6 +61,8 @@ class Autorizacao{
         // execute query
         if($stmt->execute()){
 
+            $this->idAutorizacao = $this->conn->lastInsertId();
+
             include_once '../objects/emitente.php';
             $emitente = new Emitente($this->conn);
             $emitente->idEmitente = $this->idEmitente;
@@ -88,17 +90,17 @@ class Autorizacao{
     
         // update query
         $query = "UPDATE " . $this->tableName . " SET
-                    crt=:crt, cnae=:cnae, 
-                    codigoMunicipio=:codigoMunicipio, aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, 
+                    crt=:crt, cnae=:cnae, aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, 
                     certificado=:certificado, senha=:senha, nfhomologada=:nfhomologada, dthralt=:dthralt
                   WHERE
-                    idEmitente = :idEmitente";
+                    idEmitente = :idEmitente AND codigoMunicipio=:codigoMunicipio";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
         // sanitize
         $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
+        $this->codigoMunicipio=htmlspecialchars(strip_tags($this->codigoMunicipio));
         $this->crt=htmlspecialchars(strip_tags($this->crt));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
         $this->aedf=htmlspecialchars(strip_tags($this->aedf));
@@ -151,8 +153,7 @@ class Autorizacao{
     function check(){
     
         // select query
-        $query = "SELECT a.* FROM " . $this->tableName . " a
-                  WHERE a.idEmitente = ? LIMIT 1";
+        $query = "SELECT * FROM " . $this->tableName . " WHERE idEmitente = ? AND codigoMunicipio = ? LIMIT 0,1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -188,6 +189,7 @@ class Autorizacao{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
      
         // set values to object properties
+        $this->idAutorizacao = $row['idAutorizacao'];
         $this->crt = $row['crt'];
         $this->aedf = $row['aedf'];
         $this->cmc = $row['cmc'];

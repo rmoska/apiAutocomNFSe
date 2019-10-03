@@ -29,8 +29,11 @@ if(
 
     if ($autorizacao->check() == 0)
         $retorno = $autorizacao->create($emitente->documento);
-    else 
+    else {
+
+        $autorizacao->readOne(); // carregar idAutorizacao
         $retorno = $autorizacao->update($emitente->documento);
+    }
  
     if($retorno[0]){
 
