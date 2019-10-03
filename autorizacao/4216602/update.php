@@ -162,26 +162,23 @@ if(
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'ListaNfse')){
-/*
+
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
-*/
 
 
-            $xmlResp=new DOMDocument('1.0', 'utf-8');
-            $xmlResp->preservWhiteSpace=false; //elimina espaços em branco
-            $xmlResp->formatOutput=false;
-            // MUITO IMPORTANTE: Deixar ativadas as opcoes para limpar os espacos em branco e as tags vazias
-            $xmlResp->loadXML($respEnv,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
-            $nodeXml = $xmlResp->getElementsByTagName('CompNfse');
-//            $xml = $xmlResp->saveXML($nodeXml);
 
-print_r($xmlResp);
+            $xmlResp2=new DOMDocument('1.0', 'utf-8');
+            $xmlResp2->preservWhiteSpace=false; //elimina espaços em branco
+            $xmlResp2->formatOutput=false;
+            $xmlResp2->loadXML($xmlResp,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+            $nodeXml = $xmlResp2->getElementsByTagName('CompNfse');
+            $xml = $xmlResp2->saveXML($nodeXml);
 
-echo '=================';
-print_r($nodeXml);
+print_r($xmlResp2);
+
 
 //print_r($xml);
 
