@@ -175,7 +175,7 @@ if(
             $xmlResp->formatOutput=false;
             // MUITO IMPORTANTE: Deixar ativadas as opcoes para limpar os espacos em branco e as tags vazias
             $xmlResp->loadXML($respEnv,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
-            $xml = $xmlNFSe->saveXML('CompNfse');
+            $xml = $xmlResp->saveXML('CompNfse');
 
 
 
