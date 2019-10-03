@@ -176,11 +176,14 @@ if(
             // MUITO IMPORTANTE: Deixar ativadas as opcoes para limpar os espacos em branco e as tags vazias
             $xmlResp->loadXML($respEnv,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
             $nodeXml = $xmlResp->getElementsByTagName('CompNfse');
-            $xml = $xmlResp->saveXML($nodeXml);
+//            $xml = $xmlResp->saveXML($nodeXml);
 
+print_r($xmlResp);
 
+echo '=================';
+print_r($nodeXml);
 
-print_r($xml);
+//print_r($xml);
 
 //            $xmlNFSe = (string) $msgResp->ListaNfse->CompNfse;
 
