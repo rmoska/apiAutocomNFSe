@@ -47,7 +47,10 @@ echo 'chave='.$chave.'='.$valor;
             $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
             $autorizacaoChave->chave = $chave;
             $autorizacaoChave->valor = $valor;
-            $autorizacaoChave->update();
+            $retorno = $autorizacaoChave->update();
+
+            echo json_encode(array("erro" => $retorno[1]));
+
         }
 
         exit;
