@@ -158,7 +158,7 @@ if(
             $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$respEnv)."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'ListaNfse')){
