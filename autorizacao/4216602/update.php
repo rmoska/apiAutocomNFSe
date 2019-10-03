@@ -162,17 +162,29 @@ if(
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'ListaNfse')){
-
+/*
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
+*/
 
-print_r($msgResp);
 
-            $xmlNFSe = (string) $msgResp->ListaNfse->CompNfse;
+            $xmlResp=new DOMDocument('1.0', 'utf-8');
+            $xmlResp->preservWhiteSpace=false; //elimina espaços em branco
+            $xmlResp->formatOutput=false;
+            // MUITO IMPORTANTE: Deixar ativadas as opcoes para limpar os espacos em branco e as tags vazias
+            $xmlResp->loadXML($respEnv,LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
+            $xmlNFSe = $xmlResp->getElementsByTagName('CompNfse')->item(0);
+            $xml = $xmlNFSe->saveXML();
 
-            error_log($xmlNFSe."\n", 3, "../arquivosNFSe/xmlNFSe.xml");
+
+
+print_r($xml);
+
+//            $xmlNFSe = (string) $msgResp->ListaNfse->CompNfse;
+
+            error_log($xml."\n", 3, "../arquivosNFSe/xmlNFSe.xml");
 
 
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => utf8_decode($respEnv)));
