@@ -41,15 +41,11 @@ if(
 
         foreach($aAutoChave as $chave => $valor) {
 
-echo 'chave='.$chave.'='.$valor;
-
-            $autorizacaoChave = new AutorizacaoChave($db);
-            $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
             $autorizacaoChave->chave = $chave;
             $autorizacaoChave->valor = $valor;
             $retorno = $autorizacaoChave->update();
 
-            echo json_encode(array("erro" => $retorno[1]));
+            echo json_encode(array("ok" => $retorno[0], "erro" => $retorno[1]));
 
         }
 
