@@ -167,7 +167,7 @@ if(
             $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
-            $xmlNFSe = (string) $msgResp->ListaNfse->CompNFse;
+            $xmlNFSe = (string) $msgResp->ListaNfse->CompNfse;
 
             error_log($xmlNFSe."\n", 3, "../arquivosNFSe/xmlNFSe.xml");
 
