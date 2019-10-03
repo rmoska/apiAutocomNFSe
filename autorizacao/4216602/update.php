@@ -169,7 +169,7 @@ if(
             $msgResp = simplexml_load_string($xmlResp);
             $xmlNFSe = (string) $msgResp->ListaNfse->CompNFse;
 
-            error_log($xmlNFSe."\n"), 3, "../arquivosNFSe/xmlNFSe.xml");
+            error_log($xmlNFSe."\n", 3, "../arquivosNFSe/xmlNFSe.xml");
 
 
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => utf8_decode($respEnv)));
