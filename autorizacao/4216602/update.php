@@ -137,7 +137,7 @@ if(
         if(strstr($respEnv,'Fault')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML($respEnv);
+            $DomXml->loadXML(utf8_decode($respEnv));
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
             $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
@@ -150,7 +150,7 @@ if(
         if(strstr($respEnv,'Correcao') || strstr($respEnv,'Mensagem')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML($respEnv);
+            $DomXml->loadXML(utf8_decode($respEnv));
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
             $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
@@ -163,7 +163,7 @@ if(
         if(strstr($respEnv,'Protocolo')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML($respEnv);
+            $DomXml->loadXML(utf8_decode($respEnv));
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
 
