@@ -47,23 +47,8 @@ if(
             $autorizacaoChave->chave = $chave;
             $autorizacaoChave->valor = $valor;
             $retorno = $autorizacaoChave->update();
-
-            echo json_encode(array("ok" => $retorno[0], "erro" => $retorno[1]));
-
         }
 
-        exit;
-/*
-        $autorizacaoChave->chave = "optanteSN";
-        $autorizacaoChave->valor = $data->optanteSN;
-        $autorizacaoChave->update();
-        $autorizacaoChave->chave = "incentivoFiscal";
-        $autorizacaoChave->valor = $data->incentivoFiscal;
-        $autorizacaoChave->update();
-        $autorizacaoChave->chave = "codigoServico";
-        $autorizacaoChave->valor = $data->codigoServico;
-        $autorizacaoChave->update();
-*/
         include_once '../comunicacao/comunicaNFSe.php';
         $arraySign = array("sisEmit" => 0, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
         $objNFSe = new ComunicaNFSe($arraySign);
@@ -92,14 +77,14 @@ if(
                     $xml->startElement("Servico");
                         $xml->startElement("Valores");
                             $xml->writeElement("ValorServicos", 10.00);
-                            $xml->writeElement("ValorIss", 10.00);
+                            $xml->writeElement("ValorIss", 0.00);
                             $xml->writeElement("Aliquota", 0.00); 
                         $xml->endElement(); // Valores
                         $xml->writeElement("IssRetido", 2);
                         $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
                         $xml->writeElement("Discriminacao", "Consulta clinica");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602
-                        $xml->writeElement("ExigibilidadeISS", 3); // isento
+                        $xml->writeElement("ExigibilidadeISS", 1); // isento
 //                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                     $xml->endElement(); // Servico
                     $xml->startElement("Prestador");
