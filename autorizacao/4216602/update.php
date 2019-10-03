@@ -129,6 +129,10 @@ if(
 
         $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
        
+
+
+
+
         //erro na comunicacao SOAP
         if(strstr($respEnv,'Fault')){
 
@@ -163,10 +167,10 @@ if(
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
 
-            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $respEnv));
+            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => utf8_decode($respEnv)));
         }
 
-        print_r($respEnv);
+        print_r(utf8_decode($respEnv));
 exit;
 
 //

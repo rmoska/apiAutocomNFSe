@@ -479,7 +479,7 @@ class comunicaNFSe {
             switch ($this->sisEmit) {
                 case 0: // Betha
                     $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
-                    $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
+                    $this->namespace = 'http://www.betha.com.br/teste/e-nota-contribuinte-ws';
                     break;
                 default:
                     return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
