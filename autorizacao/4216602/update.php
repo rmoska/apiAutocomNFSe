@@ -137,20 +137,20 @@ if(
         if(strstr($respEnv,'Fault')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML(utf8_decode($respEnv));
+            $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
             $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
             $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
             $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
             $cdVerif = $codigo.' - '.$msg.' - '.$falha;
-            echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
+            echo json_encode(array("http_code" => "400", "message" => "Erro Comunicação Autorização", "erro" => $cdVerif));
         }
         //erros de validacao do webservice
         if(strstr($respEnv,'Correcao') || strstr($respEnv,'Mensagem')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML(utf8_decode($respEnv));
+            $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
             $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
@@ -163,7 +163,7 @@ if(
         if(strstr($respEnv,'Protocolo')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML(utf8_decode($respEnv));
+            $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
 
