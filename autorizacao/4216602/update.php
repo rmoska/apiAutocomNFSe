@@ -41,12 +41,16 @@ if(
 
         foreach($aAutoChave as $chave => $valor) {
 
+echo 'chave='.$chave.'='.$valor;
+
             $autorizacaoChave = new AutorizacaoChave($db);
             $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
             $autorizacaoChave->chave = $chave;
             $autorizacaoChave->valor = $valor;
             $autorizacaoChave->update();
         }
+
+        exit;
 /*
         $autorizacaoChave->chave = "optanteSN";
         $autorizacaoChave->valor = $data->optanteSN;
@@ -166,6 +170,11 @@ if(
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'Protocolo')){
+
+            $DomXml=new DOMDocument('1.0', 'utf-8');
+            $DomXml->loadXML($respEnv);
+            $xmlResp = $DomXml->textContent;
+            $msgResp = simplexml_load_string($xmlResp);
 
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $respEnv));
         }
