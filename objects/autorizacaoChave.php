@@ -55,6 +55,10 @@ class AutorizacaoChave{
                     VALUES (:idAutorizacao, :chave, :valor)
                     ON DUPLICATE KEY UPDATE
                     idAutorizacao=:idAutorizacao, chave=:chave, valor=:valor";
+
+        $query = "REPLACE INTO " . $this->tableName . " SET
+        idAutorizacao=:idAutorizacao, chave=:chave, valor=:valor";
+    
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
