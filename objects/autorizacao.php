@@ -158,11 +158,9 @@ class Autorizacao{
         // prepare query statement
         $stmt = $this->conn->prepare($query);
     
-        // sanitize
-        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
-    
         // bind
         $stmt->bindParam(1, $this->idEmitente);
+        $stmt->bindParam(2, $this->codigoMunicipio);
     
         // execute query
         $stmt->execute();
