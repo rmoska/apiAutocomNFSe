@@ -160,7 +160,7 @@ if(
             echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
         }
         //se retornar o protocolo, o envio funcionou corretamente
-        if(strstr($respEnv,'Protocolo')){
+        if(strstr($respEnv,'ListaNfse')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
