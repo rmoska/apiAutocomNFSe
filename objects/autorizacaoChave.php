@@ -53,7 +53,7 @@ class AutorizacaoChave{
         // update query
         $query = "INSERT INTO " . $this->tableName . " (idAutorizacao, chave, valor) 
                     VALUES (:idAutorizacao, :chave, :valor)
-                    ON DUPLICATE KEY UPDATE SET
+                    ON DUPLICATE KEY UPDATE
                     idAutorizacao=:idAutorizacao, chave=:chave, valor=:valor";
         // prepare query statement
         $stmt = $this->conn->prepare($query);
