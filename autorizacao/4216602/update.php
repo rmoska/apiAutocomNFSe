@@ -84,7 +84,7 @@ if(
                         $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
                         $xml->writeElement("Discriminacao", "Consulta clinica");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602
-                        $xml->writeElement("ExigibilidadeISS", 1); // 3 = isento
+                        $xml->writeElement("ExigibilidadeISS", 3); // 3 = isento
 //                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                     $xml->endElement(); // Servico
                     $xml->startElement("Prestador");
@@ -168,6 +168,7 @@ if(
             $msgResp = simplexml_load_string($xmlResp);
 
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => utf8_decode($respEnv)));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Nota Fiscal homologação emitentida.".print_r($msgResp)."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
 
         print_r(utf8_decode($respEnv));
