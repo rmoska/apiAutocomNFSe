@@ -147,7 +147,7 @@ if(
             echo json_encode(array("http_code" => "400", "message" => "Erro Comunicação Autorização", "erro" => $cdVerif));
         }
         //erros de validacao do webservice
-        if(strstr($respEnv,'Correcao') || strstr($respEnv,'Mensagem')){
+        if(strstr($respEnv,'ListaMensagemRetorno')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
@@ -158,6 +158,7 @@ if(
             $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$respEnv)."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
         //se retornar o protocolo, o envio funcionou corretamente
         if(strstr($respEnv,'ListaNfse')){
@@ -166,13 +167,16 @@ if(
             $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
-            $xmlNFSe = $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
+            $xmlNFSe = (string) $msgResp->ListaNfse->CompNFse;
+
+            error_log($xmlNFSe."\n"), 3, "../arquivosNFSe/xmlNFSe.xml");
+
 
             echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => utf8_decode($respEnv)));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Nota Fiscal homologação emitida.".print_r($msgResp)."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Nota Fiscal homologação emitida."."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
 
-        print_r(utf8_decode($respEnv));
+//        print_r(utf8_decode($respEnv));
 exit;
 
 //
