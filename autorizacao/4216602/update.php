@@ -96,7 +96,7 @@ if(
                     $xml->startElement("Tomador");
                         $xml->startElement("IdentificacaoTomador");
                             $xml->startElement("CpfCnpj");
-                                $xml->writeElement("Cnpj", "03118290072");
+                                $xml->writeElement("Cpf", "03118290072");
                             $xml->endElement(); // CpfCnpj
                         $xml->endElement(); // IdentificacaoTomador
                         $xml->writeElement("RazaoSocial", "Tomador Teste");
