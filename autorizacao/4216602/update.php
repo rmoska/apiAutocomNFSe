@@ -84,7 +84,7 @@ if(
                         $xml->writeElement("IssRetido", 2);
                         $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
                         $xml->writeElement("Discriminacao", "Consulta clinica");
-                        $xml->writeElement("CodigoMunicipio", 0); // 4216602
+                        $xml->writeElement("CodigoMunicipio", 4205407); // 4216602
                         $xml->writeElement("ExigibilidadeISS", 3); // 3 = isento
 //                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                     $xml->endElement(); // Servico
@@ -165,7 +165,7 @@ if(
             $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
             $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
             $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
-            fwrite($arqNFe, $msgResp);
+            fwrite($arqNFe, $xmlResp);
             fclose($arqNFe);
 
         }
