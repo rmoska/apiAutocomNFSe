@@ -82,7 +82,15 @@ class ItemVenda{
               
         $stmt = $this->conn->prepare($query);
 
-        $stmt->execute($params);
+        if($stmt->execute($params)){
+
+            return array(true);
+        }
+        else {
+
+            $aErr = $stmt->errorInfo();
+            return array(false, $aErr[2]);
+        }
 
     }
 
