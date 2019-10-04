@@ -67,20 +67,20 @@ class ItemVenda{
         $strSql = "";
 
         echo 'iv=';
-        print_r($itemVenda);
+        print_r($this);
 
         // loop over source data array
         foreach ($alterados as $campo)
         {
-            if (isset($itemVenda->$campo))
+            if (isset($this->$campo))
             {
                 $strSql .= "`$campo` = :$campo,";
-                $params[$campo] = $itemVenda->$campo;
+                $params[$campo] = $this->$campo;
             }
         }
         $strSql = rtrim($strSql, ",");
 
-        $params['codigo'] = $itemVenda->codigo;
+        $params['codigo'] = $this->codigo;
 
 print_r($params);
 
