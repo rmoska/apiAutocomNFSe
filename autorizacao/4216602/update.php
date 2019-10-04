@@ -93,14 +93,33 @@ if(
                             $xml->writeElement("Cnpj", $emitente->documento);
                         $xml->endElement(); // CpfCnpj
                     $xml->endElement(); // Prestador
+                    $xml->startElement("Tomador");
+                        $xml->startElement("IdentificacaoTomador");
+                            $xml->startElement("CpfCnpj");
+                                $xml->writeElement("Cnpj", "03118290072");
+                            $xml->endElement(); // CpfCnpj
+                        $xml->endElement(); // IdentificacaoTomador
+                        $xml->writeElement("RazaoSocial", "Tomador Teste");
+                        $xml->startElement("Endereco");
+                            $xml->writeElement("Endereco", "Rua Marechal Guilherme");
+                            $xml->writeElement("Numero", "1475");
+                            $xml->writeElement("Complemento", "sala 804");
+                            $xml->writeElement("Bairro", "Estreito");
+                            $xml->writeElement("CodigoMunicipio", "4205407");
+                            $xml->writeElement("Uf", "SC");
+                            $xml->writeElement("Cep", "88070700");
+                        $xml->endElement(); // Endereco
+                        $xml->startElement("Contato");
+                            $xml->writeElement("Telefone", "4833330891");
+                            $xml->writeElement("Email", "rodrigo@autocominformatica.com.br");
+                        $xml->endElement(); // Contato
+                    $xml->endElement(); // Tomador
                     $xml->writeElement("RegimeEspecialTributacao", $autorizacao->crt);
                     $xml->writeElement("OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1-Sim/2-Não
                     $xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
                 $xml->endElement(); // InfDeclaracaoPrestacaoServico
             $xml->endElement(); // Rps
         $xml->endElement(); // GerarNfseEnvio
-
-
         //
         $xmlNFe = $xml->outputMemory(true);
 

@@ -485,14 +485,13 @@ class comunicaNFSe {
                     return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
                     break;
             }
-
 //            error_log($sXml, 3, "../arquivosNFSe/nfseteste.xml");
+//echo 'url='. $this->url;
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
                 return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
             }
-
 
             // limpa a variavel
             $sNFSe = $sXml;
@@ -500,88 +499,20 @@ class comunicaNFSe {
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
-//echo 'url='. $this->url;
-
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($servico, $sNFSe);
             //verifica o retorno
             if (! $retorno) {
 
-                echo 'ERR='.$retorno;
+                return array(false, 'URL de Comunicação inválida !');
             }
 
+        } catch(Exception $e){
 
-            //tratar dados de retorno
-//            $doc = new DomDocumentNFePHP();
-//            $doc->loadXML($retorno, LIBXML_NOBLANKS | LIBXML_NOEMPTYTAG);
-            //$doc = simplexml_load_string($retorno);
-
-/*
-            $cStat = $this->pSimpleGetValue($doc, "cStat");
-            $xMotivo = $this->pSimpleGetValue($doc, "xMotivo");
-            //verifica o codigo do status da resposta, se vazio houve erro
-            if ($cStat == '') {
-                throw new nfephpException("O retorno nao contem cStat verifique o debug do soap !!");
-            } elseif ($indSinc === 0 && $cStat == '103') { //103-Lote recebido com sucesso
-                $aRetorno['bStat'] = true;
-            } elseif ($indSinc === 1 && $cStat == '104') { //104-Lote processado, podendo ter ou não o protNFe (#AR11 no layout)
-                $aRetorno['bStat'] = true;
-            } else {
-                throw new nfephpException(sprintf("%s - %s", $cStat, $xMotivo));
-            }
-            // status da resposta do webservice
-            $aRetorno['cStat'] = $cStat;
-            // motivo da resposta (opcional)
-            $aRetorno['xMotivo'] = $this->pSimpleGetValue($doc, "xMotivo");
-            // data e hora da mensagem (opcional)
-            if ($dhRecbto = $this->pSimpleGetValue($doc, "dhRecbto")) {
-                $aRetorno['dhRecbto'] = date("d/m/Y H:i:s", $this->pConvertTime($dhRecbto));
-            }
-            //tipo do ambiente, versão do aplicativo e código da UF
-            $aRetorno['tpAmb'] = $this->pSimpleGetValue($doc, "tpAmb");
-            $aRetorno['verAplic'] = $this->pSimpleGetValue($doc, "verAplic");
-            $aRetorno['cUF'] = $this->pSimpleGetValue($doc, "cUF");
-            if ($indSinc == 1) {
-                //retorno síncrono do webservice: dados do protocolo da NF-e
-                $nodeProtNFe = $doc->getElementsByTagName('protNFe')->item(0);
-                $nodeInfProt = $doc->getElementsByTagName('infProt')->item(0);
-                $aRetorno['protNFe']['versao'] = $nodeProtNFe->getAttribute('versao');
-                $infProt = array();
-                $infProt['tpAmb'] = $this->pSimpleGetValue($nodeInfProt, "tpAmb");
-                $infProt['verAplic'] = $this->pSimpleGetValue($nodeInfProt, "verAplic");
-                $infProt['chNFe'] = $this->pSimpleGetValue($nodeInfProt, "chNFe");
-                $dhRecbto = $this->pSimpleGetValue($nodeInfProt, "dhRecbto");
-                $infProt['dhRecbto'] = date("d/m/Y H:i:s", $this->pConvertTime($dhRecbto));
-                $infProt['digVal'] = $this->pSimpleGetValue($nodeInfProt, "digVal");
-                $infProt['cStat'] = $this->pSimpleGetValue($nodeInfProt, "cStat");
-                $infProt['xMotivo'] = $this->pSimpleGetValue($nodeInfProt, "xMotivo");
-                //número do protocolo de autorização (opcional)
-                $infProt['nProt'] = $this->pSimpleGetValue($nodeInfProt, "nProt");
-                $aRetorno['protNFe']['infProt'] = $infProt;
-                //nome do arquivo de retorno: chave da NF-e com sufixo "-prot"
-                $nome = $this->temDir.$infProt['chNFe'].'-prot.xml';
-            } else {
-                //retorno assíncrono do webservice: dados do recibo do lote
-                $aRetorno['infRec'] = array();
-                $aRetorno['infRec']['nRec'] = $this->pSimpleGetValue($doc, "nRec");
-                $aRetorno['infRec']['tMed'] = $this->pSimpleGetValue($doc, "tMed");
-                //nome do arquivo de retorno: ID do lote com sufixo "-prot"
-                $nome = $this->temDir.$idLote.'-rec.xml';
-            }
-            //grava o retorno na pasta de temporários
-            $nome = $doc->save($nome);
-*/
-
-        } catch (nfephpException $e) {
-            $this->pSetError($e->getMessage());
-            if ($this->exceptions) {
-                throw $e;
-            }
-            return false;
-        }
+            $result = false;
+        }        
 
         return $retorno;
-
     }
 
 
@@ -593,18 +524,9 @@ class comunicaNFSe {
         $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.betha.com.br/e-nota-contribuinte-ws">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
-        $data .= '<e:'.$metodo.'>';
-        $data .= '<nfseCabecMsg>?';
-        $data .= '<![CDATA[';
-        $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
-        $data .= ']]>';
-        $data .= '</nfseCabecMsg>';
-        $data .= '<nfseDadosMsg>?';
-        $data .= '<![CDATA[';
+        $data .= '<e:'.$servico.'>';
         $data .= $dados;
-        $data .= ']]>';
-        $data .= '</nfseDadosMsg>';
-        $data .= '</e:'.$metodo.'>';
+        $data .= '</e:'.$servico.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
 
@@ -644,20 +566,7 @@ class comunicaNFSe {
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
         $data .= '<e:'.$servico.'>';
-/*
-        $data .= '<nfseCabecMsg>';
-        $data .= '<![CDATA[';
-        $data .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
-        $data .= ']]>';
-        $data .= '</nfseCabecMsg>';
-        $data .= '<nfseDadosMsg>';
-        $data .= '<![CDATA[';
-*/
         $data .= $dados;
-/*
-        $data .= ']]>';
-        $data .= '</nfseDadosMsg>';
-*/
         $data .= '</e:'.$servico.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
@@ -665,14 +574,11 @@ class comunicaNFSe {
         $tamanho = strlen($data);
 
 //        "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$servico."'",
-
         $headers = array( "Content-type: text/xml; charset=utf-8", 
                           "Content-Length: ".$tamanho ); 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-    
         curl_setopt($curl, CURLOPT_URL, $this->url);
-    
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
@@ -684,17 +590,9 @@ class comunicaNFSe {
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
 
-//        $xmlNFRet = simplexml_load_string(trim($result));
-
         return $result;
 
-
-
-
-
     } //fim __sendSOAP
-
-
 
 
 } 
