@@ -19,8 +19,6 @@ $itemVenda->cnae = $data->cnae;
 $itemVenda->ncm = $data->nbs;
 $itemVenda->listaServico = $data->listaServico;
 
-print_r($data);
-
 $retorno = $itemVenda->updateVar();
 if(!$retorno[0]){
 

@@ -78,6 +78,9 @@ class ItemVenda{
         $strSql = rtrim($strSql, ",");
 
         $params['codigo'] = $itemVenda->codigo;
+
+print_r($params);
+
         $query = "UPDATE itemVenda SET $strSql WHERE codigo = :codigo";
               
         $stmt = $this->conn->prepare($query);
