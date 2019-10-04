@@ -9,7 +9,6 @@ $db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
 
 include_once '../objects/itemVenda.php';
- 
 $itemVenda = new ItemVenda($db);
 
 $itemVenda->codigo = $data->codigo;
