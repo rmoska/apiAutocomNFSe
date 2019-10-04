@@ -1,6 +1,9 @@
 <?php
 
 // Classe para emissão de NFSe PMF Homologação / Produção
+include_once '../config/database.php';
+$database = new Database();
+$db = $database->getConnection();
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
