@@ -53,27 +53,19 @@ class ItemVenda{
         }
     }    
 
-
-    // update autorizacao campos variáveis
+    // update itemVenda campos variáveis - altera apenas campos com conteúdo
     function updateVar(){
             
-        // the list of allowed field names
+        // lista de campos alteráveis
         $alterados = array("descricao","cnae","ncm","listaServico");
 
-        // initialize an array with values:
         $params = array();
-
-        // initialize a string with `fieldname` = :placeholder pairs
         $strSql = "";
 
-        echo 'iv=';
-        print_r($this);
+        foreach ($alterados as $campo) {
 
-        // loop over source data array
-        foreach ($alterados as $campo)
-        {
-            if (isset($this->$campo))
-            {
+            if (isset($this->$campo)) {
+
                 $strSql .= "`$campo` = :$campo,";
                 $params[$campo] = $this->$campo;
             }
@@ -81,8 +73,6 @@ class ItemVenda{
         $strSql = rtrim($strSql, ",");
 
         $params['codigo'] = $this->codigo;
-
-print_r($params);
 
         $query = "UPDATE itemVenda SET $strSql WHERE codigo = :codigo";
               
@@ -99,9 +89,6 @@ print_r($params);
         }
 
     }
-
-
-
 
     function readOne(){
  
