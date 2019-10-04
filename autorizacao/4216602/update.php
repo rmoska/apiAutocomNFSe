@@ -161,6 +161,13 @@ if(
             $cdVerif = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->CodigoVerificacao;
 //            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $xmlResp));
 //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Nota Fiscal homologação emitida."."\n"), 3, "../arquivosNFSe/apiErrors.log");
+
+            $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
+            $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
+            $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
+            fwrite($arqNFe, $msgResp);
+            fclose($arqNFe);
+
         }
         else {
 
