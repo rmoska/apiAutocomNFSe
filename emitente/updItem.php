@@ -15,7 +15,7 @@ $itemVenda->codigo = $data->codigo;
 
 $itemVenda->descricao = $data->descricao;
 $itemVenda->cnae = $data->cnae;
-$itemVenda->ncm = $data->nbs;
+$itemVenda->ncm = $data->ncm;
 $itemVenda->listaServico = $data->listaServico;
 
 $retorno = $itemVenda->updateVar();
