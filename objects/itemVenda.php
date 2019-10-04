@@ -66,6 +66,8 @@ class ItemVenda{
         // initialize a string with `fieldname` = :placeholder pairs
         $strSql = "";
 
+        print_r($itemVenda);
+
         // loop over source data array
         foreach ($alterados as $campo)
         {
