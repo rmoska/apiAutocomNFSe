@@ -55,7 +55,7 @@ class ItemVenda{
 
 
     // update autorizacao campos variáveis
-    function updateVar($aParam){
+    function updateVar(){
             
         // the list of allowed field names
         $alterados = array("descricao","cnae","ncm","listaServico");
