@@ -11,6 +11,7 @@ class ItemVenda{
     public $descricao;
     public $cnae;
     public $ncm;
+    public $listaServico;
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -51,6 +52,39 @@ class ItemVenda{
             return array(false, $aErr[2]);
         }
     }    
+
+
+    // update autorizacao campos variáveis
+    function updateVar($aParam){
+            
+        // the list of allowed field names
+        $alterados = array("descricao","cnae","ncm","listaServico");
+
+        // initialize an array with values:
+        $params = array();
+
+        // initialize a string with `fieldname` = :placeholder pairs
+        $strSql = "";
+
+        // loop over source data array
+        foreach ($alterados as $campo)
+        {
+            if (isset($itemVenda->$campo))
+            {
+                $strSql .= "`$campo` = :$campo,";
+                $params[$campo] = $itemVenda->$campo;
+            }
+        }
+        $strSql = rtrim($strSql, ",");
+
+        $params['codigo'] = $itemVenda->codigo;
+        $stmt->prepare("UPDATE itemVenda SET $strSql WHERE codigo = :codigo")->execute($params);
+
+
+    }
+
+
+
 
     function readOne(){
  

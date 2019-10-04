@@ -1,6 +1,6 @@
 <?php
 
-// Classe para emissão de NFSe PMF Homologação / Produção
+// Classe para emissão de NFSe PM São José/SC Homologação / Produção
 
 include_once '../objects/notaFiscal.php';
 include_once '../objects/notaFiscalItem.php';
@@ -27,18 +27,11 @@ if(
 }
     
 // set notaFiscal property values
+$notaFiscal->ambiente = $ambiente;
 $notaFiscal->docOrigemTipo = "V"; // Venda
 $notaFiscal->docOrigemNumero = $data->idVenda;
 $notaFiscal->idEntradaSaida = "S";
 $notaFiscal->situacao = "P"; // Pendente
-
-// 
-// quando chamada for na base teste, sempre mandar para homologação
-$dirAPI = basename(dirname(dirname( __FILE__ )));
-if ($dirAPI == "apiAutocomNFSe")
-    $notaFiscal->ambiente = "P"; // ===== PRODUÇÃO =====
-else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
-    $notaFiscal->ambiente = "H"; // ===== HOMOLOGAÇÃO =====
 
 $notaFiscal->valorTotal = $data->valorTotal;
 $notaFiscal->dataInclusao = date("Y-m-d");
@@ -131,11 +124,6 @@ else{
     exit;
 }
 
-if ($tomador->uf != 'SC') $cfps = '9203';
-else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
-else $cfps = '9201';
-$notaFiscal->cfop = $cfps;
-
 // create notaFiscal
 $notaFiscal->idEmitente = $emitente->idEmitente;
 $retorno = $notaFiscal->create();
@@ -157,9 +145,7 @@ foreach ( $data->itemServico as $item )
     if(
         !empty($item->codigo) &&
         !empty($item->descricao) &&
-        !empty($item->cnae) &&
-        !empty($item->nbs) &&
-        !empty($item->quantidade) &&
+        !empty($item->itemServico) &&
         !empty($item->valor) &&
         !empty($item->taxaIss) 
     ){
@@ -271,6 +257,7 @@ else {
     // buscar token conexão
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
+    $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
     $autorizacao->readOne();
 
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
@@ -491,7 +478,9 @@ $db->commit();
             }
 
             http_response_code(503);
-            echo json_encode(array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
+            echo json_encode(array("http_code" => "503", 
+                                   "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                   "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
