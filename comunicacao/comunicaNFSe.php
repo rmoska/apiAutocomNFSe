@@ -4,7 +4,8 @@ class comunicaNFSe {
 
     /**
      * Empresa do Sistema de Emissão
-     * 0 = Betha
+     * 0 = PM Florianopolis/SC
+     * 1 = Betha
      * 
      */
     protected $sisEmit;
@@ -477,7 +478,7 @@ class comunicaNFSe {
             //identificação do serviço: emissão de NFSe
             $servico = 'GerarNfse';
             switch ($this->sisEmit) {
-                case 0: // Betha
+                case 1: // Betha
                     $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
                     $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
                     break;

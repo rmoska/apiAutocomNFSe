@@ -51,12 +51,12 @@ if(
         }
 
         include_once '../comunicacao/comunicaNFSe.php';
-        $arraySign = array("sisEmit" => 0, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+        $arraySign = array("sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
         $objNFSe = new ComunicaNFSe($arraySign);
         if ($objNFSe->errStatus){
             http_response_code(401);
-            echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $objNFSe->errMsg));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$objNFSe->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
         $validade = $objNFSe->certDaysToExpire;
@@ -181,7 +181,6 @@ if(
                 $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
                 $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
                 $cdVerif = $codigo.' - '.$msg.' - '.$falha;
-
                 $cdVerif = "Erro no envio da NFSe ! Problemas de comunicação ! ".$cdVerif;
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe de Homologação ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
@@ -196,11 +195,7 @@ if(
                 $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
                 $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
                 $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
-                echo json_encode(array("http_code" => "400", "message" => "Erro Autorização", "erro" => $cdVerif));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
-
-                $cdVerif .= "Erro no envio da NFSe ! ";
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe Homologação !(2) (".$codigo.' - '.$msg.' - '.$correcao.")\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             // erro inesperado
             else {
