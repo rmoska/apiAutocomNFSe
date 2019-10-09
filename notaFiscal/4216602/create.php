@@ -142,15 +142,19 @@ foreach ( $data->itemServico as $item )
 {
     if (($item->cst <> $cstPrim) || ($item->taxaIss <> $txIssPrim)) {
 
+        $cstDif = $item->cst;
+        $txIssDif = $item->taxaIss;
+
         $db->rollBack();
         http_response_code(500);
         echo json_encode(array("http_code" => "500", "message" => "Itens da Nota Fiscal devem usar mesmo Situação Tributária e Taxa de ISS.(Vi00)", "erro" => $retorno[1]));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Itens da Nota Fiscal devem usar mesmo Situação Tributária e Taxa de ISS.(Vi00). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;   
+//        exit;   
     }
 }
 
-echo 'cst='.$cstPrim.'='.$txIssPrim;
+echo 'Prim='.$cstPrim.'='.$txIssPrim;
+echo 'Dif='.$cstDif.'='.$txIssDif;
 exit;
 
 //check / create itemVenda
