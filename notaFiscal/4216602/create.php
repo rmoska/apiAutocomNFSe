@@ -7,6 +7,7 @@ include_once '../objects/notaFiscalItem.php';
 include_once '../objects/itemVenda.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
+include_once '../objects/autorizacaoChave.php';
 include_once '../objects/municipio.php';
  
 $notaFiscal = new NotaFiscal($db);
