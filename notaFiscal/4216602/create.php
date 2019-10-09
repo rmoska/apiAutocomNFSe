@@ -278,13 +278,13 @@ else {
         $aAutoChave[$row['chave']] = $row['valor'];
     }
     if ( !isset($aAutoChave["optanteSN"]) ||
-         !isset($aAutoChave["incentivoFiscal"]) )
+         !isset($aAutoChave["incentivoFiscal"]) ) {
 
          $db->rollBack();
          http_response_code(400);
          echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. Dados de Autorização incompletos."));
          exit;
-    );
+    };
 
     // montar xml nfse
     $vlTotBC = 0; 
