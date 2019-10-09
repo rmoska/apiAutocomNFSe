@@ -142,9 +142,6 @@ foreach ( $data->itemServico as $item )
 {
     if (($item->cst <> $cstPrim) || ($item->taxaIss <> $txIssPrim)) {
 
-        $cstDif = $item->cst;
-        $txIssDif = $item->taxaIss;
-
         $db->rollBack();
         http_response_code(500);
         echo json_encode(array("http_code" => "500", "message" => "Itens da Nota Fiscal devem usar mesmo Situação Tributária e Taxa de ISS.(Vi00)", "erro" => $retorno[1]));
@@ -152,10 +149,6 @@ foreach ( $data->itemServico as $item )
 //        exit;   
     }
 }
-
-echo 'Prim='.$cstPrim.'='.$txIssPrim;
-echo 'Dif='.$cstDif.'='.$txIssDif;
-exit;
 
 //check / create itemVenda
 $totalItens = 0;
