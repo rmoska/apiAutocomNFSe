@@ -338,7 +338,7 @@ else {
                     $xml->endElement(); // IdentificacaoTomador
                     $xml->writeElement("RazaoSocial", $tomador->nome);
                     $xml->startElement("Endereco");
-                        $xml->writeElement("Endereco", $tomador->endereco);
+                        $xml->writeElement("Endereco", $tomador->logradouro);
                         $xml->writeElement("Numero", $tomador->numero);
                         $xml->writeElement("Complemento", $tomador->complemento);
                         $xml->writeElement("Bairro", $tomador->bairro);
