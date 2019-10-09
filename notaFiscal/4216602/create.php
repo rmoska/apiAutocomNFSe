@@ -136,6 +136,23 @@ if(!$retorno[0]){
     exit;
 }
 
+$cstPrim = $data->itemServico[0]->cst;
+$txIssPrim = $data->itemServico[0]->taxaIss;
+foreach ( $data->itemServico as $item )
+{
+    if (($item->cst <> $cstPrim) || ($item->taxaIss <> $txIssPrim)) {
+
+        $db->rollBack();
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Itens da Nota Fiscal devem usar mesmo Situação Tributária e Taxa de ISS.(Vi00)", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Itens da Nota Fiscal devem usar mesmo Situação Tributária e Taxa de ISS.(Vi00). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;   
+    }
+}
+
+echo 'cst='.$cstPrim.'='.$txIssPrim;
+exit;
+
 //check / create itemVenda
 $totalItens = 0;
 $nfiOrdem = 0;
@@ -173,7 +190,7 @@ foreach ( $data->itemServico as $item )
                 $db->rollBack();
                 http_response_code(500);
                 echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Venda.(I01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Venda.(Vi01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
                 exit;
             }
             else{

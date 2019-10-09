@@ -82,21 +82,8 @@ if(
                             $xml->writeElement("Aliquota", 0.00); 
                         $xml->endElement(); // Valores
                         $xml->writeElement("IssRetido", 2);
-                        $xml->writeElement("ItemListaServico", "1401"); //$aAutoChave["codigoServico"]); //"0402");
+                        $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
                         $xml->writeElement("Discriminacao", "Consulta clinica");
-                        $xml->writeElement("CodigoMunicipio", 0); // 4216602 Município de prestação do serviço
-                        $xml->writeElement("ExigibilidadeISS", 3); // 3 = isento
-//                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
-                    $xml->endElement(); // Servico
-                    $xml->startElement("Servico");
-                        $xml->startElement("Valores");
-                            $xml->writeElement("ValorServicos", 10.00);
-                            $xml->writeElement("ValorIss", 0.00);
-                            $xml->writeElement("Aliquota", 0.00); 
-                        $xml->endElement(); // Valores
-                        $xml->writeElement("IssRetido", 2);
-                        $xml->writeElement("ItemListaServico", "1406"); //$aAutoChave["codigoServico"]); //"0402");
-                        $xml->writeElement("Discriminacao", "Treinamento");
                         $xml->writeElement("CodigoMunicipio", 0); // 4216602 Município de prestação do serviço
                         $xml->writeElement("ExigibilidadeISS", 3); // 3 = isento
 //                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
