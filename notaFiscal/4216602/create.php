@@ -137,11 +137,12 @@ if(!$retorno[0]){
     exit;
 }
 
-$cstPrim = $data->itemServico[0]->cst;
-$txIssPrim = $data->itemServico[0]->taxaIss;
+$codServPrinc = $data->itemServico[0]->codigoServico;
+$cstPrinc = $data->itemServico[0]->cst;
+$txIssPrinc = $data->itemServico[0]->taxaIss;
 foreach ( $data->itemServico as $item )
 {
-    if (($item->cst <> $cstPrim) || ($item->taxaIss <> $txIssPrim)) {
+    if (($item->cst <> $cstPrinc) || ($item->taxaIss <> $txIssPrinc)) {
 
         $db->rollBack();
         http_response_code(500);
@@ -180,8 +181,7 @@ foreach ( $data->itemServico as $item )
 
             $notaFiscalItem->descricaoItemVenda = $item->descricao;
             $itemVenda->descricao = $item->descricao;
-            $itemVenda->cnae = $item->cnae;
-            $itemVenda->ncm = $item->nbs;
+            $itemVenda->listaServico = $item->codigoServico;
 
             $retorno = $itemVenda->create();
             if(!$retorno[0]){
@@ -313,13 +313,13 @@ else {
                     $xml->startElement("Valores");
                         $xml->writeElement("ValorServicos", $vlTotServ);
                         $xml->writeElement("ValorIss", $vlTotISS);
-                        $xml->writeElement("Aliquota", $notaFiscalItem->taxaIss); 
+                        $xml->writeElement("Aliquota", $txIssPrinc); 
                     $xml->endElement(); // Valores
                     $xml->writeElement("IssRetido", 2); // 2=Não 
-                    $xml->writeElement("ItemListaServico", $notaFiscalItem->codigoServico); //"0402");
+                    $xml->writeElement("ItemListaServico", $codServPrinc); //"0402");
                     $xml->writeElement("Discriminacao", $descricaoServicoUnico);
                     $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio); // 4216602 Município de prestação do serviço
-                    $xml->writeElement("ExigibilidadeISS", $notaFiscalItem->cst); // 3 = isento
+                    $xml->writeElement("ExigibilidadeISS", $cstPrinc); // 3 = isento
 //                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                 $xml->endElement(); // Servico
                 $xml->startElement("Prestador");
