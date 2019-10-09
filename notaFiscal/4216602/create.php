@@ -145,8 +145,9 @@ foreach ( $data->itemServico as $item )
     if(
         !empty($item->codigo) &&
         !empty($item->descricao) &&
-        !empty($item->itemServico) &&
+        !empty($item->codigoServico) &&
         !empty($item->valor) &&
+        !empty($item->cst) &&
         !empty($item->taxaIss) 
     ){
 
@@ -184,23 +185,16 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->numeroOrdem = $nfiOrdem;
         $notaFiscalItem->cnae = $item->cnae;
         $notaFiscalItem->unidade = "UN";
-        $notaFiscalItem->quantidade = floatval($item->quantidade);
+        if (empty($item->quantidade)) $notaFiscalItem->quantidade = 1;
+        else $notaFiscalItem->quantidade = floatval($item->quantidade);
         $notaFiscalItem->valorUnitario = floatval($item->valor);
         $notaFiscalItem->valorTotal = (floatval($item->valor)*floatval($item->quantidade));
         $notaFiscalItem->cstIss = $item->cst;
+        $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
+        $notaFiscalItem->taxaIss = $item->taxaIss;
+        $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
 
         $totalItens += floatval($notaFiscalItem->valorTotal);
-
-        if (($item->cst != '1') && ($item->cst != '3') && ($item->cst != '6') && ($item->cst != '12') && ($item->cst != '13')) {
-            $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
-            $notaFiscalItem->taxaIss = $item->taxaIss;
-            $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
-        }
-        else {
-            $notaFiscalItem->valorBCIss = 0.00;
-            $notaFiscalItem->taxaIss = 0.00;
-            $notaFiscalItem->valorIss = 0.00;
-        }
 
         $retorno = $notaFiscalItem->create();
         if(!$retorno[0]){
@@ -251,30 +245,11 @@ if (count($arrayItemNF) == 0) {
 // cria e transmite nota fiscal
 else {
 
-    // calcular Imposto Aproximado IBPT
-    $notaFiscal->calcImpAprox();
-
     // buscar token conexão
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
     $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
     $autorizacao->readOne();
-
-    if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
-
-        $db->rollBack();
-        http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado."));
-        exit;
-    }
-    else if(!$autorizacao->getToken($notaFiscal->ambiente)){
-
-        $db->rollBack();
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF)."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
-    }
 
     // montar xml nfse
     $vlTotBC = 0; 
@@ -292,6 +267,68 @@ else {
     //			
     $xml = new XMLWriter;
     $xml->openMemory();
+
+
+
+
+    // Inicia o cabeçalho do documento XML
+    $xml->startElement("GerarNfseEnvio");
+    $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-ws");
+        $xml->startElement("Rps");
+            $xml->startElement("InfDeclaracaoPrestacaoServico");
+            $xml->writeAttribute("Id", "lote1");
+                $dtEm = date("Y-m-d");
+                $xml->writeElement("Competencia", $dtEm);
+                $xml->startElement("Servico");
+                    $xml->startElement("Valores");
+                        $xml->writeElement("ValorServicos", $vlTotServ);
+                        $xml->writeElement("ValorIss", $vlTotISS);
+                        $xml->writeElement("Aliquota", 0.00); 
+                    $xml->endElement(); // Valores
+                    $xml->writeElement("IssRetido", 2);
+                    $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
+                    $xml->writeElement("Discriminacao", "Consulta clinica");
+                    $xml->writeElement("CodigoMunicipio", 0); // 4216602 Município de prestação do serviço
+                    $xml->writeElement("ExigibilidadeISS", 3); // 3 = isento
+//                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
+                $xml->endElement(); // Servico
+                $xml->startElement("Prestador");
+                    $xml->startElement("CpfCnpj");
+                        $xml->writeElement("Cnpj", $emitente->documento);
+                    $xml->endElement(); // CpfCnpj
+                $xml->endElement(); // Prestador
+                $xml->startElement("Tomador");
+                    $xml->startElement("IdentificacaoTomador");
+                        $xml->startElement("CpfCnpj");
+                            $xml->writeElement("Cpf", "03118290072");
+                        $xml->endElement(); // CpfCnpj
+                    $xml->endElement(); // IdentificacaoTomador
+                    $xml->writeElement("RazaoSocial", "Tomador Teste");
+                    $xml->startElement("Endereco");
+                        $xml->writeElement("Endereco", "Rua Marechal Guilherme");
+                        $xml->writeElement("Numero", "1475");
+                        $xml->writeElement("Complemento", "sala 804");
+                        $xml->writeElement("Bairro", "Estreito");
+                        $xml->writeElement("CodigoMunicipio", "4205407");
+                        $xml->writeElement("Uf", "SC");
+                        $xml->writeElement("Cep", "88070700");
+                    $xml->endElement(); // Endereco
+                    $xml->startElement("Contato");
+                        $xml->writeElement("Telefone", "4833330891");
+                        $xml->writeElement("Email", "rodrigo@autocominformatica.com.br");
+                    $xml->endElement(); // Contato
+                $xml->endElement(); // Tomador
+                $xml->writeElement("RegimeEspecialTributacao", $autorizacao->crt);
+                $xml->writeElement("OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1-Sim/2-Não
+                $xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
+            $xml->endElement(); // InfDeclaracaoPrestacaoServico
+        $xml->endElement(); // Rps
+    $xml->endElement(); // GerarNfseEnvio
+
+
+
+
+
     //
     // Inicia o cabeçalho do documento XML
     $xml->startElement("xmlProcessamentoNfpse");

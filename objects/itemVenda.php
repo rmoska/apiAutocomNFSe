@@ -59,9 +59,9 @@ class ItemVenda{
         // lista de campos alteráveis
         $alterados = array("descricao","cnae","ncm","listaServico");
 
-        $params = array();
-        $strSql = "";
-
+        $params = array(); // recebe conteúdo da alteração
+        $params['codigo'] = $this->codigo;
+        $strSql = ""; // preenche sql alteração
         foreach ($alterados as $campo) {
 
             if (isset($this->$campo)) {
@@ -71,13 +71,11 @@ class ItemVenda{
             }
         }
         $strSql = rtrim($strSql, ",");
-
-        $params['codigo'] = $this->codigo;
+        if ($strSql == "")
+            return array(true);
 
         $query = "UPDATE itemVenda SET $strSql WHERE codigo = :codigo";
-              
         $stmt = $this->conn->prepare($query);
-
         if($stmt->execute($params)){
 
             return array(true);
@@ -87,7 +85,6 @@ class ItemVenda{
             $aErr = $stmt->errorInfo();
             return array(false, $aErr[2]);
         }
-
     }
 
     function readOne(){

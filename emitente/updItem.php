@@ -21,10 +21,8 @@ $itemVenda->listaServico = $data->listaServico;
 $retorno = $itemVenda->updateVar();
 if(!$retorno[0]){
 
-    echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
+    echo json_encode(array("http_code" => "500", "message" => "Não foi possível alterar Item Venda.(Vi01)", "erro" => $retorno[1]));
     exit;
 }
-
-
 
 ?>

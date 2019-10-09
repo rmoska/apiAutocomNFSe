@@ -28,6 +28,7 @@ $db = $database->getConnection();
 $data = json_decode(file_get_contents("php://input"));
 
 //
+// confere e busca Emitente
 if(empty($data->documento)) {
 
     http_response_code(400);
@@ -36,7 +37,6 @@ if(empty($data->documento)) {
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível emitir Nota Fiscal. Emitente não identificado. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-
 //
 $emitente = new Emitente($db);
 $emitente->documento = $data->documento;
@@ -50,6 +50,8 @@ if (($idEmitente = $emitente->check()) == 0) {
 $emitente->idEmitente = $idEmitente;
 $emitente->readOne();
 
+//
+// confere e busca Municipio
 if (!isset($emitente->codigoMunicipio)) {
 
     http_response_code(400);
