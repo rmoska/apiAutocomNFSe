@@ -75,7 +75,6 @@ if(
                 $xml->writeAttribute("Id", "lote1");
                     $dtEm = date("Y-m-d");
                     $xml->writeElement("Competencia", $dtEm);
-                    $xml->startElement("Servicos");
                     $xml->startElement("Servico");
                         $xml->startElement("Valores");
                             $xml->writeElement("ValorServicos", 10.00);
@@ -102,7 +101,6 @@ if(
                         $xml->writeElement("ExigibilidadeISS", 3); // 3 = isento
 //                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
                     $xml->endElement(); // Servico
-                    $xml->endElement(); // Servicos
                     $xml->startElement("Prestador");
                         $xml->startElement("CpfCnpj");
                             $xml->writeElement("Cnpj", $emitente->documento);
