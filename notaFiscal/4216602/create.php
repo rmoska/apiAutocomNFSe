@@ -200,8 +200,8 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->numeroOrdem = $nfiOrdem;
         $notaFiscalItem->cnae = $item->cnae;
         $notaFiscalItem->unidade = "UN";
-        if (empty($item->quantidade)) $notaFiscalItem->quantidade = 1;
-        else $notaFiscalItem->quantidade = floatval($item->quantidade);
+        if (empty($item->quantidade)) $item->quantidade = 1;
+        $notaFiscalItem->quantidade = floatval($item->quantidade);
         $notaFiscalItem->valorUnitario = floatval($item->valor);
         $notaFiscalItem->valorTotal = (floatval($item->valor)*floatval($item->quantidade));
         $notaFiscalItem->cstIss = $item->cst;
