@@ -61,14 +61,33 @@ class Utilities{
         return $maskared;
     }
     
+    /**
+     * Remove acentos do texto
+     */
     public function limpaEspeciais($texto) {
         $caractInv = array('&','<','>','"','\'','\´','º','º','ª','Ø','±','µ','²','°','–','²');
         $caractSub = array('e','-','+',' ',' ',' ','.','.','a','0','~','m','2','.','-','2');
         for($i=0;$i<count($caractInv);$i++){
-          $texto = ereg_replace($caractInv[$i],$caractSub[$i],$texto);	
+            $texto = ereg_replace($caractInv[$i],$caractSub[$i],$texto);	
         }
         return $texto;
     }
+
+    /**
+     * Remove acentos do texto
+     */
+    public function limpaAcentos($texto) {
+
+        $caractInv = array('&','á','à','ã','â','é','ê','í','ó','ô','õ','ú','ü',
+            'ç','Á','À','Ã','Â','É','Ê','Í','Ó','Ô','Õ','Ú','Ü','Ç');
+        $caractSub = array('e','a','a','a','a','e','e','i','o','o','o','u','u',
+            'c','A','A','A','A','E','E','I','O','O','O','U','U','C');
+        for($i=0;$i<count($caractInv);$i++){
+            $texto = ereg_replace($caractInv[$i],$caractSub[$i],$texto);	
+        }
+        return $texto;
+    }//fim cleanString
+
 
     public function logRetry($msg) {
 

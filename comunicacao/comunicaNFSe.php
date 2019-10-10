@@ -468,8 +468,8 @@ class comunicaNFSe {
         return $data;
     }
 
-
-
+    //
+    // define namespace / url e chama soap
     public function gerarNFSe($sXml, $ambiente) 
     {
 
@@ -479,8 +479,11 @@ class comunicaNFSe {
             $servico = 'GerarNfse';
             switch ($this->sisEmit) {
                 case 1: // Betha
-                    $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
                     $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
+                    if ($this->ambiente=='P') // produção
+                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
+                    else // homologação
+                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
                     break;
                 default:
                     return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
@@ -517,8 +520,59 @@ class comunicaNFSe {
     }
 
 
+    //
+    // define namespace / url e chama soap
+    public function transmitirNFSe($servico, $sXml, $ambiente) 
+    {
 
-    protected function pSendSOAP($urlsefaz, $namespace, $dados, $metodo) {
+        try {
+
+            //identificação do serviço: emissão de NFSe
+            switch ($this->sisEmit) {
+                case 1: // Betha
+                    $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
+                    if ($this->ambiente=='P') // produção
+                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
+                    else // homologação
+                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
+                    break;
+                default:
+                    return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
+                    break;
+            }
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
+                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
+            }
+
+            // limpa a variavel
+            $sNFSe = $sXml;
+            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($servico, $sNFSe);
+            //verifica o retorno
+            if (! $retorno) {
+
+                return array(false, 'URL de Comunicação inválida !');
+            }
+
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+
+        return $retorno;
+    }
+
+
+
+    //
+    // chamada soap simples
+    protected function pSendSOAPSimples($urlsefaz, $namespace, $dados, $metodo) {
 
         $data = '';
         $data .= '<?xml version="1.0" encoding="utf-8"?>';
@@ -530,7 +584,6 @@ class comunicaNFSe {
         $data .= '</e:'.$servico.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
-
         $wsdl = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
         $endpoint = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS';
         $certificate = $this->certKEY;
@@ -559,6 +612,8 @@ class comunicaNFSe {
     } //fim __sendSOAP
 
 
+    //
+    // chamada soap + curl 
     protected function pSendSOAPCurl($servico, $dados) {
 
         $data = '';
@@ -571,12 +626,10 @@ class comunicaNFSe {
         $data .= '</e:'.$servico.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
-
         $tamanho = strlen($data);
-
-//        "SOAPAction: 'http://www.betha.com.br/e-nota-contribuinte-test-ws/".$servico."'",
         $headers = array( "Content-type: text/xml; charset=utf-8", 
                           "Content-Length: ".$tamanho ); 
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
         curl_setopt($curl, CURLOPT_URL, $this->url);
@@ -587,13 +640,12 @@ class comunicaNFSe {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
         curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
-    //
+        //
         $result = curl_exec($curl);
         $info = curl_getinfo( $curl );
 
         return $result;
-
-    } //fim __sendSOAP
+    } //fim __sendSOAPCurl
 
 
 } 

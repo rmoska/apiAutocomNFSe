@@ -369,7 +369,7 @@ else {
     //	
     // cria objeto certificado
     include_once '../comunicacao/comunicaNFSe.php';
-    $arraySign = array("sisEmit" => 1, "tpAmb" => "P", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+    $arraySign = array("sisEmit" => 1, "tpAmb" => $notafiscal->ambiente, "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $objNFSe = new ComunicaNFSe($arraySign);
     if ($objNFSe->errStatus){
         http_response_code(401);
@@ -406,10 +406,7 @@ $xmlEnv .= $xmlAss;
 $xmlEnv .= ']]>';
 $xmlEnv .= '</nfseDadosMsg>';
 
-$respEnv = $objNFSe->gerarNFSe($xmlEnv, $notaFiscal->ambiente);
-
-$nuNF = 0;
-$cdVerif = '';
+$respEnv = $objNFSe->transmitirNFSe('GerarNfse', $xmlEnv, $notaFiscal->ambiente);
 
 // se retorna ListaNfse - processou com sucesso
 if(strstr($respEnv,'ListaNfse')){
@@ -420,7 +417,9 @@ if(strstr($respEnv,'ListaNfse')){
     $msgResp = simplexml_load_string($xmlResp);
     $nuNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->Numero;
     $cdVerif = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->CodigoVerificacao;
-//    $dtProc = ???;
+    $dtProc = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->DataEmissao;
+    $dtProc = str_replace(" " , "", $dtProc);
+    $dtProc = str_replace("T" , " ", $dtProc);
     $linkNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->OutrasInformacoes;
 //            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $xmlResp));
 //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Nota Fiscal homologação emitida."."\n"), 3, "../arquivosNFSe/apiErrors.log");
