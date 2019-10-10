@@ -59,7 +59,7 @@ $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-ws");
         $xml->startElement("InfPedidoCancelamento");
         $xml->writeAttribute("Id", "1");
             $xml->startElement("IdentificacaoNfse");
-                $xml->writeElement("Numero", 619); //$notaFiscal->numero);
+                $xml->writeElement("Numero", $notaFiscal->numero);
                 $xml->startElement("CpfCnpj");
                     $xml->writeElement("Cnpj", $emitente->documento);
                 $xml->endElement(); // CpfCnpj
@@ -115,11 +115,6 @@ $xmlEnv .= ']]>';
 $xmlEnv .= '</nfseDadosMsg>';
 
 $respEnv = $objNFSe->transmitirNFSe('CancelarNfse', $xmlEnv, $notaFiscal->ambiente);
-
-print_r($respEnv);
-
-exit;
-
 
 // se retorna ListaNfse - processou com sucesso
 if(strstr($respEnv,'RetCancelamento')){
