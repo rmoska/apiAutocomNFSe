@@ -428,7 +428,7 @@ if(strstr($respEnv,'ListaNfse')){
     $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
     fwrite($arqNFe, $xmlResp);
     fclose($arqNFe);
-    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
+    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
     //
     $notaFiscal->numero = $nuNF;
     $notaFiscal->chaveNF = $cdVerif;

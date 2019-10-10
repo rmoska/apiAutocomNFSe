@@ -429,7 +429,7 @@ if ($info['http_code'] == '200') {
     $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
     fwrite($arqNFe, $result);
     fclose($arqNFe);
-    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
+    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
     //
     //
     // gerar pdf
