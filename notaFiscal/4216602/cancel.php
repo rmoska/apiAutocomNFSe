@@ -59,11 +59,11 @@ $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-ws");
         $xml->startElement("InfPedidoCancelamento");
         $xml->writeAttribute("Id", "1");
             $xml->startElement("IdentificacaoNfse");
-                $xml->writeElement("Numero", $notaFiscal->numero);
+                $xml->writeElement("Numero", 619); //$notaFiscal->numero);
                 $xml->startElement("CpfCnpj");
                     $xml->writeElement("Cnpj", $emitente->documento);
                 $xml->endElement(); // CpfCnpj
-                $xml->writeElement("Cnpj", $emitente->codigoMunicipio);
+                $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio);
             $xml->endElement(); // IdentificacaoNfse
             $xml->writeElement("CodigoCancelamento", 1); // 1=Erro | 2=Serviço nao prestado | 4=Duplicidade
         $xml->endElement(); // InfPedidoCancelamento
