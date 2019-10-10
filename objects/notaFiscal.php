@@ -35,6 +35,8 @@ class NotaFiscal{
     public $valorDesconto;
     public $obsImpostos;
     public $dadosAdicionais;
+    public $linkNF;
+    public $linkXml;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -56,7 +58,7 @@ class NotaFiscal{
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
                     valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
-                    obsImpostos=:obsImpostos, dadosAdicionais=:dadosAdicionais";
+                    obsImpostos=:obsImpostos, dadosAdicionais=:dadosAdicionais, linkNF=:linkNF, linkXml=:linkXml";
         $stmt = $this->conn->prepare($query);
 
         // sanitize
@@ -90,6 +92,8 @@ class NotaFiscal{
         $this->valorDesconto=htmlspecialchars(strip_tags($this->valorDesconto));
         $this->obsImpostos=htmlspecialchars(strip_tags($this->obsImpostos));
         $this->dadosAdicionais=htmlspecialchars(strip_tags($this->dadosAdicionais));
+        $this->linkNF=htmlspecialchars(strip_tags($this->linkNF));
+        $this->linkXml=htmlspecialchars(strip_tags($this->linkXml));
     
         // bind values
         $stmt->bindParam(":idEmitente", $this->idEmitente);
@@ -128,6 +132,8 @@ class NotaFiscal{
         $stmt->bindParam(":valorDesconto", $this->valorDesconto);
         $stmt->bindParam(":obsImpostos", $this->obsImpostos);
         $stmt->bindParam(":dadosAdicionais", $this->dadosAdicionais);
+        $stmt->bindParam(":linkNF", $this->linkNF);
+        $stmt->bindParam(":linkXml", $this->linkXml);
 
         // execute query
         if($stmt->execute()){
@@ -157,7 +163,7 @@ class NotaFiscal{
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
                     valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
                     valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
-                    obsImpostos=:obsImpostos, dadosAdicionais=:dadosAdicionais
+                    obsImpostos=:obsImpostos, dadosAdicionais=:dadosAdicionais, linkNF=:linkNF, linkXml=:linkXml
                   WHERE
                     idNotaFiscal = :idNotaFiscal";
         $stmt = $this->conn->prepare($query);
@@ -194,6 +200,8 @@ class NotaFiscal{
         $this->valorDesconto=htmlspecialchars(strip_tags($this->valorDesconto));
         $this->obsImpostos=htmlspecialchars(strip_tags($this->obsImpostos));
         $this->dadosAdicionais=htmlspecialchars(strip_tags($this->dadosAdicionais));
+        $this->linkNF=htmlspecialchars(strip_tags($this->linkNF));
+        $this->linkXml=htmlspecialchars(strip_tags($this->linkXml));
     
         // bind values
         $stmt->bindParam(":idNotaFiscal", $this->idNotaFiscal);
@@ -233,6 +241,8 @@ class NotaFiscal{
         $stmt->bindParam(":valorDesconto", $this->valorDesconto);
         $stmt->bindParam(":obsImpostos", $this->obsImpostos);
         $stmt->bindParam(":dadosAdicionais", $this->dadosAdicionais);
+        $stmt->bindParam(":linkNF", $this->linkNF);
+        $stmt->bindParam(":linkXml", $this->linkXml);
 
         // execute query
         if($stmt->execute()){
@@ -405,6 +415,8 @@ class NotaFiscal{
         $this->valorDesconto = $row['valorDesconto'];
         $this->obsImpostos = $row['obsImpostos'];
         $this->dadosAdicionais = $row['dadosAdicionais'];
+        $this->linkNF = $row['linkNF'];
+        $this->linkXml = $row['linkXml'];
     }
     
     // check notaFiscal

@@ -396,126 +396,130 @@ else {
 // fecha atualizações
 $db->commit();
 
+//
+//
+// transmite NFSe	
+$headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+
+if ($notaFiscal->ambiente == "P") // PRODUÇÃO
+    curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
+else // HOMOLOGAÇÃO
+    curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
+
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+curl_setopt($curl, CURLOPT_POST, TRUE);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
+//
+$result = curl_exec($curl);
+$info = curl_getinfo( $curl );
+
+if ($info['http_code'] == '200') {
+
+    //
+    $xmlNFRet = simplexml_load_string($result);
+    $nuNF = $xmlNFRet->numeroSerie;
+    $cdVerif = $xmlNFRet->codigoVerificacao;
+    $dtProc = substr($xmlNFRet->dataProcessamento,0,10).' '.substr($xmlNFRet->dataProcessamento,11,8);
+    //
+    $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
+    $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
+    $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
+    fwrite($arqNFe, $result);
+    fclose($arqNFe);
+    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
     //
     //
-    // transmite NFSe	
-    $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-
-    if ($notaFiscal->ambiente == "P") // PRODUÇÃO
-        curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
-    else // HOMOLOGAÇÃO
-        curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
-
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($curl, CURLOPT_POST, TRUE);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
+    // gerar pdf
+    include './'.$emitente->codigoMunicipio.'/gerarPdf.php';
+    $gerarPdf = new gerarPdf();
+    $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
+    $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
     //
-    $result = curl_exec($curl);
-    $info = curl_getinfo( $curl );
+    $notaFiscal->numero = $nuNF;
+    $notaFiscal->chaveNF = $cdVerif;
+    $notaFiscal->linkXml = $linkXml;
+    $notaFiscal->linkNF = $linkNF;
+    $notaFiscal->situacao = "F";
+    $notaFiscal->dataProcessamento = $dtProc;
+    //
+    // update notaFiscal
+    $retorno = $notaFiscal->update();
+    if(!$retorno[0]) {
 
-    if ($info['http_code'] == '200') {
+        // força update simples
+        $notaFiscal->updateSituacao("F");
 
-        //
-        $xmlNFRet = simplexml_load_string($result);
-        $nuNF = $xmlNFRet->numeroSerie;
-        $cdVerif = $xmlNFRet->codigoVerificacao;
-        $dtProc = substr($xmlNFRet->dataProcessamento,0,10).' '.substr($xmlNFRet->dataProcessamento,11,8);
-        //
-        $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
-        $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
-        $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
-        fwrite($arqNFe, $result);
-        fclose($arqNFe);
-        //
-        $notaFiscal->numero = $nuNF;
-        $notaFiscal->chaveNF = $cdVerif;
-        $notaFiscal->situacao = "F";
-        $notaFiscal->dataProcessamento = $dtProc;
-        //
-        // update notaFiscal
-        $retorno = $notaFiscal->update();
-        if(!$retorno[0]) {
-
-            // força update simples
-            $notaFiscal->updateSituacao("F");
-
-            http_response_code(500);
-            echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            exit;
-        }
-        else {
-            //
-            // gerar pdf
-            include './'.$emitente->codigoMunicipio.'/gerarPdf.php';
-            $gerarPdf = new gerarPdf();
-
-            $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
-
-            // set response code - 201 created
-            http_response_code(201);
-            echo json_encode(array("http_code" => "201", 
-                                    "message" => "Nota Fiscal emitida", 
-                                    "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                    "numeroNF" => $notaFiscal->numero,
-                                    "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
-                                    "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
-            exit;
-        }
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
     }
     else {
 
-        if (substr($info['http_code'],0,1) == '5') {
+        // set response code - 201 created
+        http_response_code(201);
+        echo json_encode(array("http_code" => "201", 
+                                "message" => "Nota Fiscal emitida", 
+                                "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                "numeroNF" => $notaFiscal->numero,
+                                "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
+                                "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
+        exit;
+    }
+}
+else {
 
-            //
-            $notaFiscal->situacao = "T";
-            $notaFiscal->textoJustificativa = "Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
+    if (substr($info['http_code'],0,1) == '5') {
 
-            // update notaFiscal
-            $retorno = $notaFiscal->update();
-            if($retorno[0]){
+        //
+        $notaFiscal->situacao = "T";
+        $notaFiscal->textoJustificativa = "Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
 
-                $notaFiscal->deleteCompletoTransaction();
+        // update notaFiscal
+        $retorno = $notaFiscal->update();
+        if($retorno[0]){
 
-                http_response_code(500);
-                echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                exit;
-            }
+            $notaFiscal->deleteCompletoTransaction();
 
-            http_response_code(503);
-            echo json_encode(array("http_code" => "503", 
-                                   "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                   "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            exit;
+        }
+
+        http_response_code(503);
+        echo json_encode(array("http_code" => "503", 
+                                "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
+    else {
+
+        $notaFiscal->deleteCompletoTransaction();
+
+        $msg = $result;
+        $dados = json_decode($result);
+        if (isset($dados->error)) {
+
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !!", "resposta" => "(".$dados->error.") ".$dados->error_description));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !! (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
         else {
 
-            $notaFiscal->deleteCompletoTransaction();
-
-            $msg = $result;
-            $dados = json_decode($result);
-            if (isset($dados->error)) {
-
-                http_response_code(500);
-                echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !!", "resposta" => "(".$dados->error.") ".$dados->error_description));
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !! (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                exit;
-            }
-            else {
-
-                $xmlNFRet = simplexml_load_string(trim($result));
-                $msgRet = (string) $xmlNFRet->message;
-                http_response_code(500);
-                echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet));
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-                exit;
-            }
+            $xmlNFRet = simplexml_load_string(trim($result));
+            $msgRet = (string) $xmlNFRet->message;
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+            exit;
         }
     }
+}
 
 ?>

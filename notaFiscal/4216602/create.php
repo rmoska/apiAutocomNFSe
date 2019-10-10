@@ -428,10 +428,12 @@ if(strstr($respEnv,'ListaNfse')){
     $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
     fwrite($arqNFe, $xmlResp);
     fclose($arqNFe);
-
+    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
     //
     $notaFiscal->numero = $nuNF;
     $notaFiscal->chaveNF = $cdVerif;
+    $notaFiscal->linkXml = $linkXml;
+    $notaFiscal->linkNF = $linkNF;
     $notaFiscal->situacao = "F";
     $notaFiscal->dataProcessamento = $dtProc;
     //
@@ -455,7 +457,7 @@ if(strstr($respEnv,'ListaNfse')){
                                 "message" => "Nota Fiscal emitida", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                 "numeroNF" => $notaFiscal->numero,
-                                "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
+                                "xml" => $linkXml,
                                 "pdf" => $linkNF));
         exit;
     }
@@ -476,7 +478,7 @@ else {
         $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
         $cdVerif = $codigo.' - '.$msg.' - '.$falha;
         $msgRet = "Erro no envio da NFSe ! Problemas de comunicação ! ".$cdVerif;
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe de Homologação ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro na transmissão da NFSe ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
     }
     //erros de validacao do webservice
     else if(strstr($respEnv,'ListaMensagemRetorno')){
@@ -489,7 +491,7 @@ else {
         $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
         $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
         $msgRet = $codigo.' - '.$msg.' - '.$correcao;
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$msgRet."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro na emissão da NFSe => ".$msgRet."\n"), 3, "../arquivosNFSe/apiErrors.log");
     }
     // erro inesperado
     else {
