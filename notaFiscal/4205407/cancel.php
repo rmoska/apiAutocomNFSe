@@ -8,6 +8,7 @@ include_once '../objects/autorizacao.php';
 // make sure data is not empty
 if(
     empty($data->idNotaFiscal) ||
+    empty($data->idEmitente) ||
     empty($data->motivo) 
 ){
 
@@ -33,6 +34,12 @@ if (!($notaFiscal->numero > 0)) {
 $notaFiscal->textoJustificativa = $data->motivo;
 
 // check emitente
+if ($notaFiscal->idEmitente != $data->idEmitente) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não confere. Nota Fiscal não pode ser cancelada."));
+    exit;
+}
 $emitente = new Emitente($db);
 $emitente->idEmitente = $notaFiscal->idEmitente;
 $emitente->readOne();
@@ -42,6 +49,8 @@ if (!($emitente->documento > '')) {
     echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
     exit;
 }
+
+exit;
 
 // buscar token conexão
 $autorizacao = new Autorizacao($db);
