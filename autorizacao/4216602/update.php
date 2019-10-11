@@ -150,6 +150,8 @@ if(
         $respEnv = $retEnv[0];
         $infoRet = $retEnv[1];
 
+print_r($infoRet);
+
         $nuNF = 0;
         $cdVerif = '';
 
