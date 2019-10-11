@@ -150,7 +150,8 @@ if(
         $respEnv = $retEnv[0];
         $infoRet = $retEnv[1];
 
-print_r($infoRet);
+        print_r($respEnv);
+        print_r($infoRet);
 
         $nuNF = 0;
         $cdVerif = '';
@@ -209,6 +210,12 @@ print_r($infoRet);
                     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe Homologação !(2) (".$respEnv.")\n"), 3, "../arquivosNFSe/apiErrors.log");
                 }
             }
+        }
+
+        if ($nuNF > 0) {
+
+            $autorizacao->nfhomologada = $nuNF;
+            $autorizacao->update($emitente->documento);
         }
 
         http_response_code(201);

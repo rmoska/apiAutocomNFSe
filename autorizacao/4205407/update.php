@@ -174,8 +174,11 @@ if(
             }
         }
 
-        $autorizacao->nfhomologada = $nuNF;
-        $autorizacao->update($emitente->documento);
+        if ($nuNF > 0) {
+
+            $autorizacao->nfhomologada = $nuNF;
+            $autorizacao->update($emitente->documento);
+        }
 
         http_response_code(201);
         echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
