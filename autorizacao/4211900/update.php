@@ -46,16 +46,17 @@ if(
             $retorno = $autorizacaoChave->update();
         }
 
-        include_once '../comunicacao/signNFSe.php';
-        $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
-        $certificado = new SignNFSe($arraySign);
-        if ($certificado->errStatus){
+        include_once '../comunicacao/comunicaNFSe.php';
+        $arraySign = array("sisEmit" => 2, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+        $objNFSe = new ComunicaNFSe($arraySign);
+
+        if ($objNFSe->errStatus){
             http_response_code(401);
-            echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $objNFSe->errMsg));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$objNFSe->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
-        $validade = $certificado->certDaysToExpire;
+        $validade = $objNFSe->certDaysToExpire;
             
         //
         // emite nota de teste
@@ -113,11 +114,11 @@ if(
 
         $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
 
-        $xmlAss = $certificado->signXML($xmlNFe, 'nfse');
-        if ($certificado->errStatus) {
-    
+        $xmlAss = $objNFSe->signXML($xmlNFe, 'nfse');
+        if ($objNFSe->errStatus) {
+      
             http_response_code(401);
-            echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$certificado->errMsg));
+            echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$objNFSe->errMsg));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }

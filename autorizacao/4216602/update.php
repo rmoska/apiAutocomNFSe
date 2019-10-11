@@ -145,13 +145,10 @@ if(
         $xmlEnv .= ']]>';
         $xmlEnv .= '</nfseDadosMsg>';
 
-        $retEnv = $objNFSe->transmitirNFSe('GerarNfse', $xmlEnv, "H");
+        $retEnv = $objNFSe->transmitirNFSeAbrasf('GerarNfse', $xmlEnv, "H");
 
         $respEnv = $retEnv[0];
         $infoRet = $retEnv[1];
-
-        print_r($respEnv);
-        print_r($infoRet);
 
         $nuNF = 0;
         $cdVerif = '';
