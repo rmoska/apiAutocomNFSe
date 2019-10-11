@@ -2,6 +2,7 @@
  
 // include database and object files
 include_once '../objects/autorizacao.php';
+include_once '../objects/autorizacaoChave.php';
  
 // prepare emitente object
 $autorizacao = new Autorizacao($db);
