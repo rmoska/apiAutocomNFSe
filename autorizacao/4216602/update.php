@@ -145,7 +145,11 @@ if(
         $xmlEnv .= ']]>';
         $xmlEnv .= '</nfseDadosMsg>';
 
-        $respEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
+        $retEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
+
+        $respEnv = $retEnv[0];
+
+print_r($retEnv[1]);
 
         $nuNF = 0;
         $cdVerif = '';

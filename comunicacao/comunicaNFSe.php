@@ -641,10 +641,10 @@ class comunicaNFSe {
         curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
         curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
         //
-        $result = curl_exec($curl);
+        $result = curl_exec( $curl );
         $info = curl_getinfo( $curl );
 
-        return $result;
+        return array($result, $info);
     } //fim __sendSOAPCurl
 
 
