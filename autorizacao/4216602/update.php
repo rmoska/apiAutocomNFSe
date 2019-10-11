@@ -148,74 +148,74 @@ if(
         $retEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
 
         $respEnv = $retEnv[0];
-
-print_r($retEnv[1]);
+        $infoRet = $retEnv[1];
 
         $nuNF = 0;
         $cdVerif = '';
 
-        // se retorna ListaNfse - processou com sucesso
-        if(strstr($respEnv,'ListaNfse')){
+        if ($infoRet['http_code'] == '200') {
 
-            $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML($respEnv);
-            $xmlResp = $DomXml->textContent;
-            $msgResp = simplexml_load_string($xmlResp);
-            $nuNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->Numero;
-            $cdVerif = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->CodigoVerificacao;
-            $linkNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->OutrasInformacoes;
-//            echo json_encode(array("http_code" => "500", "message" => "Autorização OK.", "erro" => $xmlResp));
-//            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Nota Fiscal homologação emitida."."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
-            $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
-            $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
-            fwrite($arqNFe, $xmlResp);
-            fclose($arqNFe);
-        }
-        else {
-
-            //erro na comunicacao SOAP
-            if(strstr($respEnv,'Fault')){
+            // se retorna ListaNfse - processou com sucesso
+            if(strstr($respEnv,'ListaNfse')){
 
                 $DomXml=new DOMDocument('1.0', 'utf-8');
                 $DomXml->loadXML($respEnv);
                 $xmlResp = $DomXml->textContent;
                 $msgResp = simplexml_load_string($xmlResp);
-                $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-                $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-                $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
-                $cdVerif = $codigo.' - '.$msg.' - '.$falha;
-                $cdVerif = "Erro no envio da NFSe ! Problemas de comunicação ! ".$cdVerif;
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe de Homologação ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
+                $nuNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->Numero;
+                $cdVerif = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->CodigoVerificacao;
+                $linkNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->OutrasInformacoes;
+                $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
+                $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
+                $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
+                fwrite($arqNFe, $xmlResp);
+                fclose($arqNFe);
             }
-            //erros de validacao do webservice
-            else if(strstr($respEnv,'ListaMensagemRetorno')){
-
-                $DomXml=new DOMDocument('1.0', 'utf-8');
-                $DomXml->loadXML($respEnv);
-                $xmlResp = $DomXml->textContent;
-                $msgResp = simplexml_load_string($xmlResp);
-                $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-                $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-                $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
-                $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            }
-            // erro inesperado
             else {
 
-                $cdVerif .= "Erro no envio da NFSe ! Erro Desconhecido !";
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe Homologação !(2) (".$respEnv.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+                //erro na comunicacao SOAP
+                if(strstr($respEnv,'Fault')){
+
+                    $DomXml=new DOMDocument('1.0', 'utf-8');
+                    $DomXml->loadXML($respEnv);
+                    $xmlResp = $DomXml->textContent;
+                    $msgResp = simplexml_load_string($xmlResp);
+                    $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
+                    $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+                    $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
+                    $cdVerif = $codigo.' - '.$msg.' - '.$falha;
+                    $cdVerif = "Erro no envio da NFSe ! Problemas de comunicação ! ".$cdVerif;
+                    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe de Homologação ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
+                }
+                //erros de validacao do webservice
+                else if(strstr($respEnv,'ListaMensagemRetorno')){
+
+                    $DomXml=new DOMDocument('1.0', 'utf-8');
+                    $DomXml->loadXML($respEnv);
+                    $xmlResp = $DomXml->textContent;
+                    $msgResp = simplexml_load_string($xmlResp);
+                    $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
+                    $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+                    $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
+                    $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
+                    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
+                }
+                // erro inesperado
+                else {
+
+                    $cdVerif .= "Erro no envio da NFSe ! Erro Desconhecido !";
+                    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe Homologação !(2) (".$respEnv.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+                }
             }
         }
 
         http_response_code(201);
         echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                               "token" => $autorizacao->token, 
-                               "validade" => $validade." dias",
-                               "nf-homolog" => $nuNF,
-                               "verificacao-homolog" => $cdVerif,
-                               "linkNF" => $linkNF));
+                            "token" => $autorizacao->token, 
+                            "validade" => $validade." dias",
+                            "nf-homolog" => $nuNF,
+                            "verificacao-homolog" => $cdVerif,
+                            "linkNF" => $linkNF));
         exit;
     }
     else{
