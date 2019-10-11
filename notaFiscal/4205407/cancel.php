@@ -33,6 +33,9 @@ if (!($notaFiscal->numero > 0)) {
 }
 $notaFiscal->textoJustificativa = $data->motivo;
 
+echo 'N='.$notaFiscal->idEmitente.' D='.$data->idEmitente;
+
+
 // check emitente
 if ($notaFiscal->idEmitente != $data->idEmitente) {
 
