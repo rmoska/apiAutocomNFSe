@@ -534,7 +534,7 @@ class comunicaNFSe {
                     if ($this->ambiente=='P') // produção
                         $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
                     else // homologação
-                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS'; //?wsdl';
+                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/ok'; //nfseWS?wsdl';
                     break;
                 default:
                     return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
