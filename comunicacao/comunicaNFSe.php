@@ -613,7 +613,7 @@ class comunicaNFSe {
 
 
     //
-    // chamada soap + curl 
+    // chamada soap + curl + envelope
     protected function pSendSOAPCurl($servico, $dados) {
 
         $data = '';

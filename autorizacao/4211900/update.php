@@ -12,7 +12,7 @@ $autorizacao = new Autorizacao($db);
 // senhaWeb = senha
 if(
     !empty($data->idEmitente) &&
-    !empty($data->aedf) && // login
+    !empty($data->login) && // login
     !empty($data->senhaWeb) &&
     !empty($data->certificado) &&
     !empty($data->senha)
@@ -20,17 +20,30 @@ if(
     // set autorizacao property values
     $autorizacao->idEmitente = $data->idEmitente;
     $autorizacao->codigoMunicipio = "4211900"; // Palhoça/SC
-    $autorizacao->aedf = $data->aedf;
-    $autorizacao->senhaWeb = $data->senhaWeb;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
 
     if ($autorizacao->check() == 0)
         $retorno = $autorizacao->create($emitente->documento);
-    else 
+    else {
+
+        $autorizacao->readOne(); // carregar idAutorizacao
         $retorno = $autorizacao->update($emitente->documento);
- 
+    }
+     
     if($retorno[0]){
+
+        $aAutoChave = array("login" => $data->login, "senhaWeb" => $data->senhaWeb);
+
+        $autorizacaoChave = new AutorizacaoChave($db);
+        $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
+
+        foreach($aAutoChave as $chave => $valor) {
+
+            $autorizacaoChave->chave = $chave;
+            $autorizacaoChave->valor = $valor;
+            $retorno = $autorizacaoChave->update();
+        }
 
         include_once '../comunicacao/signNFSe.php';
         $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
@@ -42,7 +55,6 @@ if(
             exit;
         }
         $validade = $certificado->certDaysToExpire;
-
             
         //
         // emite nota de teste
@@ -52,7 +64,6 @@ if(
         $xml->openMemory();
         //
         // Inicia o cabeçalho do documento XML
-
         $dtEm = date('d/m/Y');
         $tipoTomador = 'F';
 //        if (strlen(trim($tomador->documento))==14)

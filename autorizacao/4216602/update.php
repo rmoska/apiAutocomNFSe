@@ -24,7 +24,7 @@ if(
     $autorizacao->idEmitente = $data->idEmitente;
     $autorizacao->codigoMunicipio = "4216602"; // São José/SC
     $autorizacao->crt = $data->crt;
-    $autorizacao->crt = $data->cmc;
+    $autorizacao->cmc = $data->cmc;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
 
