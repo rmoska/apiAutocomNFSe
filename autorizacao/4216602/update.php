@@ -145,7 +145,7 @@ if(
         $xmlEnv .= ']]>';
         $xmlEnv .= '</nfseDadosMsg>';
 
-        $retEnv = $objNFSe->gerarNFSe($xmlEnv, "H");
+        $retEnv = $objNFSe->transmitirNFSe('GerarNfse', $xmlEnv, "H");
 
         $respEnv = $retEnv[0];
         $infoRet = $retEnv[1];
