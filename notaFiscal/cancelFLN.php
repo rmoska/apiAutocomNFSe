@@ -1,16 +1,10 @@
 <?php
 
 // Classe para emissão de NFSe PMF em ambiente de Homologação
-
-include_once '../objects/autorizacao.php';
- 
 //
-// make sure data is not empty
-if(
-    empty($data->idNotaFiscal) ||
+if( empty($data->idNotaFiscal) ||
     empty($data->idEmitente) ||
-    empty($data->motivo) 
-){
+    empty($data->motivo) ) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos."));
@@ -18,7 +12,9 @@ if(
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-    
+
+include_once '../objects/autorizacao.php';
+
 // set notaFiscal property values
 $notaFiscal->idNotaFiscal = $data->idNotaFiscal;
 
