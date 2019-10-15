@@ -7,7 +7,7 @@
  * cmc
  * senhaWeb
  */
-/f( empty($data->idEmitente) ||
+if( empty($data->idEmitente) ||
     empty($data->crt) ||
     empty($data->cnae) ||
     empty($data->cmc) ||
