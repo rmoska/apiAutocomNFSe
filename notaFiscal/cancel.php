@@ -44,15 +44,22 @@ if ($checkNF["existe"] == 0) {
 
 $notaFiscal->readOne();
 
+// check emitente
+if ($notaFiscal->idEmitente != $data->idEmitente) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada."));
+    exit;
+}
+
 $emitente = new Emitente($db);
 $emitente->idEmitente = $notaFiscal->idEmitente;
 $emitente->readOne();
-
 if (is_null($emitente->documento)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado para esta Autorização."));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado para esta Autorização. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado."));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
 

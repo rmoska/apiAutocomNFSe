@@ -15,38 +15,7 @@ if( empty($data->idNotaFiscal) ||
 
 include_once '../objects/autorizacao.php';
 
-// set notaFiscal property values
-$notaFiscal->idNotaFiscal = $data->idNotaFiscal;
-
-// check NF já gerada para esta Venda
-$notaFiscal->readOne();
-if (!($notaFiscal->numero > 0)) {
-
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", 
-                            "message" => "Nota Fiscal não encontrada. Não foi possível cancelar. idNF=".$data->idNotaFiscal));
-    exit;
-}
 $notaFiscal->textoJustificativa = $data->motivo;
-
-// check emitente
-if ($notaFiscal->idEmitente != $data->idEmitente) {
-
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada."));
-    exit;
-}
-$emitente = new Emitente($db);
-$emitente->idEmitente = $notaFiscal->idEmitente;
-$emitente->readOne();
-if (!($emitente->documento > '')) {
-
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
-    exit;
-}
-
-exit;
 
 // buscar token conexão
 $autorizacao = new Autorizacao($db);
