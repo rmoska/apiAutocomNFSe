@@ -277,20 +277,29 @@ class Emitente{
 
         $stmt->bindParam(1, $this->documento);
     
-        $stmt->execute();
-
-        
-        echo 'd='.$this->documento;
 
 
+        // execute query
+        if($stmt->execute()){
 
-        $idEmitente = 0;
-        if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $idEmitente = $row['idEmitente'];
+
+            $idEmitente = 0;
+            if ($stmt->rowCount() > 0) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $idEmitente = $row['idEmitente'];
+            }
+            return $idEmitente;
+    
+
+        }
+        else {
+
+            $aErr = $stmt->errorInfo();
+echo $aErr[2];
+            return array(false, $aErr[2]);
         }
 
-        return $idEmitente;
+
     }    
 
     // read emitente with pagination
