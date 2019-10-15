@@ -268,30 +268,24 @@ class Emitente{
     // check emitente
     function check(){
     
-        // select query
-        $query = "SELECT e.* FROM " . $this->tableName . " e
-                  WHERE e.documento = ? LIMIT 1";
+        $query = "SELECT * FROM " . $this->tableName . "
+                  WHERE documento = ? LIMIT 1";
     
-        // prepare query statement
         $stmt = $this->conn->prepare($query);
     
-        // sanitize
         $this->documento=htmlspecialchars(strip_tags($this->documento));
-    
-        // bind
+
         $stmt->bindParam(1, $this->documento);
     
-        // execute query
         $stmt->execute();
     
         $idEmitente = 0;
-        if ($stmt->rowCount() >0) {
+        if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $idEmitente = $row['idEmitente'];
         }
 
         return $idEmitente;
-        
     }    
 
     // read emitente with pagination
