@@ -277,31 +277,17 @@ class Emitente{
 
         $stmt->bindParam(1, $this->documento);
     
+        $stmt->execute();
 
-
-        // execute query
-        if($stmt->execute()){
-
-
-            $idEmitente = 0;
-            if ($stmt->rowCount() > 0) {
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $idEmitente = $row['idEmitente'];
-            }
-            return $idEmitente;
-    
-
+        $idEmitente = 0;
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $idEmitente = $row['idEmitente'];
         }
-        else {
-
-            $aErr = $stmt->errorInfo();
-echo $aErr[2];
-            return array(false, $aErr[2]);
-        }
-
-
+        return $idEmitente;
     }    
 
+    //
     // read emitente with pagination
     public function readPaging($from_record_num, $records_per_page){
     
