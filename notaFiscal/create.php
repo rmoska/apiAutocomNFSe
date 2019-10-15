@@ -40,6 +40,9 @@ if(empty($data->documento)) {
 //
 $emitente = new Emitente($db);
 $emitente->documento = $data->documento;
+
+echo 'd='.$emitente->documento;
+
 if (($idEmitente = $emitente->check()) == 0) {
 
     http_response_code(400);
