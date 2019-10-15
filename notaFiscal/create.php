@@ -40,10 +40,7 @@ if(empty($data->documento)) {
 //
 $emitente = new Emitente($db);
 $emitente->documento = $data->documento;
-
 if (($idEmitente = $emitente->check()) == 0) {
-
-    echo 'id='.$idEmitente;
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));

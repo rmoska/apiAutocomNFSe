@@ -278,7 +278,12 @@ class Emitente{
         $stmt->bindParam(1, $this->documento);
     
         $stmt->execute();
-    
+
+        
+        echo 'd='.$this->documento;
+
+
+
         $idEmitente = 0;
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
