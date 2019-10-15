@@ -1,16 +1,10 @@
 <?php
 
 // Classe para emissão de NFSe PMF em ambiente de Homologação
-
-include_once '../objects/autorizacao.php';
- 
 //
-// make sure data is not empty
-if(
-    empty($data->idNotaFiscal) ||
+if( empty($data->idNotaFiscal) ||
     empty($data->idEmitente) ||
-    empty($data->motivo) 
-){
+    empty($data->motivo) ) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos."));
@@ -18,39 +12,10 @@ if(
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-    
-// set notaFiscal property values
-$notaFiscal->idNotaFiscal = $data->idNotaFiscal;
 
-// check NF já gerada para esta Venda
-$notaFiscal->readOne();
-if (!($notaFiscal->numero > 0)) {
+include_once '../objects/autorizacao.php';
 
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", 
-                            "message" => "Nota Fiscal não encontrada. Não foi possível cancelar. idNF=".$data->idNotaFiscal));
-    exit;
-}
 $notaFiscal->textoJustificativa = $data->motivo;
-
-// check emitente
-if ($notaFiscal->idEmitente != $data->idEmitente) {
-
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada."));
-    exit;
-}
-$emitente = new Emitente($db);
-$emitente->idEmitente = $notaFiscal->idEmitente;
-$emitente->readOne();
-if (!($emitente->documento > '')) {
-
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
-    exit;
-}
-
-exit;
 
 // buscar token conexão
 $autorizacao = new Autorizacao($db);
@@ -130,9 +95,11 @@ if ($info['http_code'] == '200')
     $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
     fwrite($arqNFe, $result);
     fclose($arqNFe);
+    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
     //
     $notaFiscal->situacao = "X";
     $notaFiscal->dataCancelamento = $dtCanc;
+    $notaFiscal->linkXml = $linkXml;
     //
     // update notaFiscal
     $retorno = $notaFiscal->update();
@@ -145,20 +112,24 @@ if ($info['http_code'] == '200')
     }
     else {
 
+        //
         // gerar pdf
-        include './'.$emitente->codigoMunicipio.'/gerarPdf.php';
+        include './gerarPdfFLN.php';
         $gerarPdf = new gerarPdf();
-
         $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
+        $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
 
+        $notaFiscal->linkNF = $linkNF;
+        $notaFiscal->update();
+    
         // set response code - 201 created
         http_response_code(201);
         echo json_encode(array("http_code" => "201", 
                                 "message" => "Nota Fiscal CANCELADA", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                 "numeroNF" => $notaFiscal->numero,
-                                "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
-                                "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
+                                "xml" => $linkXml,
+                                "pdf" => $linkNF));
         exit;
     }
 }

@@ -60,10 +60,30 @@ if (!isset($emitente->codigoMunicipio)) {
     exit;
 }
 
-$fileClass = './'.$emitente->codigoMunicipio.'/create.php';
-if (file_exists($fileClass)) {
+//
+//identificação do serviço: emissão de NFSe
+switch ($emitente->codigoMunicipio) {
+    case '4205407': // SC - Florianópolis
+        $arqPhp = 'createFLN.php'; break;
+    case '4216602': // SC - São José
+        $arqPhp = 'createBETHA.php'; break;
+    case '4202305': // SC - Biguaçu
+    case '4211900': // SC - Palhoça
+        $arqPhp = 'createIPM.php'; break;
+    case '4204202': // SC - Chapecó
+    case '4208203': // SC - Itajaí
+        $arqPhp = 'createPUBLICA.php'; break;
+    case '4202008': // SC - Balneário Camboriú
+        $arqPhp = 'createSIMPLISS.php'; break;
+    case '4305108': // RS - Caxias do Sul
+        $arqPhp = 'createINFISC.php'; break;
+    default:
+        $arqPhp = ''; break;
+}
 
-    include $fileClass;
+if (file_exists($arqPhp)) {
+
+    include $arqPhp;
 }
 else {
 

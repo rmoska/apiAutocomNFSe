@@ -1,6 +1,18 @@
 <?php
 
 // Classe para emissão de NFSe PM São José/SC Homologação / Produção
+//
+if( empty($data->documento) ||
+    empty($data->idVenda) ||
+    empty($data->valorTotal) || 
+    ($data->valorTotal <= 0) ) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos."));
+    $strData = json_encode($data);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    exit;
+}
 
 include_once '../objects/notaFiscal.php';
 include_once '../objects/notaFiscalItem.php';
@@ -11,22 +23,7 @@ include_once '../objects/autorizacaoChave.php';
 include_once '../objects/municipio.php';
  
 $notaFiscal = new NotaFiscal($db);
- 
-//
-if(
-    empty($data->documento) ||
-    empty($data->idVenda) ||
-    empty($data->valorTotal) || 
-    ($data->valorTotal <= 0)
-){
 
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos."));
-    $strData = json_encode($data);
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    exit;
-}
-    
 // set notaFiscal property values
 $notaFiscal->ambiente = $ambiente;
 $notaFiscal->docOrigemTipo = "V"; // Venda

@@ -58,19 +58,40 @@ if (!isset($emitente->codigoMunicipio)) {
     exit;
 }
 
+//
+//identificação do serviço: emissão de NFSe
+switch ($emitente->codigoMunicipio) {
+    case '4205407': // SC - Florianópolis
+        $arqPhp = 'gerarPdfFLN.php'; break;
+    case '4216602': // SC - São José
+        $arqPhp = 'gerarPdfBETHA.php'; break;
+    case '4202305': // SC - Biguaçu
+    case '4211900': // SC - Palhoça
+        $arqPhp = 'gerarPdfIPM.php'; break;
+    case '4204202': // SC - Chapecó
+    case '4208203': // SC - Itajaí
+        $arqPhp = 'gerarPdfPUBLICA.php'; break;
+    case '4202008': // SC - Balneário Camboriú
+        $arqPhp = 'gerarPdfSIMPLISS.php'; break;
+    case '4305108': // RS - Caxias do Sul
+        $arqPhp = 'gerarPdfINFISC.php'; break;
+    default:
+        $arqPhp = ''; break;
+}
 
-$fileClass = './'.$emitente->codigoMunicipio.'/gerarPdf.php';
-if (file_exists($fileClass)) {
+if (file_exists($arqPhp)) {
 
-    include $fileClass;
+    include $arqPhp;
 
     $gerarPdf = new gerarPdf();
 
     if($arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db)){
 
+        $dirAPI = basename(dirname(dirname( __FILE__ )));
+
         http_response_code(200);
         echo json_encode(array("http_code" => "200", 
-                                "message" => "Arquivo PDF criado", "linkPDF" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
+                                "message" => "Arquivo PDF criado", "linkPDF" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
     }
     else{
     

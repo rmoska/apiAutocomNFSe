@@ -1,6 +1,18 @@
 <?php
 
 // Classe para emissão de NFSe PMF Homologação / Produção
+//
+if( empty($data->documento) ||
+    empty($data->idVenda) ||
+    empty($data->valorTotal) || 
+    ($data->valorTotal <= 0) ) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos."));
+    $strData = json_encode($data);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    exit;
+}
 
 include_once '../objects/notaFiscal.php';
 include_once '../objects/notaFiscalItem.php';
@@ -10,22 +22,7 @@ include_once '../objects/autorizacao.php';
 include_once '../objects/municipio.php';
  
 $notaFiscal = new NotaFiscal($db);
- 
-//
-if(
-    empty($data->documento) ||
-    empty($data->idVenda) ||
-    empty($data->valorTotal) || 
-    ($data->valorTotal <= 0)
-){
 
-    http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos."));
-    $strData = json_encode($data);
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    exit;
-}
-    
 // set notaFiscal property values
 $notaFiscal->ambiente = $ambiente;
 $notaFiscal->docOrigemTipo = "V"; // Venda
@@ -431,17 +428,9 @@ if ($info['http_code'] == '200') {
     fclose($arqNFe);
     $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
     //
-    //
-    // gerar pdf
-    include './'.$emitente->codigoMunicipio.'/gerarPdf.php';
-    $gerarPdf = new gerarPdf();
-    $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
-    $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
-    //
     $notaFiscal->numero = $nuNF;
     $notaFiscal->chaveNF = $cdVerif;
     $notaFiscal->linkXml = $linkXml;
-    $notaFiscal->linkNF = $linkNF;
     $notaFiscal->situacao = "F";
     $notaFiscal->dataProcessamento = $dtProc;
     //
@@ -458,6 +447,14 @@ if ($info['http_code'] == '200') {
         exit;
     }
     else {
+        //
+        // gerar pdf
+        include './gerarPdfFLN.php';
+        $gerarPdf = new gerarPdf();
+        $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
+        $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
+        $notaFiscal->linkNF = $linkNF;
+        $notaFiscal->update();
 
         // set response code - 201 created
         http_response_code(201);
@@ -465,8 +462,8 @@ if ($info['http_code'] == '200') {
                                 "message" => "Nota Fiscal emitida", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                 "numeroNF" => $notaFiscal->numero,
-                                "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
-                                "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
+                                "xml" => $linkXml,
+                                "pdf" => $linkNF));
         exit;
     }
 }
