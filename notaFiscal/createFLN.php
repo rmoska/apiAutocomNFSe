@@ -428,17 +428,9 @@ if ($info['http_code'] == '200') {
     fclose($arqNFe);
     $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
     //
-    //
-    // gerar pdf
-    include './gerarPdfFLN.php';
-    $gerarPdf = new gerarPdf();
-    $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
-    $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
-    //
     $notaFiscal->numero = $nuNF;
     $notaFiscal->chaveNF = $cdVerif;
     $notaFiscal->linkXml = $linkXml;
-    $notaFiscal->linkNF = $linkNF;
     $notaFiscal->situacao = "F";
     $notaFiscal->dataProcessamento = $dtProc;
     //
@@ -455,6 +447,14 @@ if ($info['http_code'] == '200') {
         exit;
     }
     else {
+        //
+        // gerar pdf
+        include './gerarPdfFLN.php';
+        $gerarPdf = new gerarPdf();
+        $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
+        $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
+        $notaFiscal->linkNF = $linkNF;
+        $notaFiscal->update();
 
         // set response code - 201 created
         http_response_code(201);
