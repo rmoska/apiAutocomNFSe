@@ -21,13 +21,14 @@ class gerarPdf {
         $notaFiscalItem = new NotaFiscalItem($db);
         $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
 
-        $autorizacao = new Autorizacao($db);
-        $autorizacao->idEmitente = $notaFiscal->idEmitente;
-        $autorizacao->readOne();
-
         $emitente = new Emitente($db);
         $emitente->idEmitente = $notaFiscal->idEmitente;
         $emitente->readOne();
+
+        $autorizacao = new Autorizacao($db);
+        $autorizacao->idEmitente = $notaFiscal->idEmitente;
+        $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
+        $autorizacao->readOne();
 
         $tomador = new Tomador($db);
         $tomador->idTomador = $notaFiscal->idTomador;
