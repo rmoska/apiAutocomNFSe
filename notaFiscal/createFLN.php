@@ -462,8 +462,8 @@ if ($info['http_code'] == '200') {
                                 "message" => "Nota Fiscal emitida", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                 "numeroNF" => $notaFiscal->numero,
-                                "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
-                                "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
+                                "xml" => $linkXml,
+                                "pdf" => $linkNF));
         exit;
     }
 }
