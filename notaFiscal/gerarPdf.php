@@ -87,9 +87,11 @@ if (file_exists($arqPhp)) {
 
     if($arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db)){
 
+        $dirAPI = basename(dirname(dirname( __FILE__ )));
+
         http_response_code(200);
         echo json_encode(array("http_code" => "200", 
-                                "message" => "Arquivo PDF criado", "linkPDF" => "http://www.autocominformatica.com.br/apiAutocomNFSe/".$arqPDF));
+                                "message" => "Arquivo PDF criado", "linkPDF" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF));
     }
     else{
     
