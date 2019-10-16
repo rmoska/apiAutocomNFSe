@@ -555,7 +555,7 @@ class comunicaNFSe {
         try {
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($sNFSe, 'S', $tamanho);
+            $retorno = $this->pSendSOAPCurl($data, 'S', $tamanho);
             //verifica o retorno
             if (! $retorno) {
                 return array(false, 'URL de Comunicação inválida !');
@@ -638,7 +638,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($sNFSe, 'N');
+            $retorno = $this->pSendSOAPCurl($data, 'N');
             //verifica o retorno
             if (! $retorno) {
                 return array(false, 'URL de Comunicação inválida !');
@@ -667,7 +667,7 @@ class comunicaNFSe {
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($curl, CURLOPT_POST, TRUE);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
             if ($assina=='S') {
                 curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
                 curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
