@@ -597,15 +597,14 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
-    public function transmitirNFSeSimplISS( $codMunic, $sXml, $ambiente ) {
+    public function transmitirNFSeSimplISS( $codMunic, $sXml ) {
 
         try {
 
-            $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
             if ($this->ambiente=='P') { // produção
 
                 switch ($codMunic) {
-                    case '4202008':
+                    case '4202008': // Balneário Camboriú
                         $this->url = 'http://wsbalneariocamboriu.simplissweb.com.br/nfseservice.svc?wsdl'; break;
                     default:
                         return array(false, 'O sistema ainda não está emitindo notas para o município escolhido'); break;
