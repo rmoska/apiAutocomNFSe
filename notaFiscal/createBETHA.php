@@ -403,7 +403,7 @@ $xmlEnv .= $xmlAss;
 $xmlEnv .= ']]>';
 $xmlEnv .= '</nfseDadosMsg>';
 
-$retEnv = $objNFSe->transmitirNFSeAbrasf('GerarNfse', $xmlEnv, $notaFiscal->ambiente);
+$retEnv = $objNFSe->transmitirNFSeBetha('GerarNfse', $xmlEnv, $notaFiscal->ambiente);
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
