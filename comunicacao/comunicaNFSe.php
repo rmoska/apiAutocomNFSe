@@ -652,11 +652,10 @@ class comunicaNFSe {
 
     //
     // chamada soap + curl + envelope
-    protected function pSendSOAPCurl($dados, $assina) {
+    protected function pSendSOAPCurl($dados, $assina, $tamanho) {
 
-//        $tamanho = strlen($data);
-        $headers = array( "Content-type: text/xml; charset=utf-8"); //, 
-//                          "Content-Length: ".$tamanho ); 
+        $headers = array( "Content-type: text/xml; charset=utf-8", 
+                          "Content-Length: ".$tamanho ); 
         try {
         
             $curl = curl_init();
