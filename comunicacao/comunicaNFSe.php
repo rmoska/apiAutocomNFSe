@@ -605,7 +605,7 @@ class comunicaNFSe {
     // chamada soap + curl + envelope
     protected function pSendSOAPCurl($dados, $assina, $tamanho) {
 
-print_r($dados);
+echo $this->url;
 
         $headers = array( "Content-type: text/xml; charset=utf-8", 
                             "Content-Length: ".$tamanho ); 
