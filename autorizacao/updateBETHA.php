@@ -153,6 +153,8 @@ if($retorno[0]){
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
 
+print_r($retEnv[1]);
+
     $nuNF = 0;
     $cdVerif = '';
 
