@@ -6,12 +6,13 @@
  * incentivoFiscal : 1=sim 2=nao
  */
 if( empty($data->idEmitente) ||
+    empty($data->login) ||
+    empty($data->senhaWeb) ||
     empty($data->crt) ||
-    empty($data->certificado) ||
-    empty($data->senha) ||
     empty($data->optanteSN) ||
     empty($data->incentivoFiscal) ||
-    empty($data->codigoServico) ) {
+    empty($data->certificado) ||
+    empty($data->senha) ) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
@@ -28,7 +29,6 @@ $autorizacao = new Autorizacao($db);
 $autorizacao->idEmitente = $data->idEmitente;
 $autorizacao->codigoMunicipio = $emitente->codigoMunicipio; 
 $autorizacao->crt = $data->crt;
-$autorizacao->cmc = $data->cmc;
 $autorizacao->certificado = $data->certificado;
 $autorizacao->senha = $data->senha;
 
@@ -42,7 +42,8 @@ else {
 
 if($retorno[0]){
 
-    $aAutoChave = array("optanteSN" => $data->optanteSN, "incentivoFiscal" => $data->incentivoFiscal, "codigoServico" => $data->codigoServico);
+    $aAutoChave = array("login" => $data->login, "senhaWeb" => $data->senhaWeb, 
+                        "optanteSN" => $data->optanteSN, "incentivoCultural" => $data->incentivoFiscal);
 
     $autorizacaoChave = new AutorizacaoChave($db);
     $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
@@ -55,7 +56,7 @@ if($retorno[0]){
     }
 
     include_once '../comunicacao/comunicaNFSe.php';
-    $arraySign = array("sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+    $arraySign = array("sisEmit" => 3, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $objNFSe = new ComunicaNFSe($arraySign);
     if ($objNFSe->errStatus){
         http_response_code(401);
@@ -71,61 +72,74 @@ if($retorno[0]){
     $xml->openMemory();
     //
     // Inicia o cabeçalho do documento XML
-    $xml->startElement("GerarNfseEnvio");
-    $xml->writeAttribute("xmlns", "http://www.betha.com.br/e-nota-contribuinte-ws");
-        $xml->startElement("Rps");
-            $xml->startElement("InfDeclaracaoPrestacaoServico");
+    $xml->startElement("sis:GerarNfse");
+        $xml->startElement("sis:GerarNovaNfseEnvio");
+            $xml->startElement("nfse:Prestador");
+                $xml->writeElement("nfse:Cnpj", $emitente->documento);
+            $xml->endElement(); // Prestador
+            $xml->startElement("nfse:InformacaoNfse");
             $xml->writeAttribute("Id", "lote1");
+                $xml->writeElement("nfse:NaturezaOperacao", 3); // 3 = isento
+                $xml->writeElement("nfse:RegimeEspecialTributacao", 6); // 6 = ME/EPP
+                $xml->writeElement("nfse:OptanteSimplesNacional", 1); // 1 = SIM
+                $xml->writeElement("nfse:IncentivadorCultural", 2); // 2 = NAO
+                $xml->writeElement("nfse:Status", 1); // 1 = normal
                 $dtEm = date("Y-m-d");
-                $xml->writeElement("Competencia", $dtEm);
-                $xml->startElement("Servico");
-                    $xml->startElement("Valores");
-                        $xml->writeElement("ValorServicos", 10.00);
-                        $xml->writeElement("ValorIss", 0.00);
-                        $xml->writeElement("Aliquota", 0.00); 
+                $xml->writeElement("nfse:Competencia", $dtEm);
+
+                $xml->startElement("nfse:Servico");
+                    $xml->startElement("nfse:Valores");
+                        $xml->writeElement("nfse:ValorServicos", 10.00);
+                        $xml->writeElement("nfse:IssRetido", 2); 
+                        $xml->writeElement("nfse:ValorIss", 0.00);
+                        $xml->writeElement("nfse:Aliquota", 0.00); 
                     $xml->endElement(); // Valores
-                    $xml->writeElement("IssRetido", 2);
-                    $xml->writeElement("ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
-                    $xml->writeElement("Discriminacao", "Consulta clinica");
-                    $xml->writeElement("CodigoMunicipio", 0); // 4216602 Município de prestação do serviço
-                    $xml->writeElement("ExigibilidadeISS", 3); // 3 = isento
-//                        $xml->writeElement("MunicipioIncidencia", 0); // 4216602
+
+                    $xml->writeElement("nfse:ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
+//                    $xml->writeElement("CodigoTributacaoMunicipio", 0); // 4216602 Município de prestação do serviço
+                    $xml->writeElement("nfse:Discriminacao", "Consulta clinica");
+                    $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
+
+                    $xml->startElement("nfse:ItensServico");
+                        $xml->writeElement("nfse:Descricao", "Consulta clinica");
+                        $xml->writeElement("nfse:Quantidade", 1.00);
+                        $xml->writeElement("nfse:ValorUnitario", 10.00);
+                    $xml->endElement(); // ItensServico
                 $xml->endElement(); // Servico
-                $xml->startElement("Prestador");
-                    $xml->startElement("CpfCnpj");
-                        $xml->writeElement("Cnpj", $emitente->documento);
-                    $xml->endElement(); // CpfCnpj
-                $xml->endElement(); // Prestador
-                $xml->startElement("Tomador");
-                    $xml->startElement("IdentificacaoTomador");
-                        $xml->startElement("CpfCnpj");
-                            $xml->writeElement("Cpf", "03118290072");
+
+                $xml->startElement("nfse:Tomador");
+                    $xml->startElement("nfse:IdentificacaoTomador");
+                        $xml->startElement("nfse:CpfCnpj");
+                            $xml->writeElement("nfse:Cpf", "03118290072");
                         $xml->endElement(); // CpfCnpj
                     $xml->endElement(); // IdentificacaoTomador
-                    $xml->writeElement("RazaoSocial", "Tomador Teste");
-                    $xml->startElement("Endereco");
-                        $xml->writeElement("Endereco", "Rua Marechal Guilherme");
-                        $xml->writeElement("Numero", "1475");
-                        $xml->writeElement("Complemento", "sala 804");
-                        $xml->writeElement("Bairro", "Estreito");
-                        $xml->writeElement("CodigoMunicipio", "4205407");
-                        $xml->writeElement("Uf", "SC");
-                        $xml->writeElement("Cep", "88070700");
+                    $xml->writeElement("nfse:RazaoSocial", "Tomador Teste");
+                    $xml->startElement("nfse:Endereco");
+                        $xml->writeElement("nfse:Endereco", "Rua Marechal Guilherme");
+                        $xml->writeElement("nfse:Numero", "1475");
+                        $xml->writeElement("nfse:Complemento", "sala 804");
+                        $xml->writeElement("nfse:Bairro", "Estreito");
+                        $xml->writeElement("nfse:CodigoMunicipio", "4205407");
+                        $xml->writeElement("nfse:Uf", "SC");
+                        $xml->writeElement("nfse:Cep", "88070700");
                     $xml->endElement(); // Endereco
-                    $xml->startElement("Contato");
-                        $xml->writeElement("Telefone", "4833330891");
-                        $xml->writeElement("Email", "rodrigo@autocominformatica.com.br");
+                    $xml->startElement("nfse:Contato");
+                        $xml->writeElement("nfse:Telefone", "4833330891");
+                        $xml->writeElement("nfse:Email", "rodrigo@autocominformatica.com.br");
                     $xml->endElement(); // Contato
                 $xml->endElement(); // Tomador
-                $xml->writeElement("RegimeEspecialTributacao", $autorizacao->crt);
-                $xml->writeElement("OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1-Sim/2-Não
-                $xml->writeElement("IncentivoFiscal", $aAutoChave["incentivoFiscal"]); // 1-Sim/2-Não
-            $xml->endElement(); // InfDeclaracaoPrestacaoServico
-        $xml->endElement(); // Rps
+            $xml->endElement(); // InformacaoNfse
+        $xml->endElement(); // GerarNovaNfseEnvio
+        
+        $xml->startElement("sis:pParam");
+            $xml->writeElement("sis1:P1", $aAutoChave["login"]); 
+            $xml->writeElement("sis1:P2", $aAutoChave["senhaWeb"]); 
+        $xml->endElement(); // pParam
     $xml->endElement(); // GerarNfseEnvio
     //
     $xmlNFe = $xml->outputMemory(true);
 
+/*    
     $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico', 'Rps');
     if ($objNFSe->errStatus) {
 
@@ -134,24 +148,16 @@ if($retorno[0]){
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
+*/
 
-    //
-    // monta bloco padrão Betha
-    $xmlEnv = '<nfseCabecMsg>';
-    $xmlEnv .= '<![CDATA[';
-    $xmlEnv .= '<cabecalho xmlns="http://www.betha.com.br/e-nota-contribuinte-ws" versao="2.02"><versaoDados>2.02</versaoDados></cabecalho>';
-    $xmlEnv .= ']]>';
-    $xmlEnv .= '</nfseCabecMsg>';
-    $xmlEnv .= '<nfseDadosMsg>';
-    $xmlEnv .= '<![CDATA[';
-    $xmlEnv .= $xmlAss;
-    $xmlEnv .= ']]>';
-    $xmlEnv .= '</nfseDadosMsg>';
 
-    $retEnv = $objNFSe->transmitirNFSeBetha('GerarNfse', $xmlEnv, "H");
+    $retEnv = $objNFSe->transmitirNFSeSimplISS( $emitente->codigoMunicipio, $xmlNFe, "H" );
 
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
+
+    print_r($infoRet);
+exit;
 
     $nuNF = 0;
     $cdVerif = '';

@@ -7,7 +7,7 @@ class comunicaNFSe {
      * 0 = PM Florianopolis/SC
      * 1 = Betha
      * 2 = IPM
-     * 
+     * 3 = SimplISS
      */
     protected $sisEmit;
     /**
@@ -471,8 +471,7 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
-    public function gerarNFSe($sXml, $ambiente) 
-    {
+    public function gerarNFSe($sXml, $ambiente) {
 
         try {
 
@@ -522,38 +521,40 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
-    public function transmitirNFSeAbrasf($servico, $sXml, $ambiente) 
-    {
+    public function transmitirNFSeBetha($servico, $sXml, $ambiente) {
+
+        $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
+        if ($this->ambiente=='P') // produção
+            $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
+        else // homologação
+            $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
+
+        //valida o parâmetro da string do XML da NF-e
+        if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
+            return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
+        }
+
+        // limpa a variavel
+        $sNFSe = $sXml;
+        //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+        $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+        $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+
+        $data = '';
+        $data .= '<?xml version="1.0" encoding="utf-8"?>';
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="'.$this->namespace.'">';
+        $data .= '<soapenv:Header/>';
+        $data .= '<soapenv:Body>';
+        $data .= '<e:'.$servico.'>';
+        $data .= $sNFSe;
+        $data .= '</e:'.$servico.'>';
+        $data .= '</soapenv:Body>';
+        $data .= '</soapenv:Envelope>';
 
         try {
 
-            //identificação do serviço: emissão de NFSe
-            switch ($this->sisEmit) {
-                case 1: // Betha
-                    $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
-                    if ($this->ambiente=='P') // produção
-                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
-                    else // homologação
-                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
-                    break;
-                default:
-                    return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
-                    break;
-            }
-
-            //valida o parâmetro da string do XML da NF-e
-            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
-                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
-            }
-
-            // limpa a variavel
-            $sNFSe = $sXml;
-            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
-            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
-            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
-
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurlEnv($servico, $sNFSe);
+            $retorno = $this->pSendSOAPCurl($sNFSe, 'S');
             //verifica o retorno
             if (! $retorno) {
                 return array(false, 'URL de Comunicação inválida !');
@@ -568,12 +569,50 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
-    public function transmitirNFSeIpm($sXml) 
-    {
+    public function transmitirNFSeIpm( $params ) {
 
         try {
 
             $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1";
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($params)) { // || ! simplexml_load_string($sXml)) {
+                return array(false, 'Parâmetros de envio da NFSe inválidos, verifique');
+            }
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($params, 'N');
+            //verifica o retorno
+            if (! $retorno) {
+
+                return array(false, 'URL de Comunicação inválida !');
+            }
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+        return $retorno;
+    }
+
+
+    //
+    // define namespace / url e chama soap
+    public function transmitirNFSeSimplISS( $codMunic, $sXml, $ambiente ) {
+
+        try {
+
+            $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
+            if ($this->ambiente=='P') { // produção
+
+                switch ($codMunic) {
+                    case '4202008':
+                        $this->url = 'http://wsbalneariocamboriu.simplissweb.com.br/nfseservice.svc?wsdl'; break;
+                    default:
+                        return array(false, 'O sistema ainda não está emitindo notas para o município escolhido'); break;
+                }
+            }
+            else // homologação
+                $this->url = 'http://wshomologacao.simplissweb.com.br/nfseservice.svc?wsdl';
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
@@ -586,14 +625,24 @@ class comunicaNFSe {
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
+            $data = '';
+            $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xd="http://www.w3.org/2000/09/xmldsig#" ';
+            $data .= 'xmlns:sis="http://www.sistema.com.br/Sistema.Ws.Nfse" ';
+            $data .= 'xmlns:nfse="http://www.sistema.com.br/Nfse/arquivos/nfse_3.xsd" ';
+            $data .= 'xmlns:sis1="http://www.sistema.com.br/Sistema.Ws.Nfse.Cn">';
+            $data .= '<soapenv:Header/>';
+            $data .= '<soapenv:Body>';
+            $data .= $sNFSe;
+            $data .= '</soapenv:Body>';
+            $data .= '</soapenv:Envelope>';
+
+
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($sNFSe);
+            $retorno = $this->pSendSOAPCurl($sNFSe, 'N');
             //verifica o retorno
             if (! $retorno) {
-
                 return array(false, 'URL de Comunicação inválida !');
             }
-
         } catch(Exception $e){
 
             $result = false;
@@ -604,22 +653,11 @@ class comunicaNFSe {
 
     //
     // chamada soap + curl + envelope
-    protected function pSendSOAPCurlEnv($servico, $dados) {
+    protected function pSendSOAPCurl($dados, $assina) {
 
-        $data = '';
-        $data .= '<?xml version="1.0" encoding="utf-8"?>';
-        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="'.$this->namespace.'">';
-        $data .= '<soapenv:Header/>';
-        $data .= '<soapenv:Body>';
-        $data .= '<e:'.$servico.'>';
-        $data .= $dados;
-        $data .= '</e:'.$servico.'>';
-        $data .= '</soapenv:Body>';
-        $data .= '</soapenv:Envelope>';
-        $tamanho = strlen($data);
-        $headers = array( "Content-type: text/xml; charset=utf-8", 
-                          "Content-Length: ".$tamanho ); 
-
+//        $tamanho = strlen($data);
+        $headers = array( "Content-type: text/xml; charset=utf-8"); //, 
+//                          "Content-Length: ".$tamanho ); 
         try {
         
             $curl = curl_init();
@@ -630,8 +668,10 @@ class comunicaNFSe {
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($curl, CURLOPT_POST, TRUE);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
-            curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
+            if ($assina=='S') {
+                curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
+                curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
+            }
             //
             $result = curl_exec( $curl );
             $info = curl_getinfo( $curl );
@@ -643,11 +683,11 @@ class comunicaNFSe {
         return array($result, $info);
     } //fim __sendSOAPCurl
 
+/*
     //
     // chamada soap + curl + envelope
-    protected function pSendSOAPCurl($dados) {
+    protected function pSendSOAPCurlOK($dados) {
 
-        $data = $dados;
         $headers = array( "Content-type: application/xml;"); 
 
         try {
@@ -670,7 +710,7 @@ class comunicaNFSe {
 
         return array($result, $info);
     } //fim __sendSOAPCurl
-
+*/
 
 } 
 

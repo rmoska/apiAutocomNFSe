@@ -76,7 +76,7 @@ if($retorno[0]){
 //            $tipoTomador = 'J';
 
     $xml->startElement("nfse");
-        $xml->writeElement("nfse_teste", "1"); // ambiente homologação
+        $xml->writeElement("nfse_teste", "1"); // define ambiente HOMOLOGAÇÃO
         $xml->startElement("nf");
             $xml->writeElement("valor_total", "2,00");
             $xml->writeElement("observacao", "Teste de Homologacao");
@@ -127,24 +127,14 @@ if($retorno[0]){
         exit;
     }
 
-    //
-    // transmite NFSe	
-    $headers = array( "Content-type: application/xml" ); 
-
     $params = "login=".$emitente->documento."&senha=".$autorizacao->senhaWeb."&cidade=8233&fl=".$arqNFSe;
 
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-    curl_setopt($curl, CURLOPT_URL, "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($curl, CURLOPT_POST, TRUE);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
-    //
-    $result = curl_exec($curl);
-    $info = curl_getinfo( $curl );
+    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
-print_r($result);
+    $respEnv = $retEnv[0];
+    $infoRet = $retEnv[1];
+
+    print_r($infoRet);
 exit;
 
     $nuNF = 0;
