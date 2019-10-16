@@ -539,6 +539,7 @@ class comunicaNFSe {
         //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
         $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
         $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+        $tamanho = strlen($sNFSe);
 
         $data = '';
         $data .= '<?xml version="1.0" encoding="utf-8"?>';
@@ -554,7 +555,7 @@ class comunicaNFSe {
         try {
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($sNFSe, 'S');
+            $retorno = $this->pSendSOAPCurl($sNFSe, 'S', $tamanho);
             //verifica o retorno
             if (! $retorno) {
                 return array(false, 'URL de Comunicação inválida !');
@@ -655,7 +656,8 @@ class comunicaNFSe {
     protected function pSendSOAPCurl($dados, $assina, $tamanho) {
 
         $headers = array( "Content-type: text/xml; charset=utf-8", 
-                          "Content-Length: ".$tamanho ); 
+                            "Content-Length: ".$tamanho ); 
+
         try {
         
             $curl = curl_init();
