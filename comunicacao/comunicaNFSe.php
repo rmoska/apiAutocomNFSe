@@ -502,8 +502,6 @@ class comunicaNFSe {
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
 
-print_r($data);
-
         try {
 
             //envia dados via SOAP
@@ -607,6 +605,8 @@ print_r($data);
     // chamada soap + curl + envelope
     protected function pSendSOAPCurl($dados, $assina, $tamanho) {
 
+print_r($dados);
+
         $headers = array( "Content-type: text/xml; charset=utf-8", 
                             "Content-Length: ".$tamanho ); 
 
@@ -620,10 +620,10 @@ print_r($data);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($curl, CURLOPT_POST, TRUE);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-//            if ($assina=='S') {
+            if ($assina=='S') {
                 curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
                 curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
-//            }
+            }
             //
             $result = curl_exec( $curl );
             $info = curl_getinfo( $curl );
