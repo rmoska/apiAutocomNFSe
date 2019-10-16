@@ -471,56 +471,6 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
-    public function gerarNFSe($sXml, $ambiente) {
-
-        try {
-
-            //identificação do serviço: emissão de NFSe
-            $servico = 'GerarNfse';
-            switch ($this->sisEmit) {
-                case 1: // Betha
-                    $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
-                    if ($this->ambiente=='P') // produção
-                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
-                    else // homologação
-                        $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
-                    break;
-                default:
-                    return array(false, 'O sistema ainda não está emitindo notas para o sistema escolhido');
-                    break;
-            }
-//            error_log($sXml, 3, "../arquivosNFSe/nfseteste.xml");
-//echo 'url='. $this->url;
-
-            //valida o parâmetro da string do XML da NF-e
-            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
-                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
-            }
-
-            // limpa a variavel
-            $sNFSe = $sXml;
-            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
-            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
-            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
-
-            //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($servico, $sNFSe);
-            //verifica o retorno
-            if (! $retorno) {
-
-                return array(false, 'URL de Comunicação inválida !');
-            }
-
-        } catch(Exception $e){
-
-            $result = false;
-        }        
-
-        return $retorno;
-    }
-
-    //
-    // define namespace / url e chama soap
     public function transmitirNFSeBetha($servico, $sXml, $ambiente) {
 
         $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
@@ -551,6 +501,8 @@ class comunicaNFSe {
         $data .= '</e:'.$servico.'>';
         $data .= '</soapenv:Body>';
         $data .= '</soapenv:Envelope>';
+
+print_r($data);
 
         try {
 
@@ -668,10 +620,10 @@ class comunicaNFSe {
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($curl, CURLOPT_POST, TRUE);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-            if ($assina=='S') {
+//            if ($assina=='S') {
                 curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
                 curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
-            }
+//            }
             //
             $result = curl_exec( $curl );
             $info = curl_getinfo( $curl );
