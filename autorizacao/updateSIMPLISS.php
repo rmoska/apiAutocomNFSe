@@ -95,8 +95,8 @@ if($retorno[0]){
                         $xml->writeElement("nfse:Aliquota", 0.00); 
                     $xml->endElement(); // Valores
 
-                    $xml->writeElement("nfse:ItemListaServico", $aAutoChave["codigoServico"]); //"0402");
-//                    $xml->writeElement("CodigoTributacaoMunicipio", 0); // 4216602 Município de prestação do serviço
+                    $xml->writeElement("nfse:ItemListaServico", "7.02"); //$aAutoChave["codigoServico"]); 
+//                    $xml->writeElement("CodigoTributacaoMunicipio", "7.02"); // 4216602 Município de prestação do serviço
                     $xml->writeElement("nfse:Discriminacao", "Consulta clinica");
                     $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
 

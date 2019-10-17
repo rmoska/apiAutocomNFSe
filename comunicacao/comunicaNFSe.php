@@ -606,9 +606,10 @@ class comunicaNFSe {
 
         $tamanho = strlen($dados);
         $headers = array( "Content-type: text/xml; charset=utf-8", 
-                            "Content-Length: ".$tamanho ); 
+                          "SOAPAction: 'http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse'",
+                          "Content-Length: ".$tamanho ); 
 
-print_r($dados);
+//print_r($dados);
 
         try {
         
