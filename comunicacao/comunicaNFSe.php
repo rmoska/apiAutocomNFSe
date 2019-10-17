@@ -624,12 +624,11 @@ class comunicaNFSe {
                           $headers = array(
                             "POST http://wshomologacao.simplissweb.com.br/nfseservice.svc HTTP/1.1",
                             "Host: wshomologacao.simplissweb.com.br",
+                            "Connection: Keep-Alive",
                             "Content-Type: text/xml; charset=utf-8",
-                            "SOAPAction: 'http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse'",
+                            "SOAPAction: http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse",
                             "Content-length: ".$tamanho
                         );
-
-//print_r($dados);
 
         try {
         
