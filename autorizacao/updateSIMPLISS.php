@@ -8,6 +8,7 @@
 if( empty($data->idEmitente) ||
     empty($data->login) ||
     empty($data->senhaWeb) ||
+    empty($data->cmc) ||
     empty($data->crt) ||
     empty($data->optanteSN) ||
     empty($data->incentivoCultural) ||
@@ -28,6 +29,7 @@ $autorizacao = new Autorizacao($db);
    
 $autorizacao->idEmitente = $data->idEmitente;
 $autorizacao->codigoMunicipio = $emitente->codigoMunicipio; 
+$autorizacao->cmc = $data->cmc;
 $autorizacao->crt = $data->crt;
 $autorizacao->certificado = $data->certificado;
 $autorizacao->senha = $data->senha;
@@ -76,6 +78,7 @@ if($retorno[0]){
         $xml->startElement("sis:GerarNovaNfseEnvio");
             $xml->startElement("nfse:Prestador");
                 $xml->writeElement("nfse:Cnpj", $emitente->documento);
+                $xml->writeElement("nfse:InscricaoMunicipal", $autorizacao->cmc);
             $xml->endElement(); // Prestador
             $xml->startElement("nfse:InformacaoNfse");
             $xml->writeAttribute("Id", "lote1");
@@ -156,7 +159,6 @@ if($retorno[0]){
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
 
-    print_r($infoRet);
     print_r($respEnv);
 exit;
 
