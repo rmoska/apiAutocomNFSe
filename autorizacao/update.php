@@ -63,6 +63,7 @@ switch ($emitente->codigoMunicipio) {
     case '4208203': // SC - Itajaí
         $arqPhp = 'updatePUBLICA.php'; break;
     case '4202008': // SC - Balneário Camboriú
+    case '3549102': // SC - Balneário Camboriú
         $arqPhp = 'updateSIMPLISS.php'; break;
     case '4305108': // RS - Caxias do Sul
         $arqPhp = 'updateINFISC.php'; break;
