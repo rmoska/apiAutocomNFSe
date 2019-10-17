@@ -148,7 +148,7 @@ if($retorno[0]){
     $xmlNFe = $xml->outputMemory(true);
 
 
-    error_log(utf8_decode($xmkNFe, 3, "../arquivosNFSe/apiNFe.log");
+    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
 
 
 /*    
