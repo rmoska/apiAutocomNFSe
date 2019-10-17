@@ -157,6 +157,7 @@ if($retorno[0]){
     $infoRet = $retEnv[1];
 
     print_r($infoRet);
+    print_r($respEnv);
 exit;
 
     $nuNF = 0;
