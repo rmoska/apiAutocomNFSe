@@ -99,6 +99,8 @@ if($retorno[0]){
                         $xml->writeElement("nfse:IssRetido", 2); 
                         $xml->writeElement("nfse:ValorIss", 0.00);
                         $xml->writeElement("nfse:Aliquota", 0.00); 
+                        $xml->writeElement("nfse:BaseCalculo", 10.00);
+                        $xml->writeElement("nfse:ValorLiquidoNfse", 10.00);
                     $xml->endElement(); // Valores
 
                     $xml->writeElement("nfse:ItemListaServico", "7.02"); //$aAutoChave["codigoServico"]); 
