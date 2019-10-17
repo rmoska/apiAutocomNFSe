@@ -34,6 +34,8 @@ $autorizacao->crt = $data->crt;
 $autorizacao->certificado = $data->certificado;
 $autorizacao->senha = $data->senha;
 
+print_r($autorizacao);
+
 if ($autorizacao->check() == 0)
     $retorno = $autorizacao->create($emitente->documento);
 else {
