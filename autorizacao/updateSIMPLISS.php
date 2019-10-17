@@ -185,9 +185,6 @@ if($retorno[0]){
 
     if ($infoRet['http_code'] == '200') {
 
-
-        NovaNfse
-
         // se retorna ListaNfse - processou com sucesso
         if(strstr($respEnv,'NovaNfse')){
 
