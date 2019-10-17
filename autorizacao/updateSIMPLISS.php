@@ -179,23 +179,25 @@ if($retorno[0]){
     $infoRet = $retEnv[1];
 
     print_r($respEnv);
-exit;
 
     $nuNF = 0;
     $cdVerif = '';
 
     if ($infoRet['http_code'] == '200') {
 
+
+        NovaNfse
+
         // se retorna ListaNfse - processou com sucesso
-        if(strstr($respEnv,'ListaNfse')){
+        if(strstr($respEnv,'NovaNfse')){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
-            $nuNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->Numero;
-            $cdVerif = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->CodigoVerificacao;
-            $linkNF = (string) $msgResp->ListaNfse->CompNfse->Nfse->InfNfse->OutrasInformacoes;
+            $nuNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Numero;
+            $cdVerif = (string) $msgResp->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
+            $linkNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Link;
             $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
             $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
             $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
