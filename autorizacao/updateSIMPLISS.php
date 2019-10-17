@@ -186,13 +186,14 @@ if($retorno[0]){
         // se retorna ListaNfse - processou com sucesso
         if(strstr($respEnv,'NovaNfse')){
 
-            $DomXml=new DOMDocument('1.0', 'utf-8');
-            $DomXml->loadXML($respEnv);
+//            $DomXml=new DOMDocument('1.0', 'utf-8');
+//            $DomXml->loadXML($respEnv);
 
-            print_r($DomXml);
+//            print_r($DomXml);
 
-            $xmlResp = $DomXml->textContent;
-            $msgResp = simplexml_load_string($xmlResp);
+//            $xmlResp = $DomXml->textContent;
+//            $msgResp = simplexml_load_string($xmlResp);
+            $msgResp = simplexml_load_string($respEnv);
             $nuNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Numero;
             $cdVerif = (string) $msgResp->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
             $linkNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Link;
