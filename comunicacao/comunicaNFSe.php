@@ -622,7 +622,6 @@ class comunicaNFSe {
  */                                                   
 
                           $headers = array(
-                            "POST http://wshomologacao.simplissweb.com.br/nfseservice.svc HTTP/1.1",
                             "Host: wshomologacao.simplissweb.com.br",
                             "Connection: Keep-Alive",
                             "Content-Type: text/xml; charset=utf-8",
