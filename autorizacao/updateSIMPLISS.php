@@ -3,16 +3,18 @@
 /**
  * crt : Regime Tributario (0|1|2|3|4|5|6)
  * optanteSN : Simples Nacional 1=sim 2=nao
- * incentivoFiscal : 1=sim 2=nao
+ * incentivoCultural : 1=sim 2=nao
  */
 if( empty($data->idEmitente) ||
     empty($data->login) ||
     empty($data->senhaWeb) ||
     empty($data->crt) ||
     empty($data->optanteSN) ||
-    empty($data->incentivoFiscal) ||
+    empty($data->incentivoCultural) ||
     empty($data->certificado) ||
     empty($data->senha) ) {
+
+print_r($data);
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
@@ -43,7 +45,7 @@ else {
 if($retorno[0]){
 
     $aAutoChave = array("login" => $data->login, "senhaWeb" => $data->senhaWeb, 
-                        "optanteSN" => $data->optanteSN, "incentivoCultural" => $data->incentivoFiscal);
+                        "optanteSN" => $data->optanteSN, "incentivoCultural" => $data->incentivoCultural);
 
     $autorizacaoChave = new AutorizacaoChave($db);
     $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
