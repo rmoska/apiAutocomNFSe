@@ -609,7 +609,27 @@ class comunicaNFSe {
                           "SOAPAction: 'http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse'",
                           "Content-Length: ".$tamanho ); 
 
-//print_r($dados);
+/*
+                          POST http://wshomologacao.simplissweb.com.br/nfseservice.svc HTTP/1.1
+                          Accept-Encoding: gzip,deflate
+                          Content-Type: text/xml;charset=UTF-8
+                          SOAPAction: "http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse"
+                          Content-Length: 4239
+                          Host: wshomologacao.simplissweb.com.br
+                          Connection: Keep-Alive
+                          User-Agent: Apache-HttpClient/4.1.1 (java 1.5)
+
+                            "Accept: text/xml",
+
+                          */                                                   
+
+                          $headers = array(
+                            "POST http://wshomologacao.simplissweb.com.br/nfseservice.svc HTTP/1.1",
+                            "Host: wshomologacao.simplissweb.com.br",
+                            "Content-Type: text/xml; charset=utf-8",
+                            "http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse",
+                            "Content-length: ".$tamanho
+                        );
 
         try {
         
