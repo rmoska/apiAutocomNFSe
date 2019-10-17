@@ -14,8 +14,6 @@ if( empty($data->idEmitente) ||
     empty($data->certificado) ||
     empty($data->senha) ) {
 
-print_r($data);
-
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
     $strData = json_encode($data);

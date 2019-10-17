@@ -587,7 +587,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($data, 'N');
+            $retorno = $this->pSendSOAPCurl($data, 'S');
             //verifica o retorno
             if (! $retorno) {
                 return array(false, 'URL de Comunicação inválida !');
@@ -607,6 +607,8 @@ class comunicaNFSe {
         $tamanho = strlen($dados);
         $headers = array( "Content-type: text/xml; charset=utf-8", 
                             "Content-Length: ".$tamanho ); 
+
+print_r($dados);
 
         try {
         
