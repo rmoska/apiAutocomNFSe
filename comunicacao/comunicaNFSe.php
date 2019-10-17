@@ -622,7 +622,6 @@ class comunicaNFSe {
  */                                                   
 
                           $headers = array(
-                            "Host: wshomologacao.simplissweb.com.br",
                             "Content-Type: text/xml; charset=utf-8",
                             "SOAPAction: http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/GerarNfse",
                             "Content-length: ".$tamanho
