@@ -24,22 +24,31 @@ if( empty($data->idEmitente) ||
 
 include_once '../objects/autorizacao.php';
 $autorizacao = new Autorizacao($db);
- 
 $autorizacao->idEmitente = $data->idEmitente;
 $autorizacao->codigoMunicipio = $emitente->codigoMunicipio; 
-$autorizacao->crt = $data->crt;
-$autorizacao->cnae = $data->cnae;
-$autorizacao->aedf = $data->aedf;
-$autorizacao->cmc = $data->cmc;
-$autorizacao->senhaWeb = $data->senhaWeb;
-$autorizacao->certificado = $data->certificado;
-$autorizacao->senha = $data->senha;
+if ($autorizacao->check() == 0) {
 
-if ($autorizacao->check() == 0)
+    $autorizacao->crt = $data->crt;
+    $autorizacao->cnae = $data->cnae;
+    $autorizacao->aedf = $data->aedf;
+    $autorizacao->cmc = $data->cmc;
+    $autorizacao->senhaWeb = $data->senhaWeb;
+    $autorizacao->certificado = $data->certificado;
+    $autorizacao->senha = $data->senha;
     $retorno = $autorizacao->create($emitente->documento);
-else 
-    $retorno = $autorizacao->update($emitente->documento);
+}
+else {
 
+    $autorizacao->readOne(); // carregar idAutorizacao
+    $autorizacao->crt = $data->crt;
+    $autorizacao->cnae = $data->cnae;
+    $autorizacao->aedf = $data->aedf;
+    $autorizacao->cmc = $data->cmc;
+    $autorizacao->senhaWeb = $data->senhaWeb;
+    $autorizacao->certificado = $data->certificado;
+    $autorizacao->senha = $data->senha;
+    $retorno = $autorizacao->update($emitente->documento);
+}
 if($retorno[0]){
 
     if (!$autorizacao->getToken("H")){ 

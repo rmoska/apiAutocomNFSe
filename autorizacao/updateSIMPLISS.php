@@ -25,25 +25,26 @@ if( empty($data->idEmitente) ||
 include_once '../objects/autorizacao.php';
 include_once '../objects/autorizacaoChave.php';
  
-$autorizacao = new Autorizacao($db);
-   
+$autorizacao = new Autorizacao($db);   
 $autorizacao->idEmitente = $data->idEmitente;
 $autorizacao->codigoMunicipio = $emitente->codigoMunicipio; 
-$autorizacao->cmc = $data->cmc;
-$autorizacao->crt = $data->crt;
-$autorizacao->certificado = $data->certificado;
-$autorizacao->senha = $data->senha;
+if ($autorizacao->check() == 0) {
 
-print_r($autorizacao);
-
-if ($autorizacao->check() == 0)
+    $autorizacao->cmc = $data->cmc;
+    $autorizacao->crt = $data->crt;
+    $autorizacao->certificado = $data->certificado;
+    $autorizacao->senha = $data->senha;
     $retorno = $autorizacao->create($emitente->documento);
+}
 else {
 
     $autorizacao->readOne(); // carregar idAutorizacao
+    $autorizacao->cmc = $data->cmc;
+    $autorizacao->crt = $data->crt;
+    $autorizacao->certificado = $data->certificado;
+    $autorizacao->senha = $data->senha;
     $retorno = $autorizacao->update($emitente->documento);
 }
-
 if($retorno[0]){
 
     $aAutoChave = array("login" => $data->login, "senhaWeb" => $data->senhaWeb, 

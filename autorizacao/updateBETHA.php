@@ -24,19 +24,22 @@ include_once '../objects/autorizacao.php';
 include_once '../objects/autorizacaoChave.php';
  
 $autorizacao = new Autorizacao($db);
-   
 $autorizacao->idEmitente = $data->idEmitente;
 $autorizacao->codigoMunicipio = $emitente->codigoMunicipio; 
-$autorizacao->crt = $data->crt;
-$autorizacao->cmc = $data->cmc;
-$autorizacao->certificado = $data->certificado;
-$autorizacao->senha = $data->senha;
-
-if ($autorizacao->check() == 0)
+if ($autorizacao->check() == 0) {
+    $autorizacao->crt = $data->crt;
+    $autorizacao->cmc = $data->cmc;
+    $autorizacao->certificado = $data->certificado;
+    $autorizacao->senha = $data->senha;
     $retorno = $autorizacao->create($emitente->documento);
+}
 else {
 
     $autorizacao->readOne(); // carregar idAutorizacao
+    $autorizacao->crt = $data->crt;
+    $autorizacao->cmc = $data->cmc;
+    $autorizacao->certificado = $data->certificado;
+    $autorizacao->senha = $data->senha;
     $retorno = $autorizacao->update($emitente->documento);
 }
 
