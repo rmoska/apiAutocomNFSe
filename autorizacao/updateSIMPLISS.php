@@ -151,7 +151,7 @@ if($retorno[0]){
 */
 
 
-    $retEnv = $objNFSe->transmitirNFSeSimplISS( $emitente->codigoMunicipio, $xmlNFe );
+    $retEnv = $objNFSe->transmitirNFSeSimplISS( $emitente->codigoMunicipio, $xmlNFe , 'GerarNfse');
 
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
