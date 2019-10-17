@@ -194,6 +194,9 @@ if($retorno[0]){
 //            $xmlResp = $DomXml->textContent;
 //            $msgResp = simplexml_load_string($xmlResp);
             $msgResp = simplexml_load_string($respEnv);
+
+            print_r($msgResp);
+
             $nuNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Numero;
             $cdVerif = (string) $msgResp->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
             $linkNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Link;
