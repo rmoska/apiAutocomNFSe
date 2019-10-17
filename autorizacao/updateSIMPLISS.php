@@ -178,8 +178,6 @@ if($retorno[0]){
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
 
-    print_r($respEnv);
-
     $nuNF = 0;
     $cdVerif = '';
 
@@ -190,6 +188,9 @@ if($retorno[0]){
 
             $DomXml=new DOMDocument('1.0', 'utf-8');
             $DomXml->loadXML($respEnv);
+
+            print_r($DomXml);
+
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
             $nuNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Numero;
