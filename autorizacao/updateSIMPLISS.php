@@ -166,7 +166,8 @@ if($retorno[0]){
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
 
-//    print_r($respEnv);
+    print_r($infoRet);
+    print_r($respEnv);
 
     $nuNF = 0;
     $cdVerif = '';
