@@ -158,25 +158,15 @@ if($retorno[0]){
     $xmlNFe = $xml->outputMemory(true);
 
 
-    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
-
-
-/*    
-    $xmlAss = $objNFSe->signXML($xmlNFe, 'InfDeclaracaoPrestacaoServico', 'Rps');
-    if ($objNFSe->errStatus) {
-
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$objNFSe->errMsg));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
-    }
-*/
+//    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
 
 
     $retEnv = $objNFSe->transmitirNFSeSimplISS( $emitente->codigoMunicipio, $xmlNFe , 'GerarNfse');
 
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
+
+//    print_r($respEnv);
 
     $nuNF = 0;
     $cdVerif = '';
@@ -185,21 +175,23 @@ if($retorno[0]){
 
         // se retorna ListaNfse - processou com sucesso
         if(strstr($respEnv,'NovaNfse')){
-
-//            $DomXml=new DOMDocument('1.0', 'utf-8');
-//            $DomXml->loadXML($respEnv);
-
-//            print_r($DomXml);
-
-//            $xmlResp = $DomXml->textContent;
-//            $msgResp = simplexml_load_string($xmlResp);
-            $msgResp = simplexml_load_string($respEnv);
-
-            print_r($msgResp);
+/*
+            $DomXml=new DOMDocument('1.0', 'utf-8');
+            $DomXml->loadXML($respEnv);
+            $xmlResp = $DomXml->textContent;
+            $msgResp = simplexml_load_string($xmlResp);
 
             $nuNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Numero;
             $cdVerif = (string) $msgResp->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
             $linkNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Link;
+*/
+            $msgResp = simplexml_load_string($respEnv);
+
+            $nuNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Numero;
+            $cdVerif = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
+            $linkNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Link;
+           
+
             $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
             $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
             $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
