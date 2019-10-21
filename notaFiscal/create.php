@@ -26,6 +26,7 @@ $db = $database->getConnection();
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
+$strData = json_encode($data);
 
 //
 // confere e busca Emitente

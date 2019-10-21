@@ -181,11 +181,12 @@ if($retorno[0]){
             $DomXml->loadXML($respEnv);
             $xmlResp = $DomXml->textContent;
             $msgResp = simplexml_load_string($xmlResp);
-
             $nuNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Numero;
             $cdVerif = (string) $msgResp->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
             $linkNF = (string) $msgResp->NovaNfse->IdentificacaoNfse->Link;
 */
+            $respEnv = str_replace("<s:", "<", $respEnv);
+            $respEnv = str_replace("</s:", "</", $respEnv);
             $msgResp = simplexml_load_string($respEnv);
 
             $nuNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Numero;
