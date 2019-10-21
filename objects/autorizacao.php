@@ -247,6 +247,11 @@ class Autorizacao{
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
         $data = curl_exec($curl);
         $dados = json_decode($data);
+
+print_r($dados);
+$info = curl_getinfo( $curl );
+print_r($info);
+
         if (isset($dados->error)) {
 
             return array(false, $dados->error);
