@@ -51,12 +51,11 @@ else {
 }
 if($retorno[0]){
 
-    $retAuto = $autorizacao->getToken("H");
-    if (!$retAuto[0]) { 
+    if (!$autorizacao->getToken("P")) { 
 
         http_response_code(401);
         echo json_encode(array("http_code" => 401, "message" => "Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado. Emitente=".$autorizacao->idEmitente." Err=".$retAuto[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
     else {
