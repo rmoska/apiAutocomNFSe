@@ -249,7 +249,7 @@ class Autorizacao{
         $dados = json_decode($data);
         if (isset($dados->error)) {
 
-            return false;
+            return array(false, $dados->error);
         }
         else {
 
