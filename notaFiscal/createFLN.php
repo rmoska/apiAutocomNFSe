@@ -148,32 +148,14 @@ foreach ( $data->itemServico as $item )
         empty($item->cnae) ||
         empty($item->nbs) ||
         empty($item->quantidade) ||
-        empty($item->valor)
+        empty($item->valor) ||
+        (!($item->cst>=0)) ||
+        (!($item->taxaIss>=0)) 
     ){
 
         $db->rollBack();
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos 1."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
-    }
-    if(
-        empty($item->cst)
-    ){
-
-        $db->rollBack();
-        http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos 2."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
-    }
-    if(
-        empty($item->taxaIss) 
-    ){
-
-        $db->rollBack();
-        http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos 3."));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
