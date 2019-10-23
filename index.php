@@ -2,6 +2,31 @@
 
 //phpinfo();
 
+$arq = "C:\Desenv\NFSe\SC\BalnearioCamboriu\xmlNFSeRetorno.xml";
+
+$DomXml=new DOMDocument();
+$DomXml->load($arq);
+
+//print_r($DomXml);
+
+$xmlResp = $DomXml->getElementById('NovaNfse');
+
+print_r($xmlResp);
+echo $xmlResp->IdentificacaoNfse->Numero;
+
+//$msgResp = simplexml_load_string($xmlResp);
+
+echo $msgResp;
+
+$nuNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Numero;
+$cdVerif = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
+$linkNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Link;
+
+echo $nuNF.' - '.$cdVerif.' - '.$linkNF;
+
+
+exit;
+
 $respEnv = 
 '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
     <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -26,7 +51,7 @@ $respEnv =
     </s:Body>
 </s:Envelope>';
 
-$respEnv =
+$respEnv2 =
 "<env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'><env:Header></env:Header><env:Body><ns2:GerarNfseResponse xmlns:ns2='http://www.betha.com.br/e-nota-contribuinte-ws'><return>
 <GerarNfseResposta xmlns='http://www.betha.com.br/e-nota-contribuinte-ws'>
     <ListaNfse>
@@ -116,9 +141,11 @@ $respEnv =
 </return></ns2:GerarNfseResponse></env:Body></env:Envelope>";
 
 
+
 $respEnv = str_replace("<s:", "<", $respEnv);
 $respEnv = str_replace("</s:", "</", $respEnv);
 //print_r($respEnv);
+echo $respEnv;
 
 $msgResp = simplexml_load_string($respEnv);
 $nuNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Numero;
@@ -130,7 +157,11 @@ echo $nuNF.' - '.$cdVerif.' - '.$linkNF;
 
 $DomXml=new DOMDocument('1.0', 'utf-8');
 $DomXml->loadXML($respEnv);
+
 $xmlResp = $DomXml->textContent;
+
+echo 'resp='. $xmlResp;
+
 $msgResp = simplexml_load_string($xmlResp);
 
 echo $msgResp;
