@@ -53,66 +53,16 @@ $db->beginTransaction();
 
 // check / create tomador
 if(
-    !empty($data->tomador->documento) &&
-    !empty($data->tomador->nome) &&
-    !empty($data->tomador->logradouro) &&
-    !empty($data->tomador->numero) &&
-    !empty($data->tomador->bairro) &&
-    !empty($data->tomador->cep) &&
-    !empty($data->tomador->codigoMunicipio) &&
-    !empty($data->tomador->uf) &&
-    !empty($data->tomador->email) 
+    empty($data->tomador->documento) ||
+    empty($data->tomador->nome) ||
+    empty($data->tomador->logradouro) ||
+    empty($data->tomador->numero) ||
+    empty($data->tomador->bairro) ||
+    empty($data->tomador->cep) ||
+    empty($data->tomador->codigoMunicipio) ||
+    empty($data->tomador->uf) ||
+    empty($data->tomador->email) 
 ){
-
-    $tomador = new Tomador($db);
-
-    // set tomador property values
-    $tomador->documento = $data->tomador->documento;
-    $tomador->nome = $data->tomador->nome;
-    $tomador->logradouro = $data->tomador->logradouro;
-    $tomador->numero = $data->tomador->numero;
-    $tomador->complemento = $data->tomador->complemento;
-    $tomador->bairro = $data->tomador->bairro;
-    $tomador->cep = $data->tomador->cep;
-    $tomador->codigoMunicipio = $data->tomador->codigoMunicipio;
-    $tomador->uf = $data->tomador->uf;
-    $tomador->email = $data->tomador->email;
-
-    // check tomador
-    if (($idTomador = $tomador->check()) > 0) {
-
-        $tomador->idTomador = $idTomador;
-        $notaFiscal->idTomador = $idTomador;
-
-        $retorno = $tomador->update();
-        if(!$retorno[0]){
-
-            $db->rollBack();
-            http_response_code(500);
-            echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1]));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            exit;
-        }
-    }
-    // create tomador
-    else {
-
-        $retorno = $tomador->create();
-        if($retorno[0]){
-            // set notaFiscal
-            $notaFiscal->idTomador = $tomador->idTomador;
-        }
-        else{
-
-            $db->rollBack();
-            http_response_code(500);
-            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1]));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            exit;
-        }
-    }
-}
-else{
 
     $db->rollBack();
     http_response_code(400);
@@ -120,6 +70,54 @@ else{
     $strData = json_encode($data);
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
+}
+
+$tomador = new Tomador($db);
+
+// set tomador property values
+$tomador->documento = $data->tomador->documento;
+$tomador->nome = $data->tomador->nome;
+$tomador->logradouro = $data->tomador->logradouro;
+$tomador->numero = $data->tomador->numero;
+$tomador->complemento = $data->tomador->complemento;
+$tomador->bairro = $data->tomador->bairro;
+$tomador->cep = $data->tomador->cep;
+$tomador->codigoMunicipio = $data->tomador->codigoMunicipio;
+$tomador->uf = $data->tomador->uf;
+$tomador->email = $data->tomador->email;
+
+// check tomador
+if (($idTomador = $tomador->check()) > 0) {
+
+    $tomador->idTomador = $idTomador;
+    $notaFiscal->idTomador = $idTomador;
+
+    $retorno = $tomador->update();
+    if(!$retorno[0]){
+
+        $db->rollBack();
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
+}
+// create tomador
+else {
+
+    $retorno = $tomador->create();
+    if($retorno[0]){
+        // set notaFiscal
+        $notaFiscal->idTomador = $tomador->idTomador;
+    }
+    else{
+
+        $db->rollBack();
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
 }
 
 // create notaFiscal
@@ -157,75 +155,13 @@ foreach ( $data->itemServico as $item )
 {
     $nfiOrdem++;
     if(
-        !empty($item->codigo) &&
-        !empty($item->descricao) &&
-        !empty($item->codigoServico) &&
-        !empty($item->valor) &&
-        !empty($item->cst) &&
-        !empty($item->taxaIss) 
+        empty($item->codigo) ||
+        empty($item->descricao) ||
+        empty($item->codigoServico) ||
+        empty($item->valor) ||
+        (!($item->cst>=0)) ||
+        (!($item->taxaIss>=0)) 
     ){
-
-        $itemVenda = new ItemVenda($db);
-        $notaFiscalItem = new NotaFiscalItem($db);
-
-        $itemVenda->codigo = $item->codigo;
-        if (($idItemVenda = $itemVenda->check()) > 0) 
-        {
-            $notaFiscalItem->idItemVenda = $idItemVenda;
-        }
-        else 
-        {
-
-            $notaFiscalItem->descricaoItemVenda = $item->descricao;
-            $itemVenda->descricao = $item->descricao;
-            $itemVenda->listaServico = $item->codigoServico;
-
-            $retorno = $itemVenda->create();
-            if(!$retorno[0]){
-
-                $db->rollBack();
-                http_response_code(500);
-                echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Venda.(Vi01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                exit;
-            }
-            else{
-                $notaFiscalItem->idItemVenda = $itemVenda->idItemVenda;
-            }
-        }
-
-        $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
-        $notaFiscalItem->numeroOrdem = $nfiOrdem;
-        $notaFiscalItem->cnae = $item->cnae;
-        $notaFiscalItem->unidade = "UN";
-        if (empty($item->quantidade)) $item->quantidade = 1;
-        $notaFiscalItem->quantidade = floatval($item->quantidade);
-        $notaFiscalItem->valorUnitario = floatval($item->valor);
-        $notaFiscalItem->valorTotal = (floatval($item->valor)*floatval($item->quantidade));
-        $notaFiscalItem->cstIss = $item->cst;
-        $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
-        $notaFiscalItem->taxaIss = $item->taxaIss;
-        $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
-
-        $totalItens += floatval($notaFiscalItem->valorTotal);
-
-        $retorno = $notaFiscalItem->create();
-        if(!$retorno[0]){
-
-            $db->rollBack();
-            http_response_code(500);
-            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", "erro" => $retorno[1]));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Nota Fiscal.(I01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            exit;
-        }
-        else{
-
-            $descricaoServicoUnico .= $item->descricao." | ";
-            $notaFiscalItem->descricaoItemVenda = $item->descricao;
-            $arrayItemNF[] = $notaFiscalItem;
-        }
-    }
-    else{
 
         // set response code - 400 bad request
         $db->rollBack();
@@ -234,6 +170,66 @@ foreach ( $data->itemServico as $item )
         $strData = json_encode($data);
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
+    }
+    
+    $itemVenda = new ItemVenda($db);
+    $notaFiscalItem = new NotaFiscalItem($db);
+
+    $itemVenda->codigo = $item->codigo;
+    if (($idItemVenda = $itemVenda->check()) > 0) 
+    {
+        $notaFiscalItem->idItemVenda = $idItemVenda;
+    }
+    else 
+    {
+
+        $notaFiscalItem->descricaoItemVenda = $item->descricao;
+        $itemVenda->descricao = $item->descricao;
+        $itemVenda->listaServico = $item->codigoServico;
+
+        $retorno = $itemVenda->create();
+        if(!$retorno[0]){
+
+            $db->rollBack();
+            http_response_code(500);
+            echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1]));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Venda.(Vi01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            exit;
+        }
+        else{
+            $notaFiscalItem->idItemVenda = $itemVenda->idItemVenda;
+        }
+    }
+
+    $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
+    $notaFiscalItem->numeroOrdem = $nfiOrdem;
+    $notaFiscalItem->cnae = $item->cnae;
+    $notaFiscalItem->unidade = "UN";
+    if (empty($item->quantidade)) $item->quantidade = 1;
+    $notaFiscalItem->quantidade = floatval($item->quantidade);
+    $notaFiscalItem->valorUnitario = floatval($item->valor);
+    $notaFiscalItem->valorTotal = (floatval($item->valor)*floatval($item->quantidade));
+    $notaFiscalItem->cstIss = $item->cst;
+    $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
+    $notaFiscalItem->taxaIss = $item->taxaIss;
+    $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
+
+    $totalItens += floatval($notaFiscalItem->valorTotal);
+
+    $retorno = $notaFiscalItem->create();
+    if(!$retorno[0]){
+
+        $db->rollBack();
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Nota Fiscal.(I01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
+    else{
+
+        $descricaoServicoUnico .= $item->descricao." | ";
+        $notaFiscalItem->descricaoItemVenda = $item->descricao;
+        $arrayItemNF[] = $notaFiscalItem;
     }
 }
 if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
