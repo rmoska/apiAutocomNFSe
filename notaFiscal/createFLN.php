@@ -157,14 +157,23 @@ foreach ( $data->itemServico as $item )
     }
     if(
         empty($item->quantidade) ||
-        empty($item->valor) ||
+        empty($item->valor)
+    ){
+
+        $db->rollBack();
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos 2."));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        exit;
+    }
+    if(
         empty($item->cst) ||
         empty($item->taxaIss) 
     ){
 
         $db->rollBack();
         http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos 2."));
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos 3."));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
