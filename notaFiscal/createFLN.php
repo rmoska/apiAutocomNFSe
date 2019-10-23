@@ -146,7 +146,9 @@ foreach ( $data->itemServico as $item )
         empty($item->codigo) ||
         empty($item->descricao) ||
         empty($item->cnae) ||
-        empty($item->nbs) 
+        empty($item->nbs) ||
+        empty($item->quantidade) ||
+        empty($item->valor)
     ){
 
         $db->rollBack();
@@ -156,8 +158,7 @@ foreach ( $data->itemServico as $item )
         exit;
     }
     if(
-        empty($item->quantidade) ||
-        empty($item->valor)
+        empty($item->cst)
     ){
 
         $db->rollBack();
@@ -167,7 +168,6 @@ foreach ( $data->itemServico as $item )
         exit;
     }
     if(
-        empty($item->cst) ||
         empty($item->taxaIss) 
     ){
 
