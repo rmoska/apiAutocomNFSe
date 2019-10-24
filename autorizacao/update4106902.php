@@ -165,7 +165,7 @@ if($retorno[0]){
     //
     $xmlNFe = $xmlLote->outputMemory(true);
 
-    $xmlLoteAss = $objNFSe->signXML($xmlNFe, 'LoteRps', '');
+    $xmlLoteAss = $objNFSe->signXML($xmlNFe, 'LoteRps', 'EnviarLoteRpsEnvio');
     if ($objNFSe->errStatus) {
 
         http_response_code(401);
