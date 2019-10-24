@@ -151,7 +151,10 @@ if($retorno[0]){
 
     $xmlLote->startElement("RecepcionarLoteRps");
         $xmlLote->startElement("EnviarLoteRpsEnvio");
-            $xmlLote->startElement("LoteRps");
+        $xml->writeAttribute("xmlns", "http://isscuritiba.curitiba.pr.gov.br/iss/nfe.xsd");
+        $xml->writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        $xml->writeAttribute("xsi:schemaLocation", "http://isscuritiba.curitiba.pr.gov.br/iss/nfe.xsd");
+        $xmlLote->startElement("LoteRps");
             $xmlLote->writeElement("NumeroLote", 1);
             $xmlLote->writeElement("Cnpj", $emitente->documento);
             $xmlLote->writeElement("InscricaoMunicipal", $autorizacao->cmc);
