@@ -134,6 +134,10 @@ if($retorno[0]){
     //
     $xmlNFe = $xml->outputMemory(true);
 
+    error_log($xmlLote, 3, "../arquivosNFSe/apiNFe.log");
+  
+exit; 
+
     $xmlAss = $objNFSe->signXML($xmlNFe, 'InfRps', '');
     if ($objNFSe->errStatus) {
 
