@@ -161,8 +161,10 @@ if($retorno[0]){
                 $xmlLote->endElement(); // LoteRps
         $xmlLote->endElement(); // EnviarLoteRpsEnvio
     $xmlLote->endElement(); // RecepcionarLoteRps
+    //
+    $xmlNFe = $xmlLote->outputMemory(true);
 
-    error_log($xmlLote, 3, "../arquivosNFSe/apiNFe.log");
+    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
   
 exit; 
 
