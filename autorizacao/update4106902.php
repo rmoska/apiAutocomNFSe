@@ -146,29 +146,23 @@ if($retorno[0]){
     $xmlLote = new XMLWriter;
     $xmlLote->openMemory();
 
-
     $xmlLote->startElement("RecepcionarLoteRps");
         $xmlLote->startElement("EnviarLoteRpsEnvio");
             $xmlLote->startElement("LoteRps");
-                $xmlLote->writeElement("NumeroLote", 1);
-                $xmlLote->writeElement("Cnpj", $emitente->documento);
-                $xmlLote->writeElement("InscricaoMunicipal", $autorizacao->cmc);
-                $xmlLote->writeElement("QuantidadeRps", 1);
-                $xmlLote->startElement("ListaRps");
-
+            $xmlLote->writeElement("NumeroLote", 1);
+            $xmlLote->writeElement("Cnpj", $emitente->documento);
+            $xmlLote->writeElement("InscricaoMunicipal", $autorizacao->cmc);
+            $xmlLote->writeElement("QuantidadeRps", 1);
+            $xmlLote->startElement("ListaRps");
                 $xmlLote->writeRaw($xmlAss);
-
-                $xmlLote->endElement(); // LoteRps
+            $xmlLote->endElement(); // ListaRps
+            $xmlLote->endElement(); // LoteRps
         $xmlLote->endElement(); // EnviarLoteRpsEnvio
     $xmlLote->endElement(); // RecepcionarLoteRps
     //
     $xmlNFe = $xmlLote->outputMemory(true);
 
-    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
-  
-exit; 
-
-    $xmlLoteAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
+    $xmlLoteAss = $objNFSe->signXML($xmlNFe, 'LoteRps', '');
     if ($objNFSe->errStatus) {
 
         http_response_code(401);
