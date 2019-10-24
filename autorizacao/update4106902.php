@@ -97,17 +97,17 @@ if($retorno[0]){
             $xml->writeElement("Status", 1); // 1 = normal
             $xml->startElement("Servico");
                 $xml->startElement("Valores");
-                    $xml->writeElement("nfse:ValorServicos", 10.00);
-                    $xml->writeElement("nfse:IssRetido", 2); 
-//                    $xml->writeElement("nfse:ValorIss", 0.00);
-//                    $xml->writeElement("nfse:Aliquota", 0.00); 
-                    $xml->writeElement("nfse:BaseCalculo", 10.00);
+                    $xml->writeElement("ValorServicos", 10.00);
+                    $xml->writeElement("IssRetido", 2); 
+//                    $xml->writeElement("ValorIss", 0.00);
+//                    $xml->writeElement("Aliquota", 0.00); 
+                    $xml->writeElement("BaseCalculo", 10.00);
                 $xml->endElement(); // Valores
                 $xml->writeElement("ItemListaServico", "7.10"); //$aAutoChave["codigoServico"]); 
 //                $xml->writeElement("CodigoCnae", "6190699");
 //                $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço
-                $xml->writeElement("nfse:Discriminacao", "Teste homologacao");
-                $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
+                $xml->writeElement("Discriminacao", "Teste homologacao");
+                $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
             $xml->endElement(); // Servico
             $xml->startElement("Prestador");
                 $xml->writeElement("Cnpj", $emitente->documento);
@@ -124,19 +124,15 @@ if($retorno[0]){
                 $xml->startElement("Endereco");
                     $xml->writeElement("Endereco", "Rua Marechal Guilherme");
                     $xml->writeElement("Numero", "1475");
-                    $xml->writeElement("nfse:Bairro", "Estreito");
-                    $xml->writeElement("nfse:CodigoMunicipio", "4205407");
-                    $xml->writeElement("nfse:Uf", "SC");
+                    $xml->writeElement("Bairro", "Estreito");
+                    $xml->writeElement("CodigoMunicipio", "4205407");
+                    $xml->writeElement("Uf", "SC");
                 $xml->endElement(); // Endereco
             $xml->endElement(); // Tomador
         $xml->endElement(); // InfRps
     $xml->endElement(); // Rps
     //
     $xmlNFe = $xml->outputMemory(true);
-
-    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
-  
-exit; 
 
     $xmlAss = $objNFSe->signXML($xmlNFe, 'InfRps', '');
     if ($objNFSe->errStatus) {
