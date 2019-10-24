@@ -81,53 +81,53 @@ if($retorno[0]){
 
 
 
-    $xml->startElement("e:Rps");
-        $xml->startElement("e:InfRps");
+    $xml->startElement("Rps");
+        $xml->startElement("InfRps");
         $xml->writeAttribute("id", "1");
-            $xml->startElement("e:IdentificacaoRps");
-                $xml->writeElement("e:Numero", 1);
-                $xml->writeElement("e:Serie", 1);
-                $xml->writeElement("e:Tipo", 1);
+            $xml->startElement("IdentificacaoRps");
+                $xml->writeElement("Numero", 1);
+                $xml->writeElement("Serie", 1);
+                $xml->writeElement("Tipo", 1);
             $xml->endElement(); // IdentificacaoRps
             $dtEm = date("Y-m-d");
-            $xml->writeElement("e:DataEmissao", $dtEm);
-            $xml->writeElement("e:NaturezaOperacao", 3); // 3 = isento
+            $xml->writeElement("DataEmissao", $dtEm);
+            $xml->writeElement("NaturezaOperacao", 3); // 3 = isento
 //            $xml->writeElement("RegimeEspecialTributacao", 6); // 6 = ME/EPP
-            $xml->writeElement("e:OptanteSimplesNacional", 1); // 1 = SIM
-            $xml->writeElement("e:IncentivadorCultural", 2); // 2 = NAO
-            $xml->writeElement("e:Status", 1); // 1 = normal
-            $xml->startElement("e:Servico");
-                $xml->startElement("e:Valores");
-                    $xml->writeElement("e:ValorServicos", 10.00);
-                    $xml->writeElement("e:IssRetido", 2); 
+            $xml->writeElement("OptanteSimplesNacional", 1); // 1 = SIM
+            $xml->writeElement("IncentivadorCultural", 2); // 2 = NAO
+            $xml->writeElement("Status", 1); // 1 = normal
+            $xml->startElement("Servico");
+                $xml->startElement("Valores");
+                    $xml->writeElement("ValorServicos", 10.00);
+                    $xml->writeElement("IssRetido", 2); 
 //                    $xml->writeElement("ValorIss", 0.00);
 //                    $xml->writeElement("Aliquota", 0.00); 
-                    $xml->writeElement("e:BaseCalculo", 10.00);
+                    $xml->writeElement("BaseCalculo", 10.00);
                 $xml->endElement(); // Valores
-                $xml->writeElement("e:ItemListaServico", "7.10"); //$aAutoChave["codigoServico"]); 
+                $xml->writeElement("ItemListaServico", "7.10"); //$aAutoChave["codigoServico"]); 
 //                $xml->writeElement("CodigoCnae", "6190699");
 //                $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço
-                $xml->writeElement("e:Discriminacao", "Teste homologacao");
-                $xml->writeElement("e:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
+                $xml->writeElement("Discriminacao", "Teste homologacao");
+                $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
             $xml->endElement(); // Servico
-            $xml->startElement("e:Prestador");
-                $xml->writeElement("e:Cnpj", $emitente->documento);
-                $xml->writeElement("e:InscricaoMunicipal", $autorizacao->cmc);
+            $xml->startElement("Prestador");
+                $xml->writeElement("Cnpj", $emitente->documento);
+                $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->endElement(); // Prestador
 
-            $xml->startElement("e:Tomador");
-                $xml->startElement("e:IdentificacaoTomador");
-                    $xml->startElement("e:CpfCnpj");
-                        $xml->writeElement("e:Cpf", "03118290072");
+            $xml->startElement("Tomador");
+                $xml->startElement("IdentificacaoTomador");
+                    $xml->startElement("CpfCnpj");
+                        $xml->writeElement("Cpf", "03118290072");
                     $xml->endElement(); // CpfCnpj
                 $xml->endElement(); // IdentificacaoTomador
-                $xml->writeElement("e:RazaoSocial", "Tomador Teste");
-                $xml->startElement("e:Endereco");
-                    $xml->writeElement("e:Endereco", "Rua Marechal Guilherme");
-                    $xml->writeElement("e:Numero", "1475");
-                    $xml->writeElement("e:Bairro", "Estreito");
-                    $xml->writeElement("e:CodigoMunicipio", "4205407");
-                    $xml->writeElement("e:Uf", "SC");
+                $xml->writeElement("RazaoSocial", "Tomador Teste");
+                $xml->startElement("Endereco");
+                    $xml->writeElement("Endereco", "Rua Marechal Guilherme");
+                    $xml->writeElement("Numero", "1475");
+                    $xml->writeElement("Bairro", "Estreito");
+                    $xml->writeElement("CodigoMunicipio", "4205407");
+                    $xml->writeElement("Uf", "SC");
                 $xml->endElement(); // Endereco
             $xml->endElement(); // Tomador
         $xml->endElement(); // InfRps
@@ -149,14 +149,14 @@ if($retorno[0]){
     $xmlLote = new XMLWriter;
     $xmlLote->openMemory();
 
-    $xmlLote->startElement("e:RecepcionarLoteRps");
-        $xmlLote->startElement("e:EnviarLoteRpsEnvio");
-            $xmlLote->startElement("e:LoteRps");
-            $xmlLote->writeElement("e:NumeroLote", 1);
-            $xmlLote->writeElement("e:Cnpj", $emitente->documento);
-            $xmlLote->writeElement("e:InscricaoMunicipal", $autorizacao->cmc);
-            $xmlLote->writeElement("e:QuantidadeRps", 1);
-            $xmlLote->startElement("e:ListaRps");
+    $xmlLote->startElement("RecepcionarLoteRps");
+        $xmlLote->startElement("EnviarLoteRpsEnvio");
+            $xmlLote->startElement("LoteRps");
+            $xmlLote->writeElement("NumeroLote", 1);
+            $xmlLote->writeElement("Cnpj", $emitente->documento);
+            $xmlLote->writeElement("InscricaoMunicipal", $autorizacao->cmc);
+            $xmlLote->writeElement("QuantidadeRps", 1);
+            $xmlLote->startElement("ListaRps");
                 $xmlLote->writeRaw($xmlAss);
             $xmlLote->endElement(); // ListaRps
             $xmlLote->endElement(); // LoteRps
