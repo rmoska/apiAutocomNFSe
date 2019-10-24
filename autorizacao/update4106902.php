@@ -161,7 +161,11 @@ if($retorno[0]){
                 $xmlLote->endElement(); // LoteRps
         $xmlLote->endElement(); // EnviarLoteRpsEnvio
     $xmlLote->endElement(); // RecepcionarLoteRps
-            
+
+    error_log($xmlLote, 3, "../arquivosNFSe/apiNFe.log");
+  
+exit; 
+
     $xmlLoteAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
     if ($objNFSe->errStatus) {
 
@@ -171,7 +175,7 @@ if($retorno[0]){
         exit;
     }
 
-    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
+    error_log($xmlLoteAss, 3, "../arquivosNFSe/apiNFe.log");
 
 exit; 
 
