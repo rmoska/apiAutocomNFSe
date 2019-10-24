@@ -89,6 +89,7 @@ if($retorno[0]){
                 $xml->writeElement("Serie", 1);
                 $xml->writeElement("Tipo", 1);
             $xml->endElement(); // IdentificacaoRps
+            $dtEm = date("Y-m-d");
             $xml->writeElement("DataEmissao", $dtEm);
             $xml->writeElement("NaturezaOperacao", 3); // 3 = isento
 //            $xml->writeElement("RegimeEspecialTributacao", 6); // 6 = ME/EPP
@@ -143,6 +144,8 @@ if($retorno[0]){
         exit;
     }
 
+    error_log($xmlLoteAss."\n", 3, "../arquivosNFSe/apiNFe.xml");
+
     $xmlLote = new XMLWriter;
     $xmlLote->openMemory();
 
@@ -171,7 +174,7 @@ if($retorno[0]){
         exit;
     }
 
-    error_log($xmlLoteAss, 3, "../arquivosNFSe/apiNFe.log");
+    error_log($xmlLoteAss."\n", 3, "../arquivosNFSe/apiNFe.xml");
 
 exit; 
 
