@@ -81,7 +81,11 @@ $tomador->bairro = $data->tomador->bairro;
 $tomador->cep = $data->tomador->cep;
 $tomador->codigoMunicipio = $data->tomador->codigoMunicipio;
 $tomador->uf = $data->tomador->uf;
-$tomador->email = $data->tomador->email;
+$emailTomador = filter_var($data->tomador->email, FILTER_SANITIZE_EMAIL);
+if (!filter_var($emailTomador, FILTER_VALIDATE_EMAIL)) {
+    $emailTomador = $emitente->email;
+}
+$tomador->email = $emailTomador;
 
 // check tomador
 if (($idTomador = $tomador->check()) > 0) {
@@ -116,7 +120,6 @@ else {
         exit;
     }
 }
-
 
 if ($tomador->uf != 'SC') $cfps = '9203';
 else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
@@ -505,7 +508,7 @@ else {
             $msgRet = (string) $xmlNFRet->message;
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
     }
