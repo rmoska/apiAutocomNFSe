@@ -544,7 +544,6 @@ class comunicaNFSe {
         return $retorno;
     }
 
-
     //
     // define namespace / url e chama soap
     public function transmitirNFSeSimplISS( $codMunic, $sXml, $servico) {
@@ -586,6 +585,55 @@ class comunicaNFSe {
             $data .= $sNFSe;
             $data .= '</soapenv:Body>';
             $data .= '</soapenv:Envelope>';
+
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($data, $action, 'S');
+            //verifica o retorno
+            if (! $retorno) {
+                return array(false, 'URL de Comunicação inválida !');
+            }
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+
+        return $retorno;
+    }
+
+    //
+    // define namespace / url e chama soap
+    public function transmitirNFSeCuritiba( $sXml, $servico) {
+
+        try {
+
+            if ($this->ambiente=='P') // produção
+                $this->url = 'https://isscuritiba.curitiba.pr.gov.br/Iss.NfseWebService/nfsews.asmx?WSDL'; break;
+            else // homologação
+                $this->url = 'https://piloto-iss.curitiba.pr.gov.br/nfse_ws/NfseWs.asmx?WSDL';
+
+            $action = "http://www.e-governeapps2.com.br/WS_x0020_-_x0020_NFS-e_x0020_V1.0.0.1Soap/".$servico;
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
+                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
+            }
+
+            // limpa a variavel
+            $sNFSe = $sXml;
+            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+
+            $data = '';
+            $data .= '<soap:Envelope xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" ';
+            $data .= 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
+            $data .= 'xmlns:xsd="http://www.w3.org/2001/XMLSchema"> ';
+            $data .= '<soap12:Header/>';
+            $data .= '<soap12:Body>';
+            $data .= $sNFSe;
+            $data .= '</soap12:Body>';
+            $data .= '</soap12:Envelope>';
 
 
             //envia dados via SOAP

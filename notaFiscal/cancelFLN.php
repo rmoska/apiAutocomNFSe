@@ -106,8 +106,8 @@ if ($info['http_code'] == '200')
     if(!$retorno[0]){
 
         http_response_code(500);
-        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(C01)", "erro" => $retorno[1]));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(C01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
     else {

@@ -78,9 +78,6 @@ if($retorno[0]){
     //
     // Inicia o cabeçalho do documento XML
 
-
-
-
     $xml->startElement("Rps");
         $xml->startElement("InfRps");
         $xml->writeAttribute("id", "1");
@@ -152,9 +149,6 @@ if($retorno[0]){
     $xmlLote->startElement("RecepcionarLoteRps");
     $xmlLote->writeAttribute("xmlns", "http://www.e-governeapps2.com.br/");
         $xmlLote->startElement("EnviarLoteRpsEnvio");
-//        $xmlLote->writeAttribute("xmlns", "http://isscuritiba.curitiba.pr.gov.br/iss/nfe.xsd");
-//        $xmlLote->writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-//        $xmlLote->writeAttribute("xsi:schemaLocation", "http://isscuritiba.curitiba.pr.gov.br/iss/nfe.xsd");
         $xmlLote->startElement("LoteRps");
             $xmlLote->writeElement("NumeroLote", 1);
             $xmlLote->writeElement("Cnpj", $emitente->documento);

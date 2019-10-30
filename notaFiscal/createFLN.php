@@ -469,13 +469,13 @@ else {
 
         // update notaFiscal
         $retorno = $notaFiscal->update();
-        if($retorno[0]){
+        if(!$retorno[0]){
 
             $notaFiscal->deleteCompletoTransaction();
 
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
             exit;
         }
 
