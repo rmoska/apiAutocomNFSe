@@ -86,7 +86,7 @@ if($retorno[0]){
         $xml->endElement(); // nf
         $xml->startElement("prestador");
             $xml->writeElement("cpfcnpj", $emitente->documento);
-            $xml->writeElement("cidade", "8233"); // Palhoça
+            $xml->writeElement("cidade", "8105"); //"8233"); // Palhoça
         $xml->endElement(); // prestador
         $xml->startElement("tomador");
             $xml->writeElement("tipo", $tipoTomador); 
