@@ -608,7 +608,7 @@ class comunicaNFSe {
         try {
 
             if ($this->ambiente=='P') // produção
-                $this->url = 'https://isscuritiba.curitiba.pr.gov.br/Iss.NfseWebService/nfsews.asmx?WSDL'; break;
+                $this->url = 'https://isscuritiba.curitiba.pr.gov.br/Iss.NfseWebService/nfsews.asmx?WSDL'; 
             else // homologação
                 $this->url = 'https://piloto-iss.curitiba.pr.gov.br/nfse_ws/NfseWs.asmx?WSDL';
 
