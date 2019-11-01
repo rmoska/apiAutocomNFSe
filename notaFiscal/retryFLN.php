@@ -101,18 +101,19 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     // buscar token conexão
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
+    $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
     $autorizacao->readOne();
 
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
 
         $arrErr = array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.");
-        logErro("1", $arrErr);
+        logErro("1", $arrErr, NULL);
         continue;
     }
     else if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
         $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).");
-        logErro("1", $arrErr);
+        logErro("1", $arrErr, NULL);
         continue;
     }
 
@@ -194,7 +195,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     if($nfse->errStatus) {
 
         $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg);
-        logErro("1", $arrErr);
+        logErro("1", $arrErr, NULL);
         continue;
     }
 
@@ -202,7 +203,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     if ($nfse->errStatus) {
 
         $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg);
-        logErro("1", $arrErr);
+        logErro("1", $arrErr, NULL);
         continue;
     }
 
@@ -254,7 +255,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
             $notaFiscal->updateSituacao("F");
 
             $arrErr = array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]);
-            logErro("1", $arrErr);
+            logErro("1", $arrErr, NULL);
             continue;
         }
         else {
@@ -294,7 +295,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         
 //            if ($info['http_code'] == '200')
             array_push($arrOK, $info['http_code']);
-            logErro("3", $arrOK);
+            logErro("3", $arrOK, NULL);
 
             continue;
         }
@@ -304,7 +305,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         if (substr($info['http_code'],0,1) == '5') {
 
             $arrErr = array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !");
-            logErro("0", $arrErr);
+            logErro("0", $arrErr, NULL);
             continue;
         }
         else {
