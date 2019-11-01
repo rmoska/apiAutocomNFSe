@@ -238,9 +238,11 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
         fwrite($arqNFe, $result);
         fclose($arqNFe);
+        $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
         //
         $notaFiscal->numero = $nuNF;
         $notaFiscal->chaveNF = $cdVerif;
+        $notaFiscal->linkXml = $linkXml;
         $notaFiscal->situacao = "F";
         $notaFiscal->dataProcessamento = $dtProc;
         //
@@ -258,15 +260,42 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         else {
             //
             // gerar pdf
-            $arqPDF = $notaFiscal->printDanfpse($notaFiscal->idNotaFiscal, $db);
-
+            include './gerarPdfFLN.php';
+            $gerarPdf = new gerarPdf();
+            $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
+            $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
+            $notaFiscal->linkNF = $linkNF;
+            $notaFiscal->update();
+    
             $arrOK = array("http_code" => "201", 
                            "message" => "Nota Fiscal emitida", 
                            "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                            "numeroNF" => $notaFiscal->numero,
                            "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
                            "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF);
+            $retNFSe = json_encode($arrOK);
+
+            $headers = array( "Content-type: application/json" ); 
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+        
+            if ($notaFiscal->ambiente == "P") // PRODUÇÃO
+                curl_setopt($curl, CURLOPT_URL, "https://ws.fpay.me/crm/me/nfe/callback-status-nfe");
+            else // HOMOLOGAÇÃO
+                curl_setopt($curl, CURLOPT_URL, "http://fastpay-api-intranet-teste.fastconnect.com.br/crm/me/nfe/callback-status-nfe");
+        
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($curl, CURLOPT_POST, TRUE);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $retNFSe);
+            //
+            $result = curl_exec($curl);
+            $info = curl_getinfo( $curl );
+        
+//            if ($info['http_code'] == '200')
+            array_push($arrOK, "http_code" => $info['http_code']);
             logErro("3", $arrOK);
+
             continue;
         }
     }

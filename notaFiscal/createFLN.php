@@ -236,6 +236,7 @@ if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal.(NFi02)", 
                            "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
 
