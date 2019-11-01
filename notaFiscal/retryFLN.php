@@ -293,7 +293,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
             $info = curl_getinfo( $curl );
         
 //            if ($info['http_code'] == '200')
-            array_push($arrOK, "http_code" => $info['http_code']);
+            array_push($arrOK, $info['http_code']);
             logErro("3", $arrOK);
 
             continue;
