@@ -14,18 +14,18 @@ function logErro($statusErr, $arrMsg, $objNF){
     if ($statusErr == 1) {
 
         $strData = json_encode($arrMsg);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
     }
     else if ($statusErr == 2) {
 
         $objNF->deleteCompletoTransaction();
         $strData = json_encode($arrMsg);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
     }
     else if ($statusErr == 3) {
 
         $strData = json_encode($arrMsg);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../backup/apiRetry.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
     }   
 }
 
@@ -246,6 +246,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         $notaFiscal->linkXml = $linkXml;
         $notaFiscal->situacao = "F";
         $notaFiscal->dataProcessamento = $dtProc;
+        $notaFiscal->textoJustificativa = 'Reprocessada por Timeout';
         //
         // update notaFiscal
         $retorno = $notaFiscal->update();
