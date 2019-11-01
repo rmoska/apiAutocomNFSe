@@ -1,5 +1,6 @@
 <?php
 
+exit;
 //phpinfo();
 
 $arq = "C:\Desenv\NFSe\SC\BalnearioCamboriu\xmlNFSeRetorno.xml";

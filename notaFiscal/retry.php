@@ -59,7 +59,6 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $notaFiscal = new NotaFiscal($db);
     $notaFiscal->idNotaFiscal = $rNF["idNotaFiscal"];
     $notaFiscal->readOne();
-    $notaFiscal->dataEmissao = date("Y-m-d"); // ajusta data de emissão
 
     $tomador = new Tomador($db);
     $tomador->idTomador = $notaFiscal->idTomador;
