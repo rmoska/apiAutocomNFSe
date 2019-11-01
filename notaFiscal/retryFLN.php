@@ -263,7 +263,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         else {
             //
             // gerar pdf
-            include './gerarPdfFLN.php';
+            include_once './gerarPdfFLN.php';
             $gerarPdf = new gerarPdf();
             $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
             $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
