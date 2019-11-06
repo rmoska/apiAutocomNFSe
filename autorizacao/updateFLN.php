@@ -79,41 +79,40 @@ if($retorno[0]){
     //
     // Inicia o cabeçalho do documento XML
     $xml->startElement("xmlProcessamentoNfpse");
-    $xml->writeElement("bairroTomador", "Centro");
-    $xml->writeElement("baseCalculo", 0.00);
-    $xml->writeElement("cfps", "9201");
-    $xml->writeElement("codigoMunicipioTomador", $emitente->codigoMunicipio);
-    $xml->writeElement("codigoPostalTomador", "88015000");
+    $xml->writeElement("identificacao", 1);
+    $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
+    $xml->writeElement("numeroAEDF", $nuAEDF);
+    $xml->writeElement("numeroSerie", 1);
     $dtEm = date("Y-m-d");
     $xml->writeElement("dataEmissao", $dtEm);
-    $xml->writeElement("emailTomador", "rodrigo@autocominformatica.com.br");
-    $xml->writeElement("identificacao", 1);
+    $xml->writeElement("cfps", "9201");
+    $xml->writeElement("baseCalculo", 0.00);
+    $xml->writeElement("valorISSQN", 0.00);
+    $xml->writeElement("valorTotalServicos", 2.00);
     $xml->writeElement("identificacaoTomador", "03118290072");
+    $xml->writeElement("razaoSocialTomador", "Tomador Teste API");
+    $xml->writeElement("logradouroTomador", "Rua Marechal Guilherme");
+    $xml->writeElement("numeroEnderecoTomador", "1");
+    $xml->writeElement("bairroTomador", "Centro");
+    $xml->writeElement("codigoMunicipioTomador", $emitente->codigoMunicipio);
+    $xml->writeElement("codigoPostalTomador", "88015000");
+    $xml->writeElement("ufTomador", "SC");
+    $xml->writeElement("emailTomador", "rodrigo@autocominformatica.com.br");
     //		
     // ITENS
     $xml->startElement("itensServico");
         $xml->startElement("itemServico");
-        $xml->writeElement("aliquota", 0.00);
-        $xml->writeElement("cst", "13");
         $xml->writeElement("descricaoServico", "Teste de Homologacao");
         $xml->writeElement("idCNAE", trim($autorizacao->cnae));
+        $xml->writeElement("cst", "13");
+        $xml->writeElement("aliquota", 0.00);
         $xml->writeElement("quantidade", 1.00);
         $xml->writeElement("baseCalculo", 0.00);
-        $xml->writeElement("valorTotal", 2.00);
         $xml->writeElement("valorUnitario", 2.00);
+        $xml->writeElement("valorTotal", 2.00);
         $xml->endElement(); // ItemServico
     $xml->endElement(); // ItensServico
     //
-    $xml->writeElement("logradouroTomador", "Rua Marechal Guilherme");
-
-    $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
-    $xml->writeElement("numeroAEDF", $nuAEDF);
-    $xml->writeElement("numeroEnderecoTomador", "1");
-    $xml->writeElement("numeroSerie", 1);
-    $xml->writeElement("razaoSocialTomador", "Tomador Teste API");
-    $xml->writeElement("ufTomador", "SC");
-    $xml->writeElement("valorISSQN", 0.00);
-    $xml->writeElement("valorTotalServicos", 2.00);
     $xml->endElement(); // xmlNfpse
     //
     $xmlNFe = $xml->outputMemory(true);
