@@ -174,7 +174,7 @@ foreach ( $data->itemServico as $item )
         $itemVenda->cnae = $item->cnae;
         $itemVenda->ncm = $item->nbs;
 
-        $retorno = $itemVenda->updateVar();
+        $itemVenda->updateVar();
 
     }
     else 
