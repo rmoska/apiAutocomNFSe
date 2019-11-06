@@ -169,6 +169,13 @@ foreach ( $data->itemServico as $item )
     if (($idItemVenda = $itemVenda->check()) > 0) 
     {
         $notaFiscalItem->idItemVenda = $idItemVenda;
+
+        $itemVenda->descricao = $item->descricao;
+        $itemVenda->cnae = $item->cnae;
+        $itemVenda->ncm = $item->nbs;
+
+        $retorno = $itemVenda->updateVar();
+
     }
     else 
     {
@@ -253,9 +260,6 @@ if (count($arrayItemNF) == 0) {
 // cria e transmite nota fiscal
 else {
 
-    // calcular Imposto Aproximado IBPT
-    $notaFiscal->calcImpAprox();
-
     // buscar token conexão
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
@@ -277,6 +281,9 @@ else {
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). Emitente=".$autorizacao->idEmitente." AEDF=".$autorizacao->aedf." Pwd=".$autorizacao->senhaWeb." NF=".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
+
+    // calcular Imposto Aproximado IBPT
+    $notaFiscal->calcImpAprox();
 
     // montar xml nfse
     $vlTotBC = 0; 
@@ -345,7 +352,8 @@ else {
         $xml->endElement(); // ItemServico
     }
     $xml->endElement(); // ItensServico
-    $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
+    if (($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>''))
+        $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
     $xml->endElement(); // xmlNfpse
     //
     $xmlNFe = $xml->outputMemory(true);
