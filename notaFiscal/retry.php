@@ -105,7 +105,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     else {
     
         echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio.$arqPhp."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
 }
