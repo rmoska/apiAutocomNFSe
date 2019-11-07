@@ -60,5 +60,25 @@ class Municipio{
         return $codigoTOM;
     }
 
+    function buscaMunicipioProvedor($codMun){
+ 
+        // query to read single record
+        $query = "SELECT provedor FROM municipioProvedor WHERE codigoMunicipio = ? LIMIT 0,1";
+
+        $stmt = $this->conn->prepare( $query );
+        $codMun=htmlspecialchars(strip_tags($codMun));
+        $stmt->bindParam(1, $codMun);
+        $stmt->execute();
+
+        $codigoTOM = 0;
+        if ($stmt->rowCount() >0) {
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $provedor = $row['provedor'];
+        }
+
+        return $codigoTOM;
+    }
+
 }    
 ?>
