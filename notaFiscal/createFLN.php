@@ -485,7 +485,7 @@ else {
         $retorno = $notaFiscal->update();
         if(!$retorno[0]){
 
-            $notaFiscal->deleteCompletoTransaction();
+            //$notaFiscal->deleteCompletoTransaction();
 
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
@@ -502,7 +502,8 @@ else {
     }
     else {
 
-        $notaFiscal->deleteCompletoTransaction();
+        //$notaFiscal->deleteCompletoTransaction();
+        $notaFiscal->updateSituacao("E");
 
         $msg = $result;
         $dados = json_decode($result);

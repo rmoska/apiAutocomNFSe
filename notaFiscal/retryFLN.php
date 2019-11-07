@@ -18,7 +18,11 @@ function logErro($statusErr, $arrMsg, $objNF){
     }
     else if ($statusErr == 2) {
 
-        $objNF->deleteCompletoTransaction();
+        //$objNF->deleteCompletoTransaction();
+        $objNF->situacao = 'E';
+        $objNF->textoResposta = $arrMsg['resposta'];
+        $objNF->update();
+        //$objNF->updateSituacao("E");
         $strData = json_encode($arrMsg);
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
     }
