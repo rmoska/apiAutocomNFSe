@@ -5,8 +5,6 @@
     else $cfps = '9201';
     $notaFiscal->cfop = $cfps;          
     
-    // 
-    // cria e transmite nota fiscal
     //
     // buscar token conexão
     $autorizacao = new Autorizacao($db);
