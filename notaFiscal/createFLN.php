@@ -504,15 +504,15 @@ else {
 
         //$notaFiscal->deleteCompletoTransaction();
         //$notaFiscal->updateSituacao("E");
-        $notaFiscal->situacao = 'E';
-        $msgRet = (string) $xmlNFRet->message;
-        $notaFiscal->textoResposta = $msgRet;
-        $notaFiscal->update();
 
         $msg = $result;
         $dados = json_decode($result);
         if (isset($dados->error)) {
 
+            $notaFiscal->situacao = 'E';
+            $notaFiscal->textoResposta = "(".$dados->error.") ".$dados->error_description;
+            $notaFiscal->update();
+    
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !!", "resposta" => "(".$dados->error.") ".$dados->error_description));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !! (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
@@ -522,6 +522,10 @@ else {
 
             $xmlNFRet = simplexml_load_string(trim($result));
             $msgRet = (string) $xmlNFRet->message;
+            $notaFiscal->situacao = 'E';
+            $notaFiscal->textoResposta = $msgRet;
+            $notaFiscal->update();
+
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
