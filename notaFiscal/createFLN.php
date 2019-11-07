@@ -503,7 +503,11 @@ else {
     else {
 
         //$notaFiscal->deleteCompletoTransaction();
-        $notaFiscal->updateSituacao("E");
+        //$notaFiscal->updateSituacao("E");
+        $notaFiscal->situacao = 'E';
+        $msgRet = (string) $xmlNFRet->message;
+        $notaFiscal->textoResposta = $msgRet;
+        $notaFiscal->update();
 
         $msg = $result;
         $dados = json_decode($result);
