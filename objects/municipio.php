@@ -77,7 +77,7 @@ class Municipio{
             $provedor = $row['provedor'];
         }
 
-        return $codigoTOM;
+        return $provedor;
     }
 
 }    
