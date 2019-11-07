@@ -60,7 +60,7 @@ if(
     if($retorno[0]){
 
         http_response_code(201);
-        echo json_encode(array("http_code" => "201", "message" => "Emitente incluído", "idEmitente" => $emitente->idEmitente));
+        echo json_encode(array("http_code" => "201", "message" => "Emitente atualizado", "idEmitente" => $emitente->idEmitente));
     }
     else{
  
