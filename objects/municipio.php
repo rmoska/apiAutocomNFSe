@@ -63,7 +63,7 @@ class Municipio{
     function buscaMunicipioProvedor($codMun){
  
         // query to read single record
-        $query = "SELECT provedor FROM municipioProvedor WHERE codigoMunicipio = ? LIMIT 0,1";
+        $query = "SELECT provedor FROM municipioProvedor WHERE idCodigoUFMunicipio = ? LIMIT 0,1";
 
         $stmt = $this->conn->prepare( $query );
         $codMun=htmlspecialchars(strip_tags($codMun));
