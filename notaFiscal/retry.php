@@ -51,6 +51,7 @@ include_once '../objects/itemVenda.php';
 include_once '../objects/emitente.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
+include_once '../objects/municipio.php';
 include_once '../shared/utilities.php';
 $utilities = new Utilities();
 
@@ -96,7 +97,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
     $arqPhp = ''; 
     if ($provedor > '')
-        $arqPhp = 'retry'.$provedor.'.php'; 
+        $arqPhp = 'retry'.$provedor.'nf.php'; 
 
     if (($arqPhp>'') && (file_exists($arqPhp))) {
         include $arqPhp;
