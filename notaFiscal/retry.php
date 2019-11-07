@@ -97,7 +97,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
     $arqPhp = ''; 
     if ($provedor > '')
-        $arqPhp = 'retry'.$provedor.'nf.php'; 
+        $arqPhp = 'retry'.$provedor.'.php'; 
 
     if (($arqPhp>'') && (file_exists($arqPhp))) {
         include $arqPhp;
