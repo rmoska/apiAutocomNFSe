@@ -446,24 +446,16 @@ class NotaFiscal{
     // check notaFiscal Venda.Emitente
     function checkVenda(){
     
-        $query = "SELECT nf.numero, nf.situacao FROM " . $this->tableName . " nf
+        $query = "SELECT nf.idNotaFiscal, nf.numero, nf.situacao FROM " . $this->tableName . " nf
                   WHERE nf.docOrigemNumero = ? AND nf.situacao IN ('T','F') LIMIT 1"; // Pendente Timeout / Faturada
         $stmt = $this->conn->prepare($query);
     
-        // sanitize
         $this->docOrigemNumero=htmlspecialchars(strip_tags($this->docOrigemNumero));
-    
-        // bind
         $stmt->bindParam(1, $this->docOrigemNumero);
-    
-        // execute query
         $stmt->execute();
-
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $situacao = $row['situacao'];
-        $nuNF = $row['numero'];
-    
-        return array("existe" => $stmt->rowCount(), "situacao" => $situacao, "numeroNF" => $nuNF);
+        
+        return array("existe" => $stmt->rowCount(), "situacao" => $row['situacao'], "numero" => $row['numero'], "idNotaFiscal" => $row['idNotaFiscal']);
     }    
 
     //

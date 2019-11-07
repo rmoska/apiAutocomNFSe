@@ -38,10 +38,18 @@ $notaFiscal->dadosAdicionais = $data->observacao;
 $checkNF = $notaFiscal->checkVenda();
 if ($checkNF["existe"] > 0) {
 
-    ($checkNF["situacao"] == "F") ? $situacao = "Faturada" : $situacao = "Pendente"; 
+    switch ($checkNF["situacao"]) {
+        case 'F': 
+            $situacao = "Faturada"; break;
+        case 'T': 
+            $situacao = "Pendente por Timeout"; break;
+        default: 
+            $situacao = "ERRO"; break;
+    }
     http_response_code(400);
     echo json_encode(array("http_code" => "400", 
-                            "message" => "Nota Fiscal já gerada para esta Venda. NF n. ".$checkNF["numeroNF"]." - Situação ".$situacao));
+                           "idNotaFiscal" => $checkNF["idNotaFiscal"],
+                           "message" => "Nota Fiscal já processada para esta Venda. NF n. ".$checkNF["numero"]." - Situação ".$situacao));
     exit;
 }
 
