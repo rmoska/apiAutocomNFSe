@@ -32,7 +32,7 @@ if(
 
     $emitente->documento = $data->documento;
     
-    if ($idEmitente = $emitente->check() > 0) {
+    if (($idEmitente = $emitente->check()) > 0) {
 
         $emitente->idEmitente = $idEmitente;
         $emitente->readOne();

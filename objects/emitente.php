@@ -272,11 +272,8 @@ class Emitente{
                   WHERE documento = ? LIMIT 1";
     
         $stmt = $this->conn->prepare($query);
-    
         $this->documento=htmlspecialchars(strip_tags($this->documento));
-
         $stmt->bindParam(1, $this->documento);
-    
         $stmt->execute();
 
         $idEmitente = 0;
