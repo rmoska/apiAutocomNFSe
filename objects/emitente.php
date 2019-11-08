@@ -266,7 +266,7 @@ class Emitente{
     }    
 
     // check emitente
-    function check(){
+    function check() {
     
         $query = "SELECT * FROM " . $this->tableName . "
                   WHERE documento = ? LIMIT 1";

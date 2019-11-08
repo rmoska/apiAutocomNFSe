@@ -52,9 +52,6 @@ if(
     
         $retorno = $emitente->update();
 
-//        http_response_code(400);
-//        echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento, "idEmitente" => $idEmitente));
-//        exit;
     }
     else {
 
