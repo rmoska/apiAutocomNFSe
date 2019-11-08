@@ -29,33 +29,51 @@ if(
     !empty($data->uf) &&
     !empty($data->email) 
 ){
-    // set emitente property values
+
     $emitente->documento = $data->documento;
-    $emitente->nome = $data->nome;
-    $emitente->nomeFantasia = $data->nomeFantasia;
-    $emitente->logradouro = $data->logradouro;
-    $emitente->numero = $data->numero;
-    $emitente->complemento = $data->complemento;
-    $emitente->bairro = $data->bairro;
-    $emitente->cep = $data->cep;
-    $emitente->codigoMunicipio = $data->codigoMunicipio;
-    $emitente->uf = $data->uf;
-    $emitente->pais = $data->pais;
-    $emitente->fone = $data->fone;
-    $emitente->celular = $data->celular;
-    $emitente->email = $data->email;
     
     if ($idEmitente = $emitente->check() > 0) {
 
+        $emitente->idEmitente = $idEmitente;
         $emitente->readOne();
-
+        $emitente->nome = $data->nome;
+        $emitente->nomeFantasia = $data->nomeFantasia;
+        $emitente->logradouro = $data->logradouro;
+        $emitente->numero = $data->numero;
+        $emitente->complemento = $data->complemento;
+        $emitente->bairro = $data->bairro;
+        $emitente->cep = $data->cep;
+        $emitente->codigoMunicipio = $data->codigoMunicipio;
+        $emitente->uf = $data->uf;
+        $emitente->pais = $data->pais;
+        $emitente->fone = $data->fone;
+        $emitente->celular = $data->celular;
+        $emitente->email = $data->email;
+    
         $retorno = $emitente->update();
+
 //        http_response_code(400);
 //        echo json_encode(array("http_code" => "400", "message" => "Emitente já existe para este Documento:".$emitente->documento, "idEmitente" => $idEmitente));
 //        exit;
     }
-    else
+    else {
+
+        $emitente->nome = $data->nome;
+        $emitente->nomeFantasia = $data->nomeFantasia;
+        $emitente->logradouro = $data->logradouro;
+        $emitente->numero = $data->numero;
+        $emitente->complemento = $data->complemento;
+        $emitente->bairro = $data->bairro;
+        $emitente->cep = $data->cep;
+        $emitente->codigoMunicipio = $data->codigoMunicipio;
+        $emitente->uf = $data->uf;
+        $emitente->pais = $data->pais;
+        $emitente->fone = $data->fone;
+        $emitente->celular = $data->celular;
+        $emitente->email = $data->email;
+   
         $retorno = $emitente->create();
+    }
 
     if($retorno[0]){
 
