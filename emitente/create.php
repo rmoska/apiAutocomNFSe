@@ -105,7 +105,7 @@ else{
     $strData = json_encode($data);
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
   
-    $logMsg->register('E', 'emitente.create', 'Não foi possível incluir Emitente. Dados incompletos.', htmlspecialchars_decode($strData));
+    $logMsg->register('E', 'emitente.create', 'Não foi possível incluir Emitente. Dados incompletos.', htmlspecialchars($strData));
 
     exit;
 }
