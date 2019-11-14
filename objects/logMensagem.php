@@ -32,7 +32,7 @@ class LogMensagem {
         $this->mensagem=htmlspecialchars(strip_tags($this->mensagem));
         $this->anexo=htmlspecialchars(strip_tags($this->anexo));
     
-        $dtHr = date('Y-m-d H:i:s')
+        $dtHr = date('Y-m-d H:i:s');
         $stmt->bindParam(":dataHora", $dtHr);
         $stmt->bindParam(":nivel", $this->nivel);
         $stmt->bindParam(":origem", $this->origem);
