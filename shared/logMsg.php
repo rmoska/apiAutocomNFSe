@@ -20,7 +20,7 @@ class LogMsg {
         $logMsg->mensagem = $msg;
         $logMsg->anexo = $anexo;
 
-        $logMsg->register();
+        $logMsg->create();
 
     }
 
