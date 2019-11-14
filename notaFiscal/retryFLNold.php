@@ -1,10 +1,107 @@
 <?php
 
+// Classe para repetir tentativa de emissão de NFSe PMF pendentes por Servidor Indisponível / Timeout
+
+//
+// statusErr 
+// 0 = situação mantida (timeout)
+// 1 = situação mantida, erro autorização
+// 2 = erro no processamento, nf excluída 
+// 3 = emitida com sucesso
+function logErro($statusErr, $arrMsg, $objNF){
+
+    // retorna msg erro / sucesso / situação mantida
+    if ($statusErr == 1) {
+
+        $strData = json_encode($arrMsg);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
+    }
+    else if ($statusErr == 2) {
+
+        //$objNF->deleteCompletoTransaction();
+        $objNF->situacao = 'E';
+        $objNF->textoResposta = $arrMsg['resposta'];
+        $objNF->update();
+        //$objNF->updateSituacao("E");
+        $strData = json_encode($arrMsg);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
+    }
+    else if ($statusErr == 3) {
+
+        $strData = json_encode($arrMsg);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$strData."\n"), 3, "../arquivosNFSe/apiRetry.log");
+    }   
+}
+
+include_once '../config/database.php';
+include_once '../objects/notaFiscal.php';
+ 
+$database = new Database();
+$db = $database->getConnection();
+
+$dirAPI = basename(dirname(dirname( __FILE__ )));
+
+$notaFiscal = new NotaFiscal($db);
+ 
+$stmt = $notaFiscal->readPendente();
+
+//
+// se não encontrou registros, encerra processamento
+if($stmt->rowCount() == 0)
+    exit;
+ 
+include_once '../objects/notaFiscalItem.php';
+include_once '../objects/itemVenda.php';
+include_once '../objects/emitente.php';
+include_once '../objects/tomador.php';
+include_once '../objects/autorizacao.php';
+include_once '../shared/utilities.php';
+$utilities = new Utilities();
+
+while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+    $notaFiscal = new NotaFiscal($db);
+    $notaFiscal->idNotaFiscal = $rNF["idNotaFiscal"];
+    $notaFiscal->readOne();
+    $notaFiscal->dataEmissao = date("Y-m-d"); // ajusta data de emissão
+
+    $tomador = new Tomador($db);
+    $tomador->idTomador = $notaFiscal->idTomador;
+    $tomador->readOne();
+
+    $emitente = new Emitente($db);
+    $emitente->idEmitente = $notaFiscal->idEmitente;
+    $emitente->readOne();
+
     if ($tomador->uf != 'SC') $cfps = '9203';
     else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
     else $cfps = '9201';
-    $notaFiscal->cfop = $cfps;          
+    $notaFiscal->cfop = $cfps;
+            
+    $notaFiscalItem = new NotaFiscalItem($db);
+    $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
+
+    $totalItens = 0;
+    $vlTotBC = 0; 
+    $vlTotISS = 0; 
+    $vlTotServ = 0; 
+    foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
+
+        $totalItens += floatval($notaFiscalItem->valorTotal);
+        $vlTotServ += $notaFiscalItem->valorTotal;
+        $vlTotBC += $notaFiscalItem->valorBCIss; 
+        $vlTotISS += $notaFiscalItem->valorIss; 
+   }
+    if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
+
+        $arrErr = array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal.(NFi02)", 
+                                "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )");
+        logErro("2", $arrErr, $notaFiscal);
+        continue;
+    }
     
+    // 
+    // cria e transmite nota fiscal
     //
     // buscar token conexão
     $autorizacao = new Autorizacao($db);
@@ -237,5 +334,5 @@
             }
         }
     }
-
+}
 ?>

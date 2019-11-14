@@ -86,7 +86,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
 
         $arrErr = array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal.(NFi02)", 
-                                "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )");
+                        "erro" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )");
         logErro("2", $arrErr, $notaFiscal);
         continue;
     }
@@ -104,9 +104,10 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     }
     else {
     
-        echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe."));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio.$arqPhp."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
+        $arrErr = array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe", 
+                        "erro" => "Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio );
+        logErro("2", $arrErr, $notaFiscal);
+        continue;
     }
 }
 
