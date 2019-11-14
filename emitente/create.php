@@ -13,7 +13,7 @@ include_once '../objects/emitente.php';
  
 $database = new Database();
 $db = $database->getConnection();
-$logMsg = new LogMsg(db);
+$logMsg = new LogMsg($db);
  
 $emitente = new Emitente($db);
  

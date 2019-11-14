@@ -48,6 +48,6 @@ class LogMensagem {
             return array(false, $aErr[2]);
         }
     }    
-
+    
 }
 ?>
