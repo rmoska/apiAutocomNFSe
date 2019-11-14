@@ -8,10 +8,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
+include_once '../shared/logMsg.php';
 include_once '../objects/emitente.php';
  
 $database = new Database();
 $db = $database->getConnection();
+$logMsg = new LogMsg();
  
 $emitente = new Emitente($db);
  
@@ -102,6 +104,9 @@ else{
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos. Campo(s): ".$descErr));
     $strData = json_encode($data);
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+  
+    $logMsg->register('E', 'emitente.create', 'Não foi possível incluir Emitente. Dados incompletos.', $strData);
+
     exit;
 }
 ?>
