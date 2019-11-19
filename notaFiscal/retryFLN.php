@@ -15,13 +15,13 @@
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
 
         $arrErr = array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.");
-        logErro("1", $arrErr, NULL);
+        logErro("1", $arrErr, $notaFiscal);
         return;
     }
     else if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
         $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).");
-        logErro("1", $arrErr, NULL);
+        logErro("1", $arrErr, $notaFiscal);
         return;
     }
 
@@ -102,16 +102,16 @@
     $nfse = new SignNFSe($arraySign);
     if($nfse->errStatus) {
 
-        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg);
-        logErro("1", $arrErr, NULL);
+        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado.", "error" => $nfse->errMsg);
+        logErro("1", $arrErr, $notaFiscal);
         return;
     }
 
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
     if ($nfse->errStatus) {
 
-        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg);
-        logErro("1", $arrErr, NULL);
+        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML.", "error" => $nfse->errMsg);
+        logErro("1", $arrErr, $notaFiscal);
         return;
     }
 
@@ -156,58 +156,45 @@
         $notaFiscal->dataProcessamento = $dtProc;
         $notaFiscal->textoJustificativa = 'Reprocessada por Timeout';
         //
-        // update notaFiscal
         $retorno = $notaFiscal->update();
-        if(!$retorno[0]) {
+        //
+        // gerar pdf
+        include_once './gerarPdfFLN.php';
+        $gerarPdf = new gerarPdf();
+        $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
+        $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
+        $notaFiscal->linkNF = $linkNF;
+        $notaFiscal->update();
 
-            // força update simples
-            $notaFiscal->updateSituacao("F");
+        $arrOK = array("http_code" => "201", 
+                        "message" => "Nota Fiscal emitida", 
+                        "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                        "numeroNF" => $notaFiscal->numero,
+                        "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
+                        "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF);
+        $retNFSe = json_encode($arrOK);
 
-            $arrErr = array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]);
-            logErro("1", $arrErr, NULL);
-            return;
-        }
-        else {
-            //
-            // gerar pdf
-            include_once './gerarPdfFLN.php';
-            $gerarPdf = new gerarPdf();
-            $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
-            $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
-            $notaFiscal->linkNF = $linkNF;
-            $notaFiscal->update();
+        $headers = array( "Content-type: application/json" ); 
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
     
-            $arrOK = array("http_code" => "201", 
-                           "message" => "Nota Fiscal emitida", 
-                           "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                           "numeroNF" => $notaFiscal->numero,
-                           "xml" => "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet,
-                           "pdf" => "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF);
-            $retNFSe = json_encode($arrOK);
+        if ($notaFiscal->ambiente == "P") // PRODUÇÃO
+            curl_setopt($curl, CURLOPT_URL, "https://ws.fpay.me/crm/me/nfe/callback-status-nfe");
+        else // HOMOLOGAÇÃO
+            curl_setopt($curl, CURLOPT_URL, "http://fastpay-api-intranet-teste.fastconnect.com.br/crm/me/nfe/callback-status-nfe");
+    
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $retNFSe);
+        //
+        $result = curl_exec($curl);
+        $info = curl_getinfo( $curl );
+    
+        array_push($arrOK, $info['http_code']);
+        logErro("3", $arrOK, NULL);
 
-            $headers = array( "Content-type: application/json" ); 
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-        
-            if ($notaFiscal->ambiente == "P") // PRODUÇÃO
-                curl_setopt($curl, CURLOPT_URL, "https://ws.fpay.me/crm/me/nfe/callback-status-nfe");
-            else // HOMOLOGAÇÃO
-                curl_setopt($curl, CURLOPT_URL, "http://fastpay-api-intranet-teste.fastconnect.com.br/crm/me/nfe/callback-status-nfe");
-        
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-            curl_setopt($curl, CURLOPT_POST, TRUE);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $retNFSe);
-            //
-            $result = curl_exec($curl);
-            $info = curl_getinfo( $curl );
-        
-//            if ($info['http_code'] == '200')
-            array_push($arrOK, $info['http_code']);
-            logErro("3", $arrOK, NULL);
-
-            return;
-        }
+        return;
     }
     else {
 
@@ -223,16 +210,16 @@
             $dados = json_decode($result);
             if (isset($dados->error)) {
 
-                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description);
-                logErro("2", $arrErr, $notaFiscal);
+                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(1)", "error" => "(".$dados->error.") ".$dados->error_description);
+                logErro("1", $arrErr, $notaFiscal);
                 return;
             }
             else {
 
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
-                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(2)", "resposta" => $msgRet);
-                logErro("2", $arrErr, $notaFiscal);
+                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !(2)", "error" => $msgRet);
+                logErro("1", $arrErr, $notaFiscal);
                 return;
             }
         }

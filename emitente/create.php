@@ -83,7 +83,7 @@ if(
  
         http_response_code(500);
         echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Emitente. Serviço indisponível.", "erro" => $retorno[1]));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'emitente.create', 'Não foi possível incluir Emitente. Serviço indisponível.', $retorno[1]);
         exit;
     }
 }
@@ -103,10 +103,7 @@ else{
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos. Campo(s): ".$descErr));
     $strData = json_encode($data);
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Emitente. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-  
     $logMsg->register('E', 'emitente.create', 'Não foi possível incluir Emitente. Dados incompletos.', $strData);
-
     exit;
 }
 ?>
