@@ -16,7 +16,7 @@ function logErro($db, $statusErr, $arrMsg, $objNF){
 
     if ($statusErr == 0) {
 
-        $logMsg->register('A', 'notaFiscal.retry', $strData, '');
+        $logMsg->register('A', 'notaFiscal.retry', $arrMsg['message'], $strData);
     }
     else if ($statusErr == 1) {
 
