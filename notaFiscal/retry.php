@@ -7,8 +7,11 @@
 // 0 = situação mantida (timeout) 
 // 1 = erro autorização ou processamento, situação nf alterada 
 // 3 = emitida com sucesso
-function logErro($statusErr, $arrMsg, $objNF){
+function logErro($db, $statusErr, $arrMsg, $objNF){
 
+    include_once '../shared/logMsg.php';
+    $logMsg = new LogMsg($db);
+    
     $strData = json_encode($arrMsg);
 
     if ($statusErr == 0) {
@@ -20,6 +23,7 @@ function logErro($statusErr, $arrMsg, $objNF){
         //$objNF->deleteCompletoTransaction();
         $objNF->situacao = 'E';
         $objNF->textoResposta = $arrMsg['message'];
+        $objNF->textoJustificativa = $arrMsg['error'];
         $objNF->update();
 
         $logMsg->register('E', 'notaFiscal.retry', $arrMsg['message'], $arrMsg['error']);
@@ -88,7 +92,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         $arrErr = array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal.(NFi02)", 
                         "error" => "Valor dos itens não fecha com Valor Total da Nota. (".number_format($totalItens,2,'.','')." <> ".number_format($notaFiscal->valorTotal,2,'.','')." )");
-        logErro("1", $arrErr, $notaFiscal);
+        logErro($db, "1", $arrErr, $notaFiscal);
         continue;
     }
 
@@ -107,7 +111,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     
         $arrErr = array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe", 
                         "error" => "Município emitente = ".$emitente->codigoMunicipio );
-        logErro("1", $arrErr, $notaFiscal);
+        logErro($db, "1", $arrErr, $notaFiscal);
         continue;
     }
 }
