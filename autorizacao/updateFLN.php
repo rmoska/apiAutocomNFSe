@@ -121,68 +121,68 @@ if($retorno[0]){
     $xmlNFe = $xml->outputMemory(true);
     $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-    $xmlAss = $certificado->signXML($xmlNFe, 'xmlProcessamentoNfpse');
-    if ($certificado->errStatus) {
-
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$certificado->errMsg));
-//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'autorizacao.update', 'Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML.', 'Emitente='.$autorizacao->idEmitente);
-        exit;
-    }
-
-    //
-    // transmite NFSe	
-    $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
-    $curl = curl_init();
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-    curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($curl, CURLOPT_POST, TRUE);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
-    //
-    $result = curl_exec($curl);
-    $info = curl_getinfo( $curl );
-
     $nuNF = 0;
     $cdVerif = '';
 
-    if ($info['http_code'] == '200') {
-        //
-        $xmlNFRet = simplexml_load_string($result);
-        $nuNF = (string) $xmlNFRet->numeroSerie;
-        $cdVerif = (string) $xmlNFRet->codigoVerificacao;
+    $xmlAss = $certificado->signXML($xmlNFe, 'xmlProcessamentoNfpse');
+    if ($certificado->errStatus) {
+
+        $cdVerif = "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML.";
+//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'autorizacao.update', 'Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML.', $certificado->errMsg);
     }
-    else {
 
-        if (substr($info['http_code'],0,1) == '5') {
+    if ($cdVerif == '') {
 
-            $cdVerif = "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
-//            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', '');
+        //
+        // transmite NFSe	
+        $headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+        curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_POST, TRUE);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
+        //
+        $result = curl_exec($curl);
+        $info = curl_getinfo( $curl );
+
+        if ($info['http_code'] == '200') {
+            //
+            $xmlNFRet = simplexml_load_string($result);
+            $nuNF = (string) $xmlNFRet->numeroSerie;
+            $cdVerif = (string) $xmlNFRet->codigoVerificacao;
         }
         else {
-    
-            $msg = $result;
-            $dados = json_decode($result);
-            if (isset($dados->error)) {
 
-                $cdVerif = "Erro no envio da NFSe ! (".$dados->error.") ".$dados->error_description;
-//                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe !', '('.$dados->error.') '.$dados->error_description);
+            if (substr($info['http_code'],0,1) == '5') {
+
+                $cdVerif = "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
+    //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
+                $logMsg->register('A', 'autorizacao.update', 'Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', '');
             }
             else {
+        
+                $msg = $result;
+                $dados = json_decode($result);
+                if (isset($dados->error)) {
 
-                $xmlNFRet = simplexml_load_string(trim($result));
-                $msgRet = (string) $xmlNFRet->message;
-                $cdVerif = "Erro no envio da NFSe ! ".$msgRet;
-//                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-                $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe !', $msgRet);
+                    $cdVerif = "Erro no envio da NFSe ! (".$dados->error.") ".$dados->error_description;
+    //                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
+                    $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe !', '('.$dados->error.') '.$dados->error_description);
+                }
+                else {
+
+                    $xmlNFRet = simplexml_load_string(trim($result));
+                    $msgRet = (string) $xmlNFRet->message;
+                    $cdVerif = "Erro no envio da NFSe ! ".$msgRet;
+    //                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+                    $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe !', $msgRet);
+                }
             }
         }
     }
-
     if ($nuNF > 0) {
 
         $autorizacao->nfhomologada = $nuNF;
