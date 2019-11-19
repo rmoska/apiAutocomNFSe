@@ -190,11 +190,13 @@ if($retorno[0]){
     }
 
     http_response_code(201);
-    echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                            "token" => $autorizacao->token, 
-                            "validade" => $validade." dias",
-                            "nf-homolog" => $nuNF,
-                            "verificacao-homolog" => $cdVerif));
+    $aRet = array("http_code" => 201, "message" => "Autorização atualizada", 
+                    "token" => $autorizacao->token, 
+                    "validade" => $validade." dias",
+                    "nf-homolog" => $nuNF,
+                    "verificacao-homolog" => $cdVerif);
+    echo json_encode($aRet); 
+    $logMsg->register('S', 'autorizacao.update', 'Autorização atualizada.', json_encode($aRet));
 }
 else{
 
