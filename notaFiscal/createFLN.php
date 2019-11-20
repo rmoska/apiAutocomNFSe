@@ -51,7 +51,7 @@ if ($checkNF["existe"] > 0) {
     echo json_encode(array("http_code" => "400", 
                            "idNotaFiscal" => $checkNF["idNotaFiscal"],
                            "message" => "Nota Fiscal já processada para esta Venda. NF n. ".$checkNF["numero"]." - Situação ".$situacao));
-    $logMsg->register('E', 'notaFiscal.create', 'Nota Fiscal já processada para esta Venda. ID=('.$checkNF["idNotaFiscal"].') NF n. '.$checkNF["numero"].' - Situação '.$situacao, $strData);
+    $logMsg->register('E', 'notaFiscal.create', 'Nota Fiscal já processada para esta Venda. ID='.$checkNF["idNotaFiscal"].' NF n.'.$checkNF["numero"].' - Situação '.$situacao, $strData);
     exit;
 }
 
@@ -171,7 +171,7 @@ foreach ( $data->itemServico as $item )
 
         $db->rollBack();
         http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos 1."));
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos."));
 //        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item da Nota Fiscal. Dados incompletos.', $strData);
         exit;
@@ -433,6 +433,9 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
 //
 $result = curl_exec($curl);
 $info = curl_getinfo( $curl );
+
+print_r($result);
+print_r($info);
 
 if ($info['http_code'] == '200') {
 
