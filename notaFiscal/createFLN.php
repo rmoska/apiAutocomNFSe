@@ -51,6 +51,7 @@ if ($checkNF["existe"] > 0) {
     echo json_encode(array("http_code" => "400", 
                            "idNotaFiscal" => $checkNF["idNotaFiscal"],
                            "message" => "Nota Fiscal já processada para esta Venda. NF n. ".$checkNF["numero"]." - Situação ".$situacao));
+    $logMsg->register('E', 'notaFiscal.create', 'Nota Fiscal já processada para esta Venda. ID=('.$checkNF["idNotaFiscal"].') NF n. '.$checkNF["numero"].' - Situação '.$situacao, $strData);
     exit;
 }
 
