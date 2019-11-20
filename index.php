@@ -1,7 +1,32 @@
 <?php
+/*
+$arrOK = array("http_code" => "201", 
+"message" => "Nota Fiscal emitida", 
+"idNotaFiscal" => 331,
+"numeroNF" => "658",
+"xml" => "http://www.autocominformatica.com.br/apiAutocomNFSe/arquivosNFSe/29983942000119/transmitidas/29983942000119_00000658-nfse.xml",
+"pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/arquivosNFSe/29983942000119/danfpse/29983942000119_00000658-nfse.pdf");
+$retNFSe = json_encode($arrOK);
+
+$headers = array( "Content-type: application/json" ); 
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+
+curl_setopt($curl, CURLOPT_URL, "https://ws.fpay.me/crm/me/nfe/callback-status-nfe");
+
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+curl_setopt($curl, CURLOPT_POST, TRUE);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $retNFSe);
+//
+$result = curl_exec($curl);
+$info = curl_getinfo( $curl );
+print_r($result);
+print_r($info);
 
 exit;
-//phpinfo();
+*/
+phpinfo(); exit;
 
 $arq = "C:\Desenv\NFSe\SC\BalnearioCamboriu\xmlNFSeRetorno.xml";
 
