@@ -89,14 +89,23 @@ class Utilities{
     }//fim cleanString
 
 
-    public function logRetry($msg) {
+    public function codificaMsg($msg) {
 
-//        $arqLog = fopen("../backup/apiRetry.log", "a");
-
-        $arqLog = fopen("../arquivosNFSe/80449374000128/rps/apiRetry.log","wt");
-
-        fwrite($arqLog, $msg);
-        fclose($arqLog);
+        $codMsg = '';
+        if ((stristr($msg, 'tomador')) || (stristr($msg, 'país inv')) || (stristr($msg, 'município inv')) || (stristr($msg, 'uf inv')) ) {
+            $codMsg = 'TOMADOR';
+        }
+        else if ((stristr($msg, 'alíquota')) || (stristr($msg, 'cst')) || (stristr($msg, 'issqn')) ) {
+            $codMsg = 'ALIQUOTA';
+        }
+        else if (stristr($msg, 'cnae')) {
+            $codMsg = 'CNAE';
+        }
+        else if (stristr($msg, 'aedf')) {
+            $codMsg = 'AEDF';
+        }
+        
+        return $codMsg;
     }
 
 }

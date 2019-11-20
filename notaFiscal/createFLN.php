@@ -434,9 +434,6 @@ curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
 $result = curl_exec($curl);
 $info = curl_getinfo( $curl );
 
-print_r($result);
-print_r($info);
-
 if ($info['http_code'] == '200') {
 
     //
@@ -530,6 +527,7 @@ else {
 
         $msg = $result;
         $dados = json_decode($result);
+
         if (isset($dados->error)) {
 
             $notaFiscal->situacao = 'E';
@@ -537,7 +535,7 @@ else {
             $notaFiscal->update();
     
             http_response_code(500);
-            echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !!", "resposta" => "(".$dados->error.") ".$dados->error_description));
+            echo json_encode(array("http_code" => "401", "message" => "Erro no envio da NFSe !!", "resposta" => "(".$dados->error.") ".$dados->error_description));
 //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !! (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
             $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe !', '('.$dados->error.') '.$dados->error_description);
             exit;
@@ -550,8 +548,10 @@ else {
             $notaFiscal->textoResposta = $msgRet;
             $notaFiscal->update();
 
+            $codMsg = $utilities->codificaMsg($msgRet);
+
             http_response_code(500);
-            echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet));
+            echo json_encode(array("http_code" => "401", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet, "codigo" => $codMsg));
 //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
             $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
             exit;
