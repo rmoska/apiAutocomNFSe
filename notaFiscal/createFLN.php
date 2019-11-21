@@ -8,7 +8,7 @@ if( empty($data->documento) ||
     ($data->valorTotal <= 0) ) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos.", "codigo" => "A01"));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos.", "codigo" => "A04"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Nota Fiscal. Dados incompletos.', $strData);
     exit;
@@ -51,7 +51,7 @@ if ($checkNF["existe"] > 0) {
     echo json_encode(array("http_code" => "400", 
                            "idNotaFiscal" => $checkNF["idNotaFiscal"],
                            "message" => "Nota Fiscal já processada para esta Venda. NF n. ".$checkNF["numero"]." - Situação ".$situacao, 
-                           "codigo" => "A01"));
+                           "codigo" => "A04"));
     $logMsg->register('E', 'notaFiscal.create', 'Nota Fiscal já processada para esta Venda. ID='.$checkNF["idNotaFiscal"].' NF n.'.$checkNF["numero"].' - Situação '.$situacao, $strData);
     exit;
 }
@@ -75,7 +75,7 @@ if(
 
     $db->rollBack();
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos.", "codigo" => "A01"));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos.", "codigo" => "A03"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos.', $strData);
     exit;
@@ -172,7 +172,7 @@ foreach ( $data->itemServico as $item )
 
         $db->rollBack();
         http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos.", "codigo" => "A01"));
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos.", "codigo" => "A05"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item da Nota Fiscal. Dados incompletos.', $strData);
         exit;
@@ -261,7 +261,7 @@ if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal.(NFi02)", 
                            "erro" => "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", 
-                           "codigo" => "A01"));
+                           "codigo" => "A04"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.create', "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", $strData);
     exit;
@@ -291,7 +291,7 @@ else {
 
         $db->rollBack();
         http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.", "codigo" => "A01"));
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.", "codigo" => "A02"));
         $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. AEDFe não informado.', $strData);
         exit;
     }
@@ -299,7 +299,7 @@ else {
 
         $db->rollBack();
         http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).", "codigo" => "A01"));
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).", "codigo" => "A02"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). Emitente=".$autorizacao->idEmitente." AEDF=".$autorizacao->aedf." Pwd=".$autorizacao->senhaWeb." NF=".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).', $strData);
         exit;
@@ -465,9 +465,9 @@ if ($info['http_code'] == '200') {
         $notaFiscal->updateSituacao("F");
 
         http_response_code(500);
-        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1], "codigo" => "A00"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(A01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.(A01)', $retorno[1]);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
         exit;
     }
     else {

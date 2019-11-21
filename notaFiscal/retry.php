@@ -92,7 +92,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         $arrErr = array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal. idNF=".$notaFiscal->idNotaFiscal, 
                         "erro" => "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", 
-                        "codigo" => "A01");
+                        "codigo" => "A04");
         logErro($db, "1", $arrErr, $notaFiscal);
         continue;
     }
@@ -112,7 +112,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     
         $arrErr = array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe idNF=".$notaFiscal->idNotaFiscal, 
                         "error" => "Município emitente = ".$emitente->codigoMunicipio,
-                        "codigo" => "A01" );
+                        "codigo" => "A02" );
         logErro($db, "1", $arrErr, $notaFiscal);
         continue;
     }
