@@ -61,6 +61,9 @@ if ($checkNF["existe"] > 0) {
 $db->beginTransaction();
 
 // check / create tomador
+
+
+
 if(
     empty($data->tomador->documento) ||
     empty($data->tomador->nome) ||
@@ -76,11 +79,49 @@ if(
     $db->rollBack();
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos.", "codigo" => "A03"));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos.', $strData);
+
+    if( empty($data->tomador->documento) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos DOCUMENTO. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos DOCUMENTO.', $strData);
+    }
+    if( empty($data->tomador->nome) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos NOME. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos NOME.', $strData);
+    }
+    if( empty($data->tomador->logradouro) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos LOGRADOURO. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos LOGRADOURO.', $strData);
+    }
+    if( empty($data->tomador->numero) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos NUMERO. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos NUMERO.', $strData);
+    }
+    if( empty($data->tomador->bairro) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos BAIRRO. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos BAIRRO.', $strData);
+    }
+    if( empty($data->tomador->cep) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos CEP. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos CEP.', $strData);
+    }
+    if( empty($data->tomador->codigoMunicipio) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos MUNICIPIO. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos MUNICIPIO.', $strData);
+    }
+    if( empty($data->tomador->uf) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos UF. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos UF.', $strData);
+    }
+    if( empty($data->tomador->email) ) { 
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos EMAIL. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos EMAIL.', $strData);
+    }
+    
+    
     exit;
 }
-    
+
+
 $tomador = new Tomador($db);
 
 // set tomador property values
