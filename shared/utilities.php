@@ -91,18 +91,18 @@ class Utilities{
 
     public function codificaMsg($msg) {
 
-        $codMsg = '';
+        $codMsg = 'P00'; //'OUTROS';
         if ((stristr($msg, 'tomador')) || (stristr($msg, 'país inv')) || (stristr($msg, 'município inv')) || (stristr($msg, 'uf inv')) ) {
-            $codMsg = 'TOMADOR';
+            $codMsg = 'P04'; //'TOMADOR';
         }
         else if ((stristr($msg, 'alíquota')) || (stristr($msg, 'cst')) || (stristr($msg, 'issqn')) ) {
-            $codMsg = 'ALIQUOTA';
+            $codMsg = 'P03'; //'ALIQUOTA';
         }
         else if (stristr($msg, 'cnae')) {
-            $codMsg = 'CNAE';
+            $codMsg = 'P02'; //'CNAE';
         }
         else if (stristr($msg, 'aedf')) {
-            $codMsg = 'AEDF';
+            $codMsg = 'P01'; //'AEDF';
         }
         
         return $codMsg;
