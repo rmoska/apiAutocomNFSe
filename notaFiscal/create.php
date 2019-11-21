@@ -36,7 +36,7 @@ if(empty($data->documento)) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal. Emitente não identificado."));
-//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível emitir Nota Fiscal. Emitente não identificado. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível emitir Nota Fiscal. Emitente não identificado. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.create', 'Não foi possível emitir Nota Fiscal. Emitente não identificado.', $strData);
     exit;
 }
@@ -47,7 +47,7 @@ if (($idEmitente = $emitente->check()) == 0) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser emitida."));
-//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado. Nota Fiscal não pode ser emitida. Emitente=".$data->documento."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado. Nota Fiscal não pode ser emitida. Emitente=".$data->documento."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.create', 'Emitente não cadastrado. Nota Fiscal não pode ser emitida.', 'Emitente='.$data->documento);
     exit;
 }
@@ -60,7 +60,7 @@ if (!isset($emitente->codigoMunicipio)) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Emitente sem Município definido no cadastro."));
-//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente sem Município definido no cadastro. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente sem Município definido no cadastro. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.create', 'Emitente sem Município definido no cadastro.', 'Emitente='.$data->documento);
     exit;
 }
@@ -94,7 +94,7 @@ else {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe."));
-//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.create', 'Município não disponível para emissão da NFSe.', 'Município='.$emitente->codigoMunicipio);
     exit;
 }
