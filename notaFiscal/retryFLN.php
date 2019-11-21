@@ -14,13 +14,13 @@
 
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
 
-        $arrErr = array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado. idNF=".$notaFiscal->idNotaFiscal, "codigo" => "A01");
+        $arrErr = array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado. idNF=".$notaFiscal->idNotaFiscal, "codigo" => "A02");
         logErro($db, "1", $arrErr, $notaFiscal);
         return;
     }
     else if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
-        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). idNF=".$notaFiscal->idNotaFiscal, "codigo" => "A01");
+        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). idNF=".$notaFiscal->idNotaFiscal, "codigo" => "A02");
         logErro($db, "1", $arrErr, $notaFiscal);
         return;
     }
