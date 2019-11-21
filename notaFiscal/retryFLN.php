@@ -14,13 +14,13 @@
 
     if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
 
-        $arrErr = array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.");
+        $arrErr = array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.", "codigo" => "A01");
         logErro($db, "1", $arrErr, $notaFiscal);
         return;
     }
     else if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
-        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).");
+        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).", "codigo" => "A01");
         logErro($db, "1", $arrErr, $notaFiscal);
         return;
     }
@@ -102,7 +102,7 @@
     $nfse = new SignNFSe($arraySign);
     if($nfse->errStatus) {
 
-        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado.", "error" => $nfse->errMsg);
+        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado.", "error" => $nfse->errMsg, "codigo" => "A02");
         logErro($db, "1", $arrErr, $notaFiscal);
         return;
     }
@@ -110,7 +110,7 @@
     $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
     if ($nfse->errStatus) {
 
-        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML.", "error" => $nfse->errMsg);
+        $arrErr = array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML.", "error" => $nfse->errMsg, "codigo" => "A02");
         logErro($db, "1", $arrErr, $notaFiscal);
         return;
     }
@@ -200,7 +200,7 @@
 
         if (substr($info['http_code'],0,1) == '5') {
 
-            $arrErr = array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !");
+            $arrErr = array("http_code" => "503", "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !", "codigo" => "P05");
             logErro($db, "0", $arrErr, NULL);
             return;
         }
@@ -210,7 +210,7 @@
             $dados = json_decode($result);
             if (isset($dados->error)) {
 
-                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !", "error" => "(".$dados->error.") ".$dados->error_description);
+                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !", "error" => "(".$dados->error.") ".$dados->error_description, "codigo" => "P00");
                 logErro($db, "1", $arrErr, $notaFiscal);
                 return;
             }
@@ -218,7 +218,9 @@
 
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
-                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !", "error" => $msgRet);
+                $codMsg = $utilities->codificaMsg($msgRet);
+
+                $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe !", "error" => $msgRet, "codigo" => $codMsg);
                 logErro($db, "1", $arrErr, $notaFiscal);
                 return;
             }
