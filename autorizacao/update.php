@@ -27,7 +27,7 @@ $strData = json_encode($data); // armazena para log
 if(empty($data->idEmitente)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado."));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado.", "codigo" => "A06"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Emitente não identificado. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização. Emitente não identificado.', $strData);
     exit;
@@ -40,7 +40,7 @@ $emitente->readOne();
 if (is_null($emitente->documento)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado para esta Autorização."));
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado para esta Autorização.", "codigo" => "A06"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado para esta Autorização. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'autorizacao.update', 'Emitente não cadastrado para esta Autorização.', 'Emitente='.$data->idEmitente);
     exit;
@@ -49,7 +49,7 @@ if (is_null($emitente->documento)) {
 if (!isset($emitente->codigoMunicipio)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente sem Município definido no cadastro."));
+    echo json_encode(array("http_code" => "400", "message" => "Emitente sem Município definido no cadastro.", "codigo" => "A02"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente sem Município definido no cadastro. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'autorizacao.update', 'Emitente sem Município definido no cadastro.', 'Emitente='.$data->idEmitente);
     exit;
@@ -86,7 +86,7 @@ if (file_exists($arqPhp)) {
 else {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe."));
+    echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe.", "codigo" => "A02"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'autorizacao.update', 'Município não disponível para emissão da NFSe.', 'Município='.$emitente->codigoMunicipio);
     exit;

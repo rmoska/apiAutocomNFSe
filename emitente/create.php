@@ -82,7 +82,7 @@ if(
     else{
  
         http_response_code(500);
-        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Emitente. Serviço indisponível.", "erro" => $retorno[1]));
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Emitente. Serviço indisponível.", "erro" => $retorno[1], "codigo" => "A00"));
         $logMsg->register('E', 'emitente.create', 'Não foi possível incluir Emitente. Serviço indisponível.', $retorno[1]);
         exit;
     }
@@ -101,7 +101,7 @@ else{
     $descErr = substr($descErr, 0, -3);
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos. Campo(s): ".$descErr));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Emitente. Dados incompletos. Campo(s): ".$descErr, "codigo" => "A02"));
     $strData = json_encode($data);
     $logMsg->register('E', 'emitente.create', 'Não foi possível incluir Emitente. Dados incompletos.', $strData);
     exit;
