@@ -416,7 +416,7 @@ else {
 $db->commit();
 
 
-$xmlAss = str_replace('Trib Aprox', 'Texto subst', $xmlAss);
+$xmlAss = str_replace('Trib aprox', 'Texto subst', $xmlAss);
 
 //
 //
