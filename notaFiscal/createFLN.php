@@ -414,10 +414,6 @@ else {
 //
 // fecha atualizações
 $db->commit();
-
-
-$xmlAss = str_replace('Trib aprox', 'Texto subst', $xmlAss);
-
 //
 //
 // transmite NFSe	
