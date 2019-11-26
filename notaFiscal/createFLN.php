@@ -339,7 +339,7 @@ else {
     if ($vlTotBCST>0)
         $xml->writeElement("baseCalculoSubstituicao", number_format($vlTotBCST,2,'.',''));
     $xml->writeElement("valorISSQN", number_format($vlTotISS,2,'.',''));
-    $xml->writeElement("valorTotalServico", number_format($vlTotServ,2,'.',''));
+    $xml->writeElement("valorTotalServicos", number_format($vlTotServ,2,'.',''));
 
     $xml->writeElement("identificacaoTomador", $tomador->documento);
     $xml->writeElement("razaoSocialTomador", $tomador->nome);
@@ -414,6 +414,9 @@ else {
 //
 // fecha atualizações
 $db->commit();
+
+
+$xmlAss = str_replace('Trib Aprox', 'Texto subst', $xmlAss);
 
 //
 //
