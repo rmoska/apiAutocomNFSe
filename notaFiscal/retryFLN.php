@@ -219,6 +219,8 @@
                 $xmlNFRet = simplexml_load_string(trim($result));
                 $msgRet = (string) $xmlNFRet->message;
                 $codMsg = $utilities->codificaMsg($msgRet);
+                if ($codMsg=='P05')
+                    $codMsg=='P00'; // Não insistir no Timeout quando for erro de arquivo
 
                 $arrErr = array("http_code" => "500", "message" => "Erro no envio da NFSe ! idNF=".$notaFiscal->idNotaFiscal, "error" => $msgRet, "codigo" => $codMsg);
                 logErro($db, "1", $arrErr, $notaFiscal);
