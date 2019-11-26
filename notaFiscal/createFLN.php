@@ -109,8 +109,8 @@ if (($idTomador = $tomador->check()) > 0) {
     if(!$retorno[0]){
 
         $db->rollBack();
-        http_response_code(500);
-        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Tomador.', $retorno[1]);
         exit;
@@ -127,8 +127,8 @@ else {
     else{
 
         $db->rollBack();
-        http_response_code(500);
-        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador.', $retorno[1]);
         exit;
@@ -546,14 +546,18 @@ else {
 
             $xmlNFRet = simplexml_load_string(trim($result));
             $msgRet = (string) $xmlNFRet->message;
-            $notaFiscal->situacao = 'E';
             $notaFiscal->textoResposta = $msgRet;
+            $codMsg = $utilities->codificaMsg($msgRet);
+            if ($codMsg=='P05')
+                $notaFiscal->situacao = 'T';
+            else
+                $notaFiscal->situacao = 'E';
             $notaFiscal->update();
 
-            $codMsg = $utilities->codificaMsg($msgRet);
-
             http_response_code(500);
-            echo json_encode(array("http_code" => "401", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet, "codigo" => $codMsg));
+            echo json_encode(array("http_code" => "401", 
+                                   "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                   "message" => "Erro no envio da NFSe !", "resposta" => $msgRet, "codigo" => $codMsg));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
             $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
             exit;

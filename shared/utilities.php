@@ -92,10 +92,13 @@ class Utilities{
     public function codificaMsg($msg) {
 
         $codMsg = 'P00'; //'OUTROS';
-        if ((stristr($msg, 'tomador')) || (stristr($msg, 'país inv')) || (stristr($msg, 'município inv')) || (stristr($msg, 'uf inv')) ) {
+        if ( (stristr($msg, 'Sintaxe do XML')) || (stristr($msg, 'Problema com integridade')) || (stristr($msg, 'Arquivo Invalido')) ) {
+            $codMsg = 'P05'; //'ERRO DE ARQUIVO/TIMEOUT';
+        }
+        else if ( (stristr($msg, 'tomador')) || (stristr($msg, 'país inv')) || (stristr($msg, 'município inv')) || (stristr($msg, 'uf inv')) ) {
             $codMsg = 'P04'; //'TOMADOR';
         }
-        else if ((stristr($msg, 'alíquota')) || (stristr($msg, 'cst')) || (stristr($msg, 'issqn')) ) {
+        else if ( (stristr($msg, 'alíquota')) || (stristr($msg, 'cst')) || (stristr($msg, 'issqn')) ) {
             $codMsg = 'P03'; //'ALIQUOTA';
         }
         else if (stristr($msg, 'cnae')) {
