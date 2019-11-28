@@ -62,8 +62,8 @@
         $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
         $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
         $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,2,'.',''));
-        $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,2,'.',''));
-        $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,2,'.',''));
+        $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,4,'.',''));
+        $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
         $xml->endElement(); // ItemServico
     }
     $xml->endElement(); // ItensServico
