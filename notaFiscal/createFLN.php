@@ -369,7 +369,7 @@ else {
         $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
         $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
         $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,4,'.',''));
-        $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,4,'.',''));
+        $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,2,'.',''));
         $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
         $xml->endElement(); // ItemServico
     }
