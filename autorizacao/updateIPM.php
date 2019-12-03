@@ -142,13 +142,6 @@ if($retorno[0]){
     $xmlNFe = $xml->outputMemory(true);
     $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-//    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
-    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml","wt");
-    fwrite($arqNFe, $xmlNFe);
-    fclose($arqNFe);
-
-    $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
-
     $xmlAss = $objNFSe->signXML($xmlNFe, 'nfse');
     if ($objNFSe->errStatus) {
     
@@ -157,6 +150,13 @@ if($retorno[0]){
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
+
+    //    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
+    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml","wt");
+    fwrite($arqNFe, $xmlAss);
+    fclose($arqNFe);
+
+    $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
 
     $params = "login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&fl=".$arqNFSe;
 
