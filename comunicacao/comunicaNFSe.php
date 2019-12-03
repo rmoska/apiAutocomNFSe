@@ -656,7 +656,11 @@ class comunicaNFSe {
 
         $headers = array();
         $headers[] = "Content-type: text/xml; charset=utf-8";
-        $tamanho = strlen($dados);
+
+        if (is_array($dados))
+            $tamanho = strlen(implode($dados));
+        else
+            $tamanho = strlen($dados);
         $headers[] = "Content-Length: ".$tamanho;
         if ($action > '')
             $headers[] = "SOAPAction: ".$action;
