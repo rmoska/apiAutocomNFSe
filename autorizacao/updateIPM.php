@@ -72,13 +72,22 @@ if($retorno[0]){
     $xml->openMemory();
     //
     // Inicia o cabeçalho do documento XML
+    $date = new DateTime();
+    $nuRps = $date->getTimestamp();
     $dtEm = date('d/m/Y');
+    $hrEm = date('H:i:s');
     $tipoTomador = 'F';
 //        if (strlen(trim($tomador->documento))==14)
 //            $tipoTomador = 'J';
 
     $xml->startElement("nfse");
         $xml->writeElement("nfse_teste", "1"); // define ambiente HOMOLOGAÇÃO
+        $xml->startElement("rps");
+            $xml->writeElement("nro_recibo_provisorio", $nuRps);
+            $xml->writeElement("serie_recibo_provisorio", 1);
+            $xml->writeElement("nro_recibo_provisorio", $dtEm);
+            $xml->writeElement("hora_recibo_provisorio", $hrEm);
+        $xml->endElement(); // rps
         $xml->startElement("nf");
             $xml->writeElement("data_fato_gerador", $dtEm);
             $xml->writeElement("valor_total", "2,00");
