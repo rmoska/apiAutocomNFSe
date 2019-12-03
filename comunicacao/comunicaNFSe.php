@@ -523,8 +523,8 @@ class comunicaNFSe {
 
         try {
 
-            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php";
-//            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1";
+//            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php"; // resposta em html
+            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($params)) { // || ! simplexml_load_string($sXml)) {
@@ -532,7 +532,7 @@ class comunicaNFSe {
             }
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($params, '', 'S');
+            $retorno = $this->pSendSOAPCurl($params, '', 'N');
             //verifica o retorno
             if (! $retorno) {
 

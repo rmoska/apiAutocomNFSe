@@ -81,11 +81,6 @@ else {
     }
 }
 
-if ($tomador->uf != 'SC') $cfps = '9203';
-else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
-else $cfps = '9201';
-$notaFiscal->cfop = $cfps;
-
 // create notaFiscal
 $notaFiscal->idEmitente = $emitente->idEmitente;
 $retorno = $notaFiscal->create();
@@ -108,7 +103,7 @@ foreach ( $data->itemServico as $item )
     if(
         empty($item->codigo) ||
         empty($item->descricao) ||
-        empty($item->cnae) ||
+        empty($item->listaServico) ||
         empty($item->nbs) ||
         empty($item->quantidade) ||
         empty($item->valor) ||
@@ -133,7 +128,7 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->idItemVenda = $idItemVenda;
 
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->cnae = $item->cnae;
+        $itemVenda->listaServico = $item->listaServico;
         $itemVenda->ncm = $item->nbs;
 
         $itemVenda->updateVar();
@@ -144,7 +139,7 @@ foreach ( $data->itemServico as $item )
 
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->cnae = $item->cnae;
+        $itemVenda->listaServico = $item->listaServico;
         $itemVenda->ncm = $item->nbs;
 
         $retorno = $itemVenda->create();
@@ -164,7 +159,7 @@ foreach ( $data->itemServico as $item )
 
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
-    $notaFiscalItem->cnae = $item->cnae;
+    $notaFiscalItem->cnae = $item->listaServico;
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
@@ -173,17 +168,9 @@ foreach ( $data->itemServico as $item )
 
     $totalItens += floatval($notaFiscalItem->valorTotal);
 
-    // 1=SN 3=SN+Ret 6=SN+ST 12=Isenta 13=NTrib
-    if (($item->cst != '1') && ($item->cst != '3') && ($item->cst != '6') && ($item->cst != '12') && ($item->cst != '13')) {
-        $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
-        $notaFiscalItem->taxaIss = $item->taxaIss;
-        $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
-    }
-    else {
-        $notaFiscalItem->valorBCIss = 0.00;
-        $notaFiscalItem->taxaIss = 0.00;
-        $notaFiscalItem->valorIss = 0.00;
-    }
+    $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
+    $notaFiscalItem->taxaIss = $item->taxaIss;
+    $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
 
     $retorno = $notaFiscalItem->create();
     if(!$retorno[0]){
