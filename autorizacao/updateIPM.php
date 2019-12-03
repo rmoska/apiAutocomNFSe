@@ -172,7 +172,7 @@ if($retorno[0]){
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
 
-//echo $params;
+print_r( $params);
 
     print_r($respEnv);
 
