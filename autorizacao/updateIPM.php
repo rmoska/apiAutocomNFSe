@@ -79,11 +79,17 @@ if($retorno[0]){
 
     $xml->startElement("nfse");
         $xml->writeElement("nfse_teste", "1"); // define ambiente HOMOLOGAÇÃO
-
         $xml->startElement("nf");
-            $xml->writeElement("valor_total", "2,00");
-            $xml->writeElement("observacao", "Teste de Homologacao");
             $xml->writeElement("data_fato_gerador", $dtEm);
+            $xml->writeElement("valor_total", "2,00");
+            $xml->writeElement("valor_desconto", "0,00");
+            $xml->writeElement("valor_ir", "0,00");
+            $xml->writeElement("valor_inss", "0,00");
+            $xml->writeElement("valor_contribuicao_social", ",00");
+            $xml->writeElement("valor_rps", "0,00");
+            $xml->writeElement("valor_pis", "0,00");
+            $xml->writeElement("valor_cofins", "0,00");
+            $xml->writeElement("observacao", "Teste de Homologacao");
         $xml->endElement(); // nf
         $xml->startElement("prestador");
             $xml->writeElement("cpfcnpj", $emitente->documento);
@@ -97,14 +103,13 @@ if($retorno[0]){
             $xml->writeElement("sobrenome_nome_fantasia", "José da Silva");
             $xml->writeElement("logradouro", "Rua 24 de Julho");
             $xml->writeElement("email", "rodrigo@autocominformatica.com.br");
+            $xml->writeElement("numero_residencia", "1");
             $xml->writeElement("complemento", "Casa");
             $xml->writeElement("ponto_referencia", "Casa");
             $xml->writeElement("bairro", "Centro");
             $xml->writeElement("cidade", "8233");
             $xml->writeElement("cep", "88130001");
             $xml->writeElement("fone_residencial", "999990000");
-            $xml->writeElement("estado", "SC");
-            $xml->writeElement("pais", "Brasil");
         $xml->endElement(); // tomador
         // ITENS
         $xml->startElement("itens");
@@ -114,11 +119,13 @@ if($retorno[0]){
                 $xml->writeElement("unidade_codigo", 1);
                 $xml->writeElement("unidade_quantidade", "1,00");
                 $xml->writeElement("unidade_valor_unitario", "2,00");
-                $xml->writeElement("codigo_item_lista_servico", "0402"); // LC116
+                $xml->writeElement("codigo_item_lista_servico", "402"); // LC116
                 $xml->writeElement("descritivo", "Servico para Teste de Homologacao");
                 $xml->writeElement("aliquota_item_lista_servico", "0,00");
                 $xml->writeElement("situacao_tributaria", "6"); // Isento
                 $xml->writeElement("valor_tributavel", "2,00");
+                $xml->writeElement("valor_deducao", "0,00");
+                $xml->writeElement("valor_issrf", "0,00");
             $xml->endElement(); // lista
         $xml->endElement(); // itens
     $xml->endElement(); // nfse
