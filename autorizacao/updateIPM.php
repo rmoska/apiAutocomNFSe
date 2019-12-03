@@ -158,7 +158,7 @@ if($retorno[0]){
         exit;
     }
 
-    $params = "login=".$emitente->documento."&senha=".$autorizacao->senhaWeb."&cidade=8233&fl=".$arqNFSe;
+    $params = "login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&fl=".$arqNFSe;
 
     $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
