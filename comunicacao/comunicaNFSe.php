@@ -667,7 +667,17 @@ class comunicaNFSe {
             $headers[] = "SOAPAction: ".$action;
 
         try {
-        
+
+            
+            $userAgent = 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0';
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $this->url);
+            curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 20);
+/*
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
             curl_setopt($curl, CURLOPT_URL, $this->url);
@@ -680,6 +690,7 @@ class comunicaNFSe {
                 curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
                 curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
             }
+*/
             //
             $result = curl_exec( $curl );
             $info = curl_getinfo( $curl );

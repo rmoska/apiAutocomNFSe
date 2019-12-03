@@ -104,7 +104,6 @@ foreach ( $data->itemServico as $item )
         empty($item->codigo) ||
         empty($item->descricao) ||
         empty($item->listaServico) ||
-        empty($item->nbs) ||
         empty($item->quantidade) ||
         empty($item->valor) ||
         (!($item->cst>=0)) ||
@@ -129,7 +128,6 @@ foreach ( $data->itemServico as $item )
 
         $itemVenda->descricao = $item->descricao;
         $itemVenda->listaServico = $item->listaServico;
-        $itemVenda->ncm = $item->nbs;
 
         $itemVenda->updateVar();
 
@@ -140,7 +138,6 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
         $itemVenda->listaServico = $item->listaServico;
-        $itemVenda->ncm = $item->nbs;
 
         $retorno = $itemVenda->create();
         if(!$retorno[0]){
@@ -159,7 +156,7 @@ foreach ( $data->itemServico as $item )
 
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
-    $notaFiscalItem->cnae = $item->listaServico;
+    $notaFiscalItem->ncm = $item->listaServico;
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
@@ -220,26 +217,23 @@ else {
     $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
     $autorizacao->readOne();
 
-    if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
-
-        $db->rollBack();
-        http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.", "codigo" => "A02"));
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. AEDFe não informado.', $strData);
-        exit;
+    $autorizacaoChave = new AutorizacaoChave($db);
+    $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
+    $stmt = $autorizacaoChave->buscaChave();
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $aAutoChave[$row['chave']] = $row['valor'];
     }
-    else if(!$autorizacao->getToken($notaFiscal->ambiente)){
+    if ( !isset($aAutoChave["login"]) ||
+         !isset($aAutoChave["senhaWeb"]) ) {
 
-        $db->rollBack();
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).", "codigo" => "A02"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). Emitente=".$autorizacao->idEmitente." AEDF=".$autorizacao->aedf." Pwd=".$autorizacao->senhaWeb." NF=".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).', $strData);
-        exit;
-    }
+         $db->rollBack();
+         http_response_code(400);
+         echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. Dados de Autorização incompletos."));
+         exit;
+    };
 
     // calcular Imposto Aproximado IBPT
-    $notaFiscal->calcImpAprox();
+//    $notaFiscal->calcImpAprox();
 
     // montar xml nfse
     $vlTotBC = 0; 
@@ -251,6 +245,15 @@ else {
         $vlTotISS += $notaFiscalItem->valorIss; 
     }
     //
+
+    $municipioEmitente = new Municipio($db);
+    $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
+    $municipioEmitente->buscaMunicipioTOM($emitente->codigoMunicipio);
+
+    $municipioTomador = new Municipio($db);
+    $municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
+    $municTomadorTOM = $municipioTomador->buscaMunicipioTOM($tomador->codigoMunicipio);
+
     include_once '../shared/utilities.php';
     $utilities = new Utilities();
     //			
@@ -319,30 +322,7 @@ else {
     fwrite($arqNFe, $xmlNFe);
     fclose($arqNFe);
     //	
-    include_once '../comunicacao/signNFSe.php';
-    $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
-
-    $nfse = new SignNFSe($arraySign);
-    if($nfse->errStatus) {
-
-        $db->rollBack();
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg, "codigo" => "A02"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->msg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas com Certificado. Emitente='.$autorizacao->idEmitente, $nfse->msg);
-        exit;
-    }
-
-    $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
-    if ($nfse->errStatus) {
-
-        $db->rollBack();
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg, "codigo" => "A02"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas na assinatura do XML. Emitente='.$autorizacao->idEmitente, $nfse->msg);
-        exit;
-    }
+    $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
 }
 //
 // fecha atualizações
@@ -350,20 +330,18 @@ $db->commit();
 //
 //
 // transmite NFSe	
-$headers = array( "Content-type: application/xml", "Authorization: Bearer ".$autorizacao->token ); 
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+$params = "login=".$aAutoChave["login"]."&senha=".$aAutoChave["senhaWeb"]."&cidade=8233&f1=".$arqNFSe;
+$retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
-if ($notaFiscal->ambiente == "P") // PRODUÇÃO
-    curl_setopt($curl, CURLOPT_URL, "https://nfps-e.pmf.sc.gov.br/api/v1/processamento/notas/processa");
-else // HOMOLOGAÇÃO
-    curl_setopt($curl, CURLOPT_URL, "https://nfps-e-hml.pmf.sc.gov.br/api/v1/processamento/notas/processa");
+$respEnv = $retEnv[0];
+$infoRet = $retEnv[1];
 
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-curl_setopt($curl, CURLOPT_POST, TRUE);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $xmlAss);
-//
+
+
+
+
+
+    //
 $result = curl_exec($curl);
 $info = curl_getinfo( $curl );
 
