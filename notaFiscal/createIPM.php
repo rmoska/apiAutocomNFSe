@@ -2,6 +2,7 @@
 
 // Classe para emissão de NFSe PMF Homologação / Produção
 //
+
 // check / create tomador
 if(
     empty($data->tomador->documento) ||

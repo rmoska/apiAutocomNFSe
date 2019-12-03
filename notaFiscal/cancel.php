@@ -13,15 +13,20 @@ include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
 include_once '../objects/notaFiscal.php';
 include_once '../objects/emitente.php';
+include_once '../shared/utilities.php';
+$utilities = new Utilities();
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
+$strData = json_encode($data);
 
 $idNotaFiscal = $data->idNotaFiscal;
 
 if (empty($idNotaFiscal)) {
 
-    echo json_encode(array("http_code" => "400", "message" => "Parâmetro idNotaFiscal não informado"));
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Parâmetro idNotaFiscal não informado", "codigo" => "A10"));
+    $logMsg->register('E', 'notaFiscal.cancel', 'Parâmetro idNotaFiscal não informado.', $strData);
     exit;
 }
 
@@ -38,7 +43,8 @@ if ($checkNF["existe"] == 0) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", 
-                            "message" => "Nota Fiscal não encontrada. idNotaFiscal=".$notaFiscal->idNotaFiscal));
+                            "message" => "Nota Fiscal não encontrada. idNotaFiscal=".$notaFiscal->idNotaFiscal, "codigo" => "A10"));
+    $logMsg->register('E', 'notaFiscal.cancel', 'Nota Fiscal não encontrada.', $strData);
     exit;
 }
 
@@ -48,7 +54,8 @@ $notaFiscal->readOne();
 if ($notaFiscal->idEmitente != $data->idEmitente) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada."));
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada.", "codigo" => "A10"));
+    $logMsg->register('E', 'notaFiscal.cancel', 'Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada.', $strData);
     exit;
 }
 
@@ -58,16 +65,17 @@ $emitente->readOne();
 if (is_null($emitente->documento)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado."));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado.", "codigo" => "A10"));
+    $logMsg->register('E', 'notaFiscal.cancel', 'Emitente não cadastrado.', $strData);
     exit;
 }
 
 if (!isset($emitente->codigoMunicipio)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Emitente sem Município definido no cadastro."));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente sem Município definido no cadastro. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    echo json_encode(array("http_code" => "400", "message" => "Emitente sem Município definido no cadastro.", "codigo" => "A10"));
+//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente sem Município definido no cadastro. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.cancel', 'Emitente sem Município definido no cadastro.', $strData);
     exit;
 }
 
@@ -99,8 +107,9 @@ if (file_exists($arqPhp)) {
 else {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe."));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    echo json_encode(array("http_code" => "400", "message" => "Município não disponível para emissão da NFSe.", "codigo" => "A10"));
+//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.cancel', 'Município não disponível para emissão da NFSe.', $strData);
     exit;
 }
     

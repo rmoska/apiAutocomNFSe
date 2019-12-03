@@ -31,61 +31,57 @@
     //
     // Inicia o cabeçalho do documento XML
     $xml->startElement("xmlProcessamentoNfpse");
-    $xml->writeElement("bairroTomador", $tomador->bairro);
+    if ($notaFiscal->ambiente == "P") // PRODUÇÃO
+        $nuAEDF = $autorizacao->aedf; 
+    else // HOMOLOGAÇÃO
+        $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
+    $xml->writeElement("numeroAEDF", $nuAEDF);
+    $xml->writeElement("identificacao", $notaFiscal->idNotaFiscal);
+    $xml->writeElement("numeroSerie", 1);
+    $xml->writeElement("dataEmissao", $notaFiscal->dataEmissao);
+    $xml->writeElement("cfps", $notaFiscal->cfop);
     $xml->writeElement("baseCalculo", number_format($vlTotBC,2,'.',''));
     if ($vlTotBCST>0)
         $xml->writeElement("baseCalculoSubstituicao", number_format($vlTotBCST,2,'.',''));
-    $xml->writeElement("cfps", $notaFiscal->cfop);
-    $xml->writeElement("codigoMunicipioTomador", $tomador->codigoMunicipio);
-    $xml->writeElement("codigoPostalTomador", $tomador->cep);
+    $xml->writeElement("valorISSQN", number_format($vlTotISS,2,'.',''));
+    $xml->writeElement("valorTotalServicos", number_format($vlTotServ,2,'.',''));
+
+    $xml->writeElement("identificacaoTomador", $tomador->documento);
+    $xml->writeElement("razaoSocialTomador", $tomador->nome);
+    $xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
+    if ($tomador->numero>0)
+        $xml->writeElement("numeroEnderecoTomador", $tomador->numero);
     if($tomador->complemento > '')
         $xml->writeElement("complementoEnderecoTomador", $tomador->complemento);
-    $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
-    $xml->writeElement("dataEmissao", $notaFiscal->dataEmissao);
+    $xml->writeElement("bairroTomador", $tomador->bairro);
+    $xml->writeElement("codigoMunicipioTomador", $tomador->codigoMunicipio);
+    $xml->writeElement("codigoPostalTomador", $tomador->cep);
+    if ($tomador->uf >'')
+        $xml->writeElement("ufTomador", $tomador->uf);
     $xml->writeElement("emailTomador", $tomador->email);
-    $xml->writeElement("identificacao", $notaFiscal->idNotaFiscal);
-    $xml->writeElement("identificacaoTomador", $tomador->documento);
     //		
     // ITENS
     $xml->startElement("itensServico");
     foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
         $xml->startElement("itemServico");
-        $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
-        $xml->writeElement("cst", $notaFiscalItem->cstIss);
-        //
         $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
         if ($notaFiscalItem->observacao > '')
             $nmProd .= ' - '.$notaFiscalItem->observacao;
         $xml->writeElement("descricaoServico", trim($nmProd));
-        //
         $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
+        $xml->writeElement("cst", $notaFiscalItem->cstIss);
+        $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
         $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
-        $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,2,'.',''));
+        $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,4,'.',''));
         $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,4,'.',''));
         $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
         $xml->endElement(); // ItemServico
     }
     $xml->endElement(); // ItensServico
+    if (($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>''))
+        $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
     //
-    $xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
-
-    if ($notaFiscal->ambiente == "P") // PRODUÇÃO
-        $nuAEDF = $autorizacao->aedf; 
-    else // HOMOLOGAÇÃO
-        $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
-
-    $xml->writeElement("numeroAEDF", $nuAEDF);
-    if ($tomador->numero>0)
-        $xml->writeElement("numeroEnderecoTomador", $tomador->numero);
-    $xml->writeElement("numeroSerie", 1);
-    $xml->writeElement("razaoSocialTomador", $tomador->nome);
-//		if ($tomador->telefone > '')
-//			$xml->writeElement("telefoneTomador", $tomador->telefone);
-    if ($tomador->uf >'')
-        $xml->writeElement("ufTomador", $tomador->uf);
-    $xml->writeElement("valorISSQN", number_format($vlTotISS,2,'.',''));
-    $xml->writeElement("valorTotalServicos", number_format($vlTotServ,2,'.',''));
     $xml->endElement(); // xmlNfpse
     //
     $xmlNFe = $xml->outputMemory(true);

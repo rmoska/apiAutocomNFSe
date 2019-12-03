@@ -77,8 +77,62 @@ if (!isset($emitente->codigoMunicipio)) {
     exit;
 }
 
+if( empty($data->documento) ||
+    empty($data->idVenda) ||
+    empty($data->valorTotal) || 
+    ($data->valorTotal <= 0) ) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Nota Fiscal. Dados incompletos.", "codigo" => "A04"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Nota Fiscal. Dados incompletos.', $strData);
+    exit;
+}
+
+include_once '../objects/notaFiscal.php';
+include_once '../objects/notaFiscalItem.php';
+include_once '../objects/itemVenda.php';
+include_once '../objects/tomador.php';
+include_once '../objects/autorizacao.php';
+include_once '../objects/municipio.php';
+ 
+$notaFiscal = new NotaFiscal($db);
+
+// set notaFiscal property values
+$notaFiscal->ambiente = $ambiente;
+$notaFiscal->docOrigemTipo = "V"; // Venda
+$notaFiscal->docOrigemNumero = $data->idVenda;
+$notaFiscal->idEntradaSaida = "S";
+$notaFiscal->situacao = "P"; // Pendente
+
+$notaFiscal->valorTotal = $data->valorTotal;
+$notaFiscal->dataInclusao = date("Y-m-d");
+$notaFiscal->dataEmissao = date("Y-m-d");
+$notaFiscal->dadosAdicionais = $data->observacao;
+
+// check NF já gerada para esta Venda
+$checkNF = $notaFiscal->checkVenda();
+if ($checkNF["existe"] > 0) {
+
+    switch ($checkNF["situacao"]) {
+        case 'F': 
+            $situacao = "Faturada"; break;
+        case 'T': 
+            $situacao = "Pendente por Timeout"; break;
+        default: 
+            $situacao = "ERRO"; break;
+    }
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", 
+                           "idNotaFiscal" => $checkNF["idNotaFiscal"],
+                           "message" => "Nota Fiscal já processada para esta Venda. NF n. ".$checkNF["numero"]." - Situação ".$situacao, 
+                           "codigo" => "A04"));
+    $logMsg->register('E', 'notaFiscal.create', 'Nota Fiscal já processada para esta Venda. ID='.$checkNF["idNotaFiscal"].' NF n.'.$checkNF["numero"].' - Situação '.$situacao, $strData);
+    exit;
+}
+
 //
-//identificação do serviço: emissão de NFSe
+// classes específicas por município
 switch ($emitente->codigoMunicipio) {
     case '4205407': // SC - Florianópolis
         $arqPhp = 'createFLN.php'; break;

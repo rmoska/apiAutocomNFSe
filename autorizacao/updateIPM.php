@@ -79,6 +79,7 @@ if($retorno[0]){
 
     $xml->startElement("nfse");
         $xml->writeElement("nfse_teste", "1"); // define ambiente HOMOLOGAÇÃO
+
         $xml->startElement("nf");
             $xml->writeElement("valor_total", "2,00");
             $xml->writeElement("observacao", "Teste de Homologacao");
@@ -91,14 +92,26 @@ if($retorno[0]){
         $xml->startElement("tomador");
             $xml->writeElement("tipo", $tipoTomador); 
             $xml->writeElement("cpfcnpj", "03118290072");
+            $xml->writeElement("ie", "");
+            $xml->writeElement("nome_razao_social", "José da Silva");
+            $xml->writeElement("sobrenome_nome_fantasia", "José da Silva");
+            $xml->writeElement("logradouro", "Rua 24 de Julho");
             $xml->writeElement("email", "rodrigo@autocominformatica.com.br");
+            $xml->writeElement("complemento", "Casa");
+            $xml->writeElement("ponto_referencia", "Casa");
+            $xml->writeElement("bairro", "Centro");
+            $xml->writeElement("cidade", "8233");
+            $xml->writeElement("cep", "88130001");
+            $xml->writeElement("fone_residencial", "999990000");
+            $xml->writeElement("estado", "SC");
+            $xml->writeElement("pais", "Brasil");
         $xml->endElement(); // tomador
         // ITENS
         $xml->startElement("itens");
             $xml->startElement("lista");
                 $xml->writeElement("tributa_municipio_prestador", "S");
                 $xml->writeElement("codigo_local_prestacao_servico", "8233");
-                $xml->writeElement("unidade_codigo", "UN");
+                $xml->writeElement("unidade_codigo", 1);
                 $xml->writeElement("unidade_quantidade", "1,00");
                 $xml->writeElement("unidade_valor_unitario", "2,00");
                 $xml->writeElement("codigo_item_lista_servico", "0402"); // LC116
@@ -113,12 +126,12 @@ if($retorno[0]){
     $xmlNFe = $xml->outputMemory(true);
     $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
-    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
-    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
+//    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
+    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml","wt");
     fwrite($arqNFe, $xmlNFe);
     fclose($arqNFe);
 
-    $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
+    $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
 
     $xmlAss = $objNFSe->signXML($xmlNFe, 'nfse');
     if ($objNFSe->errStatus) {
