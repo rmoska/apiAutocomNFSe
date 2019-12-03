@@ -665,17 +665,14 @@ class comunicaNFSe {
         if ($action > '')
             $headers[] = "SOAPAction: ".$action;
 
-print_r($dados);
-
-
         try {
         
             $curl = curl_init();
-//            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
             curl_setopt($curl, CURLOPT_URL, $this->url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-//            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-//            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($curl, CURLOPT_POST, TRUE);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
             if ($assina=='S') {
