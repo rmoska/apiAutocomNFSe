@@ -89,7 +89,7 @@ if($retorno[0]){
             $xml->writeElement("hora_recibo_provisorio", $hrEm);
         $xml->endElement(); // rps
         $xml->startElement("nf");
-            $xml->writeElement("data_fato_gerador", $dtEm);
+//            $xml->writeElement("data_fato_gerador", $dtEm);
             $xml->writeElement("valor_total", "2,00");
             $xml->writeElement("valor_desconto", "0,00");
             $xml->writeElement("valor_ir", "0,00");
