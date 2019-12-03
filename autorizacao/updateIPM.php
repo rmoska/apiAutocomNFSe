@@ -89,7 +89,7 @@ if($retorno[0]){
             $xml->writeElement("hora_recibo_provisorio", $hrEm);
         $xml->endElement(); // rps
         $xml->startElement("nf");
-//            $xml->writeElement("data_fato_gerador", $dtEm);
+            $xml->writeElement("data_fato_gerador", '02/12/2019');
             $xml->writeElement("valor_total", "2,00");
             $xml->writeElement("valor_desconto", "0,00");
             $xml->writeElement("valor_ir", "0,00");
@@ -158,15 +158,15 @@ if($retorno[0]){
 
     $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
 
- //   $params = "login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&f1=".$arqNFSe;
-
+    $params = "login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&f1=".$arqNFSe;
+/*
     $params = array(
         'login' => $emitente->documento,
         'senha' => $data->senhaWeb,
         'cidade' => '8233',
         'f1' => $arqNFSe
     );
-
+*/
     $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
     $respEnv = $retEnv[0];
