@@ -523,7 +523,8 @@ class comunicaNFSe {
 
         try {
 
-            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1";
+            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php";
+//            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1";
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($params)) { // || ! simplexml_load_string($sXml)) {
@@ -668,7 +669,7 @@ class comunicaNFSe {
         try {
         
             $curl = curl_init();
-//            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
             curl_setopt($curl, CURLOPT_URL, $this->url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
