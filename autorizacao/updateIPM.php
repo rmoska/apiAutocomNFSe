@@ -162,16 +162,15 @@ if($retorno[0]){
 
     $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
 
-//    $params = "login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&f1=".$arqNFSe;
-
+    $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&f1=".$arqNFSe;
+/*
     $params = array(
-        'eletron' => 1,
         'login' => $emitente->documento,
         'senha' => $data->senhaWeb,
         'cidade' => '8233',
         'f1' => $arqNFSe
     );
-
+*/
     $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
     $respEnv = $retEnv[0];
