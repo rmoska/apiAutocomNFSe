@@ -73,30 +73,20 @@ if($retorno[0]){
     //
     // Inicia o cabeçalho do documento XML
     $date = new DateTime();
-    $nuRps = $date->getTimestamp();
     $dtEm = date('d/m/Y');
-    $hrEm = date('H:i:s');
     $tipoTomador = 'F';
 //        if (strlen(trim($tomador->documento))==14)
 //            $tipoTomador = 'J';
 
     $xml->startElement("nfse");
         $xml->writeElement("nfse_teste", "1"); // define ambiente HOMOLOGAÇÃO
-/*
-        $xml->startElement("rps");
-            $xml->writeElement("nro_recibo_provisorio", $nuRps);
-            $xml->writeElement("serie_recibo_provisorio", 1);
-            $xml->writeElement("nro_recibo_provisorio", $dtEm);
-            $xml->writeElement("hora_recibo_provisorio", $hrEm);
-        $xml->endElement(); // rps
-*/
         $xml->startElement("nf");
-//            $xml->writeElement("data_fato_gerador", '02/12/2019');
+//            $xml->writeElement("data_fato_gerador", $dtEm);
             $xml->writeElement("valor_total", "2,00");
             $xml->writeElement("valor_desconto", "0,00");
             $xml->writeElement("valor_ir", "0,00");
             $xml->writeElement("valor_inss", "0,00");
-            $xml->writeElement("valor_contribuicao_social", ",00");
+            $xml->writeElement("valor_contribuicao_social", "0,00");
             $xml->writeElement("valor_rps", "0,00");
             $xml->writeElement("valor_pis", "0,00");
             $xml->writeElement("valor_cofins", "0,00");
@@ -110,8 +100,8 @@ if($retorno[0]){
             $xml->writeElement("tipo", $tipoTomador); 
             $xml->writeElement("cpfcnpj", "03118290072");
             $xml->writeElement("ie", "");
-            $xml->writeElement("nome_razao_social", "José da Silva");
-            $xml->writeElement("sobrenome_nome_fantasia", "José da Silva");
+            $xml->writeElement("nome_razao_social", "Jose da Silva");
+            $xml->writeElement("sobrenome_nome_fantasia", "Jose da Silva");
             $xml->writeElement("logradouro", "Rua 24 de Julho");
             $xml->writeElement("email", "rodrigo@autocominformatica.com.br");
             $xml->writeElement("numero_residencia", "1");
@@ -142,7 +132,6 @@ if($retorno[0]){
     $xml->endElement(); // nfse
     //
     $xmlNFe = $xml->outputMemory(true);
-    $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
 
     // PALHOÇA não tem assinatura de nfse
 /*
@@ -173,14 +162,12 @@ if($retorno[0]){
 */
     $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
-    $respEnv = $retEnv[0];
-    $infoRet = $retEnv[1];
+    $result = $retEnv[0];
+    $info = $retEnv[1];
 
-print_r( $params);
+    print_r($result);
 
-    print_r($respEnv);
-
-    print_r($infoRet);
+    print_r($info);
 exit;
 
     $nuNF = 0;
@@ -189,8 +176,8 @@ exit;
     if ($info['http_code'] == '200') {
         //
         $xmlNFRet = simplexml_load_string($result);
-        $nuNF = (string) $xmlNFRet->numeroSerie;
-        $cdVerif = (string) $xmlNFRet->codigoVerificacao;
+        $nuNF = (string) $xmlNFRet->numero_nfse;
+        $cdVerif = (string) $xmlNFRet->cod_verificador_autenticidade;
     }
     else {
 
@@ -220,7 +207,6 @@ exit;
 
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                            "token" => $autorizacao->token, 
                             "validade" => $validade." dias",
                             "nf-homolog" => $nuNF,
                             "verificacao-homolog" => $cdVerif));

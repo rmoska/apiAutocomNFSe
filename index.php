@@ -1,33 +1,40 @@
 <?php
-/*
-$arrOK = array("http_code" => "201", 
-"message" => "Nota Fiscal emitida", 
-"idNotaFiscal" => 331,
-"numeroNF" => "658",
-"xml" => "http://www.autocominformatica.com.br/apiAutocomNFSe/arquivosNFSe/29983942000119/transmitidas/29983942000119_00000658-nfse.xml",
-"pdf" => "http://www.autocominformatica.com.br/apiAutocomNFSe/arquivosNFSe/29983942000119/danfpse/29983942000119_00000658-nfse.pdf");
-$retNFSe = json_encode($arrOK);
 
-$headers = array( "Content-type: application/json" ); 
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+$arq = "C:\Desenv\NFSe\SC\Palhoca\exemplo_retorno.xml";
 
-curl_setopt($curl, CURLOPT_URL, "https://ws.fpay.me/crm/me/nfe/callback-status-nfe");
+$xmlNFRet = simplexml_load_file($arq);
 
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-curl_setopt($curl, CURLOPT_POST, TRUE);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $retNFSe);
-//
-$result = curl_exec($curl);
-$info = curl_getinfo( $curl );
-print_r($result);
-print_r($info);
+//print_r($xmlNFRet);
+
+echo $xmlNFRet->mensagem->codigo.'<br>';
+echo $xmlNFRet->numero_nfse.'<br>';
+echo $xmlNFRet->data_nfse.'<br>';
+echo $xmlNFRet->hora_nfse.'<br>';
+echo $xmlNFRet->situacao_codigo_nfse.'<br>';
+echo $xmlNFRet->link_nfse.'<br>';
+echo $xmlNFRet->cod_verificador_autenticidade;
+
+echo $xmlNFRet->codigo_html;
 
 exit;
-*/
-phpinfo(); exit;
+print_r($xmlResp);
+echo $xmlResp->IdentificacaoNfse->Numero;
 
+//$msgResp = simplexml_load_string($xmlResp);
+
+echo $msgResp;
+
+$nuNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Numero;
+$cdVerif = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
+$linkNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Link;
+
+echo $nuNF.' - '.$cdVerif.' - '.$linkNF;
+
+
+
+
+
+exit;
 $arq = "C:\Desenv\NFSe\SC\BalnearioCamboriu\xmlNFSeRetorno.xml";
 
 $DomXml=new DOMDocument();

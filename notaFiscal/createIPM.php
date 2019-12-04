@@ -261,61 +261,74 @@ else {
     $xml->openMemory();
     //
     // Inicia o cabeçalho do documento XML
-    $xml->startElement("xmlProcessamentoNfpse");
-    if ($notaFiscal->ambiente == "P") // PRODUÇÃO
-        $nuAEDF = $autorizacao->aedf; 
-    else // HOMOLOGAÇÃO
-        $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
-    $xml->writeElement("numeroAEDF", $nuAEDF);
-    $xml->writeElement("identificacao", $notaFiscal->idNotaFiscal);
-    $xml->writeElement("numeroSerie", 1);
-    $xml->writeElement("dataEmissao", $notaFiscal->dataEmissao);
-    $xml->writeElement("cfps", $notaFiscal->cfop);
-    $xml->writeElement("baseCalculo", number_format($vlTotBC,2,'.',''));
-    if ($vlTotBCST>0)
-        $xml->writeElement("baseCalculoSubstituicao", number_format($vlTotBCST,2,'.',''));
-    $xml->writeElement("valorISSQN", number_format($vlTotISS,2,'.',''));
-    $xml->writeElement("valorTotalServicos", number_format($vlTotServ,2,'.',''));
 
-    $xml->writeElement("identificacaoTomador", $tomador->documento);
-    $xml->writeElement("razaoSocialTomador", $tomador->nome);
-    $xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
-    if ($tomador->numero>0)
-        $xml->writeElement("numeroEnderecoTomador", $tomador->numero);
-    if($tomador->complemento > '')
-        $xml->writeElement("complementoEnderecoTomador", $tomador->complemento);
-    $xml->writeElement("bairroTomador", $tomador->bairro);
-    $xml->writeElement("codigoMunicipioTomador", $tomador->codigoMunicipio);
-    $xml->writeElement("codigoPostalTomador", $tomador->cep);
-    if ($tomador->uf >'')
-        $xml->writeElement("ufTomador", $tomador->uf);
-    $xml->writeElement("emailTomador", $tomador->email);
-    //		
-    // ITENS
-    $xml->startElement("itensServico");
-    foreach ( $arrayItemNF as $notaFiscalItem ) {
 
-        $xml->startElement("itemServico");
-        $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
-        if ($notaFiscalItem->observacao > '')
-            $nmProd .= ' - '.$notaFiscalItem->observacao;
-        $xml->writeElement("descricaoServico", trim($nmProd));
-        $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
-        $xml->writeElement("cst", $notaFiscalItem->cstIss);
-        $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
-        $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
-        $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,4,'.',''));
-        $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,4,'.',''));
-        $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
-        $xml->endElement(); // ItemServico
-    }
-    $xml->endElement(); // ItensServico
-    if (($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>''))
-        $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
-    $xml->endElement(); // xmlNfpse
+    $xml->startElement("nfse");
+
+    if ($notaFiscal->ambiente == "H") // HOMOLOGAÇÃO
+        $xml->writeElement("nfse_teste", "1"); // define ambiente HOMOLOGAÇÃO
+
+        $xml->startElement("nf");
+            $xml->writeElement("valor_total", number_format($vlTotServ,2,',',''));
+            $xml->writeElement("valor_desconto", "0,00");
+            $xml->writeElement("valor_ir", "0,00");
+            $xml->writeElement("valor_inss", "0,00");
+            $xml->writeElement("valor_contribuicao_social", "0,00");
+            $xml->writeElement("valor_rps", "0,00");
+            $xml->writeElement("valor_pis", "0,00");
+            $xml->writeElement("valor_cofins", "0,00");
+            if ($notaFiscal->dadosAdicionais>'')
+                $xml->writeElement("observacao", $notaFiscal->dadosAdicionais);
+        $xml->endElement(); // nf
+        $xml->startElement("prestador");
+            $xml->writeElement("cpfcnpj", $emitente->documento);
+            $xml->writeElement("cidade", $municipioEmitente->codigoTOM); // Palhoça
+        $xml->endElement(); // prestador
+        $xml->startElement("tomador");
+            if (strlen($tomador->documento)==14) $tipoTomador = 'J'; else $tipoTomador = 'F';
+            $xml->writeElement("tipo", $tipoTomador); 
+            $xml->writeElement("cpfcnpj", $tomador->documento);
+            $xml->writeElement("ie", "");
+            $xml->writeElement("nome_razao_social", $tomador->nome);
+            $xml->writeElement("sobrenome_nome_fantasia", $tomador->nome);
+            $xml->writeElement("logradouro", trim($utilities->limpaEspeciais($tomador->logradouro)));
+            $xml->writeElement("email", $tomador->email);
+            if ($tomador->numero>0)
+                $xml->writeElement("numero_residencia", $tomador->numero);
+            if($tomador->complemento > '')
+                $xml->writeElement("complemento", $tomador->complemento);
+            $xml->writeElement("bairro", $tomador->bairro);
+            $xml->writeElement("cidade", $municipioTomador->codigoTOM);
+            $xml->writeElement("cep", $tomador->cep);
+        $xml->endElement(); // tomador
+        // ITENS
+        $xml->startElement("itens");
+
+        foreach ( $arrayItemNF as $notaFiscalItem ) {
+
+            $xml->startElement("lista");
+                $xml->writeElement("tributa_municipio_prestador", "N");
+                $xml->writeElement("codigo_local_prestacao_servico", $municipioEmitente->codigoTOM);
+                $xml->writeElement("unidade_codigo", 1);
+                $xml->writeElement("unidade_quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
+                $xml->writeElement("unidade_valor_unitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
+                $xml->writeElement("codigo_item_lista_servico", "402"); // LC116
+                $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
+                if ($notaFiscalItem->observacao > '')
+                    $nmProd .= ' - '.$notaFiscalItem->observacao;
+                $xml->writeElement("descritivo", trim($nmProd));
+                $xml->writeElement("aliquota_item_lista_servico", number_format(($notaFiscalItem->taxaIss/100),4,',',''));
+                $xml->writeElement("situacao_tributaria", $notaFiscalItem->cstIss); 
+                $xml->writeElement("valor_tributavel", number_format($notaFiscalItem->valorUnitario,4,'.',''));
+                $xml->writeElement("valor_deducao", "0,00");
+                $xml->writeElement("valor_issrf", "0,00");
+            $xml->endElement(); // lista
+
+        }
+        $xml->endElement(); // itens
+    $xml->endElement(); // nfse
     //
     $xmlNFe = $xml->outputMemory(true);
-    $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
     //
     $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
     $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
@@ -333,30 +346,25 @@ $db->commit();
 $params = "login=".$aAutoChave["login"]."&senha=".$aAutoChave["senhaWeb"]."&cidade=8233&f1=".$arqNFSe;
 $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
-$respEnv = $retEnv[0];
-$infoRet = $retEnv[1];
-
-
-
-
-
-
-    //
-$result = curl_exec($curl);
-$info = curl_getinfo( $curl );
+$result = $retEnv[0];
+$info = $retEnv[1];
 
 if ($info['http_code'] == '200') {
 
     //
     $xmlNFRet = simplexml_load_string($result);
-    $nuNF = $xmlNFRet->numeroSerie;
-    $cdVerif = $xmlNFRet->codigoVerificacao;
-    $dtProc = substr($xmlNFRet->dataProcessamento,0,10).' '.substr($xmlNFRet->dataProcessamento,11,8);
+    $nuNF = $xmlNFRet->numero_nfse;
+    $cdVerif = $xmlNFRet->cod_verificador_autenticidade;
+    $dtNF = $xmlNFRet->data_nfse;
+    $hrNF = $xmlNFRet->hora_nfse;
+    $dtProc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
+    $linkPDF = $xmlNFRet->link_nfse;
+    $xmlNF = $xmlNFRet->codigo_html;
     //
     $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
     $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
     $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
-    fwrite($arqNFe, $result);
+    fwrite($arqNFe, $xmlNF);
     fclose($arqNFe);
     $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
     //
@@ -380,14 +388,6 @@ if ($info['http_code'] == '200') {
         exit;
     }
     else {
-        //
-        // gerar pdf
-        include './gerarPdfFLN.php';
-        $gerarPdf = new gerarPdf();
-        $arqPDF = $gerarPdf->printDanfpse($notaFiscal->idNotaFiscal, $db);
-        $linkNF = "http://www.autocominformatica.com.br/".$dirAPI."/".$arqPDF;
-        $notaFiscal->linkNF = $linkNF;
-        $notaFiscal->update();
 
         // set response code - 201 created
         http_response_code(201);
