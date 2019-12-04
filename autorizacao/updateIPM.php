@@ -91,7 +91,7 @@ if($retorno[0]){
         $xml->endElement(); // rps
 */
         $xml->startElement("nf");
-            $xml->writeElement("data_fato_gerador", '02/12/2019');
+//            $xml->writeElement("data_fato_gerador", '02/12/2019');
             $xml->writeElement("valor_total", "2,00");
             $xml->writeElement("valor_desconto", "0,00");
             $xml->writeElement("valor_ir", "0,00");
@@ -132,8 +132,8 @@ if($retorno[0]){
                 $xml->writeElement("unidade_valor_unitario", "2,00");
                 $xml->writeElement("codigo_item_lista_servico", "402"); // LC116
                 $xml->writeElement("descritivo", "Servico para Teste de Homologacao");
-                $xml->writeElement("aliquota_item_lista_servico", "0,00");
-                $xml->writeElement("situacao_tributaria", "6"); // Isento
+                $xml->writeElement("aliquota_item_lista_servico", "2,00");
+                $xml->writeElement("situacao_tributaria", "0"); // Tributado
                 $xml->writeElement("valor_tributavel", "2,00");
                 $xml->writeElement("valor_deducao", "0,00");
                 $xml->writeElement("valor_issrf", "0,00");

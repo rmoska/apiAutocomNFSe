@@ -656,7 +656,7 @@ class comunicaNFSe {
     protected function pSendSOAPCurl($dados, $action, $assina) {
 
         $headers = array();
-        $headers[] = "Content-type: multipart/form-data";//text/xml; charset=utf-8";
+        $headers[] = "Content-type: text/xml; charset=utf-8";
 
         if (is_array($dados))
             $tamanho = strlen(implode($dados));
