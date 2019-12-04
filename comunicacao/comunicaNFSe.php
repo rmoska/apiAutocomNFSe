@@ -675,7 +675,7 @@ class comunicaNFSe {
             curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
             curl_setopt($curl, CURLOPT_TIMEOUT, 20);
 /*
             $curl = curl_init();
