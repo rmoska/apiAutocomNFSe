@@ -168,11 +168,11 @@ $ch = curl_init();
 
 //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
 curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php");
-curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 
 // Receive server response ...
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $ret = curl_exec($ch);
 
