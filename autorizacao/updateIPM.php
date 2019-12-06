@@ -174,21 +174,25 @@ if($retorno[0]){
 
     print_r($result);
 
-    print_r($info);
+//    echo $info['http_code'];
 
     $nuNF = 0;
     $cdVerif = '';
 
     if ($info['http_code'] == '200') {
         //
-        $xmlNFRet = simplexml_load_string($result);
-        $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
-        if (intval($codRet[0])==285) { // NFSe valida para emissao
-            $nuNF = 1; // 
-            $cdVerif = 'OK'; //
+        if ($xmlNFRet = @simplexml_load_string($result)) {
+            $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
+            if (intval($codRet[0])==285) { // NFSe valida para emissao
+                $nuNF = 1; // 
+                $cdVerif = 'OK'; //
+            }
+            else {
+                $cdVerif = $xmlNFRet->mensagem->codigo;
+            }
         }
         else {
-            $cdVerif = $xmlNFRet->mensagem->codigo;
+            $cdVerif = $result;
         }
     }
     else {
@@ -200,20 +204,10 @@ if($retorno[0]){
         }
         else {
     
-            $msg = $result;
-            $dados = json_decode($result);
-            if (isset($dados->error)) {
-
-                $cdVerif = "Erro no envio da NFSe ! (".$dados->error.") ".$dados->error_description;
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            }
-            else {
-
-                $xmlNFRet = simplexml_load_string(trim($result));
-                $msgRet = (string) $xmlNFRet->message;
-                $cdVerif = "Erro no envio da NFSe ! ".$msgRet;
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-            }
+            if ($xmlNFRet = @simplexml_load_string($result)) 
+                $cdVerif = $xmlNFRet->mensagem->codigo;
+            else 
+                $cdVerif = $result;
         }
     }
 
