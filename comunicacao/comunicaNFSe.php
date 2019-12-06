@@ -655,7 +655,8 @@ class comunicaNFSe {
     protected function pSendSOAPCurl($dados, $action, $assina) {
 
         $headers = array();
-        $headers[] = "Content-type: text/xml; charset=utf-8";
+//        $headers[] = "Content-type: text/xml; charset=utf-8";
+        $headers[] = "Content-type: multipart/form-data;";
 
         if (is_array($dados))
             $tamanho = strlen(implode($dados));
@@ -668,7 +669,7 @@ class comunicaNFSe {
         try {
 
             $curl = curl_init();
-//            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
             curl_setopt($curl, CURLOPT_URL, $this->url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
