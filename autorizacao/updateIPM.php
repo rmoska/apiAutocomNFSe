@@ -151,7 +151,7 @@ if($retorno[0]){
 
     $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
 
-    $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&f1=".$arqNFSe;
+    $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&f1=".$arqNFSe; //&cidade=8233
 /*
     $params = array(
         'login' => $emitente->documento,
@@ -163,9 +163,9 @@ if($retorno[0]){
 //    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
 $ch = curl_init();
-$headers[] = "Content-type: multipart/form-data";
+//$headers[] = "Content-type: multipart/form-data";
 
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
+//curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
 curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php");
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
