@@ -163,6 +163,8 @@ if($retorno[0]){
 
 //    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
+print_r($params);
+
 $ch = curl_init();
 //$headers[] = "Content-type: multipart/form-data";
 
@@ -172,7 +174,7 @@ curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 
 // Receive server response ...
-//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $ret = curl_exec($ch);
 
