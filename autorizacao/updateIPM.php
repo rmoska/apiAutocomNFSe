@@ -160,7 +160,24 @@ if($retorno[0]){
         'f1' => $arqNFSe
     );
 */
-    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
+//    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
+
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php");
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+
+// Receive server response ...
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$ret = curl_exec($ch);
+
+curl_close ($ch);
+
+print_r($ret);
+
+exit;
 
     $result = $retEnv[0];
     $info = $retEnv[1];
@@ -169,6 +186,7 @@ if($retorno[0]){
 
     print_r($info);
 exit;
+
 
     $nuNF = 0;
     $cdVerif = '';
