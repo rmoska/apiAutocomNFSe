@@ -167,6 +167,8 @@ if($retorno[0]){
         'f1' => $cFile
     );
 
+    print_r($params);
+
     $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
 /*
