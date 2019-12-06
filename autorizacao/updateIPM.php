@@ -153,8 +153,14 @@ if($retorno[0]){
 
     $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&f1=".$arqNFSe; //&cidade=8233
 
-    $cFile = curl_file_create($arqNFSe);
 
+    if (function_exists('curl_file_create')) {
+        $cFile = curl_file_create($arqNFSe);
+    } else {
+        $cFile = '@' . realpath($arqNFSe);
+    }
+    
+    
 //    'cidade' => '8233',
     $params = array(
         'eletron' => 1,
