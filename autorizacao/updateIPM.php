@@ -151,7 +151,7 @@ if($retorno[0]){
 
     $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
 
-    $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&cidade=8233&f1=".$arqNFSe;
+    $params = "eletron=1&login=".$emitente->documento."&senha=X".$data->senhaWeb."&cidade=8233&f1=".$arqNFSe;
 /*
     $params = array(
         'login' => $emitente->documento,
