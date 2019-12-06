@@ -174,7 +174,7 @@ if($retorno[0]){
 
     print_r($result);
 
-//    echo $info['http_code'];
+    echo $info['http_code'];
 
     $nuNF = 0;
     $cdVerif = '';
