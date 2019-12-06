@@ -153,11 +153,11 @@ if($retorno[0]){
 
     $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&f1=".$arqNFSe; //&cidade=8233
 
+//    'cidade' => '8233',
     $params = array(
         'eletron' => 1,
         'login' => $emitente->documento,
-        'senha' => 'X'.$data->senhaWeb,
-        'cidade' => '8233',
+        'senha' => $data->senhaWeb,
         'f1' => $arqNFSe
     );
 
