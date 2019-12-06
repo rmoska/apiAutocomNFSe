@@ -184,11 +184,12 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 // Receive server response ...
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-$ret = curl_exec($ch);
+$result = curl_exec( $ch );
+$info = curl_getinfo( $ch );
 
-curl_close ($ch);
+print_r($result);
 
-print_r($ret);
+print_r($info);
 
 exit;
 
