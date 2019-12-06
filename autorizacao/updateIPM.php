@@ -150,6 +150,7 @@ if($retorno[0]){
     fclose($arqNFe);
 
     $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
+    $arqNFSe = "../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
 
     $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&f1=".$arqNFSe; //&cidade=8233
 
