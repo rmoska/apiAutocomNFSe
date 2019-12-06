@@ -668,7 +668,7 @@ class comunicaNFSe {
         try {
 
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+//            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
             curl_setopt($curl, CURLOPT_URL, $this->url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
