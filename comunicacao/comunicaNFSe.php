@@ -531,7 +531,7 @@ class comunicaNFSe {
             }
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($params, '', 'S');
+            $retorno = $this->pSendSOAPCurl($params, '', 'N', 'N');
             //verifica o retorno
             if (! $retorno) {
 
@@ -652,11 +652,10 @@ class comunicaNFSe {
 
     //
     // chamada soap + curl + envelope
-    protected function pSendSOAPCurl($dados, $action, $assina) {
+    protected function pSendSOAPCurl($dados, $action, $sign, $noHeader = '') {
 
         $headers = array();
-//        $headers[] = "Content-type: text/xml; charset=utf-8";
-        $headers[] = "Content-type: multipart/form-data;";
+        $headers[] = "Content-type: text/xml; charset=utf-8";
 
         if (is_array($dados))
             $tamanho = strlen(implode($dados));
@@ -669,14 +668,15 @@ class comunicaNFSe {
         try {
 
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
+            if ($noHeader!='N') 
+                curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
             curl_setopt($curl, CURLOPT_URL, $this->url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($curl, CURLOPT_POST, TRUE);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $dados);
-            if ($assina=='S') {
+            if ($sign=='S') {
                 curl_setopt($curl, CURLOPT_SSLCERT, $this->pubKEY);
                 curl_setopt($curl, CURLOPT_SSLKEY, $this->priKEY);
             }
