@@ -167,9 +167,9 @@ if($retorno[0]){
         'f1' => $cFile
     );
 
-//    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
+    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
-
+/*
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1");
@@ -186,7 +186,7 @@ print_r($result);
 print_r($info);
 
 exit;
-
+*/
     $result = $retEnv[0];
     $info = $retEnv[1];
 
