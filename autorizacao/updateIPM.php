@@ -156,7 +156,7 @@ if($retorno[0]){
     $params = array(
         'eletron' => 1,
         'login' => $emitente->documento,
-        'senha' => $data->senhaWeb,
+        'senha' => 'X'.$data->senhaWeb,
         'cidade' => '8233',
         'f1' => $arqNFSe
     );
@@ -171,7 +171,7 @@ $ch = curl_init();
 //curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
 curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php");
 curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 
 // Receive server response ...
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
