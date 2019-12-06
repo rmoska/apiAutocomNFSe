@@ -162,41 +162,19 @@ if($retorno[0]){
     
 //    'cidade' => '8233',
     $params = array(
-        'login' => $emitente->documento,
+        'login' => $data->login,
         'senha' => $data->senhaWeb,
         'f1' => $cFile
     );
 
-    print_r($params);
-
     $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
-/*
-$ch = curl_init();
-
-curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1");
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$result = curl_exec( $ch );
-$info = curl_getinfo( $ch );
-
-print_r($result);
-
-print_r($info);
-
-exit;
-*/
     $result = $retEnv[0];
     $info = $retEnv[1];
 
     print_r($result);
 
     print_r($info);
-exit;
-
 
     $nuNF = 0;
     $cdVerif = '';
@@ -204,8 +182,14 @@ exit;
     if ($info['http_code'] == '200') {
         //
         $xmlNFRet = simplexml_load_string($result);
-        $nuNF = (string) $xmlNFRet->numero_nfse;
-        $cdVerif = (string) $xmlNFRet->cod_verificador_autenticidade;
+        $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
+        if (intval($codRet[0])==285) { // NFSe valida para emissao
+            $nuNF = 1; // 
+            $cdVerif = 'OK'; //
+        }
+        else {
+            $cdVerif = $xmlNFRet->mensagem->codigo;
+        }
     }
     else {
 
