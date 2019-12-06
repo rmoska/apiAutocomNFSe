@@ -153,12 +153,14 @@ if($retorno[0]){
 
     $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&f1=".$arqNFSe; //&cidade=8233
 
+    $cFile = curl_file_create($arqNFSe);
+
 //    'cidade' => '8233',
     $params = array(
         'eletron' => 1,
         'login' => $emitente->documento,
         'senha' => $data->senhaWeb,
-        'f1' => $arqNFSe
+        'f1' => $cFile
     );
 
 //    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
@@ -166,9 +168,9 @@ if($retorno[0]){
 print_r($params);
 
 $ch = curl_init();
-$headers[] = "Content-type: multipart/form-data";
+//$headers[] = "Content-type: multipart/form-data";
+//curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
 
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
 curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php");
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
