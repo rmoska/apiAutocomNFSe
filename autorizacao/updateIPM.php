@@ -158,7 +158,7 @@ if($retorno[0]){
         'login' => $emitente->documento,
         'senha' => $data->senhaWeb,
         'cidade' => '8233',
-        'f1' => $arqNFSe
+        'f1' => str_replace(' ','',$arqNFSe)
     );
 
 //    $retEnv = $objNFSe->transmitirNFSeIpm( $params );
