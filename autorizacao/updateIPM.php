@@ -166,7 +166,7 @@ if($retorno[0]){
 print_r($params);
 
 $ch = curl_init();
-$headers = "Content-type: multipart/form-data";
+$headers[] = "Content-type: multipart/form-data";
 
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
 curl_setopt($ch, CURLOPT_URL,"http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php");
