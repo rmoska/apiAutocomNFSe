@@ -331,11 +331,11 @@ else {
     $xmlNFe = $xml->outputMemory(true);
     //
     $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
-    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
+    $arqNFSe = "../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
+    $arqNFe = fopen($arqNFSe,"wt");
     fwrite($arqNFe, $xmlNFe);
     fclose($arqNFe);
     //	
-    $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
 }
 //
 // fecha atualizações
@@ -343,36 +343,61 @@ $db->commit();
 //
 //
 // transmite NFSe	
-$params = "login=".$aAutoChave["login"]."&senha=".$aAutoChave["senhaWeb"]."&cidade=8233&f1=".$arqNFSe;
-$retEnv = $objNFSe->transmitirNFSeIpm( $params );
+if (function_exists('curl_file_create')) { // php 5.5+
+    $cFile = curl_file_create($arqNFSe);
+} else {
+    $cFile = '@' . realpath($arqNFSe);
+}
+
+$params = array(
+    'login' => $data->login,
+    'senha' => $data->senhaWeb,
+    'f1' => $cFile
+);
 
 $result = $retEnv[0];
 $info = $retEnv[1];
 
 if ($info['http_code'] == '200') {
 
-    //
-    $xmlNFRet = simplexml_load_string($result);
-    $nuNF = $xmlNFRet->numero_nfse;
-    $cdVerif = $xmlNFRet->cod_verificador_autenticidade;
-    $dtNF = $xmlNFRet->data_nfse;
-    $hrNF = $xmlNFRet->hora_nfse;
-    $dtProc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
-    $linkPDF = $xmlNFRet->link_nfse;
-    $xmlNF = $xmlNFRet->codigo_html;
-    //
-    $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
-    $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
-    $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
-    fwrite($arqNFe, $xmlNF);
-    fclose($arqNFe);
-    $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
-    //
-    $notaFiscal->numero = $nuNF;
-    $notaFiscal->chaveNF = $cdVerif;
-    $notaFiscal->linkXml = $linkXml;
-    $notaFiscal->situacao = "F";
-    $notaFiscal->dataProcessamento = $dtProc;
+    if ($xmlNFRet = @simplexml_load_string($result)) {
+
+        $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
+        if ($notaFiscal->ambiente == "H") { // HOMOLOGAÇÃO
+            if (intval($codRet[0])==285) { // NFSe válida para emissao (IPM não emite NF homologação, apenas valida XML)
+                $nuNF = 1; // 
+                $cdVerif = 'OK'; //
+            }
+            else {
+                $cdVerif = $xmlNFRet->mensagem->codigo;
+            }
+        } 
+        else {
+            if (intval($codRet[0]) == 1) { // sucesso
+
+                $nuNF = $xmlNFRet->numero_nfse;
+                $cdVerif = $xmlNFRet->cod_verificador_autenticidade;
+                $dtNF = $xmlNFRet->data_nfse;
+                $hrNF = $xmlNFRet->hora_nfse;
+                $dtProc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
+                $linkPDF = $xmlNFRet->link_nfse;
+                $xmlNF = $xmlNFRet->codigo_html;
+                $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
+                $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
+                $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
+                fwrite($arqNFe, $xmlNF);
+                fclose($arqNFe);
+                $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
+            }
+            else {
+                $cdVerif = $xmlNFRet->mensagem->codigo;
+            }
+        }
+    }
+    else { // retorno não é xml (acontece com IPM para login errado: "Não foi encontrado na tb.dcarq.unico a cidade(codmun) do Usuário:")
+        $cdVerif = $result;
+    }
+
     //
     // update notaFiscal
     $retorno = $notaFiscal->update();
@@ -402,7 +427,7 @@ if ($info['http_code'] == '200') {
         exit;
     }
 }
-else {
+else { // http_code <> 200
 
     if (substr($info['http_code'],0,1) == '5') {
 
@@ -437,41 +462,26 @@ else {
         //$notaFiscal->deleteCompletoTransaction();
         //$notaFiscal->updateSituacao("E");
 
-        $msg = $result;
-        $dados = json_decode($result);
-
-        if (isset($dados->error)) {
-
+        if ($xmlNFRet = @simplexml_load_string($result))
+            $msgRet = (string)$xmlNFRet->mensagem->codigo;
+        else 
+            $msgRet = $result;
+        
+        $codMsg = $utilities->codificaMsg($msgRet);
+        if ($codMsg=='P05')
+            $notaFiscal->situacao = 'T';
+        else
             $notaFiscal->situacao = 'E';
-            $notaFiscal->textoResposta = "(".$dados->error.") ".$dados->error_description;
-            $notaFiscal->update();
-    
-            http_response_code(500);
-            echo json_encode(array("http_code" => "401", "message" => "Erro no envio da NFSe !!", "resposta" => "(".$dados->error.") ".$dados->error_description, "codigo" => "P00"));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !! (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe !', '('.$dados->error.') '.$dados->error_description);
-            exit;
-        }
-        else {
+        $notaFiscal->update();
 
-            $xmlNFRet = simplexml_load_string(trim($result));
-            $msgRet = (string) $xmlNFRet->message;
-            $notaFiscal->textoResposta = $msgRet;
-            $codMsg = $utilities->codificaMsg($msgRet);
-            if ($codMsg=='P05')
-                $notaFiscal->situacao = 'T';
-            else
-                $notaFiscal->situacao = 'E';
-            $notaFiscal->update();
+        http_response_code(500);
+        echo json_encode(array("http_code" => "401", 
+                                "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                "message" => "Erro no envio da NFSe !", "resposta" => $msgRet, "codigo" => $codMsg));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
+        exit;
 
-            http_response_code(500);
-            echo json_encode(array("http_code" => "401", 
-                                   "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                   "message" => "Erro no envio da NFSe !", "resposta" => $msgRet, "codigo" => $codMsg));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
-            exit;
-        }
     }
 }
 

@@ -92,7 +92,7 @@ class Utilities{
     public function codificaMsg($msg) {
 
         $codMsg = 'P00'; //'OUTROS';
-        if ( (stristr($msg, 'Sintaxe do XML')) || (stristr($msg, 'Problema com integridade')) || (stristr($msg, 'Arquivo Invalido')) ) {
+        if ( (stristr($msg, 'Sintaxe do XML')) || (stristr($msg, 'Problema com integridade')) || (stristr($msg, 'Arquivo Invalido'))  || (stristr($msg, 'invalid_token'))) {
             $codMsg = 'P05'; //'ERRO DE ARQUIVO/TIMEOUT';
         }
         else if ( (stristr($msg, 'tomador')) || (stristr($msg, 'país inv')) || (stristr($msg, 'município inv')) || (stristr($msg, 'uf inv')) ) {

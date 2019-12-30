@@ -145,14 +145,10 @@ if($retorno[0]){
     }
 */
     //    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
-    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml","wt");
+    $arqNFSe = "../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
+    $arqNFe = fopen($arqNFSe,"wt");
     fwrite($arqNFe, $xmlNFe);
     fclose($arqNFe);
-
-//    $arqNFSe = "http://www.autocominformatica.com.br/".$dirAPI."/arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
-    $arqNFSe = "../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
-
-    $params = "eletron=1&login=".$emitente->documento."&senha=".$data->senhaWeb."&f1=".$arqNFSe; //&cidade=8233
 
     if (function_exists('curl_file_create')) { // php 5.5+
         $cFile = curl_file_create($arqNFSe);
@@ -183,8 +179,8 @@ if($retorno[0]){
         //
         if ($xmlNFRet = @simplexml_load_string($result)) {
             $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
-            if (intval($codRet[0])==285) { // NFSe valida para emissao
-                $nuNF = 1; // 
+            if (intval($codRet[0])==285) { // NFSe válida para emissao (IPM não emite NF homologação, apenas valida XML)
+                $nuNF = 1; // seta número para considerar NF emitida
                 $cdVerif = 'OK'; //
             }
             else {
