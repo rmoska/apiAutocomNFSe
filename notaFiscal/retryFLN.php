@@ -62,9 +62,11 @@
     //		
     // ITENS
     $xml->startElement("itensServico");
+
     foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
         $xml->startElement("itemServico");
+        $notaFiscalItem->readItemVenda();
         $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
         if ($notaFiscalItem->observacao > '')
             $nmProd .= ' - '.$notaFiscalItem->observacao;
