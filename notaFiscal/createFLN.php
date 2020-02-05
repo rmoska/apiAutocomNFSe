@@ -173,7 +173,7 @@ foreach ( $data->itemServico as $item )
     $totalItens += floatval($notaFiscalItem->valorTotal);
 
     // 1=SN 3=SN+Ret 6=SN+ST 12=Isenta 13=NTrib
-    if (($item->cst != '1') && ($item->cst != '3') && ($item->cst != '6') && ($item->cst != '12') && ($item->cst != '13')) {
+    if (($item->cst != '1') && ($item->cst != '3') && ($item->cst != '6') && ($item->cst != '12') && ($item->cst != '13') && ($item->taxaIss > 0)) {
         $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
         $notaFiscalItem->taxaIss = $item->taxaIss;
         $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);

@@ -68,7 +68,7 @@ if($retorno[0]){
             http_response_code(401);
             echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg, "codigo" => "A01"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Certificado.', 'Emitente='.$autorizacao->idEmitente.' Erro='.$certificado->errMsg);
+            $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Certificado.', 'Erro='.$certificado->errMsg.' Emitente='.$autorizacao->idEmitente);
             exit;
         }
         $validade = $certificado->certDaysToExpire;
