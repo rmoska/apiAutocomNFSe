@@ -167,13 +167,13 @@ if($retorno[0]){
 
     $result = $retEnv[0];
     $info = $retEnv[1];
-
+/*
     error_log($info.' - '.$result."\n", 3, "../arquivosNFSe/apiErrors.log");
 
     print_r($info);
 
 //    echo $info['http_code'];
-
+*/
     $nuNF = 0;
     $cdVerif = '';
 
