@@ -168,7 +168,7 @@ if($retorno[0]){
     $result = $retEnv[0];
     $info = $retEnv[1];
 
-    error_log($result."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    error_log($result."\n", 3, "../arquivosNFSe/apiErrors.log");
 
     print_r($result);
 
