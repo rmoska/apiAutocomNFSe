@@ -186,11 +186,11 @@ if($retorno[0]){
                 $cdVerif = 'OK'; //
             }
             else {
-                $cdVerif = $xmlNFRet->mensagem->codigo;
+                $cdVerif = 'ERR1='.$xmlNFRet->mensagem->codigo;
             }
         }
         else {
-            $cdVerif = $result;
+            $cdVerif = 'ERR2='.$result;
         }
     }
     else {
