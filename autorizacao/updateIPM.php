@@ -187,13 +187,13 @@ if($retorno[0]){
             }
             else {
                 if (is_null($xmlNFRet->mensagem->codigo))
-                    $cdVerif = 'ERR2='.$result;
+                    $cdVerif = 'ERR2=';//.$result;
                 else
-                    $cdVerif = 'ERR1='.$xmlNFRet->mensagem->codigo;
+                    $cdVerif = 'ERR1=';//.$xmlNFRet->mensagem->codigo;
             }
         }
         else {
-            $cdVerif = 'ERR3='.$result;
+            $cdVerif = 'ERR3=';//.$result;
         }
     }
     else {
@@ -206,9 +206,9 @@ if($retorno[0]){
         else {
     
             if ($xmlNFRet = @simplexml_load_string($result)) 
-                $cdVerif = 'ERR3'.$xmlNFRet->mensagem->codigo;
+                $cdVerif = 'ERR4';//.$xmlNFRet->mensagem->codigo;
             else 
-                $cdVerif = $result;
+                $cdVerif = 'ERR5'; //.$result;
         }
     }
 
