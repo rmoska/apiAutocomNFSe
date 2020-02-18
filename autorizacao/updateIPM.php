@@ -180,10 +180,8 @@ if($retorno[0]){
     $cdVerif = '';
 
     if ($info['http_code'] == '200') {
-echo '2'.$result;
         //
         if ($xmlNFRet = @simplexml_load_string($result)) {
-echo '3'.$result;
             $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
             if (intval($codRet[0])==285) { // NFSe válida para emissao (IPM não emite NF homologação, apenas valida XML)
                 $nuNF = 1; // seta número para considerar NF emitida
@@ -198,7 +196,7 @@ echo '3'.$result;
         }
         else {
 echo '4'.$result;
-            $cdVerif = 'ERR3=';//.$result;
+            $cdVerif = 'ERR3='.$result;
         }
     }
     else {
