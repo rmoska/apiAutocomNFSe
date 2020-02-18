@@ -189,13 +189,13 @@ if($retorno[0]){
             }
             else {
                 if (is_null($xmlNFRet->mensagem->codigo))
-                    $cdVerif = 'ERR2=';//.$result;
+                    $cdVerif = utf8_decode($result).' (E01)';
                 else
-                    $cdVerif = 'ERR1=';//.$xmlNFRet->mensagem->codigo;
+                    $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo).' (E02)';
             }
         }
         else {
-            $cdVerif = utf8_decode($result);
+            $cdVerif = utf8_decode($result).' (E03)';
         }
     }
     else {
@@ -208,12 +208,11 @@ if($retorno[0]){
         else {
     
             if ($xmlNFRet = @simplexml_load_string($result)) 
-                $cdVerif = 'ERR4';//.$xmlNFRet->mensagem->codigo;
+                $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo).' (E04)';
             else 
-                $cdVerif = 'ERR5'; //.$result;
+                $cdVerif = utf8_decode($result).' (E05)';
         }
     }
-echo '  V = '.$cdVerif;
 
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
