@@ -195,7 +195,7 @@ if($retorno[0]){
             }
         }
         else {
-echo '4'.$result;
+echo '   4'.$result;
             $cdVerif = 'ERR3='.$result;
         }
     }
@@ -214,6 +214,7 @@ echo '4'.$result;
                 $cdVerif = 'ERR5'; //.$result;
         }
     }
+echo '   5'.$result.'   '.$cdVerif;
 
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
