@@ -170,7 +170,7 @@ if($retorno[0]){
 
     error_log($info.' - '.$result."\n", 3, "../arquivosNFSe/apiErrors.log");
 
-    echo '1'.$result;
+//    echo '1'.$result;
 
 //    print_r($info);
 
@@ -195,8 +195,7 @@ if($retorno[0]){
             }
         }
         else {
-echo '   4'.$result;
-            $cdVerif = 'ERR3='.$result;
+            $cdVerif = utf8_decode($result);
         }
     }
     else {
@@ -214,7 +213,7 @@ echo '   4'.$result;
                 $cdVerif = 'ERR5'; //.$result;
         }
     }
-echo '   5'.$result.'   '.$cdVerif;
+echo '  V = '.$cdVerif;
 
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
