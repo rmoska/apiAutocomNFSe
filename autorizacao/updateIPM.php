@@ -170,9 +170,9 @@ if($retorno[0]){
 
     error_log($info.' - '.$result."\n", 3, "../arquivosNFSe/apiErrors.log");
 
-    print_r($result);
+    print_r($info);
 
-    echo $info['http_code'];
+//    echo $info['http_code'];
 
     $nuNF = 0;
     $cdVerif = '';
