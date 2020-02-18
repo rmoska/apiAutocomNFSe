@@ -167,19 +167,23 @@ if($retorno[0]){
 
     $result = $retEnv[0];
     $info = $retEnv[1];
-/*
+
     error_log($info.' - '.$result."\n", 3, "../arquivosNFSe/apiErrors.log");
 
-    print_r($info);
+    echo '1'.$result;
+
+//    print_r($info);
 
 //    echo $info['http_code'];
-*/
+
     $nuNF = 0;
     $cdVerif = '';
 
     if ($info['http_code'] == '200') {
+echo '2'.$result;
         //
         if ($xmlNFRet = @simplexml_load_string($result)) {
+echo '3'.$result;
             $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
             if (intval($codRet[0])==285) { // NFSe válida para emissao (IPM não emite NF homologação, apenas valida XML)
                 $nuNF = 1; // seta número para considerar NF emitida
@@ -193,6 +197,7 @@ if($retorno[0]){
             }
         }
         else {
+echo '4'.$result;
             $cdVerif = 'ERR3=';//.$result;
         }
     }
