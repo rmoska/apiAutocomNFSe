@@ -12,9 +12,9 @@ if( empty($data->idEmitente) ||
     empty($data->senha) ) {
  
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
-    $strData = json_encode($data);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos.", "codigo" => "A06"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização. Dados incompletos.', $strData);
     exit;
 }
     
@@ -58,8 +58,9 @@ if($retorno[0]){
 
     if ($objNFSe->errStatus){
         http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $objNFSe->errMsg));
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $objNFSe->errMsg, "codigo" => "A01"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$objNFSe->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Certificado.', 'Erro='.$objNFSe->errMsg.' Emitente='.$autorizacao->idEmitente);
         exit;
     }
     $validade = $objNFSe->certDaysToExpire;
@@ -168,12 +169,8 @@ if($retorno[0]){
     $result = $retEnv[0];
     $info = $retEnv[1];
 
-    error_log($info.' - '.$result."\n", 3, "../arquivosNFSe/apiErrors.log");
-
 //    echo '1'.$result;
-
 //    print_r($info);
-
 //    echo $info['http_code'];
 
     $nuNF = 0;
@@ -189,28 +186,40 @@ if($retorno[0]){
             }
             else {
                 if (is_null($xmlNFRet->mensagem->codigo))
-                    $cdVerif = utf8_decode($result).' (E01)';
+                    $cdVerif = "Erro no envio da NFSe ! (".utf8_decode($result).") - E01";
                 else
-                    $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo).' (E02)';
+                    $cdVerif = "Erro no envio da NFSe ! (".utf8_decode($xmlNFRet->mensagem->codigo).") - E02";
+                $codMsg = 'P00';
+                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$cdVerif.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+                $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe !', '('.$cdVerif.')');
             }
         }
         else {
-            $cdVerif = utf8_decode($result).' (E03)';
+
+            $cdVerif = "Erro no envio da NFSe ! (".utf8_decode($result).") - E03";
+            $codMsg = 'P00';
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$cdVerif.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe !', '('.$cdVerif.')');
         }
     }
     else {
 
         if (substr($info['http_code'],0,1) == '5') {
 
-            $cdVerif = "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $cdVerif = "Erro no envio da NFSe ! Problemas no servidor (Indisponível ou Tempo de espera excedido) !";
+            $codMsg = 'P05';
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponível ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $logMsg->register('A', 'autorizacao.update', 'Erro no envio da NFPSe ! Problemas no servidor (Indisponível ou Tempo de espera excedido).', '');
         }
         else {
     
             if ($xmlNFRet = @simplexml_load_string($result)) 
-                $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo).' (E04)';
+                $cdVerif = "Erro no envio da NFSe ! (".utf8_decode($xmlNFRet->mensagem->codigo).") - E04";
             else 
-                $cdVerif = utf8_decode($result).' (E05)';
+                $cdVerif = "Erro no envio da NFSe ! (".utf8_decode($result).") - E05";
+            $codMsg = 'P00';
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$cdVerif.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $logMsg->register('E', 'autorizacao.update', 'Erro no envio da NFPSe !', '('.$cdVerif.')');
         }
     }
 
@@ -218,14 +227,15 @@ if($retorno[0]){
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
                             "validade" => $validade." dias",
                             "nf-homolog" => $nuNF,
-                            "verificacao-homolog" => $cdVerif));
+                            "verificacao-homolog" => $cdVerif,
+                            "codigo" => $codMsg));        
 }
 else{
 
     http_response_code(500);
-    echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1]));
-    $strData = json_encode($data);
+    echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1], "codigo" => "A00"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Dados = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização.', $strData);
     exit;
 }
 

@@ -208,7 +208,6 @@ else{
 
     http_response_code(500);
     echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1], "codigo" => "A00"));
-    $strData = json_encode($data);
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Dados = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização.', $strData);
     exit;

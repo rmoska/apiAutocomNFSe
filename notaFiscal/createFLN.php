@@ -498,7 +498,7 @@ else {
                 $notaFiscal->situacao = 'E';
             $notaFiscal->update();
 
-            http_response_code(500);
+            http_response_code(401);
             echo json_encode(array("http_code" => "401", 
                                    "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                    "message" => "Erro no envio da NFSe !", "resposta" => $msgRet, "codigo" => $codMsg));

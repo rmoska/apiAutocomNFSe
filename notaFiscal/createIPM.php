@@ -103,7 +103,7 @@ foreach ( $data->itemServico as $item )
     if(
         empty($item->codigo) ||
         empty($item->descricao) ||
-        empty($item->listaServico) ||
+        empty($item->nbs) ||
         empty($item->quantidade) ||
         empty($item->valor) ||
         (!($item->cst>=0)) ||
@@ -127,7 +127,7 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->idItemVenda = $idItemVenda;
 
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->listaServico = $item->listaServico;
+        $itemVenda->listaServico = $item->nbs;
 
         $itemVenda->updateVar();
 
@@ -137,7 +137,7 @@ foreach ( $data->itemServico as $item )
 
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->listaServico = $item->listaServico;
+        $itemVenda->listaServico = $item->nbs;
 
         $retorno = $itemVenda->create();
         if(!$retorno[0]){
@@ -156,7 +156,7 @@ foreach ( $data->itemServico as $item )
 
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
-    $notaFiscalItem->ncm = $item->listaServico;
+    $notaFiscalItem->ncm = $item->nbs;
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
@@ -388,44 +388,67 @@ if ($info['http_code'] == '200') {
                 fwrite($arqNFe, $xmlNF);
                 fclose($arqNFe);
                 $linkXml = "http://www.autocominformatica.com.br/".$dirAPI."/".$dirXmlRet.$arqXmlRet;
+
+                $notaFiscal->numero = $nuNF;
+                $notaFiscal->chaveNF = $cdVerif;
+                $notaFiscal->linkXml = $linkXml;
+                $notaFiscal->linkNF = $linkPDF;
+                $notaFiscal->situacao = "F";
+                $notaFiscal->dataProcessamento = $dtProc;
+            
+                //
+                // update notaFiscal
+                $retorno = $notaFiscal->update();
+                if(!$retorno[0]) {
+
+                    // força update simples
+                    $notaFiscal->updateSituacao("F");
+
+                    http_response_code(500);
+                    echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
+                    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+                    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
+                    exit;
+                }
+                else {
+
+                    // set response code - 201 created
+                    http_response_code(201);
+                    $arrOK = array("http_code" => "201", 
+                                            "message" => "Nota Fiscal emitida", 
+                                            "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                            "numeroNF" => $notaFiscal->numero,
+                                            "xml" => $linkXml,
+                                            "pdf" => $linkNF);
+                    echo json_encode($arrOK);
+            //        $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
+                    exit;
+                }
             }
-            else {
-                $cdVerif = $xmlNFRet->mensagem->codigo;
+            else { // resposta <> 1
+                $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
+                $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo);
             }
         }
-    }
+    } 
     else { // retorno não é xml (acontece com IPM para login errado: "Não foi encontrado na tb.dcarq.unico a cidade(codmun) do Usuário:")
-        $cdVerif = $result;
+        $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
+        $cdVerif = utf8_decode($result);
     }
 
-    //
-    // update notaFiscal
-    $retorno = $notaFiscal->update();
-    if(!$retorno[0]) {
+    $notaFiscal->situacao = 'E';
+    $notaFiscal->textoResposta = $cdVerif;
+    $notaFiscal->update();
 
-        // força update simples
-        $notaFiscal->updateSituacao("F");
-
-        http_response_code(500);
-        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
-        exit;
-    }
-    else {
-
-        // set response code - 201 created
-        http_response_code(201);
-        $arrOK = array("http_code" => "201", 
-                                "message" => "Nota Fiscal emitida", 
-                                "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                "numeroNF" => $notaFiscal->numero,
-                                "xml" => $linkXml,
-                                "pdf" => $linkNF);
-        echo json_encode($arrOK);
-//        $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
-        exit;
-    }
+    http_response_code(401);
+    echo json_encode(array("http_code" => "401", 
+                           "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                           "message" => "Erro no envio da NFSe !", 
+                           "resposta" => $cdVerif, 
+                           "codigo" => $codMsg));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! idNotaFiscal =".$notaFiscal->idNotaFiscal."  (".$cdVerif.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$cdVerif.') ', $strData);
+    exit;
 }
 else { // http_code <> 200
 
@@ -434,13 +457,11 @@ else { // http_code <> 200
         //
         $notaFiscal->situacao = "T";
         $notaFiscal->textoJustificativa = "Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
-
         // update notaFiscal
         $retorno = $notaFiscal->update();
         if(!$retorno[0]){
 
             //$notaFiscal->deleteCompletoTransaction();
-
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível.", "codigo" => "A00"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
@@ -465,23 +486,24 @@ else { // http_code <> 200
         if ($xmlNFRet = @simplexml_load_string($result))
             $msgRet = (string)$xmlNFRet->mensagem->codigo;
         else 
-            $msgRet = $result;
+            $msgRet = utf8_decode($result);
         
-        $codMsg = $utilities->codificaMsg($msgRet);
+        $codMsg = "P00"; // $utilities->codificaMsg($msgRet);
         if ($codMsg=='P05')
             $notaFiscal->situacao = 'T';
         else
             $notaFiscal->situacao = 'E';
         $notaFiscal->update();
 
-        http_response_code(500);
+        http_response_code(401);
         echo json_encode(array("http_code" => "401", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                "message" => "Erro no envio da NFSe !", "resposta" => $msgRet, "codigo" => $codMsg));
+                                "message" => "Erro no envio da NFSe !", 
+                                "resposta" => $msgRet, 
+                                "codigo" => $codMsg));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
         exit;
-
     }
 }
 
