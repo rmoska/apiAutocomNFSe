@@ -130,7 +130,6 @@ foreach ( $data->itemServico as $item )
         $itemVenda->listaServico = $item->nbs;
 
         $itemVenda->updateVar();
-
     }
     else 
     {
@@ -231,9 +230,6 @@ else {
          echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. Dados de Autorização incompletos."));
          exit;
     };
-
-    // calcular Imposto Aproximado IBPT
-//    $notaFiscal->calcImpAprox();
 
     // montar xml nfse
     $vlTotBC = 0; 
@@ -350,8 +346,8 @@ if (function_exists('curl_file_create')) { // php 5.5+
 }
 
 $params = array(
-    'login' => $data->login,
-    'senha' => $data->senhaWeb,
+    'login' => $aAutoChave["login"],
+    'senha' => $aAutoChave["senhaWeb"],
     'f1' => $cFile
 );
 
