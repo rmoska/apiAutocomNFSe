@@ -118,7 +118,10 @@ class Utilities{
         $aItens = array();
 
         $codMsg = 'P00'; //'OUTROS';
-        if ( (stristr($msg, 'Sintaxe do XML')) || (stristr($msg, 'Problema com integridade')) || (stristr($msg, 'Arquivo Invalido'))  || (stristr($msg, 'invalid_token'))) {
+        if ( (stristr($msg, 'Sintaxe do XML')) || (stristr($msg, 'Problema com integridade')) || 
+             (stristr($msg, 'Arquivo Invalido')) || (stristr($msg, 'invalid_token')) || 
+             (stristr($msg, 'Erro na validação da assinatura digital')) || (stristr($msg, 'Unexpected end of file')) ||
+             (stristr($msg, 'Erro ao realizar o processamento'))) {
             $codMsg = 'P05'; //'ERRO DE ARQUIVO/TIMEOUT';
         }
         else if ( (stristr($msg, 'tomador')) || (stristr($msg, 'país inv')) || (stristr($msg, 'município inv')) || (stristr($msg, 'uf inv')) ) {
