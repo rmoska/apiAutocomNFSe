@@ -28,7 +28,7 @@ if ($autorizacao->check() == 0) {
 
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
-    $autorizacao->mensagemnf = $data->mensagemnf;
+    $autorizacao->mensagemnf = $data->mensagemNF;
     $retorno = $autorizacao->create($emitente->documento);
 }
 else {
@@ -36,7 +36,7 @@ else {
     $autorizacao->readOne(); // carregar idAutorizacao
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
-    $autorizacao->mensagemnf = $data->mensagemnf;
+    $autorizacao->mensagemnf = $data->mensagemNF;
     $retorno = $autorizacao->update($emitente->documento);
 }
     

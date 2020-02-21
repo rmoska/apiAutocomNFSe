@@ -31,7 +31,7 @@ if ($autorizacao->check() == 0) {
     $autorizacao->cmc = $data->cmc;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
-    $autorizacao->mensagemnf = $data->mensagemnf;
+    $autorizacao->mensagemnf = $data->mensagemNF;
     $retorno = $autorizacao->create($emitente->documento);
 }
 else {
@@ -41,7 +41,7 @@ else {
     $autorizacao->cmc = $data->cmc;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
-    $autorizacao->mensagemnf = $data->mensagemnf;
+    $autorizacao->mensagemnf = $data->mensagemNF;
     $retorno = $autorizacao->update($emitente->documento);
 }
 
