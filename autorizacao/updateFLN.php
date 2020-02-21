@@ -35,6 +35,7 @@ if ($autorizacao->check() == 0) {
     $autorizacao->senhaWeb = $data->senhaWeb;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
+    $autorizacao->mensagemnf = $data->mensagemnf;
     $retorno = $autorizacao->create($emitente->documento);
 }
 else {
@@ -47,6 +48,7 @@ else {
     $autorizacao->senhaWeb = $data->senhaWeb;
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
+    $autorizacao->mensagemnf = $data->mensagemnf;
     $retorno = $autorizacao->update($emitente->documento);
 }
 if($retorno[0]){

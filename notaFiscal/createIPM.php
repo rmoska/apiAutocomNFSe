@@ -273,8 +273,8 @@ else {
             $xml->writeElement("valor_rps", "0,00");
             $xml->writeElement("valor_pis", "0,00");
             $xml->writeElement("valor_cofins", "0,00");
-            if ($notaFiscal->dadosAdicionais>'')
-                $xml->writeElement("observacao", $notaFiscal->dadosAdicionais);
+            if (($autorizacao->mensagemnf) || ($notaFiscal->dadosAdicionais>''))
+                $xml->writeElement("observacao", $autorizacao->mensagemnf." ".$notaFiscal->dadosAdicionais);
         $xml->endElement(); // nf
         $xml->startElement("prestador");
             $xml->writeElement("cpfcnpj", $emitente->documento);

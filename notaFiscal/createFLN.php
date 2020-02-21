@@ -319,8 +319,8 @@ else {
         $xml->endElement(); // ItemServico
     }
     $xml->endElement(); // ItensServico
-    if (($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>''))
-        $xml->writeElement("dadosAdicionais", $notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
+    if (($autorizacao->mensagemnf > '') || ($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>''))
+        $xml->writeElement("dadosAdicionais", $autorizacao->mensagemnf." ".$notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
     $xml->endElement(); // xmlNfpse
     //
     $xmlNFe = $xml->outputMemory(true);
