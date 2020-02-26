@@ -303,9 +303,10 @@ class gerarPdf {
 
         $pdf->SetFont('Arial', '', '7');
         $pdf->SetXY(10,244);
-        if ($notaFiscal->obsImpostos != '') {
+
+        if (($autorizacao->mensagemnf > '') || ($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>'')) {
     //				$pdf->SetX(11);
-            $pdf->MultiCell(190, 3, $notaFiscal->obsImpostos, 0, 'L', 0); 
+            $pdf->MultiCell(190, 3, $autorizacao->mensagemnf." ".$notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais, 0, 'L', 0); 
         }
 
         // dados complementares
