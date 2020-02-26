@@ -14,12 +14,19 @@ include_once '../shared/http_response_code.php';
 include_once '../objects/notaFiscal.php';
 include_once '../objects/emitente.php';
 include_once '../shared/utilities.php';
+include_once '../shared/logMsg.php';
 $utilities = new Utilities();
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 $strData = json_encode($data);
 
+$dirAPI = basename(dirname(dirname( __FILE__ )));
+
+$database = new Database();
+$db = $database->getConnection();
+$logMsg = new LogMsg($db);
+ 
 $idNotaFiscal = $data->idNotaFiscal;
 
 if (empty($idNotaFiscal)) {
@@ -30,11 +37,6 @@ if (empty($idNotaFiscal)) {
     exit;
 }
 
-$dirAPI = basename(dirname(dirname( __FILE__ )));
-
-$database = new Database();
-$db = $database->getConnection();
- 
 $notaFiscal = new NotaFiscal($db);
 $notaFiscal->idNotaFiscal = $idNotaFiscal;
 
