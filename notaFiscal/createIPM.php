@@ -423,13 +423,13 @@ if ($info['http_code'] == '200') {
                 }
             }
             else { // resposta <> 1
-                $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
+                $codMsg = "P00a"; // $utilities->codificaMsgIPM($msgRet);
                 $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo);
             }
         }
     } 
     else { // retorno não é xml (acontece com IPM para login errado: "Não foi encontrado na tb.dcarq.unico a cidade(codmun) do Usuário:")
-        $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
+        $codMsg = "P00b"; // $utilities->codificaMsgIPM($msgRet);
         $cdVerif = utf8_decode($result);
     }
 
@@ -485,7 +485,7 @@ else { // http_code <> 200
         else 
             $msgRet = utf8_decode($result);
         
-        $codMsg = "P00"; // $utilities->codificaMsg($msgRet);
+        $codMsg = "P00c"; // $utilities->codificaMsg($msgRet);
         if ($codMsg=='P05')
             $notaFiscal->situacao = 'T';
         else
