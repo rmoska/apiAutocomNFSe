@@ -2,6 +2,7 @@
 
 // Classe para emissão de NFSe PMF Homologação / Produção
 //
+include_once '../objects/autorizacaoChave.php';
 
 // check / create tomador
 if(

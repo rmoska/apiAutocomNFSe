@@ -203,7 +203,6 @@ if($retorno[0]){
                     "nf-homolog" => $nuNF,
                     "verificacao-homolog" => $cdVerif,
                     "codigo" => $codMsg);
-    echo json_encode($aRet); 
     $logMsg->register('S', 'autorizacao.update', 'Autorização atualizada.', json_encode($aRet));
 }
 else{
