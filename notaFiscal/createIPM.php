@@ -311,8 +311,8 @@ else {
                 $xml->writeElement("tributa_municipio_prestador", "N");
                 $xml->writeElement("codigo_local_prestacao_servico", $municipioEmitente->codigoTOM);
                 $xml->writeElement("unidade_codigo", 1);
-                $xml->writeElement("unidade_quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
-                $xml->writeElement("unidade_valor_unitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
+                $xml->writeElement("unidade_quantidade", number_format($notaFiscalItem->quantidade,0,',',''));
+                $xml->writeElement("unidade_valor_unitario", number_format($notaFiscalItem->valorUnitario,4,',',''));
                 $xml->writeElement("codigo_item_lista_servico", "402"); // LC116
                 $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
                 if ($notaFiscalItem->observacao > '')
@@ -320,7 +320,7 @@ else {
                 $xml->writeElement("descritivo", trim($nmProd));
                 $xml->writeElement("aliquota_item_lista_servico", number_format(($notaFiscalItem->taxaIss/100),4,',',''));
                 $xml->writeElement("situacao_tributaria", $notaFiscalItem->cstIss); 
-                $xml->writeElement("valor_tributavel", number_format($notaFiscalItem->valorUnitario,4,'.',''));
+                $xml->writeElement("valor_tributavel", number_format($notaFiscalItem->valorUnitario,4,',',''));
                 $xml->writeElement("valor_deducao", "0,00");
                 $xml->writeElement("valor_issrf", "0,00");
             $xml->endElement(); // lista
