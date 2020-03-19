@@ -353,7 +353,9 @@ $params = array(
 );
 
 $result = $retEnv[0];
+print_r($result);
 $info = $retEnv[1];
+print_r($info);
 
 if ($info['http_code'] == '200') {
 
