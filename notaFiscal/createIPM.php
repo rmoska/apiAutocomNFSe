@@ -352,6 +352,8 @@ $params = array(
     'f1' => $cFile
 );
 
+$retEnv = $objNFSe->transmitirNFSeIpm( $params );
+
 $result = $retEnv[0];
 print_r($result);
 $info = $retEnv[1];
