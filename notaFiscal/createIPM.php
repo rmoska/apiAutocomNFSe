@@ -318,7 +318,7 @@ else {
                 if ($notaFiscalItem->observacao > '')
                     $nmProd .= ' - '.$notaFiscalItem->observacao;
                 $xml->writeElement("descritivo", trim($nmProd));
-                $xml->writeElement("aliquota_item_lista_servico", number_format(($notaFiscalItem->taxaIss/100),4,',',''));
+                $xml->writeElement("aliquota_item_lista_servico", number_format($notaFiscalItem->taxaIss,2,',',''));
                 $xml->writeElement("situacao_tributaria", $notaFiscalItem->cstIss); 
                 $xml->writeElement("valor_tributavel", number_format($notaFiscalItem->valorUnitario,4,',',''));
                 $xml->writeElement("valor_deducao", "0,00");
