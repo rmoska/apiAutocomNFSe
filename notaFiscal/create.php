@@ -42,7 +42,7 @@ $logMsg = new LogMsg($db);
 $data = json_decode(file_get_contents("php://input"));
 $strData = json_encode($data);
 
-echo $strData;
+echo $data;
 
 //
 // confere e busca Emitente
