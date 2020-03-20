@@ -419,7 +419,7 @@ if ($info['http_code'] == '200') {
             }
             else { // resposta <> 1
                 $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
-                $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo);
+                $cdVerif = (string)$xmlNFRet->mensagem->codigo;
             }
         }
     } 

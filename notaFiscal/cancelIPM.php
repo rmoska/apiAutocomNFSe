@@ -121,14 +121,14 @@ $params = array(
 $retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
 $result = $retEnv[0];
-echo $result;
+//echo $result;
 $info = $retEnv[1];
-echo $info;
+//echo $info;
 
 if ($info['http_code'] == '200') {
 
     if ($xmlNFRet = @simplexml_load_string($result)) {
-
+/*
         $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
         if (intval($codRet[0]) == 1) { // sucesso
 
@@ -157,7 +157,7 @@ if ($info['http_code'] == '200') {
                 exit;
             }
             else {
-
+*/
                 // set response code - 201 created
                 http_response_code(201);
                 echo json_encode(array("http_code" => "201", 
@@ -168,15 +168,19 @@ if ($info['http_code'] == '200') {
                                         "pdf" => $linkPDF));
                 $logMsg->register('S', 'notaFiscal.cancel', 'Nota Fiscal cancelada', $strData);
                 exit;
+
+/*                
             }
         }
         else { // resposta <> 1
-            $codMsg = "P00a"; // $utilities->codificaMsgIPM($msgRet);
+            $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
             $cdVerif = (string)$xmlNFRet->mensagem->codigo;
         }
+
+*/        
     } 
     else { // retorno não é xml (acontece com IPM para login errado: "Não foi encontrado na tb.dcarq.unico a cidade(codmun) do Usuário:")
-        $codMsg = "P00b"; // $utilities->codificaMsgIPM($msgRet);
+        $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
         $cdVerif = utf8_decode($result);
     }
 
@@ -222,7 +226,7 @@ else { // http_code <> 200
             $msgRet = (string)$xmlNFRet->mensagem->codigo;
         else 
             $msgRet = utf8_decode($result);
-        $codMsg = "P00c"; // $utilities->codificaMsg($msgRet);
+        $codMsg = "P00"; // $utilities->codificaMsg($msgRet);
 
         http_response_code(401);
         echo json_encode(array("http_code" => "401", 
