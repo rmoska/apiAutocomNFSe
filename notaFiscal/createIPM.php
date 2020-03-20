@@ -404,31 +404,18 @@ if ($info['http_code'] == '200') {
                 //
                 // update notaFiscal
                 $retorno = $notaFiscal->update();
-                if(!$retorno[0]) {
 
-                    // força update simples
-                    $notaFiscal->updateSituacao("F");
-
-                    http_response_code(500);
-                    echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
-                    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
-                    exit;
-                }
-                else {
-
-                    // set response code - 201 created
-                    http_response_code(201);
-                    $arrOK = array("http_code" => "201", 
-                                            "message" => "Nota Fiscal emitida", 
-                                            "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                            "numeroNF" => $notaFiscal->numero,
-                                            "xml" => $linkXml,
-                                            "pdf" => $linkPDF);
-                    echo json_encode($arrOK);
-                    $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
-                    exit;
-                }
+                // set response code - 201 created
+                http_response_code(201);
+                $arrOK = array("http_code" => "201", 
+                                        "message" => "Nota Fiscal emitida", 
+                                        "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                        "numeroNF" => $notaFiscal->numero,
+                                        "xml" => $linkXml,
+                                        "pdf" => $linkPDF);
+                echo json_encode($arrOK);
+                $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
+                exit;
             }
             else { // resposta <> 1
                 $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
