@@ -172,7 +172,7 @@ if ($info['http_code'] == '200') {
         }
         else { // resposta <> 1
             $codMsg = "P00a"; // $utilities->codificaMsgIPM($msgRet);
-            $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo);
+            $cdVerif = $xmlNFRet->mensagem->codigo;
         }
     } 
     else { // retorno não é xml (acontece com IPM para login errado: "Não foi encontrado na tb.dcarq.unico a cidade(codmun) do Usuário:")
