@@ -163,8 +163,8 @@ if ($info['http_code'] == '200') {
                                         "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                         "numeroNF" => $notaFiscal->numero,
                                         "xml" => $linkXml,
-                                        "pdf" => $linkNF);
-//                echo json_encode($arrOK);
+                                        "pdf" => $linkPDF);
+                echo json_encode($arrOK);
                 $logMsg->register('S', 'notaFiscal.cancel', 'Nota Fiscal cancelada', $strData);
                 exit;
             }
