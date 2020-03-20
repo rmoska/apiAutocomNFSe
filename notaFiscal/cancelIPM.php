@@ -136,7 +136,7 @@ if ($info['http_code'] == '200') {
             $dtNF = $xmlNFRet->data_nfse;
             $hrNF = $xmlNFRet->hora_nfse;
             $dtCanc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
-            $linkPDF = $xmlNFRet->link_nfse;
+            $linkPDF = (string)$xmlNFRet->link_nfse;
 
             $notaFiscal->chaveNF = $cdVerif;
 //            $notaFiscal->linkXml = $linkXml;
@@ -164,7 +164,7 @@ if ($info['http_code'] == '200') {
                                         "message" => "Nota Fiscal CANCELADA", 
                                         "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                         "numeroNF" => $notaFiscal->numero,
-                                        "xml" => $linkXml,
+                                        "xml" => '',
                                         "pdf" => $linkPDF));
                 $logMsg->register('S', 'notaFiscal.cancel', 'Nota Fiscal cancelada', $strData);
                 exit;

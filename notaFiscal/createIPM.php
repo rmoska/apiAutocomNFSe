@@ -374,7 +374,7 @@ if ($info['http_code'] == '200') {
                 $cdVerif = 'OK'; //
             }
             else {
-                $cdVerif = $xmlNFRet->mensagem->codigo;
+                $cdVerif = (string)$xmlNFRet->mensagem->codigo;
             }
         } 
         else {
@@ -385,7 +385,7 @@ if ($info['http_code'] == '200') {
                 $dtNF = $xmlNFRet->data_nfse;
                 $hrNF = $xmlNFRet->hora_nfse;
                 $dtProc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
-                $linkPDF = $xmlNFRet->link_nfse;
+                $linkPDF = (string)$xmlNFRet->link_nfse;
                 $xmlNF = $xmlNFRet->codigo_html;
                 $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
                 $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
@@ -407,13 +407,12 @@ if ($info['http_code'] == '200') {
 
                 // set response code - 201 created
                 http_response_code(201);
-                $arrOK = array("http_code" => "201", 
+                echo json_encode(array("http_code" => "201", 
                                         "message" => "Nota Fiscal emitida", 
                                         "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                         "numeroNF" => $notaFiscal->numero,
                                         "xml" => $linkXml,
-                                        "pdf" => $linkPDF);
-                echo json_encode($arrOK);
+                                        "pdf" => $linkPDF));
                 $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
                 exit;
             }
