@@ -2,6 +2,7 @@
 
 // Classe para emissão de NFSe PMF em ambiente de Homologação
 //
+
 if( empty($data->idNotaFiscal) ||
     empty($data->idEmitente) ) {
 
@@ -13,7 +14,9 @@ if( empty($data->idNotaFiscal) ||
 }
 
 include_once '../objects/autorizacao.php';
+include_once '../objects/autorizacaoChave.php';
 include_once '../objects/municipio.php';
+
 
 // set notaFiscal property values
 $notaFiscal->idNotaFiscal = $data->idNotaFiscal;
@@ -67,6 +70,10 @@ if ( !isset($aAutoChave["login"]) ||
     exit;
 };
 
+include_once '../comunicacao/comunicaNFSe.php';
+$arraySign = array("sisEmit" => 2, "tpAmb" => "P", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+$objNFSe = new ComunicaNFSe($arraySign);
+
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
 $municipioEmitente->buscaMunicipioTOM($emitente->codigoMunicipio);
@@ -110,7 +117,6 @@ $params = array(
     'senha' => $aAutoChave["senhaWeb"],
     'f1' => $cFile
 );
-
 
 
 $result = $retEnv[0];
@@ -157,7 +163,8 @@ if ($info['http_code'] == '200') {
                                         "numeroNF" => $notaFiscal->numero,
                                         "xml" => $linkXml,
                                         "pdf" => $linkNF);
-                echo json_encode($arrOK);
+//                echo json_encode($arrOK);
+                $logMsg->register('S', 'notaFiscal.cancel', 'Nota Fiscal cancelada', $strData);
                 exit;
             }
         }
