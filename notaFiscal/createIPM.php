@@ -211,7 +211,7 @@ if (count($arrayItemNF) == 0) {
 // cria e transmite nota fiscal
 else {
 
-    // buscar token conexão
+    // buscar dados conexão
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $notaFiscal->idEmitente;
     $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
@@ -374,7 +374,7 @@ if ($info['http_code'] == '200') {
                 $cdVerif = 'OK'; //
             }
             else {
-                $cdVerif = $xmlNFRet->mensagem->codigo;
+                $cdVerif = (string)$xmlNFRet->mensagem->codigo;
             }
         } 
         else {
@@ -385,7 +385,7 @@ if ($info['http_code'] == '200') {
                 $dtNF = $xmlNFRet->data_nfse;
                 $hrNF = $xmlNFRet->hora_nfse;
                 $dtProc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
-                $linkPDF = $xmlNFRet->link_nfse;
+                $linkPDF = (string)$xmlNFRet->link_nfse;
                 $xmlNF = $xmlNFRet->codigo_html;
                 $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
                 $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
@@ -404,40 +404,26 @@ if ($info['http_code'] == '200') {
                 //
                 // update notaFiscal
                 $retorno = $notaFiscal->update();
-                if(!$retorno[0]) {
 
-                    // força update simples
-                    $notaFiscal->updateSituacao("F");
-
-                    http_response_code(500);
-                    echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
-                    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
-                    exit;
-                }
-                else {
-
-                    // set response code - 201 created
-                    http_response_code(201);
-                    $arrOK = array("http_code" => "201", 
-                                            "message" => "Nota Fiscal emitida", 
-                                            "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                            "numeroNF" => $notaFiscal->numero,
-                                            "xml" => $linkXml,
-                                            "pdf" => $linkPDF);
-                    echo json_encode($arrOK);
-                    $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
-                    exit;
-                }
+                // set response code - 201 created
+                http_response_code(201);
+                echo json_encode(array("http_code" => "201", 
+                                        "message" => "Nota Fiscal emitida", 
+                                        "idNotaFiscal" => $notaFiscal->idNotaFiscal,
+                                        "numeroNF" => $notaFiscal->numero,
+                                        "xml" => $linkXml,
+                                        "pdf" => $linkPDF));
+                $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
+                exit;
             }
             else { // resposta <> 1
-                $codMsg = "P00a"; // $utilities->codificaMsgIPM($msgRet);
-                $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo);
+                $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
+                $cdVerif = (string)$xmlNFRet->mensagem->codigo;
             }
         }
     } 
     else { // retorno não é xml (acontece com IPM para login errado: "Não foi encontrado na tb.dcarq.unico a cidade(codmun) do Usuário:")
-        $codMsg = "P00b"; // $utilities->codificaMsgIPM($msgRet);
+        $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
         $cdVerif = utf8_decode($result);
     }
 
@@ -493,7 +479,7 @@ else { // http_code <> 200
         else 
             $msgRet = utf8_decode($result);
         
-        $codMsg = "P00c"; // $utilities->codificaMsg($msgRet);
+        $codMsg = "P00"; // $utilities->codificaMsg($msgRet);
         if ($codMsg=='P05')
             $notaFiscal->situacao = 'T';
         else

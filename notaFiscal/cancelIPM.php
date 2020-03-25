@@ -2,6 +2,7 @@
 
 // Classe para emissão de NFSe PMF em ambiente de Homologação
 //
+
 if( empty($data->idNotaFiscal) ||
     empty($data->idEmitente) ) {
 
@@ -13,7 +14,9 @@ if( empty($data->idNotaFiscal) ||
 }
 
 include_once '../objects/autorizacao.php';
+include_once '../objects/autorizacaoChave.php';
 include_once '../objects/municipio.php';
+
 
 // set notaFiscal property values
 $notaFiscal->idNotaFiscal = $data->idNotaFiscal;
@@ -67,6 +70,10 @@ if ( !isset($aAutoChave["login"]) ||
     exit;
 };
 
+include_once '../comunicacao/comunicaNFSe.php';
+$arraySign = array("sisEmit" => 2, "tpAmb" => "P", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+$objNFSe = new ComunicaNFSe($arraySign);
+
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
 $municipioEmitente->buscaMunicipioTOM($emitente->codigoMunicipio);
@@ -111,10 +118,12 @@ $params = array(
     'f1' => $cFile
 );
 
-
+$retEnv = $objNFSe->transmitirNFSeIpm( $params );
 
 $result = $retEnv[0];
+//echo $result;
 $info = $retEnv[1];
+//echo $info;
 
 if ($info['http_code'] == '200') {
 
@@ -127,7 +136,7 @@ if ($info['http_code'] == '200') {
             $dtNF = $xmlNFRet->data_nfse;
             $hrNF = $xmlNFRet->hora_nfse;
             $dtCanc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
-            $linkPDF = $xmlNFRet->link_nfse;
+            $linkPDF = (string)$xmlNFRet->link_nfse;
 
             $notaFiscal->chaveNF = $cdVerif;
 //            $notaFiscal->linkXml = $linkXml;
@@ -151,19 +160,19 @@ if ($info['http_code'] == '200') {
 
                 // set response code - 201 created
                 http_response_code(201);
-                $arrOK = array("http_code" => "201", 
+                echo json_encode(array("http_code" => "201", 
                                         "message" => "Nota Fiscal CANCELADA", 
                                         "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                         "numeroNF" => $notaFiscal->numero,
-                                        "xml" => $linkXml,
-                                        "pdf" => $linkNF);
-                echo json_encode($arrOK);
+                                        "xml" => '',
+                                        "pdf" => $linkPDF));
+                $logMsg->register('S', 'notaFiscal.cancel', 'Nota Fiscal cancelada', $strData);
                 exit;
             }
         }
         else { // resposta <> 1
             $codMsg = "P00"; // $utilities->codificaMsgIPM($msgRet);
-            $cdVerif = utf8_decode($xmlNFRet->mensagem->codigo);
+            $cdVerif = (string)$xmlNFRet->mensagem->codigo;
         }
     } 
     else { // retorno não é xml (acontece com IPM para login errado: "Não foi encontrado na tb.dcarq.unico a cidade(codmun) do Usuário:")
@@ -225,96 +234,6 @@ else { // http_code <> 200
         $logMsg->register('E', 'notaFiscal.create', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
         exit;
     }
-}
-
-
-
-
-//=============================================================================================================
-
-
-
-
-
-
-// se retorna ListaNfse - processou com sucesso
-if(strstr($respEnv,'RetCancelamento')){
-
-    $DomXml=new DOMDocument('1.0', 'utf-8');
-    $DomXml->loadXML($respEnv);
-    $xmlResp = $DomXml->textContent;
-    $msgResp = simplexml_load_string($xmlResp);
-
-    $dtCanc = (string) $msgResp->RetCancelamento->NfseCancelamento->Confirmacao->DataHora;
-    $dtCanc = str_replace(" " , "", $dtCanc);
-    $dtCanc = str_replace("T" , " ", $dtCanc);
-    //
-    $notaFiscal->situacao = "X";
-    $notaFiscal->dataCancelamento = $dtCanc;
-    //
-    // update notaFiscal
-    $retorno = $notaFiscal->update();
-    if(!$retorno[0]){
-
-        http_response_code(500);
-        echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(A01)", "erro" => $retorno[1]));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
-    }
-    else {
-
-        // set response code - 201 created
-        http_response_code(201);
-        echo json_encode(array("http_code" => "201", 
-                                "message" => "Nota Fiscal CANCELADA", 
-                                "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                                "numeroNF" => $notaFiscal->numero,
-                                "xml" => $notaFiscal->linkXml,
-                                "pdf" => $notaFiscal->linkNF));
-        exit;
-    }
-}
-else {
-
-    //erro na comunicacao SOAP
-    if(strstr($respEnv,'Fault')){
-
-        $DomXml=new DOMDocument('1.0', 'utf-8');
-        $DomXml->loadXML($respEnv);
-        $xmlResp = $DomXml->textContent;
-        $msgResp = simplexml_load_string($xmlResp);
-        $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-        $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-        $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
-        $cdVerif = $codigo.' - '.$msg.' - '.$falha;
-        $msgRet = "Erro no envio da NFSe ! Problemas de comunicação ! ".$cdVerif;
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro na transmissão da NFSe ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
-    }
-    //erros de validacao do webservice
-    else if(strstr($respEnv,'ListaMensagemRetorno')){
-
-        $DomXml=new DOMDocument('1.0', 'utf-8');
-        $DomXml->loadXML($respEnv);
-        $xmlResp = $DomXml->textContent;
-        $msgResp = simplexml_load_string($xmlResp);
-        $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-        $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-        $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
-        $msgRet = $codigo.' - '.$msg.' - '.$correcao;
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no cancelamento da NFSe => ".$msgRet."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    }
-    // erro inesperado
-    else {
-
-        $msgRet = $respEnv;
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Erro Desconhecido (".$respEnv.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-    }
-
-    http_response_code(500);
-    echo json_encode(array("http_code" => "500", "message" => "Erro no envio da NFSe !", "resposta" => $msgRet));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-    exit;
-
 }
 
 ?>
