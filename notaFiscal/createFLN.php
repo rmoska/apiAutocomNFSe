@@ -1,4 +1,4 @@
-l<?php
+<?php
 
 // Classe para emissão de NFSe PMF Homologação / Produção
 //
