@@ -381,12 +381,21 @@ if ($info['http_code'] == '200') {
             if (intval($codRet[0]) == 1) { // sucesso
 
                 $nuNF = $xmlNFRet->numero_nfse;
+                $serieNF = $xmlNFRet->serie_nfse;
                 $cdVerif = $xmlNFRet->cod_verificador_autenticidade;
                 $dtNF = $xmlNFRet->data_nfse;
                 $hrNF = $xmlNFRet->hora_nfse;
-                $dtProc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,6,2).':'.substr($hrNF,3,2).':'.substr($hrNF,0,2);
+                $dtProc = substr($dtNF,6,4).'-'.substr($dtNF,3,2).'-'.substr($dtNF,0,2).' '.substr($hrNF,0,2).':'.substr($hrNF,3,2).':'.substr($hrNF,6,2);
                 $linkPDF = (string)$xmlNFRet->link_nfse;
-                $xmlNF = $xmlNFRet->codigo_html;
+
+                $arqNFSe = "../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
+                $xmlNFSe = simplexml_load_file($arqNFSe);
+                $xmlNFSe->nf->addChild("numero_nfse", $nuNF);
+                $xmlNFSe->nf->addChild("serie_nfse", $serieNF);
+                $xmlNFSe->nf->addChild("data_nfse", $dtNF);
+                $xmlNFSe->nf->addChild("hora_nfse", $hrNF);
+
+                $xmlNF = $xmlNFSe->asXML();
                 $dirXmlRet = "arquivosNFSe/".$emitente->documento."/transmitidas/";
                 $arqXmlRet = $emitente->documento."_".substr(str_pad($nuNF,8,'0',STR_PAD_LEFT),0,8)."-nfse.xml";
                 $arqNFe = fopen("../".$dirXmlRet.$arqXmlRet,"wt");
@@ -397,7 +406,7 @@ if ($info['http_code'] == '200') {
                 $notaFiscal->numero = $nuNF;
                 $notaFiscal->chaveNF = $cdVerif;
                 $notaFiscal->linkXml = $linkXml;
-                $notaFiscal->linkNF = $linkPDF;
+                $notaFiscal->linkNF = trim($linkPDF);
                 $notaFiscal->situacao = "F";
                 $notaFiscal->dataProcessamento = $dtProc;
             
