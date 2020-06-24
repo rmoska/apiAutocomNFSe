@@ -422,7 +422,7 @@ if ($info['http_code'] == '200') {
                                         "numeroNF" => $notaFiscal->numero,
                                         "xml" => $linkXml,
                                         "pdf" => $linkPDF));
-                $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
+//                $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
                 exit;
             }
             else { // resposta <> 1
