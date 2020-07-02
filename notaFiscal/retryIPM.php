@@ -22,6 +22,8 @@ if ( !isset($aAutoChave["login"]) ||
     logErro($db, "1", $arrErr, $notaFiscal);
     return;
 };
+include_once '../comunicacao/comunicaNFSe.php';
+$arraySign = array("sisEmit" => 2, "tpAmb" => "P", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
 $objNFSe = new ComunicaNFSe($arraySign);
 
 $municipioEmitente = new Municipio($db);
