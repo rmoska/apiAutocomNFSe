@@ -79,6 +79,7 @@ if ($notaFiscal->ambiente == "H") // HOMOLOGAÇÃO
 
     foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
+        $notaFiscalItem->readItemVenda();
         $xml->startElement("lista");
             $xml->writeElement("tributa_municipio_prestador", "N");
             $xml->writeElement("codigo_local_prestacao_servico", $municipioEmitente->codigoTOM);
