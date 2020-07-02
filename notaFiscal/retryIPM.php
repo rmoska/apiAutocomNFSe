@@ -1,5 +1,7 @@
 <?php
 
+include_once '../objects/autorizacaoChave.php';
+
 //
 // buscar token conexão
 $autorizacao = new Autorizacao($db);
