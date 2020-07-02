@@ -22,6 +22,7 @@ if ( !isset($aAutoChave["login"]) ||
     logErro($db, "1", $arrErr, $notaFiscal);
     return;
 };
+$objNFSe = new ComunicaNFSe($arraySign);
 
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
