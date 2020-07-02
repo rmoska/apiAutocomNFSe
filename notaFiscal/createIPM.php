@@ -20,7 +20,7 @@ if(
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos.", "codigo" => "A03"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos.', $strData);
+    $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível incluir Tomador. Dados incompletos.', $strData);
     exit;
 }
 
@@ -59,7 +59,7 @@ if (($idTomador = $tomador->check()) > 0) {
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]." = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Tomador.', $retorno[1]." = ".$strData);
+        $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível atualizar Tomador.', $retorno[1]." = ".$strData);
         exit;
     }
 }
@@ -77,7 +77,7 @@ else {
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Erro=".$retorno[1]." = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador.', $retorno[1]." = ".$strData);
+        $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível incluir Tomador.', $retorno[1]." = ".$strData);
         exit;
     }
 }
@@ -91,7 +91,7 @@ if(!$retorno[0]){
     http_response_code(500);
     echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Nota Fiscal.(I01)", "erro" => $retorno[1], "codigo" => "A00"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Nota Fiscal.(I01). Erro=".$retorno[1]." = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Nota Fiscal.(I01)', $retorno[1]." = ".$strData);
+    $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível incluir Nota Fiscal.(I01)', $retorno[1]." = ".$strData);
     exit;
 }
 
@@ -115,7 +115,7 @@ foreach ( $data->itemServico as $item )
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos.", "codigo" => "A05"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item da Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item da Nota Fiscal. Dados incompletos.', $strData);
+        $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível incluir Item da Nota Fiscal. Dados incompletos.', $strData);
         exit;
     }
     
@@ -146,7 +146,7 @@ foreach ( $data->itemServico as $item )
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Venda.(Vi01)", "erro" => $retorno[1], "codigo" => "A00"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Venda.(I01). Erro=".$retorno[1]." = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item Venda.(I01)', $retorno[1]." = ".$strData);
+            $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível incluir Item Venda.(I01)', $retorno[1]." = ".$strData);
             exit;
         }
         else{
@@ -176,7 +176,7 @@ foreach ( $data->itemServico as $item )
         http_response_code(500);
         echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Item Nota Fiscal.(NFi01)", "erro" => $retorno[1], "codigo" => "A00"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Item Nota Fiscal.(I01). Erro=".$retorno[1]." = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item Nota Fiscal.(I01)', $retorno[1]." = ".$strData);
+        $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível incluir Item Nota Fiscal.(I01)', $retorno[1]." = ".$strData);
         exit;
     }
     else{
@@ -193,7 +193,7 @@ if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal
                            "erro" => "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", 
                            "codigo" => "A04"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.create', "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", $strData);
+    $logMsg->register('E', 'notaFiscal.createIPM', "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", $strData);
     exit;
 }
 
@@ -204,7 +204,7 @@ if (count($arrayItemNF) == 0) {
     http_response_code(500);
     echo json_encode(array("http_code" => "500", "message" => "Erro na inclusão dos Itens da Nota Fiscal.", "codigo" => "A00"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro na inclusão dos Itens da Nota Fiscal. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.create', 'Erro na inclusão dos Itens da Nota Fiscal.', $strData);
+    $logMsg->register('E', 'notaFiscal.createIPM', 'Erro na inclusão dos Itens da Nota Fiscal.', $strData);
     exit;
 }
 // 
@@ -262,8 +262,6 @@ else {
     $xml->openMemory();
     //
     // Inicia o cabeçalho do documento XML
-
-
     $xml->startElement("nfse");
 
     if ($notaFiscal->ambiente == "H") // HOMOLOGAÇÃO
@@ -422,7 +420,7 @@ if ($info['http_code'] == '200') {
                                         "numeroNF" => $notaFiscal->numero,
                                         "xml" => $linkXml,
                                         "pdf" => $linkPDF));
-//                $logMsg->register('S', 'notaFiscal.create', 'Nota Fiscal emitida', $strData);
+//                $logMsg->register('S', 'notaFiscal.createIPM', 'Nota Fiscal emitida', $strData);
                 exit;
             }
             else { // resposta <> 1
@@ -447,7 +445,7 @@ if ($info['http_code'] == '200') {
                            "resposta" => $cdVerif, 
                            "codigo" => $codMsg));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! idNotaFiscal =".$notaFiscal->idNotaFiscal."  (".$cdVerif.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$cdVerif.') ', $strData);
+    $logMsg->register('E', 'notaFiscal.createIPM', 'Erro no envio da NFPSe ! ('.$cdVerif.') ', $strData);
     exit;
 }
 else { // http_code <> 200
@@ -465,7 +463,7 @@ else { // http_code <> 200
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível.", "codigo" => "A00"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal. Serviço indisponível.', $retorno[1]);
+            $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível atualizar Nota Fiscal. Serviço indisponível.', $retorno[1]);
             exit;
         }
 
@@ -475,7 +473,7 @@ else { // http_code <> 200
                                 "message" => "Erro no envio da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !",
                                 "codigo" => "P05"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido). idNotaFiscal=".$notaFiscal->idNotaFiscal."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', 'idNotaFiscal='.$notaFiscal->idNotaFiscal);
+        $logMsg->register('E', 'notaFiscal.createIPM', 'Erro no envio da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', 'idNotaFiscal='.$notaFiscal->idNotaFiscal);
         exit;
     }
     else {
@@ -502,7 +500,7 @@ else { // http_code <> 200
                                 "resposta" => $msgRet, 
                                 "codigo" => $codMsg));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
+        $logMsg->register('E', 'notaFiscal.createIPM', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
         exit;
     }
 }
