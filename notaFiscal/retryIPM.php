@@ -110,11 +110,6 @@ $arqNFe = fopen($arqNFSe,"wt");
 fwrite($arqNFe, $xmlNFe);
 fclose($arqNFe);
 //	
-
-exit;
-
-
-//
 // transmite NFSe	
 if (function_exists('curl_file_create')) { // php 5.5+
     $cFile = curl_file_create($arqNFSe);
