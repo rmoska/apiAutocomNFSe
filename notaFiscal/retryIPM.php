@@ -77,7 +77,7 @@ if ($notaFiscal->ambiente == "H") // HOMOLOGAÇÃO
     // ITENS
     $xml->startElement("itens");
 
-    foreach ( $arrayItemNF as $notaFiscalItem ) {
+    foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
         $xml->startElement("lista");
             $xml->writeElement("tributa_municipio_prestador", "N");
