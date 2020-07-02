@@ -184,7 +184,6 @@ if ($info['http_code'] == '200') {
                 $retorno = $notaFiscal->update();
 
                 // set response code - 201 created
-                http_response_code(201);
                 $arrOK = (array("http_code" => "201", 
                                         "message" => "Nota Fiscal emitida", 
                                         "idNotaFiscal" => $notaFiscal->idNotaFiscal,
@@ -232,7 +231,6 @@ if ($info['http_code'] == '200') {
     $notaFiscal->textoResposta = $cdVerif;
     $notaFiscal->update();
 
-    http_response_code(401);
     $arrErr = (array("http_code" => "401", 
                      "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                      "message" => "Erro no envio da NFSe !", 
