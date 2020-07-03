@@ -1,4 +1,15 @@
 <?php
+/** 
+* Classe autorizacao.update
+* Cria ou atualiza registro de login para prefeituras e armazena certificado digital
+* Quando possível, emite nota fiscal em homologação para validar 
+*
+* @author Rodrigo Moskorz
+* @copyright  Autocom Informática 
+* @since 2019-09
+* @version 2020-07 : incluída tag 'documento' para evitar sobreposição incorreta do registro
+*/ 
+
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -23,8 +34,8 @@ $logMsg = new LogMsg($db);
 $data = json_decode(file_get_contents("php://input"));
 $strData = json_encode($data); // armazena para log
 
-//
-if(empty($data->idEmitente)) {
+// confere idEmitente e documento prenchido
+if(empty($data->idEmitente) || empty($data->documento)) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado.", "codigo" => "A06"));
@@ -33,6 +44,7 @@ if(empty($data->idEmitente)) {
     exit;
 }
 
+// confere se existe Emitente para IdEmitente
 $emitente = new Emitente($db);
 $emitente->idEmitente = $data->idEmitente;
 $emitente->readOne();
@@ -43,6 +55,20 @@ if (is_null($emitente->documento)) {
     echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado para esta Autorização.", "codigo" => "A06"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente não cadastrado para esta Autorização. Emitente=".$data->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'autorizacao.update', 'Emitente não cadastrado para esta Autorização.', 'Emitente='.$data->idEmitente);
+    exit;
+}
+
+// confere se existe Emitente para documento e igual para IdEmitente (alt 03/07/2020)
+$emitenteDoc = new Emitente($db);
+$emitenteDoc->documento = $data->documento;
+$emitenteDoc->check();
+
+if (($emitente->idEmitente != $emitenteDoc->idEmitente)) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Emitente inconsistente com esta Autorização. Id=".$data->idEmitente." Doc=".$data->documento, "codigo" => "A06"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Emitente inconsistente com esta Autorização. Id=".$data->idEmitente." Doc=".$data->documento."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'autorizacao.update', 'Emitente inconsistente com esta Autorização.', "Id=".$data->idEmitente." Doc=".$data->documento);
     exit;
 }
 
