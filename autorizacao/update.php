@@ -38,9 +38,9 @@ $strData = json_encode($data); // armazena para log
 if(empty($data->idEmitente) || empty($data->documento)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado.", "codigo" => "A06"));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Emitente não identificado. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização. Emitente não identificado.', $strData);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado. Id=".$data->idEmitente." Doc=".$data->documento, "codigo" => "A06"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Emitente não identificado.  Id=".$data->idEmitente." Doc=".$data->documento."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização. Emitente não identificado.',  "Id=".$data->idEmitente." Doc=".$data->documento);
     exit;
 }
 
