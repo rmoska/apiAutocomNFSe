@@ -61,7 +61,7 @@ if (is_null($emitente->documento)) {
 // confere se existe Emitente para documento e igual para IdEmitente (alt 03/07/2020)
 $emitenteDoc = new Emitente($db);
 $emitenteDoc->documento = $data->documento;
-$emitenteDoc->check();
+$emitenteDoc->idEmitente = $emitenteDoc->check();
 
 if (($emitente->idEmitente != $emitenteDoc->idEmitente)) {
 
