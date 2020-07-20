@@ -270,7 +270,59 @@ else {
     $xml->openMemory();
     //
     // Inicia o cabeçalho do documento XML
-    $xml->startElement("xmlProcessamentoNfpse");
+    $xml->startElement("PedidoEnvioRPS");
+        $xml->startElement("Cabecalho");
+        $xml->writeAttribute("Versao", "1");
+        $xml->writeAttribute("xmlns", "");
+            $xml->startElement("CPFCNPJRemetente");
+                $xml->writeElement("CNPJ", $emitente->documento);
+            $xml->endElement(); // xmlNfpse
+        $xml->endElement(); // xmlNfpse
+        $xml->startElement("RPS");
+        $xml->writeAttribute("xmlns", "");
+            $xml->writeElement("Assinatura", $assRPS);
+            $xml->startElement("ChaveRPS");
+                $xml->writeElement("InscricaoPrestador", $autorizacao->cmc);
+                $xml->writeElement("SerieRPS", $serieRPS);
+                $xml->writeElement("NumeroRPS", $numeroRPS);
+            $xml->endElement(); // ChaveRPS
+            $xml->writeElement("TipoRPS", "RPS");
+            $xml->writeElement("DataEmissao", $notaFiscal->dataEmissao);
+            $xml->writeElement("StatusRPS", "N");
+            $xml->writeElement("TributacaoRPS", $notaFiscal->cdtIss);
+            $xml->writeElement("ValorServicos", $notaFiscal->valorTotal);
+            $xml->writeElement("ValorDeducoes", "0,00");
+            $xml->writeElement("CodigoServico", $notaFiscalItem->cnae); // ????????????????????
+            $xml->writeElement("AliquotaServicos", $notaFiscalItem->taxaIss);
+            $xml->writeElement("ISSRetido", $notaFiscalItem->valorIss);
+            $xml->startElement("CPFCNPJTomador");
+                if (strlen(trim($tomador->documento))==11)
+                    $xml->writeElement("CPF", $tomador->documento);
+                else 
+                    $xml->writeElement("CNPJ", $tomador->documento);
+            $xml->endElement(); // CPFCNPJTomador
+            $xml->writeElement("RazaoSocialTomador", $tomador->nome);
+            $xml->startElement("EnderecoTomador");
+                $xml->writeElement("Logradouro", $tomador->logradouro);
+                $xml->writeElement("NumeroEndereco", $tomador->numero);
+                $xml->writeElement("ComplementoEndereco", $tomador->complemento);
+                $xml->writeElement("Bairro", $tomador->bairro);
+                $xml->writeElement("Cidade", $tomador->codigoMunicipio);
+                $xml->writeElement("UF", $tomador->uf);
+                $xml->writeElement("CEP", $tomador->cep);
+            $xml->endElement(); // EnderecoTomador
+            $xml->writeElement("EmailTomador", $tomador->email);
+            $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
+            $xml->writeElement("Discriminacao", $nmProd);
+        $xml->endElement(); // RPS
+    $xml->endElement(); // PedidoEnvioRPS
+
+
+
+
+
+
+
     if ($notaFiscal->ambiente == "P") // PRODUÇÃO
         $nuAEDF = $autorizacao->aedf; 
     else // HOMOLOGAÇÃO
