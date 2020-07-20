@@ -289,7 +289,7 @@ else {
             $xml->writeElement("TipoRPS", "RPS");
             $xml->writeElement("DataEmissao", $notaFiscal->dataEmissao);
             $xml->writeElement("StatusRPS", "N");
-            $xml->writeElement("TributacaoRPS", $notaFiscal->cdtIss);
+            $xml->writeElement("TributacaoRPS", $notaFiscal->cstIss);
             $xml->writeElement("ValorServicos", $notaFiscal->valorTotal);
             $xml->writeElement("ValorDeducoes", "0,00");
             $xml->writeElement("CodigoServico", $notaFiscalItem->cnae); // ????????????????????
