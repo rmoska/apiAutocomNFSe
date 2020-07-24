@@ -143,7 +143,7 @@ foreach ( $data->itemServico as $item )
 
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->cnae = $item->cnae;
+//        $itemVenda->cnae = $item->cnae;
         $itemVenda->ncm = $item->nbs;
 
         $retorno = $itemVenda->create();
@@ -163,7 +163,7 @@ foreach ( $data->itemServico as $item )
 
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
-    $notaFiscalItem->cnae = $item->cnae;
+    $notaFiscalItem->cnae = $item->cnae; // código serviço SP
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
@@ -262,6 +262,50 @@ else {
         $vlTotBC += $notaFiscalItem->valorBCIss; 
         $vlTotISS += $notaFiscalItem->valorIss; 
     }
+
+    $serieRPS = 'FC01'; // exclusivo FastConnect
+    $nuRPS = $autorizacao->sequenciaLote + 1;
+    $vlRPS = str_pad(strval(intval($notaFiscal->valorTotal * 100)), 15,'0', STR_PAD_LEFT);
+    if (strlen(trim($tomador->documento))==11) $idDoc = '1';
+    else if (strlen(trim($tomador->documento))==14) $idDoc = '2';
+    else $idDoc = '3';
+
+
+    $strSignRPS = $autorizacao->cmc.str_pad($serieRPS, 5, ' ').str_pad($nuRPS, 12, '0', STR_PAD_LEFT).
+                  date("Ymd", strtotime($notaFiscal->dataEmissao)).trim($notaFiscalItem->cstIss).
+                  'NN'.$vlRPS.'000000000000000'.str_pad($notaFiscalItem->cnae, 5, '0', STR_PAD_LEFT).
+                  $idDoc.str_pad($tomador->documento, 14, '0', STR_PAD_LEFT).'300000000000000N';
+    $hashStr = sha1($strSignRPS);
+
+    //	
+    include_once '../comunicacao/signNFSe.php';
+    $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+
+    $strRPS = new SignNFSe($arraySign);
+    if($strRPS->errStatus) {
+
+        $db->rollBack();
+        http_response_code(401);
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg, "codigo" => "A02"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->msg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas com Certificado. Emitente='.$autorizacao->idEmitente, $nfse->msg);
+        exit;
+    }
+
+    $xmlAss = $strRPS->signXML($xmlNFe, '');
+    if ($strRPS->errStatus) {
+
+        $db->rollBack();
+        http_response_code(401);
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg, "codigo" => "A02"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas na assinatura do XML. Emitente='.$autorizacao->idEmitente, $nfse->msg);
+        exit;
+    }
+
+
+
+
     //
     include_once '../shared/utilities.php';
     $utilities = new Utilities();
