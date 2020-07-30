@@ -472,10 +472,7 @@ else {
         //$notaFiscal->updateSituacao("E");
 
         $msg = $result;
-
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] \n"), 3, "../arquivosNFSe/apiErrors.log");
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] result = (".$msg.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-
+//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] result = (".$msg.")\n"), 3, "../arquivosNFSe/apiErrors.log");
         $dados = json_decode($result);
 
         if (isset($dados->error)) {
