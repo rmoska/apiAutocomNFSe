@@ -472,6 +472,11 @@ else {
         //$notaFiscal->updateSituacao("E");
 
         $msg = $result;
+
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] reult = (".$result.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+
+
+
         $dados = json_decode($result);
 
         if (isset($dados->error)) {
@@ -480,7 +485,7 @@ else {
             $notaFiscal->textoResposta = "(".$dados->error.") ".$dados->error_description;
             $notaFiscal->update();
     
-            http_response_code(500);
+            http_response_code(401);
             echo json_encode(array("http_code" => "401", "message" => "Erro no envio da NFSe !!", "resposta" => "(".$dados->error.") ".$dados->error_description, "codigo" => "P00"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !! (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
             $logMsg->register('E', 'notaFiscal.create', 'Erro no envio da NFPSe !', '('.$dados->error.') '.$dados->error_description);
