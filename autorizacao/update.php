@@ -38,7 +38,7 @@ $strData = json_encode($data); // armazena para log
 if(empty($data->idEmitente) || empty($data->documento)) {
 
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado. Id=".$data->idEmitente." Doc=".$data->documento, "codigo" => "A06"));
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Emitente não identificado. Id=".$data->idEmitente." Doc=".$data->documento.$strData, "codigo" => "A06"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Emitente não identificado.  Id=".$data->idEmitente." Doc=".$data->documento."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização. Emitente não identificado.',  "Id=".$data->idEmitente." Doc=".$data->documento);
     exit;
@@ -97,7 +97,6 @@ switch ($emitente->codigoMunicipio) {
     case '4208203': // SC - Itajaí
         $arqPhp = 'updatePUBLICA.php'; break;
     case '4202008': // SC - Balneário Camboriú
-    case '3549102': // SC - Balneário Camboriú
         $arqPhp = 'updateSIMPLISS.php'; break;
     case '4305108': // RS - Caxias do Sul
         $arqPhp = 'updateINFISC.php'; break;
