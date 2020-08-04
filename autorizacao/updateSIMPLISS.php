@@ -168,7 +168,7 @@ if($retorno[0]){
     $infoRet = $retEnv[1];
 
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".print_r($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".json_encode($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
 //    print_r($infoRet);
 //    print_r($respEnv);
