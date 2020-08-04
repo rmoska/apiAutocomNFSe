@@ -157,6 +157,7 @@ if($retorno[0]){
     //
     $xmlNFe = $xml->outputMemory(true);
 
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$xmlNFe."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
 //    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
 
