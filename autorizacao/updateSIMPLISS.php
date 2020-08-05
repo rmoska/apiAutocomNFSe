@@ -244,10 +244,10 @@ if($retorno[0]){
 
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                        "validade" => $validade." dias",
-                        "nf-homolog" => $nuNF,
-                        "verificacao-homolog" => $cdVerif,
-                        "linkNF" => $linkNF));
+                           "validade" => $validade." dias",
+                           "nf-homolog" => $nuNF,
+                           "verificacao-homolog" => utf8_decode($cdVerif),
+                           "linkNF" => $linkNF));
     exit;
 }
 else{
