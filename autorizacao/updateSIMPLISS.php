@@ -157,10 +157,7 @@ if($retorno[0]){
     //
     $xmlNFe = $xml->outputMemory(true);
 
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$xmlNFe."\n"), 3, "../arquivosNFSe/nfBCret.log");
-
-//    error_log($xmlNFe, 3, "../arquivosNFSe/apiNFe.log");
-
+//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$xmlNFe."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
     $retEnv = $objNFSe->transmitirNFSeSimplISS( $emitente->codigoMunicipio, $xmlNFe , 'GerarNfse');
 
@@ -220,11 +217,6 @@ if($retorno[0]){
             //erros de validacao do webservice
             else if(strstr($respEnv,'ListaMensagemRetorno')){
 
-//                $DomXml=new DOMDocument('1.0', 'utf-8');
-//                $DomXml->loadXML($respEnv);
-//                $xmlResp = $DomXml->textContent;
-//                $msgResp = simplexml_load_string($xmlResp);
-
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
                 $msgResp = simplexml_load_string($respEnv);
@@ -252,7 +244,6 @@ if($retorno[0]){
 
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                        "token" => $autorizacao->token, 
                         "validade" => $validade." dias",
                         "nf-homolog" => $nuNF,
                         "verificacao-homolog" => $cdVerif,
