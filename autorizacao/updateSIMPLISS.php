@@ -151,7 +151,7 @@ if($retorno[0]){
         
         $xml->startElement("sis:pParam");
             $xml->writeElement("sis1:P1", $aAutoChave["login"]); 
-            $xml->writeElement("sis1:P2", $aAutoChave["senhaWeb"]); 
+            $xml->writeElement("sis1:P2", '1234'); //$aAutoChave["senhaWeb"]); 
         $xml->endElement(); // pParam
     $xml->endElement(); // GerarNfseEnvio
     //
@@ -167,11 +167,8 @@ if($retorno[0]){
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];
 
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".json_encode($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
-
-//    print_r($infoRet);
-//    print_r($respEnv);
+//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
+//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".json_encode($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
     $nuNF = 0;
     $cdVerif = '';
