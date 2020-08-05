@@ -220,10 +220,15 @@ if($retorno[0]){
             //erros de validacao do webservice
             else if(strstr($respEnv,'ListaMensagemRetorno')){
 
-                $DomXml=new DOMDocument('1.0', 'utf-8');
-                $DomXml->loadXML($respEnv);
-                $xmlResp = $DomXml->textContent;
-                $msgResp = simplexml_load_string($xmlResp);
+//                $DomXml=new DOMDocument('1.0', 'utf-8');
+//                $DomXml->loadXML($respEnv);
+//                $xmlResp = $DomXml->textContent;
+//                $msgResp = simplexml_load_string($xmlResp);
+
+                $respEnv = str_replace("<s:", "<", $respEnv);
+                $respEnv = str_replace("</s:", "</", $respEnv);
+                $msgResp = simplexml_load_string($respEnv);
+    
                 $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
                 $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
                 $correcao = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Correcao);
