@@ -127,7 +127,7 @@ if($retorno[0]){
                     $xml->startElement("nfse:ItensServico");
                         $xml->writeElement("nfse:Descricao", "Procedimento");
                         $xml->writeElement("nfse:Quantidade", 1.00);
-                        $xml->writeElement("nfse:ValorUnitario", 5.00);
+                        $xml->writeElement("nfse:ValorUnitario", 4.00);
                         $xml->writeElement("nfse:IssTributavel", 1);
                     $xml->endElement(); // ItensServico
 
