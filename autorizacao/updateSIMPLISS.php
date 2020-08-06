@@ -110,13 +110,13 @@ if($retorno[0]){
                         $xml->writeElement("nfse:DescontoIncondicionado", 0.00);
                         $xml->writeElement("nfse:DescontoCondicionado", 0.00);
                     $xml->endElement(); // Valores
-
+/*
                     $xml->writeElement("nfse:ItemListaServico", "4.01"); //$aAutoChave["codigoServico"]); 
 //                    $xml->writeElement("CodigoCnae", "6190699");
 //                    $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço
                     $xml->writeElement("nfse:Discriminacao", "Teste homologacao");
                     $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
-
+*/
                     $xml->writeElement("nfse:ItemListaServico", "4.02"); //$aAutoChave["codigoServico"]); 
 //                    $xml->writeElement("CodigoCnae", "6190699");
 //                    $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço

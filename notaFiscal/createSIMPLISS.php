@@ -30,7 +30,7 @@ foreach ( $data->itemServico as $item )
         empty($item->codigo) ||
         empty($item->descricao) ||
         empty($item->cnae) ||
-        empty($item->codigoFederal) ||
+        empty($item->codigoServico) ||
         empty($item->quantidade) ||
         empty($item->valor) ||
         (!($item->cst>=0)) ||
@@ -54,7 +54,7 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->idItemVenda = $idItemVenda;
 
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->listaServico = $item->nbs;
+        $itemVenda->listaServico = $item->codigoServico;
 
         $itemVenda->updateVar();
     }
@@ -63,8 +63,7 @@ foreach ( $data->itemServico as $item )
 
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->listaServico = $item->nbs;
-
+        $itemVenda->listaServico = $item->codigoServico;
         $retorno = $itemVenda->create();
         if(!$retorno[0]){
 
@@ -82,7 +81,7 @@ foreach ( $data->itemServico as $item )
 
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
-    $notaFiscalItem->ncm = $item->nbs;
+    $notaFiscalItem->cnae = $item->cnae;
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);

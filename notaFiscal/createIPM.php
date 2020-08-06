@@ -82,7 +82,7 @@ foreach ( $data->itemServico as $item )
 
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
-    $notaFiscalItem->ncm = $item->nbs;
+//    $notaFiscalItem->ncm = $item->nbs;
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
