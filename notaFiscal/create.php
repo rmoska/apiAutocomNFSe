@@ -154,8 +154,79 @@ switch ($emitente->codigoMunicipio) {
         $arqPhp = ''; break;
 }
 
+// se existe município
 if (file_exists($arqPhp)) {
+    //
+    // verifica ou cria tomador
+    if(
+        empty($data->tomador->documento) ||
+        empty($data->tomador->nome) ||
+        empty($data->tomador->logradouro) ||
+        empty($data->tomador->numero) ||
+        empty($data->tomador->bairro) ||
+        empty($data->tomador->cep) ||
+        empty($data->tomador->codigoMunicipio) ||
+        empty($data->tomador->uf) ||
+        empty($data->tomador->email) 
+    ){
 
+        http_response_code(400);
+        echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador. Dados incompletos.", "codigo" => "A03"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador. Dados incompletos.', $strData);
+        exit;
+    }
+    //
+    $tomador = new Tomador($db);
+    $tomador->documento = $data->tomador->documento;
+    $tomador->nome = $data->tomador->nome;
+    $tomador->logradouro = $data->tomador->logradouro;
+    $tomador->numero = $data->tomador->numero;
+    $tomador->complemento = $data->tomador->complemento;
+    $tomador->bairro = $data->tomador->bairro;
+    $tomador->cep = $data->tomador->cep;
+    $tomador->codigoMunicipio = $data->tomador->codigoMunicipio;
+    $tomador->uf = $data->tomador->uf;
+    $emailTomador = filter_var($data->tomador->email, FILTER_SANITIZE_EMAIL);
+    if (!filter_var($emailTomador, FILTER_VALIDATE_EMAIL)) {
+        $emailTomador = $emitente->email;
+    }
+    $tomador->email = $emailTomador;
+
+    // check tomador
+    if (($idTomador = $tomador->check()) > 0) {
+
+        $tomador->idTomador = $idTomador;
+        $notaFiscal->idTomador = $idTomador;
+        $retorno = $tomador->update();
+        if(!$retorno[0]){
+
+            http_response_code(400);
+            echo json_encode(array("http_code" => "400", "message" => "Não foi possível atualizar Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Tomador. Erro=".$retorno[1]." = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Tomador.', $retorno[1]." = ".$strData);
+            exit;
+        }
+    }
+    // create tomador
+    else {
+
+        $retorno = $tomador->create();
+        if($retorno[0]){
+            // set notaFiscal
+            $notaFiscal->idTomador = $tomador->idTomador;
+        }
+        else{
+
+            http_response_code(400);
+            echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Tomador.", "erro" => $retorno[1], "codigo" => "A00"));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Tomador. Erro=".$retorno[1]." = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Tomador.', $retorno[1]." = ".$strData);
+            exit;
+        }
+    }
+    //
+    // inclui arquivo do município
     include $arqPhp;
 }
 else {

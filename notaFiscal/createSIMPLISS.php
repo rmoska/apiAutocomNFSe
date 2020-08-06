@@ -3,7 +3,6 @@
 // Classe para emissão de NFSe PMF Homologação / Produção
 //
 include_once '../objects/autorizacaoChave.php';
-
 //
 // abre transação itemVenda - notaFiscal - notaFiscalItem
 $db->beginTransaction();
@@ -30,7 +29,8 @@ foreach ( $data->itemServico as $item )
     if(
         empty($item->codigo) ||
         empty($item->descricao) ||
-        empty($item->nbs) ||
+        empty($item->cnae) ||
+        empty($item->codigoFederal) ||
         empty($item->quantidade) ||
         empty($item->valor) ||
         (!($item->cst>=0)) ||

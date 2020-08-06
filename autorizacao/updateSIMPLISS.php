@@ -112,18 +112,26 @@ if($retorno[0]){
                     $xml->endElement(); // Valores
 
                     $xml->writeElement("nfse:ItemListaServico", "7.10"); //$aAutoChave["codigoServico"]); 
-                    $xml->writeElement("CodigoCnae", "6190699");
-                    $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço
+//                    $xml->writeElement("CodigoCnae", "6190699");
+//                    $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço
                     $xml->writeElement("nfse:Discriminacao", "Teste homologacao");
                     $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
 
                     $xml->startElement("nfse:ItensServico");
                         $xml->writeElement("nfse:Descricao", "Consulta clinica");
                         $xml->writeElement("nfse:Quantidade", 1.00);
-                        $xml->writeElement("nfse:ValorUnitario", 10.00);
+                        $xml->writeElement("nfse:ValorUnitario", 5.00);
                         $xml->writeElement("nfse:IssTributavel", 1);
                     $xml->endElement(); // ItensServico
-                $xml->endElement(); // Servico
+
+                    $xml->startElement("nfse:ItensServico");
+                        $xml->writeElement("nfse:Descricao", "Procedimento");
+                        $xml->writeElement("nfse:Quantidade", 1.00);
+                        $xml->writeElement("nfse:ValorUnitario", 5.00);
+                        $xml->writeElement("nfse:IssTributavel", 1);
+                    $xml->endElement(); // ItensServico
+
+                    $xml->endElement(); // Servico
 
                 $xml->startElement("nfse:Tomador");
                     $xml->startElement("nfse:IdentificacaoTomador");
@@ -151,7 +159,7 @@ if($retorno[0]){
         
         $xml->startElement("sis:pParam");
             $xml->writeElement("sis1:P1", $aAutoChave["login"]); 
-            $xml->writeElement("sis1:P2", '1234'); //$aAutoChave["senhaWeb"]); 
+            $xml->writeElement("sis1:P2", $aAutoChave["senhaWeb"]); 
         $xml->endElement(); // pParam
     $xml->endElement(); // GerarNfseEnvio
     //
