@@ -72,6 +72,12 @@ class Autorizacao{
             $emitente->readOne();
 
             if ($this->createDir($emitente->documento)){
+
+                $limpaDir = "../arquivosNFSe/".$documento."/certificado/cert".$documento."*.*";
+                foreach(glob($limpaDir) as $arqDel){
+                    unlink($arqDel);
+                }
+
                 $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";
                 $arqCert = fopen($nomeArq,"w");
                 $certificado = base64_decode($this->certificado);
@@ -138,6 +144,12 @@ class Autorizacao{
             $emitente->readOne();
 
             if ($this->createDir($documento)){
+
+                $limpaDir = "../arquivosNFSe/".$documento."/certificado/cert".$documento."*.*";
+                foreach(glob($limpaDir) as $arqDel){
+                    unlink($arqDel);
+                }
+
                 $nomeArq = "../arquivosNFSe/".$documento."/certificado/cert".$documento.".pfx";
                 $arqCert = fopen($nomeArq,"w");
                 $certificado = base64_decode($this->certificado);
