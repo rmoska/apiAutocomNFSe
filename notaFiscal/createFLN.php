@@ -42,12 +42,12 @@ foreach ( $data->itemServico as $item )
     ){
 
 
-        if(empty($item->codigo) ||
-            empty($item->descricao) ||
-            empty($item->cnae) ||
-            empty($item->nbs) ) 
+        if(empty($item->quantidade) ||
+        empty($item->valor) ||
+        (!($item->cst>=0)) ||
+        (!($item->taxaIss>=0) ) 
         ){
-            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item da Nota Fiscal. Parte 1.', $strData);
+            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item da Nota Fiscal. Parte 2.', $strData);
         }
 
         $db->rollBack();
