@@ -108,7 +108,7 @@ if($retorno[0]){
         $xml->startElement("itemServico");
         $xml->writeElement("descricaoServico", "Teste de Homologacao");
         $xml->writeElement("idCNAE", trim($autorizacao->cnae));
-        $xml->writeElement("cst", "12");
+        $xml->writeElement("cst", "13");
         $xml->writeElement("aliquota", 0.00);
         $xml->writeElement("quantidade", 1.00);
         $xml->writeElement("baseCalculo", 0.00);
