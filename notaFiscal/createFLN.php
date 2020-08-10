@@ -53,19 +53,15 @@ foreach ( $data->itemServico as $item )
     $notaFiscalItem = new NotaFiscalItem($db);
 
     $itemVenda->codigo = $item->codigo;
-    if (($idItemVenda = $itemVenda->check()) > 0) 
-    {
-        $notaFiscalItem->idItemVenda = $idItemVenda;
+    if (($idItemVenda = $itemVenda->check()) > 0) {
 
+        $notaFiscalItem->idItemVenda = $idItemVenda;
         $itemVenda->descricao = $item->descricao;
         $itemVenda->cnae = $item->cnae;
         $itemVenda->ncm = $item->nbs;
-
         $itemVenda->updateVar();
-
     }
-    else 
-    {
+    else {
 
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
