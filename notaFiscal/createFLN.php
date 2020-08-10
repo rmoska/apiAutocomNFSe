@@ -41,15 +41,6 @@ foreach ( $data->itemServico as $item )
         (!($item->taxaIss>=0)) 
     ){
 
-
-        if(empty($item->quantidade) ||
-        empty($item->valor) ||
-        (!($item->cst>=0)) ||
-        (!($item->taxaIss>=0) ) 
-        ){
-            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível incluir Item da Nota Fiscal. Parte 2.', $strData);
-        }
-
         $db->rollBack();
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Item da Nota Fiscal. Dados incompletos.", "codigo" => "A05"));
