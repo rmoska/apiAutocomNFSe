@@ -215,7 +215,7 @@ class gerarPdf {
             $vlTotServ += $notaFiscalItem->valorTotal;
             $vlTotBC += $notaFiscalItem->valorBCIss; 
             $vlTotISS += $notaFiscalItem->valorIss; 
-            $notaFiscalItem->readItemVenda();
+            $notaFiscalItem->readItemVenda('CNAE');
             $nmProd = '('.$notaFiscalItem->descricaoCnae.') '.$notaFiscalItem->descricaoItemVenda;
             $nlDescr = $pdf->numLines(85, $nmProd);
             $nlObs = 0;

@@ -86,6 +86,7 @@ foreach ( $data->itemServico as $item )
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
     $notaFiscalItem->cnae = $item->cnae;
+    $notaFiscalItem->codigoServico = $item->cnae;
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
@@ -144,143 +145,146 @@ if (count($arrayItemNF) == 0) {
     $logMsg->register('E', 'notaFiscal.create', 'Erro na inclusão dos Itens da Nota Fiscal.', $strData);
     exit;
 }
-// 
-// cria e transmite nota fiscal
-else {
 
-    // buscar token conexão
-    $autorizacao = new Autorizacao($db);
-    $autorizacao->idEmitente = $notaFiscal->idEmitente;
-    $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
-    $autorizacao->readOne();
-
-    if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
-
-        $db->rollBack();
-        http_response_code(400);
-        echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.", "codigo" => "A02"));
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. AEDFe não informado.', $strData);
-        exit;
-    }
-    else if(!$autorizacao->getToken($notaFiscal->ambiente)){
-
-        $db->rollBack();
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).", "codigo" => "A02"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). Emitente=".$autorizacao->idEmitente." AEDF=".$autorizacao->aedf." Pwd=".$autorizacao->senhaWeb." NF=".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).', $strData);
-        exit;
-    }
-
-    // calcular Imposto Aproximado IBPT
-    $notaFiscal->calcImpAprox();
-
-    // montar xml nfse
-    $vlTotBC = 0; 
-    $vlTotISS = 0; 
-    $vlTotServ = 0; 
-    foreach ( $arrayItemNF as $notaFiscalItem ) {
-        $vlTotServ += $notaFiscalItem->valorTotal;
-        $vlTotBC += $notaFiscalItem->valorBCIss; 
-        $vlTotISS += $notaFiscalItem->valorIss; 
-    }
-    //
-    include_once '../shared/utilities.php';
-    $utilities = new Utilities();
-    //			
-    $xml = new XMLWriter;
-    $xml->openMemory();
-    //
-    // Inicia o cabeçalho do documento XML
-    $xml->startElement("xmlProcessamentoNfpse");
-    if ($notaFiscal->ambiente == "P") // PRODUÇÃO
-        $nuAEDF = $autorizacao->aedf; 
-    else // HOMOLOGAÇÃO
-        $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
-    $xml->writeElement("numeroAEDF", $nuAEDF);
-    $xml->writeElement("identificacao", $notaFiscal->idNotaFiscal);
-    $xml->writeElement("numeroSerie", 1);
-    $xml->writeElement("dataEmissao", $notaFiscal->dataEmissao);
-    $xml->writeElement("cfps", $notaFiscal->cfop);
-    $xml->writeElement("baseCalculo", number_format($vlTotBC,2,'.',''));
-    if ($vlTotBCST>0)
-        $xml->writeElement("baseCalculoSubstituicao", number_format($vlTotBCST,2,'.',''));
-    $xml->writeElement("valorISSQN", number_format($vlTotISS,2,'.',''));
-    $xml->writeElement("valorTotalServicos", number_format($vlTotServ,2,'.',''));
-
-    $xml->writeElement("identificacaoTomador", $tomador->documento);
-    $xml->writeElement("razaoSocialTomador", $tomador->nome);
-    $xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
-    if ($tomador->numero>0)
-        $xml->writeElement("numeroEnderecoTomador", $tomador->numero);
-    if($tomador->complemento > '')
-        $xml->writeElement("complementoEnderecoTomador", $tomador->complemento);
-    $xml->writeElement("bairroTomador", $tomador->bairro);
-    $xml->writeElement("codigoMunicipioTomador", $tomador->codigoMunicipio);
-    $xml->writeElement("codigoPostalTomador", $tomador->cep);
-    if ($tomador->uf >'')
-        $xml->writeElement("ufTomador", $tomador->uf);
-    $xml->writeElement("emailTomador", $tomador->email);
-    //		
-    // ITENS
-    $xml->startElement("itensServico");
-    foreach ( $arrayItemNF as $notaFiscalItem ) {
-
-        $xml->startElement("itemServico");
-        $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
-        if ($notaFiscalItem->observacao > '')
-            $nmProd .= ' - '.$notaFiscalItem->observacao;
-        $xml->writeElement("descricaoServico", trim($nmProd));
-        $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
-        $xml->writeElement("cst", $notaFiscalItem->cstIss);
-        $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
-        $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
-        $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,4,'.',''));
-        $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,4,'.',''));
-        $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
-        $xml->endElement(); // ItemServico
-    }
-    $xml->endElement(); // ItensServico
-    if (($autorizacao->mensagemnf > '') || ($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>''))
-        $xml->writeElement("dadosAdicionais", $autorizacao->mensagemnf." ".$notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
-    $xml->endElement(); // xmlNfpse
-    //
-    $xmlNFe = $xml->outputMemory(true);
-    $xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
-    //
-    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
-    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
-    fwrite($arqNFe, $xmlNFe);
-    fclose($arqNFe);
-    //	
-    include_once '../comunicacao/signNFSe.php';
-    $arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
-
-    $nfse = new SignNFSe($arraySign);
-    if($nfse->errStatus) {
-
-        $db->rollBack();
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg, "codigo" => "A02"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->msg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas com Certificado. Emitente='.$autorizacao->idEmitente, $nfse->msg);
-        exit;
-    }
-
-    $xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
-    if ($nfse->errStatus) {
-
-        $db->rollBack();
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg, "codigo" => "A02"));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas na assinatura do XML. Emitente='.$autorizacao->idEmitente, $nfse->msg);
-        exit;
-    }
-}
 //
 // fecha atualizações
 $db->commit();
+// 
+// cria e transmite nota fiscal
+//
+// buscar token conexão
+$autorizacao = new Autorizacao($db);
+$autorizacao->idEmitente = $notaFiscal->idEmitente;
+$autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
+$autorizacao->readOne();
+
+if(($notaFiscal->ambiente=="P") && (is_null($autorizacao->aedf) || ($autorizacao->aedf==''))) {
+
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. AEDFe não informado.", "codigo" => "A02"));
+    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. AEDFe não informado.', $strData);
+    exit;
+}
+else if(!$autorizacao->getToken($notaFiscal->ambiente)){
+
+    http_response_code(401);
+    echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).", "codigo" => "A02"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF). Emitente=".$autorizacao->idEmitente." AEDF=".$autorizacao->aedf." Pwd=".$autorizacao->senhaWeb." NF=".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal. Token de acesso rejeitado (Confira CMC e senha PMF).', $strData);
+    exit;
+}
+
+// calcular Imposto Aproximado IBPT
+$notaFiscal->calcImpAprox();
+
+// montar xml nfse
+$vlTotBC = 0; 
+$vlTotISS = 0; 
+$vlTotServ = 0; 
+foreach ( $arrayItemNF as $notaFiscalItem ) {
+    $vlTotServ += $notaFiscalItem->valorTotal;
+    $vlTotBC += $notaFiscalItem->valorBCIss; 
+    $vlTotISS += $notaFiscalItem->valorIss; 
+}
+//
+include_once '../shared/utilities.php';
+$utilities = new Utilities();
+//			
+$xml = new XMLWriter;
+$xml->openMemory();
+//
+// Inicia o cabeçalho do documento XML
+$xml->startElement("xmlProcessamentoNfpse");
+if ($notaFiscal->ambiente == "P") // PRODUÇÃO
+    $nuAEDF = $autorizacao->aedf; 
+else // HOMOLOGAÇÃO
+    $nuAEDF = substr($autorizacao->cmc,0,-1); // para homologação AEDF = CMC menos último caracter
+$xml->writeElement("numeroAEDF", $nuAEDF);
+$xml->writeElement("identificacao", $notaFiscal->idNotaFiscal);
+$xml->writeElement("numeroSerie", 1);
+$xml->writeElement("dataEmissao", $notaFiscal->dataEmissao);
+$xml->writeElement("cfps", $notaFiscal->cfop);
+$xml->writeElement("baseCalculo", number_format($vlTotBC,2,'.',''));
+if ($vlTotBCST>0)
+    $xml->writeElement("baseCalculoSubstituicao", number_format($vlTotBCST,2,'.',''));
+$xml->writeElement("valorISSQN", number_format($vlTotISS,2,'.',''));
+$xml->writeElement("valorTotalServicos", number_format($vlTotServ,2,'.',''));
+
+$xml->writeElement("identificacaoTomador", $tomador->documento);
+$xml->writeElement("razaoSocialTomador", $tomador->nome);
+$xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
+if ($tomador->numero>0)
+    $xml->writeElement("numeroEnderecoTomador", $tomador->numero);
+if($tomador->complemento > '')
+    $xml->writeElement("complementoEnderecoTomador", $tomador->complemento);
+$xml->writeElement("bairroTomador", $tomador->bairro);
+$xml->writeElement("codigoMunicipioTomador", $tomador->codigoMunicipio);
+$xml->writeElement("codigoPostalTomador", $tomador->cep);
+if ($tomador->uf >'')
+    $xml->writeElement("ufTomador", $tomador->uf);
+$xml->writeElement("emailTomador", $tomador->email);
+//		
+// ITENS
+$xml->startElement("itensServico");
+foreach ( $arrayItemNF as $notaFiscalItem ) {
+
+    $xml->startElement("itemServico");
+    $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
+    if ($notaFiscalItem->observacao > '')
+        $nmProd .= ' - '.$notaFiscalItem->observacao;
+    $xml->writeElement("descricaoServico", trim($nmProd));
+    $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
+    $xml->writeElement("cst", $notaFiscalItem->cstIss);
+    $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
+    $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
+    $xml->writeElement("baseCalculo", number_format($notaFiscalItem->valorBCIss,4,'.',''));
+    $xml->writeElement("valorTotal", number_format($notaFiscalItem->valorTotal,4,'.',''));
+    $xml->writeElement("valorUnitario", number_format($notaFiscalItem->valorUnitario,4,'.',''));
+    $xml->endElement(); // ItemServico
+}
+$xml->endElement(); // ItensServico
+if (($autorizacao->mensagemnf > '') || ($notaFiscal->obsImpostos > '') || ($notaFiscal->dadosAdicionais>''))
+    $xml->writeElement("dadosAdicionais", $autorizacao->mensagemnf." ".$notaFiscal->obsImpostos." ".$notaFiscal->dadosAdicionais);
+$xml->endElement(); // xmlNfpse
+//
+$xmlNFe = $xml->outputMemory(true);
+$xmlNFe = '<?xml version="1.0" encoding="utf-8"?>'.$xmlNFe;
+//
+$idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
+$arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
+fwrite($arqNFe, $xmlNFe);
+fclose($arqNFe);
+//	
+include_once '../comunicacao/signNFSe.php';
+$arraySign = array("cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+
+$nfse = new SignNFSe($arraySign);
+if($nfse->errStatus) {
+
+    $notaFiscal->situacao = 'E';
+    $notaFiscal->textoResposta = "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg;
+    $notaFiscal->update();
+    //
+    http_response_code(401);
+    echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->errMsg, "codigo" => "A02"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas com Certificado. ".$nfse->msg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas com Certificado. Emitente='.$autorizacao->idEmitente, $nfse->msg);
+    exit;
+}
+
+$xmlAss = $nfse->signXML($xmlNFe, 'xmlProcessamentoNfpse');
+if ($nfse->errStatus) {
+
+    $notaFiscal->situacao = 'E';
+    $notaFiscal->textoResposta = "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg;
+    $notaFiscal->update();
+    //
+    http_response_code(401);
+    echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. ".$nfse->errMsg, "codigo" => "A02"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível gerar Nota Fiscal(idNF='.$notaFiscal->idNotaFiscal.'). Problemas na assinatura do XML. Emitente='.$autorizacao->idEmitente, $nfse->msg);
+    exit;
+}
 //
 //
 // transmite NFSe	
@@ -394,7 +398,7 @@ else {
         //$notaFiscal->updateSituacao("E");
 
         $msg = $result;
-//        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] result = (".$msg.")\n"), 3, "../arquivosNFSe/apiErrors.log");
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] result = (".$msg.")\n"), 3, "../arquivosNFSe/apiErrors.log");
         $dados = json_decode($result);
 
         if (isset($dados->error)) {

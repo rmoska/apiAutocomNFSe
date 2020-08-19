@@ -18,6 +18,7 @@ class NotaFiscalItem{
     public $valorTotal; 
     public $valorTotalLiquido; 
     public $cnae; 
+    public $codigoServico; 
     public $cstIss; 
     public $valorBCIss; 
     public $taxaIss; 
@@ -62,7 +63,7 @@ class NotaFiscalItem{
         $query = "INSERT INTO " . $this->tableName . " SET 
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
-                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
+                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, codigoServico=:codigoServico, 
                     cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
                     cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
                     taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST, 
@@ -85,6 +86,7 @@ class NotaFiscalItem{
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
         $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
+        $this->codigoServico=htmlspecialchars(strip_tags($this->codigoServico));
         $this->cstIss=htmlspecialchars(strip_tags($this->cstIss));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
@@ -127,6 +129,7 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
+        $stmt->bindParam(":codigoServico", $this->codigoServico);
         $stmt->bindParam(":cstIss", $this->cstIss);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
@@ -178,7 +181,7 @@ class NotaFiscalItem{
         $query = "UPDATE " . $this->tableName . " SET
                     idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
                     quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
-                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, 
+                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, codigoServico=:codigoServico, 
                     cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
                     cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
                     taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST, 
@@ -203,6 +206,7 @@ class NotaFiscalItem{
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
         $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
+        $this->codigoServico=htmlspecialchars(strip_tags($this->codigoServico));
         $this->cstIss=htmlspecialchars(strip_tags($this->cstIss));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
@@ -246,6 +250,7 @@ class NotaFiscalItem{
         $stmt->bindParam(":valorTotal", $this->valorTotal);
         $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
+        $stmt->bindParam(":codigoServico", $this->codigoServico);
         $stmt->bindParam(":cstIss", $this->cstIss);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
@@ -342,20 +347,22 @@ class NotaFiscalItem{
     }
 
     // read notaFiscal
-    function readItemVenda(){
+    function readItemVenda($origem){
     
         // select all query
-        $query = "SELECT nfi.*, iv.*, ca.descricao AS nomeCnae 
-                  FROM " . $this->tableName . " AS nfi, itemVenda AS iv, codigoAtividade AS ca
-                  WHERE nfi.idItemVenda = iv.idItemVenda AND iv.cnae = ca.cnae AND nfi.idNotaFiscal = ? AND nfi.numeroOrdem = ? 
+        $query = "SELECT nfi.*, iv.*, cs.descricao AS nomeServico 
+                  FROM " . $this->tableName . " AS nfi, itemVenda AS iv, codigoServico AS cs
+                  WHERE nfi.idItemVenda = iv.idItemVenda AND cs.origem = ? AND iv.codigoServico = cs.codigo AND 
+                        nfi.idNotaFiscal = ? AND nfi.numeroOrdem = ? 
                   LIMIT 0,1";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
 
         // bind id of product to be updated
-        $stmt->bindParam(1, $this->idNotaFiscal);
-        $stmt->bindParam(2, $this->numeroOrdem);
+        $stmt->bindParam(1, $origem);
+        $stmt->bindParam(2, $this->idNotaFiscal);
+        $stmt->bindParam(3, $this->numeroOrdem);
 
         // execute query
         $stmt->execute();
@@ -365,7 +372,7 @@ class NotaFiscalItem{
 
         // set values to object properties
         $this->descricaoItemVenda = $row['descricao'];
-        $this->descricaoCnae = $row['nomeCnae'];
+        $this->descricaoCnae = $row['nomeServico'];
         
     }
 
@@ -396,6 +403,7 @@ class NotaFiscalItem{
         $this->valorUnitario = $row['valorUnitario'];
         $this->valorTotal = $row['valorTotal'];
         $this->cnae = $row['cnae'];
+        $this->codigoServico = $row['codigoServico'];
         $this->cstIss = $row['cstIss'];
         $this->valorBCIss = $row['valorBCIss'];
         $this->taxaIss = $row['taxaIss'];

@@ -77,14 +77,12 @@ class Autorizacao{
                 foreach(glob($limpaDir) as $arqDel){
                     unlink($arqDel);
                 }
-
                 $nomeArq = "../arquivosNFSe/".$emitente->documento."/certificado/cert".$emitente->documento.".pfx";
                 $arqCert = fopen($nomeArq,"w");
                 $certificado = base64_decode($this->certificado);
                 $contCert = fwrite($arqCert, $certificado);
                 fclose($arqCert);
             }
-
             return array(true);
         }
         else {
@@ -149,14 +147,12 @@ class Autorizacao{
                 foreach(glob($limpaDir) as $arqDel){
                     unlink($arqDel);
                 }
-
                 $nomeArq = "../arquivosNFSe/".$documento."/certificado/cert".$documento.".pfx";
                 $arqCert = fopen($nomeArq,"w");
                 $certificado = base64_decode($this->certificado);
                 $contCert = fwrite($arqCert, $certificado);
                 fclose($arqCert);
             }
-
             return array(true);
         }
         else {

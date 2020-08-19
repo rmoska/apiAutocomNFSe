@@ -136,12 +136,12 @@ if ($checkNF["existe"] > 0) {
 switch ($emitente->codigoMunicipio) {
     case '3550308': // SP - São Paulo
         $arqPhp = 'createSPL.php'; break;
-    case '4205407': // SC - Florianópolis
+    case '4205407': // SC - Florianópolis ==> OK
         $arqPhp = 'createFLN.php'; break;
     case '4216602': // SC - São José
         $arqPhp = 'createBETHA.php'; break;
     case '4202305': // SC - Biguaçu
-    case '4211900': // SC - Palhoça
+    case '4211900': // SC - Palhoça ==> OK
         $arqPhp = 'createIPM.php'; break;
     case '4204202': // SC - Chapecó
     case '4208203': // SC - Itajaí
