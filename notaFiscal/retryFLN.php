@@ -66,7 +66,7 @@
     foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
         $xml->startElement("itemServico");
-        $notaFiscalItem->readItemVenda('CNAE');
+        $notaFiscalItem->readItemVenda('CNAE-FLN');
         $nmProd = trim($utilities->limpaEspeciais($notaFiscalItem->descricaoItemVenda));
         if ($notaFiscalItem->observacao > '')
             $nmProd .= ' - '.$notaFiscalItem->observacao;

@@ -469,6 +469,18 @@ class comunicaNFSe {
         return $data;
     }
 
+
+    public function defineURL($secao, $servico) {
+
+        include_once '../shared/iniFile.php';
+
+        $configUrl = new iniFile(); 
+        $configUrl -> connect('../config/configWSDL.txt');
+        $urlServico = $configUrl -> read($secao, $servico);
+        $this->url = $urlServico;
+    }
+
+
     //
     // define namespace / url e chama soap
     public function transmitirNFSeBetha($servico, $sXml, $ambiente) {
@@ -635,6 +647,50 @@ class comunicaNFSe {
             $data .= '</soap12:Body>';
             $data .= '</soap12:Envelope>';
 
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($data, $action, 'S');
+            //verifica o retorno
+            if (! $retorno) {
+                return array(false, 'URL de Comunicação inválida !');
+            }
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+
+        return $retorno;
+    }
+
+    //
+    // define namespace / url e chama soap
+    public function transmitirNFSeABRASF1_0( $sXml, $servico, $codMunic) {
+
+        try {
+
+            if ($this->ambiente=='H') // homologação
+                $codMunic .= '-H'; 
+
+            $this->defineURL($codMunic, $servico);
+
+            $action = "";
+//            $action = "http://www.e-governeapps2.com.br/WS_x0020_-_x0020_NFS-e_x0020_V1.0.0.1Soap/".$servico;
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
+                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
+            }
+
+            // limpa a variavel
+            $sNFSe = $sXml;
+            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+
+            $data = '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://tempuri.org/" >';
+            $data .= '<SOAP-ENV:Body><EnviarLoteRPS><loteXML><![CDATA[';
+            $data .= $sNFSe;
+            $data .= ']]></loteXML></EnviarLoteRPS></SOAP-ENV:Body></SOAP-ENV:Envelope>';
 
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($data, $action, 'S');

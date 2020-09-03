@@ -134,6 +134,9 @@ if ($checkNF["existe"] > 0) {
 //
 // classes específicas por município
 switch ($emitente->codigoMunicipio) {
+    
+    case '2927408': // BA - Salvador
+        $arqPhp = 'createABRASF1_0.php'; break;
     case '3550308': // SP - São Paulo
         $arqPhp = 'createSPL.php'; break;
     case '4205407': // SC - Florianópolis ==> OK
