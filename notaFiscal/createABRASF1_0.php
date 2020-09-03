@@ -30,8 +30,7 @@ if(!$retorno[0]){
 //check / create itemVenda
 $totalItens = 0;
 $nfiOrdem = 0;
-foreach ( $data->itemServico as $item )
-{
+foreach ( $data->itemServico as $item ) {
     $nfiOrdem++;
     if(
         empty($item->codigo) ||
@@ -56,17 +55,15 @@ foreach ( $data->itemServico as $item )
     $notaFiscalItem = new NotaFiscalItem($db);
 
     $itemVenda->codigo = $item->codigo;
-    if (($idItemVenda = $itemVenda->check()) > 0) 
-    {
-        $notaFiscalItem->idItemVenda = $idItemVenda;
+    if (($idItemVenda = $itemVenda->check()) > 0) {
 
+        $notaFiscalItem->idItemVenda = $idItemVenda;
         $itemVenda->descricao = $item->descricao;
         $itemVenda->listaServico = $item->codigoServico;
 
         $itemVenda->updateVar();
     }
-    else 
-    {
+    else {
 
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
@@ -81,7 +78,7 @@ foreach ( $data->itemServico as $item )
             $logMsg->register('E', 'notaFiscal.createIPM', 'Não foi possível incluir Item Venda.(I01)', $retorno[1]." = ".$strData);
             exit;
         }
-        else{
+        else {
             $notaFiscalItem->idItemVenda = $itemVenda->idItemVenda;
         }
     }
@@ -328,6 +325,8 @@ $retEnv = $objNFSe->transmitirNFSeABRASF1_0( $xmlNFe , 'EnviarLoteRpsEnvio', $em
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
 
+print_r($result);
+print_r($info);
 
 
 if ($infoRet['http_code'] == '200') {
@@ -441,9 +440,6 @@ echo json_encode(array("http_code" => 201, "message" => "Autorização atualizad
                        "verificacao-homolog" => utf8_decode($cdVerif),
                        "linkNF" => $linkNF));
 exit;
-}
-
-
 
 
 ?>
