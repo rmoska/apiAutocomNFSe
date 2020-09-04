@@ -162,7 +162,7 @@ if($retorno[0]){
     //
     $xmlLote = $xml->outputMemory(true);
     //
-    $xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
+    $xmlNFe = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
     $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
     $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
