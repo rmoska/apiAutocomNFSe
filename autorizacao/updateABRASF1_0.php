@@ -164,8 +164,12 @@ if($retorno[0]){
     //
     $xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
-//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$xmlNFe."\n"), 3, "../arquivosNFSe/nfBCret.log");
-
+    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
+    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
+    fwrite($arqNFe, $xmlNFe);
+    fclose($arqNFe);
+    
+    
     $retEnv = $objNFSe->transmitirNFSeABRASF1_0( $xmlNFe , 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
 
     $respEnv = $retEnv[0];

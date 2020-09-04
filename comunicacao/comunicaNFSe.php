@@ -692,6 +692,10 @@ class comunicaNFSe {
             $data .= $sNFSe;
             $data .= ']]></loteXML></EnviarLoteRPS></SOAP-ENV:Body></SOAP-ENV:Envelope>';
 
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->url."\n"), 3, "../arquivosNFSe/url.log");
+
+
+
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($data, $action, 'S');
             //verifica o retorno
