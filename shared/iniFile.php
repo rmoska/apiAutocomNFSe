@@ -58,7 +58,7 @@ class iniFile{
 	} 
 	
 
-    function read($secao, $chave ) { 
+    function read($section, $key ) { 
 	
 		if (sizeof($this->iniData) == 0) 
     		return (FALSE); 

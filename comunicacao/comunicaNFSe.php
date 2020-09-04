@@ -472,8 +472,6 @@ class comunicaNFSe {
 
     public function defineURL($secao, $servico) {
 
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$secao." - ".$servico."\n"), 3, "../arquivosNFSe/url.log");
-
         include_once '../shared/iniFile.php';
 
         $configUrl = new iniFile(); 
