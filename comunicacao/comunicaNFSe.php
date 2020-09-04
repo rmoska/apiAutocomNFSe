@@ -14,7 +14,7 @@ class comunicaNFSe {
      * tpAmb
      * Tipo de ambiente P-produção H-homologação
      */
-    protected $tpAmb = '';
+    protected $ambiente = '';
     /**
      * Diretorio onde estão os certificados
      */
@@ -59,7 +59,7 @@ class comunicaNFSe {
         $this->raizDir = dirname(dirname( __FILE__ )) . '/';
 
         $this->sisEmit = $arraySign["sisEmit"];
-        $this->tpAmb = $arraySign["tpAmb"];
+        $this->ambiente = $arraySign["tpAmb"];
         $this->cnpj = $arraySign["cnpj"];
         $this->certName = "cert".$arraySign["cnpj"].".pfx";
         $this->keyPass = $arraySign["keyPass"];
