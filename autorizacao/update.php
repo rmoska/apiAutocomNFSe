@@ -84,6 +84,8 @@ if (!isset($emitente->codigoMunicipio)) {
 //
 //identificação do serviço: emissão de NFSe
 switch ($emitente->codigoMunicipio) {
+    case '2927408': // BA - Salvador
+        $arqPhp = 'updateABRASF1_0.php'; break;
     case '4106902': // PR - Curitiba
         $arqPhp = 'update4106902.php'; break;
     case '4205407': // SC - Florianópolis
