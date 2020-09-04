@@ -671,6 +671,9 @@ class comunicaNFSe {
             if ($this->ambiente=='H') // homologação
                 $codMunic .= '-H'; 
 
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->ambiente." = ".$codMunic."\n"), 3, "../arquivosNFSe/url.log");
+
+
             $this->defineURL($codMunic, $servico);
 
             $action = "";
@@ -691,10 +694,6 @@ class comunicaNFSe {
             $data .= '<SOAP-ENV:Body><EnviarLoteRPS><loteXML><![CDATA[';
             $data .= $sNFSe;
             $data .= ']]></loteXML></EnviarLoteRPS></SOAP-ENV:Body></SOAP-ENV:Envelope>';
-
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->url."\n"), 3, "../arquivosNFSe/url.log");
-
-
 
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($data, $action, 'S');
