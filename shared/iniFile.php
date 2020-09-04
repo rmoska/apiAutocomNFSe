@@ -1,7 +1,7 @@
 <?php
 class iniFile{
 
-    $iniData = array (); 
+    private $iniData = array (); 
 
 	// carrega array com dados
 	function connect( $file ) { 
