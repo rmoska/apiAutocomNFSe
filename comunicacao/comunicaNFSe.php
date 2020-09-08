@@ -478,6 +478,8 @@ class comunicaNFSe {
         $configUrl -> connect('../config/configWSDL.txt');
         $urlServico = $configUrl -> read($secao, $servico);
         $this->url = $urlServico;
+        $urlAction = $configUrl -> read($secao, $servico.'Action');
+        $this->action = $urlAction;
     }
 
 
@@ -671,13 +673,11 @@ class comunicaNFSe {
             if ($this->ambiente=='H') // homologação
                 $codMunic .= '-H'; 
 
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->ambiente." = ".$codMunic."\n"), 3, "../arquivosNFSe/url.log");
-
-
             $this->defineURL($codMunic, $servico);
 
-            $action = "";
 //            $action = "http://www.e-governeapps2.com.br/WS_x0020_-_x0020_NFS-e_x0020_V1.0.0.1Soap/".$servico;
+
+            http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
@@ -723,6 +723,8 @@ class comunicaNFSe {
         $headers[] = "Content-Length: ".$tamanho;
         if ($action > '')
             $headers[] = "SOAPAction: ".$action;
+        else if ($this->action > '')
+            $headers[] = "SOAPAction: ".$this->action;
 
         try {
 
