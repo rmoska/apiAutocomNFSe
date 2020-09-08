@@ -696,7 +696,7 @@ class comunicaNFSe {
             $data .= ']]></loteXML></EnviarLoteRPS></SOAP-ENV:Body></SOAP-ENV:Envelope>';
 
 
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/envNFSe.log");
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 
             //envia dados via SOAP
