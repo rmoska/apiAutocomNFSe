@@ -43,8 +43,8 @@ class comunicaNFSe {
     private $keyPass;
     private $arqDir;
 
-    private $url;
-    private $action;
+    private $urlServico;
+    private $urlAction;
 
     public $errMsg='';
     public $errStatus=false;
@@ -478,11 +478,9 @@ class comunicaNFSe {
         include_once '../shared/iniFile.php';
 
         $configUrl = new iniFile(); 
-        $configUrl -> connect('../config/configWSDL.txt');
-        $urlServico = $configUrl->read($secao, $servico);
-        $this->url = $urlServico;
-        $urlAction = $configUrl->read($secao, $servico.'Action');
-        $this->action = $urlAction;
+        $configUrl->connect('../config/configWSDL.txt');
+        $this->urlServico = $configUrl->read($secao, $servico);
+        $this->urlAction = $configUrl->read($secao, $servico.'Action');
     }
 
 
@@ -706,7 +704,7 @@ class comunicaNFSe {
             $data .= ']]></loteXML></EnviarLoteRPS></SOAP-ENV:Body></SOAP-ENV:Envelope>';
 
 
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->url." = ".$this->action." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 
             //envia dados via SOAP
@@ -737,15 +735,15 @@ class comunicaNFSe {
         $headers[] = "Content-Length: ".$tamanho;
         if ($action > '')
             $headers[] = "SOAPAction: ".$action;
-        else if ($this->action > '')
-            $headers[] = "SOAPAction: ".$this->action;
+        else if ($this->urlAction > '')
+            $headers[] = "SOAPAction: ".$this->urlAction;
 
         try {
 
             $curl = curl_init();
             if ($noHeader!='N') 
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-            curl_setopt($curl, CURLOPT_URL, $this->url);
+            curl_setopt($curl, CURLOPT_URL, $this->urlServico);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
