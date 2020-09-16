@@ -737,6 +737,10 @@ class comunicaNFSe {
         else if ($this->action > '')
             $headers[] = "SOAPAction: ".$this->action;
 
+
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".print_r($headers)."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
+
         try {
 
             $curl = curl_init();
