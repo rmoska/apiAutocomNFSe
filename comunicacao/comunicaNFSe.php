@@ -689,7 +689,14 @@ class comunicaNFSe {
             //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
-
+/*
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+            <soapenv:Header/>
+            <soapenv:Body>
+               <tem:EnviarLoteRPS/>
+            </soapenv:Body>
+         </soapenv:Envelope>
+*/
             $data = '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://tempuri.org/" >';
             $data .= '<SOAP-ENV:Body><EnviarLoteRPS><loteXML><![CDATA[';
             $data .= $sNFSe;
