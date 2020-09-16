@@ -43,6 +43,9 @@ class comunicaNFSe {
     private $keyPass;
     private $arqDir;
 
+    private $url;
+    private $action;
+
     public $errMsg='';
     public $errStatus=false;
 
@@ -476,9 +479,9 @@ class comunicaNFSe {
 
         $configUrl = new iniFile(); 
         $configUrl -> connect('../config/configWSDL.txt');
-        $urlServico = $configUrl -> read($secao, $servico);
+        $urlServico = $configUrl->read($secao, $servico);
         $this->url = $urlServico;
-        $urlAction = $configUrl -> read($secao, $servico.'Action');
+        $urlAction = $configUrl->read($secao, $servico.'Action');
         $this->action = $urlAction;
     }
 
