@@ -477,7 +477,7 @@ class comunicaNFSe {
 
         include_once '../shared/iniFile.php';
 
-//        $configUrl = new iniFile(); 
+        $configUrl = new iniFile(); 
         $configUrl->connect('../config/configWSDL.txt');
         $this->urlServico = $configUrl->read($secao, $servico);
         $this->urlAction = $configUrl->read($secao, $servico.'Action');

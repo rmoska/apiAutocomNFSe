@@ -8,6 +8,13 @@ class iniFile{
       
 	  $iniArray = parse_ini_file($file, TRUE); 
 	  $this->iniData[] = $iniArray; 
+
+
+	  $arr = implode(",",$this->iniData);
+	  error_log(utf8_decode("[".date("Y-m-d H:i:s")."] D=".$arr."\n"), 3, "../arquivosNFSe/envNFSe.log");
+//	  error_log(utf8_decode("[".date("Y-m-d H:i:s")."] S=".$section." K=".$key." D=".$arr."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
+
 	} 
 
 
@@ -67,10 +74,6 @@ class iniFile{
     		return (FALSE); 
 	
 		return ($this->iniData[0][$section][$key]); 
-
-		$arr = implode(",",$this->iniData);
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] S=".$section." K=".$key." D=".$arr."\n"), 3, "../arquivosNFSe/envNFSe.log");
-
 
 	} 
 
