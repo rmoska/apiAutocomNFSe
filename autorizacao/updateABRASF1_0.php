@@ -83,7 +83,7 @@ if($retorno[0]){
                 $xml->writeElement("Serie", 1);
                 $xml->writeElement("Tipo", 1);
             $xml->endElement(); // IdentificacaoRps
-            $dtEm = date("Y-m-dTH:i:s");
+            $dtEm = date("c");
             $xml->writeElement("DataEmissao", $dtEm);
             $xml->writeElement("NaturezaOperacao", 1);
             $xml->writeElement("RegimeEspecialTributacao", 6); // 6 = ME/EPP
