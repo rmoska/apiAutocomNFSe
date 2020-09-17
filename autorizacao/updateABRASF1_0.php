@@ -151,7 +151,9 @@ if($retorno[0]){
             $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->writeElement("QuantidadeRps", 1);
             $xml->startElement("ListaRps");
-                $xml->writeRaw($xmlAss);
+                $xml->startElement("Rps");
+                    $xml->writeRaw($xmlAss);
+                $xml->endElement(); // Rps
             $xml->endElement(); // ListaRps
         $xml->endElement(); // LoteRps
     $xml->endElement(); // EnviarLoteRpsEnvio
