@@ -481,10 +481,6 @@ class comunicaNFSe {
         $configUrl->connect('../config/configWSDL.txt');
         $this->urlServico = $configUrl->read($secao, $servico);
         $this->urlAction = $configUrl->read($secao, $servico.'Action');
-
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction."\n"), 3, "../arquivosNFSe/envNFSe.log");
-
-
     }
 
 
