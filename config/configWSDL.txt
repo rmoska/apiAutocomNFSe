@@ -1,7 +1,7 @@
 [2927408-H]
 Municipio=SALVADOR/BA
 xEnvioLoteRPS=https://notahml.salvador.ba.gov.br/rps/ENVIOLOTERPS/EnvioLoteRPS.svc
-EnvioLoteRPS=https://notahml.salvador.ba.gov.br/abrasf/envioloterps/envioloterps.svc
+EnvioLoteRPS=https://notahml.salvador.ba.gov.br/rps/envioloterps/envioloterps.svc
 xEnvioLoteRPSAction=http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
 [2927408]
 Municipio=SALVADOR/BA
