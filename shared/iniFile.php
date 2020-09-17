@@ -8,7 +8,7 @@ class iniFile{
       
 	  $iniArray = parse_ini_file($file, TRUE); 
 	  $this->iniData[] = $iniArray; 
-print_r($iniArray);
+print_r($this->iniData);
 
 	  $arr = implode(",",$iniArray);
 	  error_log(utf8_decode("[".date("Y-m-d H:i:s")."] D=".$arr."\n"), 3, "../arquivosNFSe/envNFSe.log");
