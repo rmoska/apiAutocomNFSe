@@ -166,7 +166,7 @@ if($retorno[0]){
     fclose($arqNFe);
     
     
-    $retEnv = $objNFSe->transmitirNFSeABRASF1_0( $xmlNFe, $emitente->codigoMunicipio, 'EnviarLoteRpsEnvio');
+    $retEnv = $objNFSe->transmitirNFSeABRASF1_0( $xmlNFe, 'EnvioLoteRPS', $emitente->codigoMunicipio);
 
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];

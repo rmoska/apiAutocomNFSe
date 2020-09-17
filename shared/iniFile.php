@@ -11,7 +11,7 @@ class iniFile{
 
 	  print_r($this->iniData);
 
-	  error_log(utf8_decode("[".date("Y-m-d H:i:s")."] D=".$this->iniData[0][2927408-H][EnviarLoteRpsEnvio]."\n"), 3, "../arquivosNFSe/envNFSe.log");
+	  error_log(utf8_decode("[".date("Y-m-d H:i:s")."] D=".$this->iniData[0][2927408-H][EnvioLoteRPS]."\n"), 3, "../arquivosNFSe/envNFSe.log");
 //	  error_log(utf8_decode("[".date("Y-m-d H:i:s")."] S=".$section." K=".$key." D=".$arr."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 
