@@ -229,7 +229,7 @@ if($retorno[0]){
                 $codigo = (string) $msgRet->Codigo;
                 $msg = (string) utf8_decode($msgRet->Mensagem);
                 $correcao = (string) utf8_decode($msgRet->Correcao);
-                $cdVerif = "Erro NFSe Homologação ! "; //.$codigo.' - '.$msg.' - '.$correcao;
+                $cdVerif = "Erro NFSe Homologacao ! ".$codigo.' - '.$msg.' - '.$correcao;
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             // erro inesperado
