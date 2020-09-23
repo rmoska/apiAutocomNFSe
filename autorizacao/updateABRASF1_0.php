@@ -174,13 +174,9 @@ if($retorno[0]){
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".json_encode($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
-    echo $infoRet['http_code'];
-
     $nuNF = 0;
     $cdVerif = '';
     if ($infoRet['http_code'] == '200') {
-
-echo '0';
 
         // se retorna ListaNfse - processou com sucesso
         if(strstr($respEnv,'NovaNfse')){
@@ -210,8 +206,6 @@ echo '0';
         }
         else {
 
-            echo '1';
-
             //erro no processamento
             if(strstr($respEnv,'Fault')){
 
@@ -228,8 +222,6 @@ echo '0';
             //erros de validacao do webservice
             else if(strstr($respEnv,'ListaMensagemRetorno')){
 
-                echo '2';
-
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
                 $msgResp = simplexml_load_string($respEnv);
@@ -238,6 +230,9 @@ echo '0';
                 $msg = (string) utf8_decode($msgRet->Mensagem);
                 $correcao = (string) utf8_decode($msgRet->Correcao);
                 $cdVerif = "Erro NFSe Homologação ! ".$codigo.' - '.$msg.' - '.$correcao;
+  
+  echo $cdVerif;
+  
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             // erro inesperado
