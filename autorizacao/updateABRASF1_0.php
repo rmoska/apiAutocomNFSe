@@ -256,11 +256,18 @@ if($retorno[0]){
     }
 
     http_response_code(201);
-    echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                           "validade" => $validade." dias",
-                           "nf-homolog" => $nuNF,
-                           "verificacao-homolog" => utf8_decode($cdVerif),
-                           "linkNF" => $linkNF), JSON_UNESCAPED_UNICODE);
+
+    $aRet = array("http_code" => 201, "message" => "Autorização atualizada", 
+                    "validade" => $validade." dias",
+                    "nf-homolog" => $nuNF,
+                    "verificacao-homolog" => utf8_decode($cdVerif),
+                    "linkNF" => $linkNF);
+
+
+    $jRet = json_encode($aRet, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    echo utf8_decode($jRet);
+    
     exit;
 }
 else{
