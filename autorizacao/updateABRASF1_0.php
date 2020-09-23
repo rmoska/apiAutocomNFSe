@@ -206,8 +206,10 @@ if($retorno[0]){
         }
         else {
 
-            //erro na comunicacao SOAP
+            //erro no processamento
             if(strstr($respEnv,'Fault')){
+
+                echo '1';
 
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
