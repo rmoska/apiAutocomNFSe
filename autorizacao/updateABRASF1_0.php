@@ -180,6 +180,8 @@ if($retorno[0]){
     $cdVerif = '';
     if ($infoRet['http_code'] == '200') {
 
+echo '0';
+
         // se retorna ListaNfse - processou com sucesso
         if(strstr($respEnv,'NovaNfse')){
 /*
@@ -208,6 +210,8 @@ if($retorno[0]){
         }
         else {
 
+            echo '1';
+
             //erro no processamento
             if(strstr($respEnv,'Fault')){
 
@@ -223,6 +227,8 @@ if($retorno[0]){
             }
             //erros de validacao do webservice
             else if(strstr($respEnv,'ListaMensagemRetorno')){
+
+                echo '2';
 
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
