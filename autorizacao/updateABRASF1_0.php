@@ -171,6 +171,10 @@ if($retorno[0]){
     $retEnv = $objNFSe->transmitirNFSeABRASF1_0( $xmlNFe, 'EnvioLoteRPS', $emitente->codigoMunicipio);
 
     $respEnv = $retEnv[0];
+
+    $respEnv = str_replace("&lt;","<",$respEnv);
+    $respEnv = str_replace("&gt;",">",$respEnv);
+
     $infoRet = $retEnv[1];
 
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
@@ -225,6 +229,8 @@ if($retorno[0]){
             }
             //erros de validacao do webservice
             else if(strstr($respEnv,'ListaMensagemRetorno')){
+
+                echo $respEnv;
 
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
