@@ -108,7 +108,7 @@ if($retorno[0]){
             $xml->endElement(); // Serviço
 
             $xml->startElement("Prestador");
-                $xml->writeElement("Cnpj", "80449374000128"); //$emitente->documento);
+                $xml->writeElement("Cnpj", $emitente->documento); //"80449374000128"); //
                 $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->endElement(); // Prestador
 
@@ -149,7 +149,7 @@ if($retorno[0]){
         $xml->startElement("LoteRps");
         $xml->writeAttribute("id", "001");
             $xml->writeElement("NumeroLote", 1);
-            $xml->writeElement("Cnpj", "80449374000128"); //$emitente->documento);
+            $xml->writeElement("Cnpj", $emitente->documento); //"80449374000128"); //
             $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->writeElement("QuantidadeRps", 1);
             $xml->startElement("ListaRps");
@@ -174,13 +174,9 @@ if($retorno[0]){
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".json_encode($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
-    echo '-1 = '.$infoRet['http_code'];
-
     $nuNF = 0;
     $cdVerif = '';
     if ($infoRet['http_code'] == '200') {
-
-echo '0';
 
         // se retorna ListaNfse - processou com sucesso
         if(strstr($respEnv,'NovaNfse')){
@@ -210,17 +206,11 @@ echo '0';
         }
         else {
 
-            echo '1';
             //erro no processamento
             if(strstr($respEnv,'Fault')){
 
-                echo '2';
-
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
-
-echo $respEnv;
-
                 $msgResp = simplexml_load_string($respEnv);
                 $msgRet = $msgResp->Body->Fault;
                 $codigo = (string) $msgRet->faultcode;
@@ -250,6 +240,15 @@ echo $respEnv;
             }
         }
     }
+    else{
+
+        http_response_code(500);
+        echo json_encode(array("http_code" => "500", "message" => "Não foi possível incluir Autorização.", "erro" => $retorno[1], "codigo" => "A00"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Dados = ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização.', $strData);
+        exit;
+    }
+
 
     if ($nuNF > 0) {
 
