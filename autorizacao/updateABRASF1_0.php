@@ -230,9 +230,10 @@ if($retorno[0]){
                 $respEnv = str_replace("</s:", "</", $respEnv);
                 $msgResp = simplexml_load_string($respEnv);
     
-                $codigo = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->ListaMensagemRetorno->MensagemRetorno->Codigo;
-                $msg = (string) utf8_decode($msgResp->Body->GerarNfseResponse->GerarNfseResult->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-                $correcao = (string) utf8_decode($msgResp->Body->GerarNfseResponse->GerarNfseResult->ListaMensagemRetorno->MensagemRetorno->Correcao);
+                $msgRet = $msgResp->Body->EnviarLoteRPSResponse->EnviarLoteRPSResult->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno;
+                $codigo = (string) $msgRet->Codigo;
+                $msg = (string) utf8_decode($msgRet->Mensagem);
+                $correcao = (string) utf8_decode($msgRet->Correcao);
                 $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
