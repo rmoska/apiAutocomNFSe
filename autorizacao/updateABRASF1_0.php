@@ -216,7 +216,7 @@ if($retorno[0]){
                 $codigo = (string) $msgRet->faultcode;
                 $msg = (string) utf8_decode($msgRet->faultstring);
                 $cdVerif = $codigo.' - '.$msg;
-                $cdVerif = "Erro NFSe Homologação ! Falha de processamento ! ".$cdVerif;
+                $cdVerif = "Erro NFSe Homologacao ! Falha de processamento ! ".$cdVerif;
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             //erros de validacao do webservice
@@ -229,7 +229,7 @@ if($retorno[0]){
                 $codigo = (string) $msgRet->Codigo;
                 $msg = (string) utf8_decode($msgRet->Mensagem);
                 $correcao = (string) utf8_decode($msgRet->Correcao);
-                $cdVerif = "Erro NFSe Homologacao ! ".$codigo.' - '.$msg.' - '.$correcao;
+                $cdVerif = "Erro NFSe Homologação ! ".$msg.' - '.$correcao.' ('.$codigo.')';
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             // erro inesperado
@@ -256,11 +256,11 @@ if($retorno[0]){
     }
 
     http_response_code(201);
-    echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
+    echo html_entity_decode(json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
                            "validade" => $validade." dias",
                            "nf-homolog" => $nuNF,
                            "verificacao-homolog" => utf8_decode($cdVerif),
-                           "linkNF" => $linkNF));
+                           "linkNF" => $linkNF)));
     exit;
 }
 else{
