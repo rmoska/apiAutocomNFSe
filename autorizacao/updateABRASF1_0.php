@@ -231,7 +231,7 @@ if($retorno[0]){
                 $correcao = (string) utf8_decode($msgRet->Correcao);
                 $cdVerif = "Erro NFSe Homologação ! ".$codigo.' - '.$msg.' - '.$correcao;
   
-  echo $cdVerif;
+  echo utf8_decode($cdVerif);
   
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
