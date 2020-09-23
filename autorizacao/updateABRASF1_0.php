@@ -230,9 +230,6 @@ if($retorno[0]){
                 $msg = (string) utf8_decode($msgRet->Mensagem);
                 $correcao = (string) utf8_decode($msgRet->Correcao);
                 $cdVerif = "Erro NFSe Homologação ! ".$codigo.' - '.$msg.' - '.$correcao;
-  
-  echo utf8_decode($cdVerif);
-  
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             // erro inesperado
@@ -251,6 +248,8 @@ if($retorno[0]){
         $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização.', $strData);
         exit;
     }
+
+    echo $cdVerif;
 
 
     if ($nuNF > 0) {
