@@ -108,7 +108,7 @@ if($retorno[0]){
             $xml->endElement(); // Serviço
 
             $xml->startElement("Prestador");
-                $xml->writeElement("Cnpj", $emitente->documento); //"80449374000128"); //
+                $xml->writeElement("Cnpj", "80449374000128"); //$emitente->documento); //
                 $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->endElement(); // Prestador
 
@@ -149,7 +149,7 @@ if($retorno[0]){
         $xml->startElement("LoteRps");
         $xml->writeAttribute("id", "001");
             $xml->writeElement("NumeroLote", 1);
-            $xml->writeElement("Cnpj", $emitente->documento); //"80449374000128"); //
+            $xml->writeElement("Cnpj", "80449374000128"); //$emitente->documento); //
             $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->writeElement("QuantidadeRps", 1);
             $xml->startElement("ListaRps");
@@ -214,9 +214,9 @@ if($retorno[0]){
                 $msgResp = simplexml_load_string($respEnv);
                 $msgRet = $msgResp->Body->Fault;
                 $codigo = (string) $msgRet->faultcode;
-                $msg = (string) utf8_decode($msgRet->faultstring);
+                $msg = (string) $msgRet->faultstring;
                 $cdVerif = $codigo.' - '.$msg;
-                $cdVerif = "Erro NFSe Homologacao ! Falha de processamento ! ".$cdVerif;
+                $cdVerif = utf8_decode("Erro NFSe Homologacao ! Falha de processamento ! ".$cdVerif);
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             //erros de validacao do webservice
@@ -259,7 +259,7 @@ if($retorno[0]){
     $aRet = array("http_code" => 201, "message" => "Autorização atualizada", 
                     "validade" => $validade." dias",
                     "nf-homolog" => $nuNF,
-                    "verificacao-homolog" => $cdVerif,
+                    "verificacao-homolog" => utf8_encode($cdVerif),
                     "linkNF" => $linkNF);
     echo json_encode($aRet);
     $logMsg->register('S', 'autorizacao.update', 'Autorização atualizada.', json_encode($aRet));
