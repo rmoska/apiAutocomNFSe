@@ -229,7 +229,9 @@ if($retorno[0]){
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
                 $msgResp = simplexml_load_string($respEnv);
-    
+
+                echo $msgResp;
+
                 $msgRet = $msgResp->Body->EnviarLoteRPSResponse->EnviarLoteRPSResult->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno;
                 $codigo = (string) $msgRet->Codigo;
                 $msg = (string) utf8_decode($msgRet->Mensagem);
