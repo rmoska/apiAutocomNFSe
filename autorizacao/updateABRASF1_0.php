@@ -211,13 +211,16 @@ if($retorno[0]){
 
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
+
+echo $respEnv;
+
                 $msgResp = simplexml_load_string($respEnv);
                 $msgRet = $msgResp->Body->Fault;
                 $codigo = (string) $msgRet->faultcode;
                 $msg = (string) utf8_decode($msgRet->faultstring);
                 $cdVerif = $codigo.' - '.$msg;
-                $cdVerif = "Erro no envio da NFSe ! Problemas de comunicação ! ".$cdVerif;
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe de Homologação ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
+                $cdVerif = "Erro NFSe Homologação ! Falha de processamento ! ".$cdVerif;
+                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             //erros de validacao do webservice
             else if(strstr($respEnv,'ListaMensagemRetorno')){
@@ -229,8 +232,8 @@ if($retorno[0]){
                 $codigo = (string) $msgRet->Codigo;
                 $msg = (string) utf8_decode($msgRet->Mensagem);
                 $correcao = (string) utf8_decode($msgRet->Correcao);
-                $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
-                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
+                $cdVerif = "Erro NFSe Homologação ! ".$codigo.' - '.$msg.' - '.$correcao;
+                error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             // erro inesperado
             else {
