@@ -108,7 +108,7 @@ if($retorno[0]){
             $xml->endElement(); // Serviço
 
             $xml->startElement("Prestador");
-                $xml->writeElement("Cnpj", $emitente->documento);
+                $xml->writeElement("Cnpj", "80449374000128"); //$emitente->documento);
                 $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->endElement(); // Prestador
 
@@ -149,7 +149,7 @@ if($retorno[0]){
         $xml->startElement("LoteRps");
         $xml->writeAttribute("id", "001");
             $xml->writeElement("NumeroLote", 1);
-            $xml->writeElement("Cnpj", $emitente->documento);
+            $xml->writeElement("Cnpj", "80449374000128"); //$emitente->documento);
             $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
             $xml->writeElement("QuantidadeRps", 1);
             $xml->startElement("ListaRps");
@@ -167,16 +167,8 @@ if($retorno[0]){
     fwrite($arqNFe, $xmlNFe);
     fclose($arqNFe);
     
-    
     $retEnv = $objNFSe->transmitirNFSeABRASF1_0( $xmlNFe, 'EnvioLoteRPS', $emitente->codigoMunicipio);
-
-    $respEnv = $retEnv[0];
-
-//    $respEnv = str_replace("&lt;","<",$respEnv);
-//    $respEnv = str_replace("&gt;",">",$respEnv);
-
-    $respEnv = htmlspecialchars_decode($respEnv);
-
+    $respEnv = htmlspecialchars_decode($retEnv[0]);
     $infoRet = $retEnv[1];
 
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
@@ -184,7 +176,6 @@ if($retorno[0]){
 
     $nuNF = 0;
     $cdVerif = '';
-
     if ($infoRet['http_code'] == '200') {
 
         // se retorna ListaNfse - processou com sucesso
