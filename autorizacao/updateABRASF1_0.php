@@ -227,9 +227,9 @@ if($retorno[0]){
                 $msgResp = simplexml_load_string($respEnv);
                 $msgRet = $msgResp->Body->EnviarLoteRPSResponse->EnviarLoteRPSResult->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno;
                 $codigo = (string) $msgRet->Codigo;
-                $msg = (string) utf8_decode($msgRet->Mensagem);
+                $msg = (string) $msgRet->Mensagem;
                 $correcao = (string) utf8_decode($msgRet->Correcao);
-                $cdVerif = "Erro NFSe Homologação ! ".$msg.' - '.$correcao.' ('.$codigo.')';
+                $cdVerif = utf8_decode("Erro NFSe Homologação ! ".$msg.' - '.$correcao.' ('.$codigo.')');
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
             // erro inesperado
