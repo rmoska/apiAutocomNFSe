@@ -6,3 +6,4 @@ EnvioLoteRPSAction=http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
 [2927408]
 Municipio=SALVADOR/BA
 EnvioLoteRPS=https://nfse.salvador.ba.gov.br/rps/ENVIOLOTERPS/EnvioLoteRPS.svc
+EnvioLoteRPSAction=http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
