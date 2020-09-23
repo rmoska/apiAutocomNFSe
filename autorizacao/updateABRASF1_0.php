@@ -172,8 +172,10 @@ if($retorno[0]){
 
     $respEnv = $retEnv[0];
 
-    $respEnv = str_replace("&lt;","<",$respEnv);
-    $respEnv = str_replace("&gt;",">",$respEnv);
+//    $respEnv = str_replace("&lt;","<",$respEnv);
+//    $respEnv = str_replace("&gt;",">",$respEnv);
+
+    $respEnv = htmlspecialchars_decode($respEnv);
 
     $infoRet = $retEnv[1];
 
@@ -230,13 +232,9 @@ if($retorno[0]){
             //erros de validacao do webservice
             else if(strstr($respEnv,'ListaMensagemRetorno')){
 
-                echo $respEnv;
-
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
                 $msgResp = simplexml_load_string($respEnv);
-
-                echo $msgResp;
 
                 $msgRet = $msgResp->Body->EnviarLoteRPSResponse->EnviarLoteRPSResult->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno;
                 $codigo = (string) $msgRet->Codigo;
