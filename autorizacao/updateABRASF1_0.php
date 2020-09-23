@@ -209,14 +209,13 @@ if($retorno[0]){
             //erro na comunicacao SOAP
             if(strstr($respEnv,'Fault')){
 
-                $DomXml=new DOMDocument('1.0', 'utf-8');
-                $DomXml->loadXML($respEnv);
-                $xmlResp = $DomXml->textContent;
-                $msgResp = simplexml_load_string($xmlResp);
-                $codigo = (string) $msgResp->ListaMensagemRetorno->MensagemRetorno->Codigo;
-                $msg = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-                $falha = (string) utf8_decode($msgResp->ListaMensagemRetorno->MensagemRetorno->Fault);
-                $cdVerif = $codigo.' - '.$msg.' - '.$falha;
+                $respEnv = str_replace("<s:", "<", $respEnv);
+                $respEnv = str_replace("</s:", "</", $respEnv);
+                $msgResp = simplexml_load_string($respEnv);
+                $msgRet = $msgResp->Body->Fault;
+                $codigo = (string) $msgRet->faultcode;
+                $msg = (string) utf8_decode($msgRet->faultstring);
+                $cdVerif = $codigo.' - '.$msg;
                 $cdVerif = "Erro no envio da NFSe ! Problemas de comunicação ! ".$cdVerif;
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe de Homologação ! Problemas de comunicação !\n"), 3, "../arquivosNFSe/apiErrors.log");
             }
@@ -226,7 +225,6 @@ if($retorno[0]){
                 $respEnv = str_replace("<s:", "<", $respEnv);
                 $respEnv = str_replace("</s:", "</", $respEnv);
                 $msgResp = simplexml_load_string($respEnv);
-
                 $msgRet = $msgResp->Body->EnviarLoteRPSResponse->EnviarLoteRPSResult->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno;
                 $codigo = (string) $msgRet->Codigo;
                 $msg = (string) utf8_decode($msgRet->Mensagem);
