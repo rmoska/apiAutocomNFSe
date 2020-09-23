@@ -259,7 +259,7 @@ if($retorno[0]){
     $aRet = array("http_code" => 201, "message" => "Autorização atualizada", 
                     "validade" => $validade." dias",
                     "nf-homolog" => $nuNF,
-                    "verificacao-homolog" => utf8_encode($cdVerif),
+                    "verificacao-homolog" => $cdVerif,
                     "linkNF" => $linkNF);
     echo json_encode($aRet);
     $logMsg->register('S', 'autorizacao.update', 'Autorização atualizada.', json_encode($aRet));
