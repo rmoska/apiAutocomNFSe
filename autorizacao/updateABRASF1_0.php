@@ -174,6 +174,8 @@ if($retorno[0]){
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".json_encode($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
+    echo $infoRet['http_code'];
+
     $nuNF = 0;
     $cdVerif = '';
     if ($infoRet['http_code'] == '200') {
