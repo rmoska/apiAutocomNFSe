@@ -261,7 +261,7 @@ if($retorno[0]){
                     "nf-homolog" => $nuNF,
                     "verificacao-homolog" => utf8_encode($cdVerif),
                     "linkNF" => $linkNF);
-    echo utf8_encode($aRet);
+    echo json_encode($aRet);
     $logMsg->register('S', 'autorizacao.update', 'Autorização atualizada.', json_encode($aRet));
     exit;
 }
