@@ -61,7 +61,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 '1'.  // status da nota
                 $notaFiscal->dataEmissao.' 00:00:00'.  // data timestamp
                 substr($notaFiscal->dataEmissao,0,4).substr($notaFiscal->dataEmissao,5,2).  // ano/mês
-                '000000000000000'.;  // número da nota substituta
+                '000000000000000'.  // número da nota substituta
                 '01'.  // natureza da operação
                 str_pad($numeroRps, 15, '0', STR_PAD_LEFT).  // número do RPS
                 '00001'.  // série RPS
