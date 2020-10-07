@@ -3,7 +3,7 @@
 // Classe para exportar arquivo 
 include_once '../config/database.php';
 include_once '../shared/logMsg.php';
- 
+
 $database = new Database();
 $db = $database->getConnection();
 
@@ -31,6 +31,7 @@ if (($arqPhp>'') && (file_exists($arqPhp))) {
 else {
 
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$codMunic."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg = new LogMsg($db);
     $logMsg->register('E', 'notaFiscal.export', 'Município não disponível para emissão da NFSe.', 'Município='.$codMunic);
     exit;
 
