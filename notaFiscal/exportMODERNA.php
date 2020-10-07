@@ -118,8 +118,8 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 '0000000000000,00'. // csll
                 '0000000000000,00'; // outras deduções
 
-
-    $arqRps = fopen("../arquivosNFSe/Moderna/rps/rps_".$dtEm.".txt","wt");
+    $dtArq = date("Ymd", strtotime($data->dataEmissao));
+    $arqRps = fopen("../arquivosNFSe/Moderna/rps/rps_".$dtArq.".txt","wt");
     fwrite($arqRps, $linhaRps);
     fclose($arqRps);
 

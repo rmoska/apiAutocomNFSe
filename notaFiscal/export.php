@@ -23,16 +23,16 @@ $provedor = $municipio->buscaMunicipioProvedor($data->codigoMunicipio);
 
 $arqPhp = ''; 
 if ($provedor > '')
-    $arqPhp = 'retry'.$provedor.'.php'; 
+    $arqPhp = 'export'.$provedor.'.php'; 
 
 if (($arqPhp>'') && (file_exists($arqPhp))) {
     include $arqPhp;
 }
 else {
 
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$codMunic."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Município não disponível para emissão da NFSe. Município=".$data->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg = new LogMsg($db);
-    $logMsg->register('E', 'notaFiscal.export', 'Município não disponível para emissão da NFSe.', 'Município='.$codMunic);
+    $logMsg->register('E', 'notaFiscal.export', 'Município não disponível para emissão da NFSe.', 'Município='.$data->codigoMunicipio);
     exit;
 
 }
