@@ -17,7 +17,6 @@ include_once '../objects/itemVenda.php';
 include_once '../objects/emitente.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
-include_once '../objects/municipio.php';
 include_once '../shared/utilities.php';
 $utilities = new Utilities();
 

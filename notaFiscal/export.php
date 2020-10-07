@@ -16,6 +16,7 @@ $data->dataEmissao;
 $data->codigoMunicipio;
 
 // identifica Municipio para emissão NFSe
+include_once '../objects/municipio.php';
 $municipio = new Municipio($db);
 $provedor = $municipio->buscaMunicipioProvedor($data->codigoMunicipio);
 
