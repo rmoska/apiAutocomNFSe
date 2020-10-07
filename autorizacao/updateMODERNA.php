@@ -8,7 +8,7 @@
 if( empty($data->idEmitente) ||
     empty($data->login) ||
     empty($data->senhaWeb) ||
-    empty($data->cmc)) ) {
+    empty($data->cmc)) {
 
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
