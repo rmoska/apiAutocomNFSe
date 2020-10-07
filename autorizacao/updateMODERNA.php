@@ -41,7 +41,7 @@ if ($retorno[0]) {
     //
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                           "validade" => 999999 dias",
+                           "validade" => "999999 dias",
                            "nf-homolog" => 1,
                            "verificacao-homolog" => "",
                            "linkNF" => ""));
