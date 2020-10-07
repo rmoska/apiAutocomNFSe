@@ -51,6 +51,23 @@ class Municipio{
         }
     }
 
+    function buscaMunicipioModerna($codMun){
+ 
+        // query to read single record
+        $query = "SELECT codigoModerna FROM municipioTOM WHERE codigoIBGE = ? LIMIT 0,1";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->bindParam(1, $this->codigoUFMunicipio);
+        $stmt->execute();
+
+        $this->codigoTOM = 0;
+        if ($stmt->rowCount() >0) {
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->codigoTOM = $row['codigoModerna'];
+        }
+    }
+
     function buscaMunicipioProvedor($codMun){
  
         // query to read single record

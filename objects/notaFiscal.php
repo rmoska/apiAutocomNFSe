@@ -475,6 +475,27 @@ class NotaFiscal{
     }
 
     //
+    // read notaFiscal - Pendentes por Timeout/Serv.Indisponível
+    function readPendenteDiaMunic($data, $munic){
+
+        $query = "SELECT idNotaFiscal FROM notaFiscal AS nf, emitente AS e
+                  WHERE nf.idEmitente = e.idEmitente AND nf.situacao = 'P' AND 
+                        nf.dataInclusao = :data AND e.codigoMunicipio = :idMunic
+                  ORDER BY idNotaFiscal";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+        // sanitize
+        $stmt->bindParam(":data", $data);
+        $stmt->bindParam(":idMunic", $munic);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
+    //
     // calcula Imposto Aproximado na Nota (IBPT)
     function calcImpAprox(){
 

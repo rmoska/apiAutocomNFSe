@@ -151,6 +151,8 @@ switch ($emitente->codigoMunicipio) {
         $arqPhp = 'createPUBLICA.php'; break;
     case '4202008': // SC - Balneário Camboriú
         $arqPhp = 'createSIMPLISS.php'; break;
+    case '4218707': // SC - Tubarão
+        $arqPhp = 'createMODERNA.php'; break;
     case '4305108': // RS - Caxias do Sul
         $arqPhp = 'createINFISC.php'; break;
     default:

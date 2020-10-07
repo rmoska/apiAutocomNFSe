@@ -73,7 +73,6 @@ if($retorno[0]){
     $xml = new XMLWriter;
     $xml->openMemory();
     //
-    //
     // cria XML RPS
     $xml->startElement("Rps");
         $xml->startElement("InfRps");
