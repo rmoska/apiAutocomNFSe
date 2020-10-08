@@ -81,6 +81,14 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $tipoTomador = '01';
     if (strlen($tomador->documento)==14)
         $tipoTomador = '02';
+
+    $telefoneTomador = $tomador->telefone;
+    if ($tomador->telefone=='') $telefoneTomador = '99999999999';
+
+    else $telefoneTomador = $tomador->telefone;
+        str_pad($tomador->telefone, 11, ' ', STR_PAD_RIGHT). 
+
+
     $linhaRps = '000000000000000'.  // número da nota
                 '1'.  // status da nota
                 date("d/m/Y", strtotime($notaFiscal->dataEmissao)).' 00:00:00'.  // data timestamp
@@ -129,7 +137,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 $tomador->uf.  
                 str_pad($tomador->cep, 8, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->email, 80, ' ', STR_PAD_RIGHT).  
-                str_pad($tomador->telefone, 11, ' ', STR_PAD_RIGHT).  
+                str_pad($telefoneTomador, 11, ' ', STR_PAD_RIGHT). 
                 '          '. // data cancelamento
                 '1'. // sincronização
                 '0000000000000,00'. // deduções
