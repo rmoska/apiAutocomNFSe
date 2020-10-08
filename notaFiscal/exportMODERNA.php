@@ -69,6 +69,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 date("d/m/Y", strtotime($notaFiscal->dataEmissao)).  // série RPS
                 '1'.  // status RPS
                 '000000000000000'.  // número do RPS substituído
+                '00000'.  // número de série RPS substituído
                 str_pad(number_format($vlTotServ,2,',',''), 16, '0', STR_PAD_LEFT).  // valor do serviço
                 str_pad($nuCnae, 7, '0', STR_PAD_LEFT).  // cnae
                 str_pad($notaFiscalItem->codigoServico, 15, '0', STR_PAD_LEFT).  // identificacao da Atividade
@@ -89,7 +90,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 str_pad($emitente->numero, 10, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->complemento, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->endereco, 60, ' ', STR_PAD_RIGHT).  
-                str_pad($emitente->bairro, 125, ' ', STR_PAD_RIGHT).  
+                str_pad($emitente->bairro, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($municEmitente, 15, '0', STR_PAD_LEFT).  
                 $emitente->uf.  
                 str_pad($emitente->cep, 8, ' ', STR_PAD_RIGHT).  
@@ -102,7 +103,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 str_pad($tomador->numero, 10, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->complemento, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->endereco, 60, ' ', STR_PAD_RIGHT).  
-                str_pad($tomador->bairro, 125, ' ', STR_PAD_RIGHT).  
+                str_pad($tomador->bairro, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($municTomador, 15, '0', STR_PAD_LEFT).  
                 $tomador->uf.  
                 str_pad($tomador->cep, 8, ' ', STR_PAD_RIGHT).  
