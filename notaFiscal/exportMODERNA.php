@@ -47,6 +47,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $vlTotBC = 0; 
     $vlTotISS = 0; 
     $vlTotServ = 0; 
+    $descricaoServicos = "";
     foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
         $nuCnae = $notaFiscalItem->cnae;
@@ -55,7 +56,14 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         $vlTotServ += $notaFiscalItem->valorTotal;
         $vlTotBC += $notaFiscalItem->valorBCIss; 
         $vlTotISS += $notaFiscalItem->valorIss; 
+
+        $descricaoServicos .= "~".$notaFiscalItem->unidade.
+                              "~".number_format($notaFiscalItem->quantidade,2,',','').
+                              "~".$itemVenda->descricao.
+                              "~".number_format($notaFiscalItem->valorUnitario,2,',','').
+                              "~".number_format($notaFiscalItem->valorTotal,2,',','');
     }
+    $descricaoServicos .= "~@@";
 
     $linhaRps = '000000000000000'.  // número da nota
                 '1'.  // status da nota
