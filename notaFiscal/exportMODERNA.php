@@ -84,10 +84,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
     $telefoneTomador = $tomador->telefone;
     if ($tomador->telefone=='') $telefoneTomador = '99999999999';
-
     else $telefoneTomador = $tomador->telefone;
-        str_pad($tomador->telefone, 11, ' ', STR_PAD_RIGHT). 
-
 
     $linhaRps = '000000000000000'.  // número da nota
                 '1'.  // status da nota
