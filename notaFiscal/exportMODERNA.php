@@ -24,6 +24,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $rNF["idEmitente"];
+    $autorizacao->codigoMunicipio = $data->codigoMunicipio;
     $autorizacao->readOne();
 
     $notaFiscal = new NotaFiscal($db);
@@ -70,6 +71,9 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                               "~".number_format($notaFiscalItem->valorTotal,2,',','');
     }
     $descricaoServicos .= "~@@";
+
+    $numeroRps = 1;
+
 
     $tipoTomador = '01';
     if (strlen($tomador->documento)==14)
