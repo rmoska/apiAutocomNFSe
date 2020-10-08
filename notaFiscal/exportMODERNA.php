@@ -50,6 +50,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $descricaoServicos = "";
     foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
+        $notaFiscalItem->readItemVenda('MODERNA');
         $nuCnae = $notaFiscalItem->cnae;
         $txIss = $notaFiscalItem->taxaIss;
         $totalItens += floatval($notaFiscalItem->valorTotal);
