@@ -31,14 +31,14 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $tomador->readOne();
 
     $municTomador = new Municipio($db);
-    $municTomador = $municTomador->buscaMunicipioModerna($tomador->codigoMunicipio);
+    $municTomador->buscaMunicipioModerna($tomador->codigoMunicipio);
 
     $emitente = new Emitente($db);
     $emitente->idEmitente = $notaFiscal->idEmitente;
     $emitente->readOne();
 
     $municEmitente = new Municipio($db);
-    $municEmitente = $municEmitente->buscaMunicipioModerna($emitente->codigoMunicipio);
+    $municEmitente->buscaMunicipioModerna($emitente->codigoMunicipio);
 
     $notaFiscalItem = new NotaFiscalItem($db);
     $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
@@ -65,6 +65,9 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     }
     $descricaoServicos .= "~@@";
 
+    $tipoTomador = '01';
+    if (strlen($tomador->documento)==14)
+        $tipoTomador = '02';
     $linhaRps = '000000000000000'.  // número da nota
                 '1'.  // status da nota
                 $notaFiscal->dataEmissao.' 00:00:00'.  // data timestamp
@@ -94,11 +97,11 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 str_pad($emitente->nome, 115, ' ', STR_PAD_RIGHT).  // razão social
                 str_pad($emitente->nomeFantasia, 60, ' ', STR_PAD_RIGHT).  // nome fantasia
                 $emitente->documento.  // cnpj
-                str_pad($emitente->endereco, 125, '-', STR_PAD_RIGHT).  
+                str_pad($emitente->logradouro, 125, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->numero, 10, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->complemento, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->bairro, 60, ' ', STR_PAD_RIGHT).  
-                str_pad($municEmitente, 15, '0', STR_PAD_LEFT).  
+                str_pad($municEmitente->codigoModerna, 15, '0', STR_PAD_LEFT).  
                 $emitente->uf.  
                 str_pad($emitente->cep, 8, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->email, 80, ' ', STR_PAD_RIGHT).  
@@ -106,11 +109,11 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 str_pad($tomador->documento, 14, '0', STR_PAD_LEFT).  // cpf/cnpj tomador
                 $tipoTomador.  // tipo pessoa tomador
                 str_pad($tomador->nome, 115, ' ', STR_PAD_RIGHT).  // razão social
-                str_pad($tomador->endereco, 125, ' ', STR_PAD_RIGHT).  
+                str_pad($tomador->logradouro, 125, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->numero, 10, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->complemento, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->bairro, 60, ' ', STR_PAD_RIGHT).  
-                str_pad($municTomador, 15, '0', STR_PAD_LEFT).  
+                str_pad($municTomador->codigoModerna, 15, '0', STR_PAD_LEFT).  
                 $tomador->uf.  
                 str_pad($tomador->cep, 8, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->email, 80, ' ', STR_PAD_RIGHT).  

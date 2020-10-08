@@ -11,6 +11,7 @@ class Municipio{
     public $nome;
     public $codigoUFMunicipio;
     public $codigoTOM;
+    public $codigoModerna;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -57,14 +58,14 @@ class Municipio{
         $query = "SELECT codigoModerna FROM municipioTOM WHERE codigoIBGE = ? LIMIT 0,1";
 
         $stmt = $this->conn->prepare( $query );
-        $stmt->bindParam(1, $this->codigoUFMunicipio);
+        $stmt->bindParam(1, $codMun);
         $stmt->execute();
 
-        $this->codigoTOM = 0;
+        $this->codigoModerna = 0;
         if ($stmt->rowCount() >0) {
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->codigoTOM = $row['codigoModerna'];
+            $this->codigoModerna = $row['codigoModerna'];
         }
     }
 
