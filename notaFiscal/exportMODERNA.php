@@ -22,6 +22,10 @@ $utilities = new Utilities();
 
 while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
+
+    error_log($rNF["idEmitente"]." = ".$data->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+
+
     $autorizacao = new Autorizacao($db);
     $autorizacao->idEmitente = $rNF["idEmitente"];
     $autorizacao->codigoMunicipio = $data->codigoMunicipio;
