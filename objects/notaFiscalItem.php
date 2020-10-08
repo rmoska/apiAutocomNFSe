@@ -351,8 +351,8 @@ class NotaFiscalItem{
     
         // select all query
         $query = "SELECT nfi.*, iv.*, cs.descricao AS nomeServico 
-                  FROM " . $this->tableName . " AS nfi, itemVenda AS iv
-                  LEFT JOIN codigoServico AS cs ON (cs.origem = ? AND iv.codigoServico = cs.codigo)
+                  FROM (" . $this->tableName . " AS nfi, itemVenda AS iv)
+                  LEFT JOIN codigoServico AS cs ON (cs.origem = ? AND nfi.codigoServico = cs.codigo)
                   WHERE nfi.idItemVenda = iv.idItemVenda AND 
                         nfi.idNotaFiscal = ? AND nfi.numeroOrdem = ? 
                   LIMIT 0,1";
