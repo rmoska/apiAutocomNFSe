@@ -60,7 +60,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
         $descricaoServicos .= "~".$notaFiscalItem->unidade.
                               "~".number_format($notaFiscalItem->quantidade,2,',','').
-                              "~".$itemVenda->descricao.
+                              "~".$notaFiscalItem->descricaoItemVenda.
                               "~".number_format($notaFiscalItem->valorUnitario,2,',','').
                               "~".number_format($notaFiscalItem->valorTotal,2,',','');
     }
