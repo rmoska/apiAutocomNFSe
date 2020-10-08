@@ -22,18 +22,17 @@ $utilities = new Utilities();
 
 while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
-
-    error_log($rNF["idEmitente"]." = ".$data->codigoMunicipio."\n", 3, "../arquivosNFSe/apiErrors.log");
-
-
-    $autorizacao = new Autorizacao($db);
-    $autorizacao->idEmitente = $rNF["idEmitente"];
-    $autorizacao->codigoMunicipio = $data->codigoMunicipio;
-    $autorizacao->readOne();
-
     $notaFiscal = new NotaFiscal($db);
     $notaFiscal->idNotaFiscal = $rNF["idNotaFiscal"];
     $notaFiscal->readOne();
+
+    $autorizacao = new Autorizacao($db);
+    $autorizacao->idEmitente = $notaFiscal->idEmitente;
+    $autorizacao->codigoMunicipio = $data->codigoMunicipio;
+    $autorizacao->readOne();
+
+    error_log($notaFiscal->idEmitente." - ".$data->codigoMunicipio."\n", 3, "../arquivosNFSe/apiErrors.log");
+
 
     $tomador = new Tomador($db);
     $tomador->idTomador = $notaFiscal->idTomador;
