@@ -22,6 +22,10 @@ $utilities = new Utilities();
 
 while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
+    $autorizacao = new Autorizacao($db);
+    $autorizacao->idEmitente = $rNF["idEmitente"];
+    $autorizacao->readOne();
+
     $notaFiscal = new NotaFiscal($db);
     $notaFiscal->idNotaFiscal = $rNF["idNotaFiscal"];
     $notaFiscal->readOne();
@@ -47,6 +51,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $vlTotBC = 0; 
     $vlTotISS = 0; 
     $vlTotServ = 0; 
+    $qtdServicos = 0;
     $descricaoServicos = "";
     foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
 
@@ -55,9 +60,9 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         $txIss = $notaFiscalItem->taxaIss;
         $totalItens += floatval($notaFiscalItem->valorTotal);
         $vlTotServ += $notaFiscalItem->valorTotal;
-        $vlTotBC += $notaFiscalItem->valorBCIss; 
         $vlTotISS += $notaFiscalItem->valorIss; 
 
+        $qtdServicos++;
         $descricaoServicos .= "~".$notaFiscalItem->unidade.
                               "~".number_format($notaFiscalItem->quantidade,2,',','').
                               "~".$notaFiscalItem->descricaoItemVenda.
@@ -71,11 +76,11 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
         $tipoTomador = '02';
     $linhaRps = '000000000000000'.  // número da nota
                 '1'.  // status da nota
-                $notaFiscal->dataEmissao.' 00:00:00'.  // data timestamp
+                date("d/m/Y", strtotime($notaFiscal->dataEmissao)).' 00:00:00'.  // data timestamp
                 substr($notaFiscal->dataEmissao,0,4).substr($notaFiscal->dataEmissao,5,2).  // ano/mês
                 '000000000000000'.  // número da nota substituta
                 '01'.  // natureza da operação
-                str_pad($numeroRps, 15, '0', STR_PAD_LEFT).  // número do RPS
+                str_pad($numeroRps, 15, '0', STR_PAD_LEFT).  // número do RPS  ??????????????????????????????????????
                 '00001'.  // série RPS
                 '1'.  // tipo RPS
                 date("d/m/Y", strtotime($notaFiscal->dataEmissao)).  // série RPS
@@ -85,15 +90,14 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 str_pad(number_format($vlTotServ,2,',',''), 16, '0', STR_PAD_LEFT).  // valor do serviço
                 str_pad($nuCnae, 7, '0', STR_PAD_LEFT).  // cnae
                 str_pad($notaFiscalItem->codigoServico, 15, '0', STR_PAD_LEFT).  // identificacao da Atividade
-                str_pad(number_format($vlTotBC,2,',',''), 16, '0', STR_PAD_LEFT).  // valor base de cálculo
+                str_pad(number_format($vlTotServ,2,',',''), 16, '0', STR_PAD_LEFT).  // valor base de cálculo
                 str_pad(number_format($txIss,2,',',''), 16, '0', STR_PAD_LEFT).  // taxaIss
                 str_pad(number_format($vlTotISS,2,',',''), 16, '0', STR_PAD_LEFT).  // valor do ISS
                 '2'.  // status ISS
                 str_pad($descricaoServicos, 2000, ' ', STR_PAD_RIGHT).  // descrição dos serviços
-                str_pad($codigoMunicModerna, 15, '0', STR_PAD_LEFT).  // codigo Município
-                str_pad($qtdServico, 15, '0', STR_PAD_LEFT).  // quantidade de serviços
-//                str_pad(number_format($notaFiscalItem->valorUnitario,2,',',''), 16, '0', STR_PAD_LEFT).  // valor unitário
-                str_pad(number_format(0,2,',',''), 16, '0', STR_PAD_LEFT).  // valor unitário
+                str_pad($municEmitente->codigoModerna, 15, '0', STR_PAD_LEFT).  // codigo Município
+                str_pad($qtdServicos, 15, '0', STR_PAD_LEFT).  // quantidade de serviços
+                str_pad(number_format($notaFiscalItem->valorUnitario,2,',',''), 16, '0', STR_PAD_LEFT).  // valor unitário
                 str_pad($autorizacao->cmc, 15, '0', STR_PAD_LEFT).  // cmc
                 str_pad($emitente->nome, 115, ' ', STR_PAD_RIGHT).  // razão social
                 str_pad($emitente->nomeFantasia, 60, ' ', STR_PAD_RIGHT).  // nome fantasia

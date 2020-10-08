@@ -89,17 +89,9 @@ foreach ( $data->itemServico as $item )
 
     $totalItens += floatval($notaFiscalItem->valorTotal);
 
-    // 1=SN 3=SN+Ret 6=SN+ST 12=Isenta 13=NTrib
-    if (($item->cst != '1') && ($item->cst != '3') && ($item->cst != '6') && ($item->cst != '12') && ($item->cst != '13') && ($item->taxaIss > 0)) {
-        $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
-        $notaFiscalItem->taxaIss = $item->taxaIss;
-        $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
-    }
-    else {
-        $notaFiscalItem->valorBCIss = 0.00;
-        $notaFiscalItem->taxaIss = 0.00;
-        $notaFiscalItem->valorIss = 0.00;
-    }
+    $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
+    $notaFiscalItem->taxaIss = $item->taxaIss;
+    $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
 
     $retorno = $notaFiscalItem->create();
     if(!$retorno[0]){
