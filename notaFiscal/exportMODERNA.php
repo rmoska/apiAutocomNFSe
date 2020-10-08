@@ -93,11 +93,10 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 str_pad($autorizacao->cmc, 15, '0', STR_PAD_LEFT).  // cmc
                 str_pad($emitente->nome, 115, ' ', STR_PAD_RIGHT).  // razão social
                 str_pad($emitente->nomeFantasia, 60, ' ', STR_PAD_RIGHT).  // nome fantasia
-                $emitente->documento.  // status ISS
-                str_pad($emitente->endereco, 125, ' ', STR_PAD_RIGHT).  
+                $emitente->documento.  // cnpj
+                str_pad($emitente->endereco, 125, '-', STR_PAD_RIGHT).  
                 str_pad($emitente->numero, 10, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->complemento, 60, ' ', STR_PAD_RIGHT).  
-                str_pad($emitente->endereco, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($emitente->bairro, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($municEmitente, 15, '0', STR_PAD_LEFT).  
                 $emitente->uf.  
@@ -110,7 +109,6 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                 str_pad($tomador->endereco, 125, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->numero, 10, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->complemento, 60, ' ', STR_PAD_RIGHT).  
-                str_pad($tomador->endereco, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($tomador->bairro, 60, ' ', STR_PAD_RIGHT).  
                 str_pad($municTomador, 15, '0', STR_PAD_LEFT).  
                 $tomador->uf.  
