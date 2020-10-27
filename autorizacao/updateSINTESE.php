@@ -100,7 +100,7 @@ if($retorno[0]){
     //                $xml->writeElement("CodigoCnae", "8630502");
                     $xml->writeElement("Discriminacao", "Consulta Medica");
                     $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
-                    $xml->writeElement("ExigibilidadeIss", 1); // 1=Exigivel 2=Não Incidencia 3=Isenção
+                    $xml->writeElement("ExigibilidadeISS", 1); // 1=Exigivel 2=Não Incidencia 3=Isenção
     //                $xml->writeElement("MunicipioIncidencia", $emitente->codigoMunicipio); // Município de incidência do ISS
                 $xml->endElement(); // Serviço
 
