@@ -75,7 +75,7 @@ if($retorno[0]){
     $xml->writeAttribute("xmlns", "http://www.abrasf.org.br/nfse.xsd");
         $xml->startElement("Rps");
             $xml->startElement("InfDeclaracaoPrestacaoServico");
-            $xml->writeAttribute("Id", "RPS1");
+            $xml->writeAttribute("id", "RPS1");
                 $xml->startElement("Rps");
                     $xml->startElement("IdentificacaoRps");
                         $xml->writeElement("Numero", 9999999999); // ????????????
