@@ -148,7 +148,7 @@ if($retorno[0]){
     fwrite($arqNFe, $xmlAss);
     fclose($arqNFe);
     
-    $retEnv = $objNFSe->transmitirNFSeSINTESE( $xmlNFe, 'GerarNfseEnvio', $emitente->codigoMunicipio);
+    $retEnv = $objNFSe->transmitirNFSeSINTESE( $xmlAss, 'GerarNfseEnvio', $emitente->codigoMunicipio);
     $respEnv = htmlspecialchars_decode($retEnv[0]);
     $infoRet = $retEnv[1];
 
