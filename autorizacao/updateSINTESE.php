@@ -105,7 +105,9 @@ if($retorno[0]){
                 $xml->endElement(); // Serviço
 
                 $xml->startElement("Prestador");
-                    $xml->writeElement("Cnpj", $emitente->documento); //"80449374000128"); //
+                    $xml->startElement("CpfCnpj");
+                        $xml->writeElement("Cnpj", $emitente->documento); //"80449374000128"); //
+                    $xml->endElement(); // CpfCnpj
                     $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
                 $xml->endElement(); // Prestador
 
