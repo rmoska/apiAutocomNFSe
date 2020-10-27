@@ -88,9 +88,6 @@ if($retorno[0]){
                 $xml->endElement(); // Rps
                 $xml->writeElement("Competencia", $dtEm);
 
-                $xml->writeElement("OptanteSimplesNacional", 2); // 1 = SIM
-                $xml->writeElement("IncentivoFiscal", 2); // 2 = NAO
-
                 $xml->startElement("Servico");
                     $xml->startElement("Valores");
                         $xml->writeElement("ValorServicos", 10);
@@ -128,6 +125,10 @@ if($retorno[0]){
                         $xml->writeElement("Cep", "88015000");
                     $xml->endElement(); // Endereco
                 $xml->endElement(); // Tomador
+
+                $xml->writeElement("OptanteSimplesNacional", 2); // 1 = SIM
+                $xml->writeElement("IncentivoFiscal", 2); // 2 = NAO
+
             $xml->endElement(); // InfRps
         $xml->endElement(); // Rps
     $xml->endElement(); // GerarNfseEnvio
