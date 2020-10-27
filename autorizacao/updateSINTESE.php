@@ -75,14 +75,14 @@ if($retorno[0]){
     $xml->writeAttribute("xmlns", "http://www.abrasf.org.br/nfse.xsd");
         $xml->startElement("Rps");
             $xml->startElement("InfDeclaracaoPrestacaoServico");
-            $xml->writeAttribute("id", "RPS1");
+            $xml->writeAttribute("Id", "RPS1");
                 $xml->startElement("Rps");
                     $xml->startElement("IdentificacaoRps");
                         $xml->writeElement("Numero", 9999999999); // ????????????
                         $xml->writeElement("Serie", "UNICA");
                         $xml->writeElement("Tipo", 1);
                     $xml->endElement(); // IdentificacaoRps
-                    $dtEm = date("c");
+                    $dtEm = date("Y-m-d");
                     $xml->writeElement("DataEmissao", $dtEm);
                     $xml->writeElement("Status", 1); // 1 = normal
                 $xml->endElement(); // Rps
