@@ -722,6 +722,53 @@ class comunicaNFSe {
     }
 
     //
+    // define namespace / url e chama soap
+    public function transmitirNFSeSINTESE( $sXml, $servico, $codMunic) {
+
+        try {
+
+            if ($this->ambiente=='H') // homologação
+                $codMunic .= '-H'; 
+
+            $this->defineURL($codMunic, $servico);
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
+                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
+            }
+
+            // limpa a variavel
+            $sNFSe = $sXml;
+            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+
+            $data = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nfse="http://nfse.abrasf.org.br">';
+            $data .= '<soapenv:Header/>';
+            $data .= '<soapenv:Body>';
+            $data .= '<nfse:GerarNfseEnvio>';
+            $data .= '<nfseCabecMsg><![CDATA[<?xml version="1.0" encoding="UTF-8"?><cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="1.00"><versaoDados>1.00</versaoDados></cabecalho>]]></nfseCabecMsg>';
+            $data .= '<nfseDadosMsg><![CDATA[<?xml version="1.0" encoding="UTF-8"?>';
+            $data .= $sNFSe;
+            $data .= ']]></nfseDadosMsg></nfse:GerarNfseEnvio></soapenv:Body></soapenv:Envelope>';
+
+//            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($data, $action, 'S');
+            //verifica o retorno
+            if (! $retorno) {
+                return array(false, 'URL de Comunicação inválida !');
+            }
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+
+        return $retorno;
+    }
+
+    //
     // chamada soap + curl + envelope
     protected function pSendSOAPCurl($dados, $action, $sign, $noHeader = '') {
 

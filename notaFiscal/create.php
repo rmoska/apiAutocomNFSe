@@ -137,6 +137,8 @@ switch ($emitente->codigoMunicipio) {
     
     case '2927408': // BA - Salvador
         $arqPhp = 'createABRASF1_0.php'; break;
+    case '3135456': // MG - Jenipapo de Minas
+        $arqPhp = 'createSINTESE.php'; break;
     case '3550308': // SP - São Paulo
         $arqPhp = 'createSPL.php'; break;
     case '4205407': // SC - Florianópolis ==> OK

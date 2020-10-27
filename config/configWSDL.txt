@@ -7,3 +7,6 @@ EnvioLoteRPSAction=http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
 Municipio=SALVADOR/BA
 EnvioLoteRPS=https://nfse.salvador.ba.gov.br/rps/ENVIOLOTERPS/EnvioLoteRPS.svc
 EnvioLoteRPSAction=http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
+[3135456-H]
+Municipio=JENIPAPO DE MINAS/MG
+GerarNfseEnvio=http://homologacao.sintesetecnologia.com.br/nfsews/NfseWS?wsdl
