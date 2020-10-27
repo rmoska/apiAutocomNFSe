@@ -96,7 +96,7 @@ if($retorno[0]){
                     $xml->endElement(); // Valores
                     $xml->writeElement("IssRetido", 2); // 1=Sim 2=Não
 
-                    $xml->writeElement("ItemListaServico", "4.01"); 
+                    $xml->writeElement("ItemListaServico", "04.01"); 
     //                $xml->writeElement("CodigoCnae", "8630502");
                     $xml->writeElement("Discriminacao", "Consulta Medica");
                     $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
