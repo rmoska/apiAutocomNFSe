@@ -137,7 +137,7 @@ if($retorno[0]){
 
     $xmlRps = $xml->outputMemory(true);
 
-    $xmlAss = $objNFSe->signXML($xmlRps, 'InfDeclaracaoPrestacaoServico', '');
+    $xmlAss = $objNFSe->signXML($xmlRps, 'Rps', '');
     if ($objNFSe->errStatus) {
 
         http_response_code(401);
