@@ -78,9 +78,6 @@ if($retorno[0]){
         $validade = $certificado->certDaysToExpire;
         $dataValidade = new DateTime(date('Y-m-d'));
         $dataValidade->add(new DateInterval('P'.$validade.'D'));
-
-        error_log(("[".date("Y-m-d H:i:s")."] ".$dataValidade->format('Y-m-d')."\n"), 3, "../arquivosNFSe/apiErrors.log");
-
         $autorizacao->dataValidade = $dataValidade->format('Y-m-d');
     }
 
