@@ -79,9 +79,9 @@ if($retorno[0]){
         $dataValidade = new DateTime(date('Y-m-d'));
         $dataValidade->add(new DateInterval('P'.$validade.'D'));
 
-        error_log(("[".date("Y-m-d H:i:s")."] ".$dataValidade."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        error_log(("[".date("Y-m-d H:i:s")."] ".$dataValidade->format('Y-m-d')."\n"), 3, "../arquivosNFSe/apiErrors.log");
 
-        $autorizacao->dataValidade = $dataValidade;
+        $autorizacao->dataValidade = $dataValidade->format('Y-m-d');
     }
 
 /* função de nota de teste desativada por inconsistências no ambiente homologação (senha diferente, usuário não habilitado)
