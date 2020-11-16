@@ -207,6 +207,7 @@ if($retorno[0]){
 */
 
     $nuNF = 1; // indicador dados testados com sucesso (token+certificado)
+    $autorizacao->update($emitente->documento);
 
     http_response_code(201);
     $aRet = array("http_code" => 201, "message" => "Autorização atualizada", 
