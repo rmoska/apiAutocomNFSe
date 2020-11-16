@@ -55,7 +55,7 @@ else {
 if($retorno[0]){
 
     $nuNF = 0; // indicador dados não testados ou com erro
-    if (!$autorizacao->getToken("H")) { 
+    if (!$autorizacao->getToken("P")) { // token passa a ser testado na produção - 16/11/2020
 
         http_response_code(401);
         echo json_encode(array("http_code" => 401, "message" => "Autorização com dados inválidos (Confira CMC e senha PMF). Token de acesso rejeitado.", "codigo" => "A02"));
