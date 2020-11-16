@@ -89,7 +89,7 @@ switch ($emitente->codigoMunicipio) {
     case '3135456': // MG - Jenipapo de Minas
         $arqPhp = 'updateSINTESE.php'; break;
     case '4106902': // PR - Curitiba
-        $arqPhp = 'update4106902.php'; break;
+        $arqPhp = 'updateCuritiba.php'; break;
     case '4205407': // SC - Florianópolis
         $arqPhp = 'updateFLN.php'; break;
     case '4216602': // SC - São José

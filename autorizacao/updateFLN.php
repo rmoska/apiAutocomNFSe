@@ -1,7 +1,7 @@
 <?php
 
 /**
- * crt
+ * crt = 
  * cnae
  * aedf (AEDFe é autorização para Produção, então aceita branco para testes de Homologação)
  * cmc
@@ -49,10 +49,12 @@ else {
     $autorizacao->certificado = $data->certificado;
     $autorizacao->senha = $data->senha;
     $autorizacao->mensagemnf = $data->mensagemNF;
+    $autorizacao->nfhomologada = 0;
     $retorno = $autorizacao->update($emitente->documento);
 }
 if($retorno[0]){
 
+    $nuNF = 0; // indicador dados não testados ou com erro
     if (!$autorizacao->getToken("H")) { 
 
         http_response_code(401);
@@ -68,14 +70,18 @@ if($retorno[0]){
         $certificado = new SignNFSe($arraySign);
         if ($certificado->errStatus){
             http_response_code(401);
-            echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $certificado->errMsg, "codigo" => "A01"));
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Certificado.', 'Erro='.$certificado->errMsg.' Emitente='.$autorizacao->idEmitente);
+            echo json_encode(array("http_code" => "401", "message" => "Certificado inválido.", "erro" => $certificado->errMsg, "codigo" => "A01"));
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Certificado inválido. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $logMsg->register('E', 'autorizacao.update', 'Certificado inválido.', 'Erro='.$certificado->errMsg.' Emitente='.$autorizacao->idEmitente);
             exit;
         }
         $validade = $certificado->certDaysToExpire;
+        $dataValidade = new DateTime(date('Y-m-d'));
+        $dataValidade->add(new DateInterval('P'.$validade.'D'));
+        $autorizacao->dataValidade = $dataValidade;
     }
 
+/* função de nota de teste desativada por inconsistências no ambiente homologação (senha diferente, usuário não habilitado)
     //
     // emite nota de teste
     $xml = new XMLWriter;
@@ -195,6 +201,9 @@ if($retorno[0]){
         $autorizacao->nfhomologada = $nuNF;
         $autorizacao->update($emitente->documento);
     }
+*/
+
+    $nuNF = 1; // indicador dados testados com sucesso (token+certificado)
 
     http_response_code(201);
     $aRet = array("http_code" => 201, "message" => "Autorização atualizada", 
