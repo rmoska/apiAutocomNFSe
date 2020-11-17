@@ -2,14 +2,14 @@
 
 /**
  * crt = 
- * cnae
- * aedf (AEDFe é autorização para Produção, então aceita branco para testes de Homologação)
+ * aedf - obrigatório 16/11/2020
  * cmc
  * senhaWeb
  */
 if( empty($data->idEmitente) ||
+    empty($data->documento) ||
     empty($data->crt) ||
-    empty($data->cnae) ||
+    empty($data->aedf) ||
     empty($data->cmc) ||
     empty($data->senhaWeb) ||
     empty($data->certificado) ||

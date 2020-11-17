@@ -6,6 +6,7 @@
  * senha
  */
 if( empty($data->idEmitente) ||
+    empty($data->documento) ||
     empty($data->login) || 
     empty($data->senhaWeb) ||
     empty($data->certificado) ||
@@ -55,7 +56,7 @@ if($retorno[0]){
     }
 
     include_once '../comunicacao/comunicaNFSe.php';
-    $arraySign = array("sisEmit" => 2, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+    $arraySign = array("sisEmit" => 2, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => "@SEM_CERTIFICADO#"); // $autorizacao->senha
     $objNFSe = new ComunicaNFSe($arraySign);
 
     if ($objNFSe->errStatus){

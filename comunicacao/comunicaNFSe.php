@@ -75,9 +75,11 @@ class comunicaNFSe {
             $this->arqDir .= '/';
         }
 
-        if ( !$retorno = $this->__loadCerts() ) {
-            return false;
-//            return $this->errMsg;
+        if ($this->keyPass != "@SEM_CERTIFICADO#") { // provedores sem necessidade de certificado
+            if ( !$retorno = $this->__loadCerts() ) {
+                return false;
+    //            return $this->errMsg;
+            }
         }
 
         return true;
