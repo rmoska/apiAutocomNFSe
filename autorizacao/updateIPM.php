@@ -64,7 +64,7 @@ if($retorno[0]){
         $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Certificado.', 'Erro='.$objNFSe->errMsg.' Emitente='.$autorizacao->idEmitente);
         exit;
     }
-    $validade = $objNFSe->certDaysToExpire;
+    //$validade = $objNFSe->certDaysToExpire;
         
     //
     // emite nota de teste
@@ -170,9 +170,9 @@ if($retorno[0]){
     $result = $retEnv[0];
     $info = $retEnv[1];
 
-//    echo '1'.$result;
-//    print_r($info);
-//    echo $info['http_code'];
+    echo '1'.$result;
+    print_r($info);
+    echo $info['http_code'];
 
     $nuNF = 0;
     $cdVerif = '';
@@ -233,7 +233,7 @@ if($retorno[0]){
 
     http_response_code(201);
     echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                            "validade" => $validade." dias",
+                            "validade" => "0 dias",
                             "nf-homolog" => $nuNF,
                             "verificacao-homolog" => $cdVerif,
                             "codigo" => $codMsg));        
