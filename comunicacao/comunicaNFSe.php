@@ -547,6 +547,10 @@ class comunicaNFSe {
                 return array(false, 'Parâmetros de envio da NFSe inválidos, verifique');
             }
 
+
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."]".print_r($params).")\n"), 3, "../arquivosNFSe/apiErrors.log");
+
+
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($params, '', 'N', 'N');
             //verifica o retorno

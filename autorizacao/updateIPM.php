@@ -170,9 +170,9 @@ if($retorno[0]){
     $result = $retEnv[0];
     $info = $retEnv[1];
 
-    echo '1'.$result;
-    print_r($info);
-    echo $info['http_code'];
+//    echo '1'.$result;
+//    print_r($info);
+//    echo $info['http_code'];
 
     $nuNF = 0;
     $cdVerif = '';
