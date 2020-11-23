@@ -157,6 +157,9 @@ if($retorno[0]){
     } else {
         $cFile = '@' . realpath($arqNFSe);
     }
+
+    $cfile = "http://www.autocominformatica.com.br/arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
+
     
 //    'cidade' => '8233',
     $params = array(
