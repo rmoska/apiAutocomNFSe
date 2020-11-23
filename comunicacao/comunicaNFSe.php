@@ -546,7 +546,6 @@ class comunicaNFSe {
             if (empty($params)) { // || ! simplexml_load_string($sXml)) {
                 return array(false, 'Parâmetros de envio da NFSe inválidos, verifique');
             }
-
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($params, '', 'N', 'N');
             //verifica o retorno
