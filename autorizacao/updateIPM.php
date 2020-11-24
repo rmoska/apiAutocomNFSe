@@ -135,18 +135,6 @@ if($retorno[0]){
     //
     $xmlNFe = $xml->outputMemory(true);
 
-    // PALHOÇA não tem assinatura de nfse
-/*
-    $xmlAss = $objNFSe->signXML($xmlNFe, 'nfse');
-    if ($objNFSe->errStatus) {
-    
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$objNFSe->errMsg));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
-    }
-*/
-    //    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
     $arqNFSe = "../arquivosNFSe/".$emitente->documento."/rps/000000-nfse.xml";
     $arqNFe = fopen($arqNFSe,"wt");
     fwrite($arqNFe, $xmlNFe);
@@ -157,11 +145,8 @@ if($retorno[0]){
     } else {
         $cFile = '@' . realpath($arqNFSe);
     }
-
     //$cfile = "http://www.autocominformatica.com.br/arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml";
-
     
-//    'cidade' => '8233',
     $params = array(
         'login' => $data->login,
         'senha' => $data->senhaWeb,
