@@ -492,9 +492,9 @@ class comunicaNFSe {
 
         $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
         if ($this->ambiente=='P') // produção
-            $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
+            $this->urlServico = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
         else // homologação
-            $this->url = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
+            $this->urlServico = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
 
         //valida o parâmetro da string do XML da NF-e
         if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
@@ -540,7 +540,6 @@ class comunicaNFSe {
 
         try {
 
-//            $this->url = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
             $this->urlServico = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
 
             //valida o parâmetro da string do XML da NF-e
@@ -571,13 +570,13 @@ class comunicaNFSe {
 
                 switch ($codMunic) {
                     case '4202008': // Balneário Camboriú
-                        $this->url = 'http://wsbalneariocamboriu.simplissweb.com.br/nfseservice.svc?wsdl'; break;
+                        $this->urlServico = 'http://wsbalneariocamboriu.simplissweb.com.br/nfseservice.svc?wsdl'; break;
                     default:
                         return array(false, 'O sistema ainda não está emitindo notas para o município escolhido'); break;
                 }
             }
             else // homologação
-                $this->url = 'http://wshomologacao.simplissweb.com.br/nfseservice.svc?wsdl';
+                $this->urlServico = 'http://wshomologacao.simplissweb.com.br/nfseservice.svc?wsdl';
 
             $action = "http://www.sistema.com.br/Sistema.Ws.Nfse/INfseService/".$servico;
 
@@ -625,9 +624,9 @@ class comunicaNFSe {
         try {
 
             if ($this->ambiente=='P') // produção
-                $this->url = 'https://isscuritiba.curitiba.pr.gov.br/Iss.NfseWebService/nfsews.asmx?WSDL'; 
+                $this->urlServico = 'https://isscuritiba.curitiba.pr.gov.br/Iss.NfseWebService/nfsews.asmx?WSDL'; 
             else // homologação
-                $this->url = 'https://piloto-iss.curitiba.pr.gov.br/nfse_ws/NfseWs.asmx?WSDL';
+                $this->urlServico = 'https://piloto-iss.curitiba.pr.gov.br/nfse_ws/NfseWs.asmx?WSDL';
 
             $action = "http://www.e-governeapps2.com.br/WS_x0020_-_x0020_NFS-e_x0020_V1.0.0.1Soap/".$servico;
 
@@ -825,7 +824,7 @@ class comunicaNFSe {
         
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); 
-            curl_setopt($curl, CURLOPT_URL, $this->url);
+            curl_setopt($curl, CURLOPT_URL, $this->urlServico);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
             curl_setopt($curl, CURLOPT_POST, TRUE);
