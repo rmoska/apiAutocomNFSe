@@ -33,8 +33,8 @@ foreach ( $data->itemServico as $item )
     if(
         empty($item->codigo) ||
         empty($item->descricao) ||
-        empty($item->cnae) ||
         empty($item->nbs) ||
+        empty($item->codigoServico) ||
         empty($item->quantidade) ||
         empty($item->valor) ||
         (!($item->cst>=0)) ||
@@ -59,6 +59,7 @@ foreach ( $data->itemServico as $item )
         $itemVenda->descricao = $item->descricao;
         $itemVenda->cnae = $item->cnae;
         $itemVenda->ncm = $item->nbs;
+        $itemVenda->codigoServico = $item->codigoServico;
         $itemVenda->updateVar();
     }
     else {
@@ -67,6 +68,7 @@ foreach ( $data->itemServico as $item )
         $itemVenda->descricao = $item->descricao;
         $itemVenda->cnae = $item->cnae;
         $itemVenda->ncm = $item->nbs;
+        $itemVenda->codigoServico = $item->codigoServico;
 
         $retorno = $itemVenda->create();
         if(!$retorno[0]){
@@ -86,7 +88,7 @@ foreach ( $data->itemServico as $item )
     $notaFiscalItem->idNotaFiscal = $notaFiscal->idNotaFiscal;
     $notaFiscalItem->numeroOrdem = $nfiOrdem;
     $notaFiscalItem->cnae = $item->cnae;
-    $notaFiscalItem->codigoServico = $item->cnae;
+    $notaFiscalItem->codigoServico = $item->codigoServico;
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
@@ -233,7 +235,7 @@ foreach ( $arrayItemNF as $notaFiscalItem ) {
     if ($notaFiscalItem->observacao > '')
         $nmProd .= ' - '.$notaFiscalItem->observacao;
     $xml->writeElement("descricaoServico", trim($nmProd));
-    $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
+    $xml->writeElement("idCNAE", trim($notaFiscalItem->codigoServico));
     $xml->writeElement("cst", $notaFiscalItem->cstIss);
     $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
     $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));

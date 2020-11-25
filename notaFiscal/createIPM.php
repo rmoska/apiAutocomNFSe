@@ -54,7 +54,7 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->idItemVenda = $idItemVenda;
 
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->listaServico = $item->nbs;
+        $itemVenda->codigoServico = $item->codigoServico;
 
         $itemVenda->updateVar();
     }
@@ -63,7 +63,7 @@ foreach ( $data->itemServico as $item )
 
         $notaFiscalItem->descricaoItemVenda = $item->descricao;
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->listaServico = $item->nbs;
+        $itemVenda->codigoServico = $item->codigoServico;
 
         $retorno = $itemVenda->create();
         if(!$retorno[0]){

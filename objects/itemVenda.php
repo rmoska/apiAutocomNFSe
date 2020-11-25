@@ -11,7 +11,7 @@ class ItemVenda{
     public $descricao;
     public $cnae;
     public $ncm;
-    public $listaServico;
+    public $codigoServico;
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -33,12 +33,14 @@ class ItemVenda{
         $this->descricao=htmlspecialchars(strip_tags($this->descricao));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
         $this->ncm=htmlspecialchars(strip_tags($this->ncm));
+        $this->codigoServico=htmlspecialchars(strip_tags($this->codigoServico));
     
         // bind values
         $stmt->bindParam(":codigo", $this->codigo);
         $stmt->bindParam(":descricao", $this->descricao);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":ncm", $this->ncm);
+        $stmt->bindParam(":codigoServico", $this->codigoServico);
 
         // execute query
         if($stmt->execute()){
@@ -57,7 +59,7 @@ class ItemVenda{
     function updateVar(){
             
         // lista de campos alteráveis
-        $alterados = array("descricao","cnae","ncm","listaServico");
+        $alterados = array("descricao","cnae","ncm","codigoServico");
 
         $params = array(); // recebe conteúdo da alteração
         $params['codigo'] = $this->codigo;
@@ -110,6 +112,7 @@ class ItemVenda{
         $this->descricao = $row['descricao'];
         $this->cnae = $row['cnae'];
         $this->ncm = $row['ncm'];
+        $this->codigoServico = $row['codigoServico'];
     }
     
     // check itemVenda

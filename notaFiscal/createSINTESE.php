@@ -56,7 +56,7 @@ foreach ( $data->itemServico as $item ) {
 
         $notaFiscalItem->idItemVenda = $idItemVenda;
         $itemVenda->descricao = $item->descricao;
-        $itemVenda->listaServico = $item->codigoServico;
+        $itemVenda->codigoServico = $item->codigoServico;
 
         $itemVenda->updateVar();
     }
