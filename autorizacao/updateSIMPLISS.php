@@ -103,7 +103,7 @@ if($retorno[0]){
                         $xml->writeElement("nfse:ValorCsll", 0.00);
                         $xml->writeElement("nfse:OutrasRetencoes", 0.00);
                         $xml->writeElement("nfse:IssRetido", 2); 
-                        $xml->writeElement("nfse:ValorIss", 2.00);
+                        $xml->writeElement("nfse:ValorIss", 0.20);
                         $xml->writeElement("nfse:Aliquota", 2.00); 
                         $xml->writeElement("nfse:BaseCalculo", 10.00);
                         $xml->writeElement("nfse:ValorLiquidoNfse", 10.00);
