@@ -308,6 +308,8 @@ $retEnv = $objNFSe->transmitirNFSeSimplISS( $emitente->codigoMunicipio, $xmlNFe 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
 
+error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv."\n"), 3, "../arquivosNFSe/nfBCret.log");
+error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".json_encode($infoRet)."\n"), 3, "../arquivosNFSe/nfBCret.log");
 
 
 if ($infoRet['http_code'] == '200') {
