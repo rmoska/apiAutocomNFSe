@@ -231,7 +231,7 @@ class gerarPdf {
 
             $pdf->SetXY(10, $posY);
             $y = $pdf->GetY();
-            $nuProd = $notaFiscalItem->cnae;
+            $nuProd = $notaFiscalItem->codigoServico;
             $pdf->CellFitScale(20, 4, $nuProd, 0, 0, 'C'); 
             $pdf->MultiCell(85, 4, utf8_decode($nmProd), 0, 'L', 0); 
 
