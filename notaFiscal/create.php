@@ -92,6 +92,7 @@ if( empty($data->documento) ||
 include_once '../objects/notaFiscal.php';
 include_once '../objects/notaFiscalItem.php';
 include_once '../objects/itemVenda.php';
+include_once '../objects/codigoServico.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
 include_once '../objects/municipio.php';

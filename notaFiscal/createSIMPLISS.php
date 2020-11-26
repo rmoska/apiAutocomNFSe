@@ -5,8 +5,6 @@
 // - vários serviços agrupados num único CNAE / CST 
 // -  
 
-
-
 // Classe para emissão de NFSe PMF Homologação / Produção
 //
 include_once '../objects/autorizacaoChave.php';
