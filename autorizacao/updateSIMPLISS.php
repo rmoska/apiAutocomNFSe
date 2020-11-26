@@ -85,7 +85,7 @@ if($retorno[0]){
             $xml->endElement(); // Prestador
             $xml->startElement("nfse:InformacaoNfse");
             $xml->writeAttribute("Id", "lote1");
-                $xml->writeElement("nfse:NaturezaOperacao", 3); // 3 = isento
+                $xml->writeElement("nfse:NaturezaOperacao", 1); // 3 = isento
                 $xml->writeElement("nfse:RegimeEspecialTributacao", 6); // 6 = ME/EPP
                 $xml->writeElement("nfse:OptanteSimplesNacional", 1); // 1 = SIM
                 $xml->writeElement("nfse:IncentivadorCultural", 2); // 2 = NAO
@@ -103,28 +103,21 @@ if($retorno[0]){
                         $xml->writeElement("nfse:ValorCsll", 0.00);
                         $xml->writeElement("nfse:OutrasRetencoes", 0.00);
                         $xml->writeElement("nfse:IssRetido", 2); 
-                        $xml->writeElement("nfse:ValorIss", 0.00);
-                        $xml->writeElement("nfse:Aliquota", 0.00); 
+                        $xml->writeElement("nfse:ValorIss", 2.00);
+                        $xml->writeElement("nfse:Aliquota", 2.00); 
                         $xml->writeElement("nfse:BaseCalculo", 10.00);
                         $xml->writeElement("nfse:ValorLiquidoNfse", 10.00);
                         $xml->writeElement("nfse:DescontoIncondicionado", 0.00);
                         $xml->writeElement("nfse:DescontoCondicionado", 0.00);
                     $xml->endElement(); // Valores
-/*
-                    $xml->writeElement("nfse:ItemListaServico", "4.01"); //$aAutoChave["codigoServico"]); 
-//                    $xml->writeElement("CodigoCnae", "6190699");
-//                    $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço
-                    $xml->writeElement("nfse:Discriminacao", "Teste homologacao");
-                    $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
-*/
-                    $xml->writeElement("nfse:ItemListaServico", "4.02"); //$aAutoChave["codigoServico"]); 
-//                    $xml->writeElement("CodigoCnae", "6190699");
+                    $xml->writeElement("nfse:ItemListaServico", "1.01"); //$aAutoChave["codigoServico"]); 
+                    $xml->writeElement("CodigoCnae", "6201500");
 //                    $xml->writeElement("CodigoTributacaoMunicipio", "7.10"); // 4216602 Município de prestação do serviço
                     $xml->writeElement("nfse:Discriminacao", "Teste homologacao");
                     $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
                     
                     $xml->startElement("nfse:ItensServico");
-                        $xml->writeElement("nfse:Descricao", "Consulta clinica");
+                        $xml->writeElement("nfse:Descricao", "Desenvolvimento sistema");
                         $xml->writeElement("nfse:Quantidade", 1.00);
                         $xml->writeElement("nfse:ValorUnitario", 5.00);
                         $xml->writeElement("nfse:IssTributavel", 1);
