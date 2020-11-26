@@ -33,6 +33,7 @@ foreach ( $data->itemServico as $item )
     if(
         empty($item->codigo) ||
         empty($item->descricao) ||
+        empty($item->cnae) ||
         empty($item->nbs) ||
         empty($item->codigoServico) ||
         empty($item->quantidade) ||
