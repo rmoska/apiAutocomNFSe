@@ -423,9 +423,6 @@ echo json_encode(array("http_code" => 201, "message" => "Autorização atualizad
                        "verificacao-homolog" => utf8_decode($cdVerif),
                        "linkNF" => $linkNF));
 exit;
-}
-
-
 
 
 ?>

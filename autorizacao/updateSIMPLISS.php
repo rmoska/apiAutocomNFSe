@@ -85,8 +85,8 @@ if($retorno[0]){
             $xml->endElement(); // Prestador
             $xml->startElement("nfse:InformacaoNfse");
             $xml->writeAttribute("Id", "lote1");
-                $xml->writeElement("nfse:NaturezaOperacao", 1); // 3 = isento
-                $xml->writeElement("nfse:RegimeEspecialTributacao", 6); // 6 = ME/EPP
+                $xml->writeElement("nfse:NaturezaOperacao", 1); // 1 = trib. no mun. / 2 = trib. fora mun. / 3 = isento / ...
+                $xml->writeElement("nfse:RegimeEspecialTributacao", 6); // 5 = MEI / 6 = ME/EPP
                 $xml->writeElement("nfse:OptanteSimplesNacional", 1); // 1 = SIM
                 $xml->writeElement("nfse:IncentivadorCultural", 2); // 2 = NAO
                 $xml->writeElement("nfse:Status", 1); // 1 = normal
@@ -120,14 +120,14 @@ if($retorno[0]){
                         $xml->writeElement("nfse:Descricao", "Desenvolvimento sistema");
                         $xml->writeElement("nfse:Quantidade", 1.00);
                         $xml->writeElement("nfse:ValorUnitario", 5.00);
-                        $xml->writeElement("nfse:IssTributavel", 1);
+//                        $xml->writeElement("nfse:IssTributavel", 1);
                     $xml->endElement(); // ItensServico
 
                     $xml->startElement("nfse:ItensServico");
-                        $xml->writeElement("nfse:Descricao", "Procedimento");
+                        $xml->writeElement("nfse:Descricao", "Treinamento");
                         $xml->writeElement("nfse:Quantidade", 1.00);
                         $xml->writeElement("nfse:ValorUnitario", 5.00);
-                        $xml->writeElement("nfse:IssTributavel", 1);
+//                        $xml->writeElement("nfse:IssTributavel", 1);
                     $xml->endElement(); // ItensServico
 
                     $xml->endElement(); // Servico
