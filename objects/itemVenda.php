@@ -23,7 +23,7 @@ class ItemVenda{
     
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
-                    codigo=:codigo, descricao=:descricao, cnae=:cnae, ncm=:ncm";
+                    codigo=:codigo, descricao=:descricao, cnae=:cnae, ncm=:ncm, codigoServico=:codigoServico";
     
         // prepare query
         $stmt = $this->conn->prepare($query);
