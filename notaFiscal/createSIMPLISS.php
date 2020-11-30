@@ -221,7 +221,7 @@ $xml->startElement("sis:GerarNfse");
         $xml->startElement("nfse:InformacaoNfse");
         $xml->writeAttribute("Id", "lote1");
             $xml->writeElement("nfse:NaturezaOperacao", $notaFiscalItem->cstIss);
-            $xml->writeElement("nfse:RegimeEspecialTributacao", 6); // 6 = ME/EPP
+            $xml->writeElement("nfse:RegimeEspecialTributacao", $autorizacao->crt); // 6 = ME/EPP
             $xml->writeElement("nfse:OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1 = SIM
             $xml->writeElement("nfse:IncentivadorCultural", $idIncCultural); // 2 = NAO
             $xml->writeElement("nfse:Status", 1); // 1 = normal
