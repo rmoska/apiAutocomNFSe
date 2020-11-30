@@ -176,12 +176,14 @@ $vlTotServ = 0;
 $cstIss = '';
 $codServ = '';
 foreach ( $arrayItemNF as $notaFiscalItem ) {
+/*
     if (($codServ != '') && ($notaFiscalItem->codigoServico != $codServ)) {
 
         http_response_code(400);
         echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. Itens devem ter um único Código de Serviço."));
         exit;
     } 
+*/
     $codServ = $notaFiscalItem->codigoServico;
     $vlTotServ += $notaFiscalItem->valorTotal;
     $vlTotBC += $notaFiscalItem->valorBCIss; 
