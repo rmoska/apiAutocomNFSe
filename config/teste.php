@@ -1,40 +1,5 @@
 <?php
 
-$arq = "C:\Desenv\NFSe\SC\Palhoca\exemplo_retorno.xml";
-
-$xmlNFRet = simplexml_load_file($arq);
-
-//print_r($xmlNFRet);
-
-echo $xmlNFRet->mensagem->codigo.'<br>';
-echo $xmlNFRet->numero_nfse.'<br>';
-echo $xmlNFRet->data_nfse.'<br>';
-echo $xmlNFRet->hora_nfse.'<br>';
-echo $xmlNFRet->situacao_codigo_nfse.'<br>';
-echo $xmlNFRet->link_nfse.'<br>';
-echo $xmlNFRet->cod_verificador_autenticidade;
-
-echo $xmlNFRet->codigo_html;
-
-exit;
-print_r($xmlResp);
-echo $xmlResp->IdentificacaoNfse->Numero;
-
-//$msgResp = simplexml_load_string($xmlResp);
-
-echo $msgResp;
-
-$nuNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Numero;
-$cdVerif = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->CodigoVerificacao;
-$linkNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse->IdentificacaoNfse->Link;
-
-echo $nuNF.' - '.$cdVerif.' - '.$linkNF;
-
-
-
-
-
-exit;
 $arq = "C:\Desenv\NFSe\SC\BalnearioCamboriu\xmlNFSeRetorno.xml";
 
 $DomXml=new DOMDocument();
@@ -57,8 +22,6 @@ $linkNF = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->NovaNfse-
 
 echo $nuNF.' - '.$cdVerif.' - '.$linkNF;
 
-
-exit;
 
 $respEnv = 
 '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
@@ -83,96 +46,6 @@ $respEnv =
         </GerarNfseResponse>
     </s:Body>
 </s:Envelope>';
-
-$respEnv2 =
-"<env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'><env:Header></env:Header><env:Body><ns2:GerarNfseResponse xmlns:ns2='http://www.betha.com.br/e-nota-contribuinte-ws'><return>
-<GerarNfseResposta xmlns='http://www.betha.com.br/e-nota-contribuinte-ws'>
-    <ListaNfse>
-        <CompNfse>
-            <Nfse versao='2.02'>
-                <InfNfse>
-                    <Numero>619</Numero>
-                    <CodigoVerificacao>ZJNEFAJVB</CodigoVerificacao>
-                    <DataEmissao>2019-10-02T16: 43: 51</DataEmissao>
-                    <OutrasInformacoes>http://e-gov.betha.com.br/e-nota/visualizarnotaeletronica?link=15700454316916191551624555555770644318806710487377433</OutrasInformacoes>
-                    <ValoresNfse>
-                        <BaseCalculo>10</BaseCalculo>
-                        <Aliquota>0</Aliquota>
-                        <ValorIss>0</ValorIss>
-                        <ValorLiquidoNfse>10</ValorLiquidoNfse>
-                    </ValoresNfse>
-                    <PrestadorServico>
-                        <IdentificacaoPrestador>
-                            <CpfCnpj>
-                                <Cnpj>06126514000174</Cnpj>
-                            </CpfCnpj>
-                            <InscricaoMunicipal>313076</InscricaoMunicipal>
-                        </IdentificacaoPrestador>
-                        <RazaoSocial>JULIO CESAR KUTNE</RazaoSocial>
-                        <NomeFantasia>SEGHOUSE TECNOLOGIA EM SEGURANCA</NomeFantasia>
-                        <Endereco>
-                            <Endereco>Ambiente de testes não requer endereço</Endereco>
-                            <CodigoMunicipio>0</CodigoMunicipio>
-                            <Uf>SC</Uf>
-                            <Cep>88800000</Cep>
-                        </Endereco>
-                        <Contato>
-                            <Telefone>48999630276</Telefone>
-                            <Email>CONTATO@SEGHOUSE.COM.BR</Email>
-                        </Contato>
-                    </PrestadorServico>
-                    <OrgaoGerador>
-                        <CodigoMunicipio>0</CodigoMunicipio>
-                        <Uf>SC</Uf>
-                    </OrgaoGerador>
-                    <DeclaracaoPrestacaoServico>
-                        <InfDeclaracaoPrestacaoServico>
-                            <Competencia>2019-10-01</Competencia>
-                            <Servico>
-                                <Valores>
-                                    <ValorServicos>10</ValorServicos>
-                                    <ValorDeducoes>0</ValorDeducoes>
-                                    <ValorIss>0</ValorIss>
-                                    <Aliquota>0.00</Aliquota>
-                                    <DescontoIncondicionado>0</DescontoIncondicionado>
-                                    <DescontoCondicionado>0</DescontoCondicionado>
-                                </Valores>
-                                <IssRetido>2</IssRetido>
-                                <ResponsavelRetencao>2</ResponsavelRetencao>
-                                <ItemListaServico>1406</ItemListaServico>
-                                <Discriminacao>{
-    [
-        [Descricao=Consulta clinica
-        ][ItemServico=1406
-        ][Quantidade=1
-        ][ValorUnitario=10
-        ][ValorServico=10
-        ][ValorBaseCalculo=10
-        ][Aliquota=0
-        ]
-    ]
-}</Discriminacao>
-                                <CodigoMunicipio>0</CodigoMunicipio>
-                                <ExigibilidadeISS>3</ExigibilidadeISS>
-                                <MunicipioIncidencia>0</MunicipioIncidencia>
-                            </Servico>
-                            <Prestador>
-                                <CpfCnpj>
-                                    <Cnpj>06126514000174</Cnpj>
-                                </CpfCnpj>
-                                <InscricaoMunicipal>313076</InscricaoMunicipal>
-                            </Prestador>
-                            <OptanteSimplesNacional>1</OptanteSimplesNacional>
-                            <IncentivoFiscal>2</IncentivoFiscal>
-                        </InfDeclaracaoPrestacaoServico>
-                    </DeclaracaoPrestacaoServico>
-                </InfNfse>
-            </Nfse>
-        </CompNfse>
-    </ListaNfse>
-</GerarNfseResposta>
-</return></ns2:GerarNfseResponse></env:Body></env:Envelope>";
-
 
 
 $respEnv = str_replace("<s:", "<", $respEnv);
