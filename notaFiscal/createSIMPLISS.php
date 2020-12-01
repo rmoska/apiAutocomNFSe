@@ -426,5 +426,4 @@ echo json_encode(array("http_code" => 201, "message" => "Erro na emissão da Not
                        "linkNF" => $linkNF));
 exit;
 
-
 ?>

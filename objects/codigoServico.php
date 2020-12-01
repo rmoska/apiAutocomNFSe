@@ -17,14 +17,18 @@ class codigoServico {
 
     function buscaServico($origem, $codigo){
  
+
+        $codServ = filter_var($codigo, FILTER_SANITIZE_NUMBER_INT);
+        $codServ = substr(str_pad($codServ,4,'0',STR_PAD_LEFT),0,4);
+
         // query to read single record
         $query = "SELECT descricao FROM codigoServico WHERE origem = ? AND codigo = ? LIMIT 0,1";
 
         $stmt = $this->conn->prepare( $query );
         $origem=htmlspecialchars(strip_tags($origem));
-        $codigo=htmlspecialchars(strip_tags($codigo));
+//        $codigo=htmlspecialchars(strip_tags($codigo));
         $stmt->bindParam(1, $origem);
-        $stmt->bindParam(2, $codigo);
+        $stmt->bindParam(2, $codServ);
         $stmt->execute();
 
         $descricao = '';
