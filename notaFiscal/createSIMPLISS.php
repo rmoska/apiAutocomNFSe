@@ -219,7 +219,7 @@ $xml->startElement("sis:GerarNfse");
             $xml->writeElement("nfse:InscricaoMunicipal", $autorizacao->cmc);
         $xml->endElement(); // Prestador
         $xml->startElement("nfse:InformacaoNfse");
-        $xml->writeAttribute("Id", "lote1");
+        $xml->writeAttribute("Id", "rps1");
             $xml->writeElement("nfse:NaturezaOperacao", $notaFiscalItem->cstIss);
             $xml->writeElement("nfse:RegimeEspecialTributacao", $autorizacao->crt); // 6 = ME/EPP
             $xml->writeElement("nfse:OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1 = SIM
