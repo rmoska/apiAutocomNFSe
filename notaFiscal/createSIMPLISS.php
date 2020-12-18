@@ -249,7 +249,7 @@ $xml->startElement("sis:GerarNfse");
 
                 $xml->writeElement("nfse:ItemListaServico", $notaFiscalItem->codigoServico); 
 //                    $xml->writeElement("CodigoCnae", "");
-//                    $xml->writeElement("CodigoTributacaoMunicipio", ""); 
+                $xml->writeElement("CodigoTributacaoMunicipio", $notaFiscalItem->codigoServico); 
                 $xml->writeElement("nfse:Discriminacao", $descServico);
                 $xml->writeElement("nfse:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
                 
