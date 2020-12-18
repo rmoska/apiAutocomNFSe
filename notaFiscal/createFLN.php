@@ -214,7 +214,7 @@ $xml->writeElement("valorISSQN", number_format($vlTotISS,2,'.',''));
 $xml->writeElement("valorTotalServicos", number_format($vlTotServ,2,'.',''));
 
 $xml->writeElement("identificacaoTomador", $tomador->documento);
-$xml->writeElement("razaoSocialTomador", $tomador->nome);
+$xml->writeElement("razaoSocialTomador", substr($tomador->nome,0,80));
 $xml->writeElement("logradouroTomador", trim($utilities->limpaEspeciais($tomador->logradouro)));
 if ($tomador->numero>0)
     $xml->writeElement("numeroEnderecoTomador", $tomador->numero);
