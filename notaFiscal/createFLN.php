@@ -126,6 +126,8 @@ foreach ( $data->itemServico as $item )
         $arrayItemNF[] = $notaFiscalItem;
     }
 }
+
+/*
 if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
 
     $db->rollBack();
@@ -137,6 +139,7 @@ if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal
     $logMsg->register('E', 'notaFiscal.create', "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", $strData);
     exit;
 }
+*/
 
 // se houve problema na inclusão dos itens
 if (count($arrayItemNF) == 0) {
