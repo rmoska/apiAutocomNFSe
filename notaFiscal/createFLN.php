@@ -38,6 +38,7 @@ foreach ( $data->itemServico as $item )
         empty($item->codigoServico) ||
         empty($item->quantidade) ||
         empty($item->valor) ||
+        empty($item->valorTotal) ||
         (!($item->cst>=0)) ||
         (!($item->taxaIss>=0)) 
     ){
@@ -93,7 +94,7 @@ foreach ( $data->itemServico as $item )
     $notaFiscalItem->unidade = "UN";
     $notaFiscalItem->quantidade = floatval($item->quantidade);
     $notaFiscalItem->valorUnitario = floatval($item->valor);
-    $notaFiscalItem->valorTotal = (floatval($item->valor)*floatval($item->quantidade));
+    $notaFiscalItem->valorTotal = floatval($item->valorTotal); //(floatval($item->valor)*floatval($item->quantidade));
     $notaFiscalItem->cstIss = $item->cst;
 
     $totalItens += floatval($notaFiscalItem->valorTotal);
