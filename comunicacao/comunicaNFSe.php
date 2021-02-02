@@ -540,9 +540,9 @@ class comunicaNFSe {
 
         try {
 
-            $this->urlServico = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
-
             $this->defineURL($codMunic, $servico);
+
+            $this->urlServico = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($params)) { // || ! simplexml_load_string($sXml)) {
