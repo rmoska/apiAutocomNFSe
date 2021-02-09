@@ -43,8 +43,8 @@ class comunicaNFSe {
     private $keyPass;
     private $arqDir;
 
-    private $urlServico;
-    private $urlAction;
+    public $urlServico;
+    public $urlAction;
 
     public $errMsg='';
     public $errStatus=false;
