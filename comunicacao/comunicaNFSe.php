@@ -544,6 +544,10 @@ class comunicaNFSe {
 
             $this->defineURL($codMunic, $servico);
 
+
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] 2.URL Serviço ".$objNFSe->urlServico."\n"), 3, "../arquivosNFSe/apiErrors.log");
+
+
             //valida o parâmetro da string do XML da NF-e
             if (empty($params)) { // || ! simplexml_load_string($sXml)) {
                 return array(false, 'Parâmetros de envio da NFSe inválidos, verifique');
