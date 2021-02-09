@@ -536,7 +536,7 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
-    public function transmitirNFSeIpm( $params ) {
+    public function transmitirNFSeIpm( $params, $codMunic, $servico ) {
 
         try {
 
