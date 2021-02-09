@@ -540,12 +540,10 @@ class comunicaNFSe {
 
         try {
 
-            $this->urlServico = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
-
             $this->defineURL($codMunic, $servico);
+//            $this->urlServico = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
 
-
-            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] 2.URL Serviço ".$this->urlServico."\n"), 3, "../arquivosNFSe/apiErrors.log");
+error_log(utf8_decode("[".date("Y-m-d H:i:s")."] URL ".$this->urlServico."\n"), 3, "../arquivosNFSe/apiErrors.log");
 
 
             //valida o parâmetro da string do XML da NF-e
