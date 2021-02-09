@@ -366,8 +366,8 @@ if ($info['http_code'] == '200') {
                            "message" => "Erro no envio da NFSe !", 
                            "resposta" => $cdVerif, 
                            "codigo" => $codMsg));
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! idNotaFiscal =".$notaFiscal->idNotaFiscal."  (".$cdVerif.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.createIPM', 'Erro no envio da NFPSe ! ('.$cdVerif.') ', $strData);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] 1.Erro no envio da NFPSe ! idNotaFiscal =".$notaFiscal->idNotaFiscal."  (".$cdVerif.") ".$objNFSe->urlServico." - ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.createIPM', '1.Erro no envio da NFPSe ! ('.$cdVerif.') '.$objNFSe->urlServico, $strData);
     exit;
 }
 else { // http_code <> 200
@@ -421,8 +421,8 @@ else { // http_code <> 200
                                 "message" => "Erro no envio da NFSe !", 
                                 "resposta" => $msgRet, 
                                 "codigo" => $codMsg));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.createIPM', 'Erro no envio da NFPSe ! ('.$msgRet.') ', $strData);
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] 2.Erro no envio da NFPSe ! (".$msgRet.") ".$objNFSe->urlServico." - ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'notaFiscal.createIPM', '2.Erro no envio da NFPSe ! ('.$msgRet.') '.$objNFSe->urlServico, $strData);
         exit;
     }
 }
