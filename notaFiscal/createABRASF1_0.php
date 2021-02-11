@@ -52,7 +52,7 @@ foreach ( $data->itemServico as $item ) {
     }
     
     $itemVenda = new ItemVenda($db);
-    $notaFiscalItem = new NotaFiscalItem($db);
+    $notaFiscalItem = new NotaFiscalServicoItem($db);
 
     $itemVenda->codigo = $item->codigo;
     if (($idItemVenda = $itemVenda->check()) > 0) {

@@ -11,7 +11,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
-include_once '../objects/notaFiscal.php';
+include_once '../objects/notaFiscalServico.php';
 include_once '../objects/emitente.php';
 include_once '../shared/utilities.php';
 include_once '../shared/logMsg.php';
@@ -37,7 +37,7 @@ if (empty($idNotaFiscal)) {
     exit;
 }
 
-$notaFiscal = new NotaFiscal($db);
+$notaFiscal = new NotaFiscalServico($db);
 $notaFiscal->idNotaFiscal = $idNotaFiscal;
 
 $checkNF = $notaFiscal->check();

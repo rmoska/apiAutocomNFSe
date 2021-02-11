@@ -24,19 +24,32 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
 include_once '../shared/logMsg.php';
+include_once '../objects/config.php';
 include_once '../objects/emitente.php';
 
-// 
-// quando chamada for na base teste, sempre mandar para homologação
 $dirAPI = basename(dirname(dirname( __FILE__ )));
+
+/*
+// quando chamada for na base teste, sempre mandar para homologação
 if ($dirAPI == "apiAutocomNFSe")
     $ambiente = "P"; // ===== PRODUÇÃO =====
 else // if ( basename(dirname(dirname( __FILE__ ))) == "apiAutocomNFSe-teste")
     $ambiente = "H"; // ===== HOMOLOGAÇÃO =====
+*/
 
 $database = new Database();
 $db = $database->getConnection();
 $logMsg = new LogMsg($db);
+
+$cfg = new Config();
+$cfg->info();
+if (($cfg->ambiente1 != 'H') && ($cfg->ambiente1 != 'P')) {
+    http_response_code(400);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal. Ambiente não configurado.", "codigo" => "A01"));
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível emitir Nota Fiscal. Ambiente não configurado. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.create', 'Não foi possível emitir Nota Fiscal. Ambiente não configurado.', $strData);
+    exit;
+}
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -89,18 +102,18 @@ if( empty($data->documento) ||
     exit;
 }
 
-include_once '../objects/notaFiscal.php';
-include_once '../objects/notaFiscalItem.php';
+include_once '../objects/notaFiscalServico.php';
+include_once '../objects/notaFiscalServicoItem.php';
 include_once '../objects/itemVenda.php';
 include_once '../objects/codigoServico.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
 include_once '../objects/municipio.php';
  
-$notaFiscal = new NotaFiscal($db);
+$notaFiscal = new NotaFiscalServico($db);
 
 // set notaFiscal property values
-$notaFiscal->ambiente = $ambiente;
+$notaFiscal->ambiente = $cfg->ambiente;
 $notaFiscal->docOrigemTipo = "V"; // Venda
 $notaFiscal->docOrigemNumero = $data->idVenda;
 $notaFiscal->idEntradaSaida = "S";

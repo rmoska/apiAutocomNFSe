@@ -1,9 +1,9 @@
 <?php
-class NotaFiscalItem{
+class NotaFiscalServicoItem{
  
     // database connection and table name
     private $conn;
-    private $tableName = "notaFiscalItem";
+    private $tableName = "notaFiscalServicoItem";
 
     // object properties
     public $idNotaFiscal; 
@@ -333,7 +333,7 @@ class NotaFiscalItem{
         $arrayNFi = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 
-            $notaFiscalItem = new NotaFiscalItem($this->conn);
+            $notaFiscalItem = new NotaFiscalServicoItem($this->conn);
             $notaFiscalItem->idNotaFiscal = $idNotaFiscal;
             $notaFiscalItem->numeroOrdem = $row['numeroOrdem'];
     

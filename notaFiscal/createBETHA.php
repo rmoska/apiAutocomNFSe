@@ -14,18 +14,18 @@ if( empty($data->documento) ||
     exit;
 }
 
-include_once '../objects/notaFiscal.php';
-include_once '../objects/notaFiscalItem.php';
+include_once '../objects/notaFiscalServico.php';
+include_once '../objects/notaFiscalServicoItem.php';
 include_once '../objects/itemVenda.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
 include_once '../objects/autorizacaoChave.php';
 include_once '../objects/municipio.php';
  
-$notaFiscal = new NotaFiscal($db);
+$notaFiscal = new NotaFiscalServico($db);
 
 // set notaFiscal property values
-$notaFiscal->ambiente = $ambiente;
+$notaFiscal->ambiente = $cfg->ambiente;
 $notaFiscal->docOrigemTipo = "V"; // Venda
 $notaFiscal->docOrigemNumero = $data->idVenda;
 $notaFiscal->idEntradaSaida = "S";
@@ -173,7 +173,7 @@ foreach ( $data->itemServico as $item )
     }
     
     $itemVenda = new ItemVenda($db);
-    $notaFiscalItem = new NotaFiscalItem($db);
+    $notaFiscalItem = new NotaFiscalServicoItem($db);
 
     $itemVenda->codigo = $item->codigo;
     if (($idItemVenda = $itemVenda->check()) > 0) 

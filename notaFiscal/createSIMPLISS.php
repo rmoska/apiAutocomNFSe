@@ -51,7 +51,7 @@ foreach ( $data->itemServico as $item )
     }
     
     $itemVenda = new ItemVenda($db);
-    $notaFiscalItem = new NotaFiscalItem($db);
+    $notaFiscalItem = new NotaFiscalServicoItem($db);
 
     $itemVenda->codigo = $item->codigo;
     if (($idItemVenda = $itemVenda->check()) > 0) 
@@ -166,7 +166,7 @@ if ( !isset($aAutoChave["login"]) ||
 };
 
 include_once '../comunicacao/comunicaNFSe.php';
-$arraySign = array("sisEmit" => 2, "tpAmb" => $ambiente, "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+$arraySign = array("sisEmit" => 2, "tpAmb" => $cfg->ambiente, "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
 $objNFSe = new ComunicaNFSe($arraySign);
 
 // montar xml nfse

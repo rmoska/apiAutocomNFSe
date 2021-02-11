@@ -4,9 +4,9 @@ class Database{
  // specify your own database credentials
  private $host = "localhost";
  //private $port = "3306";
- private $dbName = "autocom_FC0001";
- private $username = "autocom_FC0001";
- private $password = "atcfc@2608";
+ private $dbName = "autocom_fastconnect";
+ private $username = "root";
+ private $password = "autocom";
  public $conn;
 
  // get the database connection

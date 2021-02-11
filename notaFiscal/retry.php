@@ -35,14 +35,14 @@ function logErro($db, $statusErr, $arrMsg, $objNF){
 }
 
 include_once '../config/database.php';
-include_once '../objects/notaFiscal.php';
+include_once '../objects/notaFiscalServico.php';
  
 $database = new Database();
 $db = $database->getConnection();
 
 $dirAPI = basename(dirname(dirname( __FILE__ )));
 
-$notaFiscal = new NotaFiscal($db);
+$notaFiscal = new NotaFiscalServico($db);
  
 $stmt = $notaFiscal->readPendente();
 
@@ -62,7 +62,7 @@ $utilities = new Utilities();
 
 while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
-    $notaFiscal = new NotaFiscal($db);
+    $notaFiscal = new NotaFiscalServico($db);
     $notaFiscal->idNotaFiscal = $rNF["idNotaFiscal"];
     $notaFiscal->readOne();
 
@@ -74,7 +74,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $emitente->idEmitente = $notaFiscal->idEmitente;
     $emitente->readOne();
 
-    $notaFiscalItem = new NotaFiscalItem($db);
+    $notaFiscalItem = new NotaFiscalServicoItem($db);
     $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
 
     $totalItens = 0;

@@ -2,8 +2,8 @@
 
 // Classe para repetir tentativa de emissão de NFSe PMF pendentes por Servidor Indisponível / Timeout
 
-include_once '../objects/notaFiscal.php';
-$notaFiscal = new NotaFiscal($db);
+include_once '../objects/notaFiscalServico.php';
+$notaFiscal = new NotaFiscalServico($db);
  
 $stmt = $notaFiscal->readPendenteDiaMunic($data->dataEmissao, $data->codigoMunicipio);
 
@@ -12,7 +12,7 @@ $stmt = $notaFiscal->readPendenteDiaMunic($data->dataEmissao, $data->codigoMunic
 if($stmt->rowCount() == 0)
     exit;
  
-include_once '../objects/notaFiscalItem.php';
+include_once '../objects/notaFiscalServicoItem.php';
 include_once '../objects/itemVenda.php';
 include_once '../objects/emitente.php';
 include_once '../objects/tomador.php';
@@ -22,7 +22,7 @@ $utilities = new Utilities();
 
 while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
 
-    $notaFiscal = new NotaFiscal($db);
+    $notaFiscal = new NotaFiscalServico($db);
     $notaFiscal->idNotaFiscal = $rNF["idNotaFiscal"];
     $notaFiscal->readOne();
 
@@ -48,7 +48,7 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $municEmitente = new Municipio($db);
     $municEmitente->buscaMunicipioModerna($emitente->codigoMunicipio);
 
-    $notaFiscalItem = new NotaFiscalItem($db);
+    $notaFiscalItem = new NotaFiscalServicoItem($db);
     $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
 
     $totalItens = 0;

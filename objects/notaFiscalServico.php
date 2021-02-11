@@ -1,8 +1,8 @@
 <?php
-class NotaFiscal{
+class NotaFiscalServico {
  
     private $conn;
-    private $tableName = "notaFiscal";
+    private $tableName = "notaFiscalServico";
  
     public $idNotaFiscal;
     public $idEmitente;
@@ -260,7 +260,7 @@ class NotaFiscal{
     // update emergencial
     function updateSituacao($situacao){
     
-        $query = "UPDATE notaFiscal set situacao = '".$situacao."' WHERE idNotaFiscal = ?";
+        $query = "UPDATE " . $this->tableName . " set situacao = '".$situacao."' WHERE idNotaFiscal = ?";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(1, $this->idNotaFiscal);
@@ -298,7 +298,7 @@ class NotaFiscal{
     // delete notaFiscal - notaFiscalItem
     function deleteCompleto(){
     
-        $query = "DELETE FROM notaFiscalItem WHERE idNotaFiscal = ?";
+        $query = "DELETE FROM notaFiscalServicoItem WHERE idNotaFiscal = ?";
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(1, $this->idNotaFiscal);
@@ -330,7 +330,7 @@ class NotaFiscal{
 
             $this->conn->beginTransaction();
 
-            $query = "DELETE FROM notaFiscalItem WHERE idNotaFiscal = ?";
+            $query = "DELETE FROM notaFiscalServicoItem WHERE idNotaFiscal = ?";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(1, $this->idNotaFiscal);
             $stmt->execute();
@@ -478,7 +478,7 @@ class NotaFiscal{
     // read notaFiscal - Pendentes por Timeout/Serv.Indisponível
     function readPendenteDiaMunic($data, $munic){
 
-        $query = "SELECT idNotaFiscal FROM notaFiscal AS nf, emitente AS e
+        $query = "SELECT idNotaFiscal FROM " . $this->tableName . " AS nf, emitente AS e
                   WHERE nf.idEmitente = e.idEmitente AND nf.situacao = 'P' AND 
                         nf.dataInclusao = :data AND e.codigoMunicipio = :idMunic
                   ORDER BY idNotaFiscal";
@@ -500,7 +500,7 @@ class NotaFiscal{
     function calcImpAprox(){
 
         // update query
-        $query = "UPDATE notaFiscalItem AS nfi, itemVenda AS iv, impostoIBPT AS ia
+        $query = "UPDATE notaFiscalServicoItem AS nfi, itemVenda AS iv, impostoIBPT AS ia
                     SET nfi.valorImpAproxFed = ((nfi.valorTotal * ia.taxaNacional)/100),
                         nfi.valorImpAproxEst = ((nfi.valorTotal * ia.taxaEstadual)/100),
                         nfi.valorImpAproxMun = ((nfi.valorTotal * ia.taxaMunicipal)/100)
@@ -517,7 +517,7 @@ class NotaFiscal{
 
             // update query
             $query = "SELECT SUM(nfi.valorImpAproxFed) AS vlTotFed, SUM(nfi.valorImpAproxEst) AS vlTotEst, SUM(nfi.valorImpAproxMun) AS vlTotMun 
-                      FROM notaFiscalItem AS nfi WHERE nfi.idNotaFiscal = :idNotaFiscal";
+                      FROM notaFiscalServicoItem AS nfi WHERE nfi.idNotaFiscal = :idNotaFiscal";
 
             // prepare query statement
             $stmt = $this->conn->prepare($query);
@@ -537,8 +537,7 @@ class NotaFiscal{
 
                 $this->obsImpostos = $msgIBPT;
                 // update query
-                $query = "UPDATE notaFiscal SET 
-                            obsImpostos = :msgIBPT
+                $query = "UPDATE " . $this->tableName . " SET obsImpostos = :msgIBPT
                           WHERE idNotaFiscal = :idNotaFiscal";
 
                 // prepare query statement

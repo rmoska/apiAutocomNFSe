@@ -7,18 +7,18 @@ class gerarPdf {
         include_once "../../fpdf/qrcode/qrcode.class.php";
         include_once "../shared/relatPDFNFe.php";
         include_once "../shared/utilities.php";
-        include_once '../objects/notaFiscal.php';
-        include_once '../objects/notaFiscalItem.php';
+        include_once '../objects/notaFiscalServico.php';
+        include_once '../objects/notaFiscalServicoItem.php';
         include_once '../objects/emitente.php';
         include_once '../objects/autorizacao.php';
         include_once '../objects/tomador.php';
         include_once '../objects/municipio.php';
 
-        $notaFiscal = new NotaFiscal($db);
+        $notaFiscal = new NotaFiscalServico($db);
         $notaFiscal->idNotaFiscal = $idNotaFiscal;
         $notaFiscal->readOne();
 
-        $notaFiscalItem = new NotaFiscalItem($db);
+        $notaFiscalItem = new NotaFiscalServicoItem($db);
         $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
 
         $emitente = new Emitente($db);

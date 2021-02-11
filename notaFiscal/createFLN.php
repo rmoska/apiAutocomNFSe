@@ -51,7 +51,7 @@ foreach ( $data->itemServico as $item )
     }
     
     $itemVenda = new ItemVenda($db);
-    $notaFiscalItem = new NotaFiscalItem($db);
+    $notaFiscalItem = new NotaFiscalServicoItem($db);
 
     $itemVenda->codigo = $item->codigo;
     if (($idItemVenda = $itemVenda->check()) > 0) {
@@ -110,7 +110,7 @@ foreach ( $data->itemServico as $item )
         $notaFiscalItem->valorIss = 0.00;
     }
 
-    $retorno = $notaFiscalItem->create();
+    $retorno = $notaFiscalServicoItem->create();
     if(!$retorno[0]){
 
         $db->rollBack();
@@ -397,9 +397,6 @@ else {
         exit;
     }
     else {
-
-        //$notaFiscal->deleteCompletoTransaction();
-        //$notaFiscal->updateSituacao("E");
 
         $msg = $result;
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] result = (".$msg.")\n"), 3, "../arquivosNFSe/apiErrors.log");
