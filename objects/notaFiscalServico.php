@@ -15,22 +15,15 @@ class NotaFiscalServico {
     public $idEntradaSaida;
     public $idTomador;
     public $cfop;
-    public $naturezaOperacao;
-    public $idFinalidade;
     public $dataInclusao;
     public $dataEmissao;
     public $dataProcessamento;
     public $situacao;
     public $ambiente;
-    public $reciboNF;
-    public $protocoloNF;
     public $textoResposta;
     public $textoJustificativa;
     public $dataCancelamento;
-    public $valorTotalMercadorias;
     public $valorTotal;
-    public $valorFrete;
-    public $valorSeguro;
     public $valorOutrasDespesas;
     public $valorDesconto;
     public $obsImpostos;
@@ -50,14 +43,11 @@ class NotaFiscalServico {
         $query = "INSERT INTO " . $this->tableName . " SET
                     idEmitente=:idEmitente, numero=:numero, serie=:serie, chaveNF=:chaveNF, 
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
-                    idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
-                    cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
+                    idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, cfop=:cfop, 
                     dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, dataProcessamento=:dataProcessamento,
-                    situacao=:situacao, ambiente=:ambiente,
-                    reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
+                    situacao=:situacao, ambiente=:ambiente, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
-                    valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
-                    valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
+                    valorTotal=:valorTotal, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
                     obsImpostos=:obsImpostos, dadosAdicionais=:dadosAdicionais, linkNF=:linkNF, linkXml=:linkXml";
         $stmt = $this->conn->prepare($query);
 
@@ -72,22 +62,15 @@ class NotaFiscalServico {
         $this->idEntradaSaida=htmlspecialchars(strip_tags($this->idEntradaSaida));
         $this->idTomador=htmlspecialchars(strip_tags($this->idTomador));
         $this->cfop=htmlspecialchars(strip_tags($this->cfop));
-        $this->naturezaOperacao=htmlspecialchars(strip_tags($this->naturezaOperacao));
-        $this->idFinalidade=htmlspecialchars(strip_tags($this->idFinalidade));
         $this->dataInclusao=htmlspecialchars(strip_tags($this->dataInclusao));
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
         $this->dataProcessamento=htmlspecialchars(strip_tags($this->dataProcessamento));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
         $this->ambiente=htmlspecialchars(strip_tags($this->ambiente));
-        $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
-        $this->protocoloNF=htmlspecialchars(strip_tags($this->protocoloNF));
         $this->textoResposta=htmlspecialchars(strip_tags($this->textoResposta));
         $this->textoJustificativa=htmlspecialchars(strip_tags($this->textoJustificativa));
         $this->dataCancelamento=htmlspecialchars(strip_tags($this->dataCancelamento));
-        $this->valorTotalMercadorias=htmlspecialchars(strip_tags($this->valorTotalMercadorias));
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
-        $this->valorFrete=htmlspecialchars(strip_tags($this->valorFrete));
-        $this->valorSeguro=htmlspecialchars(strip_tags($this->valorSeguro));
         $this->valorOutrasDespesas=htmlspecialchars(strip_tags($this->valorOutrasDespesas));
         $this->valorDesconto=htmlspecialchars(strip_tags($this->valorDesconto));
         $this->obsImpostos=htmlspecialchars(strip_tags($this->obsImpostos));
@@ -106,8 +89,6 @@ class NotaFiscalServico {
         $stmt->bindParam(":idEntradaSaida", $this->idEntradaSaida);
         $stmt->bindParam(":idTomador", $this->idTomador);
         $stmt->bindParam(":cfop", $this->cfop);
-        $stmt->bindParam(":naturezaOperacao", $this->naturezaOperacao);
-        $stmt->bindParam(":idFinalidade", $this->idFinalidade);
         $stmt->bindParam(":dataInclusao", $this->dataInclusao);
         $stmt->bindParam(":dataEmissao", $this->dataEmissao);
         if (($this->dataProcessamento == "NULL") || ($this->dataProcessamento == "") || ($this->dataProcessamento == "0000-00-00"))
@@ -116,18 +97,13 @@ class NotaFiscalServico {
             $stmt->bindParam(":dataProcessamento", $this->dataProcessamento, PDO::PARAM_NULL);
         $stmt->bindParam(":situacao", $this->situacao);
         $stmt->bindParam(":ambiente", $this->ambiente);
-        $stmt->bindParam(":reciboNF", $this->reciboNF);
-        $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
         $stmt->bindParam(":textoJustificativa", $this->textoJustificativa);
         if (($this->dataCancelamento == "NULL") || ($this->dataCancelamento == "") || ($this->dataCancelamento == "0000-00-00"))
             $stmt->bindValue(":dataCancelamento", NULL, PDO::PARAM_NULL);
         else
             $stmt->bindParam(":dataCancelamento", $this->dataCancelamento, PDO::PARAM_NULL);
-        $stmt->bindParam(":valorTotalMercadorias", $this->valorTotalMercadorias);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
-        $stmt->bindParam(":valorFrete", $this->valorFrete);
-        $stmt->bindParam(":valorSeguro", $this->valorSeguro);
         $stmt->bindParam(":valorOutrasDespesas", $this->valorOutrasDespesas);
         $stmt->bindParam(":valorDesconto", $this->valorDesconto);
         $stmt->bindParam(":obsImpostos", $this->obsImpostos);
@@ -155,14 +131,11 @@ class NotaFiscalServico {
         $query = "UPDATE " . $this->tableName . " SET
                     idEmitente=:idEmitente, numero=:numero, serie=:serie, chaveNF=:chaveNF, 
                     docOrigemTipo=:docOrigemTipo, docOrigemNumero=:docOrigemNumero, docOrigemParcela=:docOrigemParcela, 
-                    idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, 
-                    cfop=:cfop, naturezaOperacao=:naturezaOperacao, idFinalidade=:idFinalidade, 
+                    idEntradaSaida=:idEntradaSaida, idTomador=:idTomador, cfop=:cfop, 
                     dataInclusao=:dataInclusao, dataEmissao=:dataEmissao, dataProcessamento=:dataProcessamento,
-                    situacao=:situacao, ambiente=:ambiente,
-                    reciboNF=:reciboNF, protocoloNF=:protocoloNF, textoResposta=:textoResposta,
+                    situacao=:situacao, ambiente=:ambiente, textoResposta=:textoResposta,
                     textoJustificativa=:textoJustificativa, dataCancelamento=:dataCancelamento, 
-                    valorTotalMercadorias=:valorTotalMercadorias, valorTotal=:valorTotal, valorFrete=:valorFrete,
-                    valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
+                    valorTotal=:valorTotal, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
                     obsImpostos=:obsImpostos, dadosAdicionais=:dadosAdicionais, linkNF=:linkNF, linkXml=:linkXml
                   WHERE
                     idNotaFiscal = :idNotaFiscal";
@@ -180,22 +153,15 @@ class NotaFiscalServico {
         $this->idEntradaSaida=htmlspecialchars(strip_tags($this->idEntradaSaida));
         $this->idTomador=htmlspecialchars(strip_tags($this->idTomador));
         $this->cfop=htmlspecialchars(strip_tags($this->cfop));
-        $this->naturezaOperacao=htmlspecialchars(strip_tags($this->naturezaOperacao));
-        $this->idFinalidade=htmlspecialchars(strip_tags($this->idFinalidade));
         $this->dataInclusao=htmlspecialchars(strip_tags($this->dataInclusao));
         $this->dataEmissao=htmlspecialchars(strip_tags($this->dataEmissao));
         $this->dataProcessamento=htmlspecialchars(strip_tags($this->dataProcessamento));
         $this->situacao=htmlspecialchars(strip_tags($this->situacao));
         $this->ambiente=htmlspecialchars(strip_tags($this->ambiente));
-        $this->reciboNF=htmlspecialchars(strip_tags($this->reciboNF));
-        $this->protocoloNF=htmlspecialchars(strip_tags($this->protocoloNF));
         $this->textoResposta=htmlspecialchars(strip_tags($this->textoResposta));
         $this->textoJustificativa=htmlspecialchars(strip_tags($this->textoJustificativa));
         $this->dataCancelamento=htmlspecialchars(strip_tags($this->dataCancelamento));
-        $this->valorTotalMercadorias=htmlspecialchars(strip_tags($this->valorTotalMercadorias));
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
-        $this->valorFrete=htmlspecialchars(strip_tags($this->valorFrete));
-        $this->valorSeguro=htmlspecialchars(strip_tags($this->valorSeguro));
         $this->valorOutrasDespesas=htmlspecialchars(strip_tags($this->valorOutrasDespesas));
         $this->valorDesconto=htmlspecialchars(strip_tags($this->valorDesconto));
         $this->obsImpostos=htmlspecialchars(strip_tags($this->obsImpostos));
@@ -215,8 +181,6 @@ class NotaFiscalServico {
         $stmt->bindParam(":idEntradaSaida", $this->idEntradaSaida);
         $stmt->bindParam(":idTomador", $this->idTomador);
         $stmt->bindParam(":cfop", $this->cfop);
-        $stmt->bindParam(":naturezaOperacao", $this->naturezaOperacao);
-        $stmt->bindParam(":idFinalidade", $this->idFinalidade);
         $stmt->bindParam(":dataInclusao", $this->dataInclusao);
         $stmt->bindParam(":dataEmissao", $this->dataEmissao);
         if (($this->dataProcessamento == "NULL") || ($this->dataProcessamento == "") || ($this->dataProcessamento == "0000-00-00"))
@@ -225,18 +189,13 @@ class NotaFiscalServico {
             $stmt->bindParam(":dataProcessamento", $this->dataProcessamento, PDO::PARAM_NULL);
         $stmt->bindParam(":situacao", $this->situacao);
         $stmt->bindParam(":ambiente", $this->ambiente);
-        $stmt->bindParam(":reciboNF", $this->reciboNF);
-        $stmt->bindParam(":protocoloNF", $this->protocoloNF);
         $stmt->bindParam(":textoResposta", $this->textoResposta);
         $stmt->bindParam(":textoJustificativa", $this->textoJustificativa);
         if (($this->dataCancelamento == "NULL") || ($this->dataCancelamento == "") || ($this->dataCancelamento == "0000-00-00"))
             $stmt->bindValue(":dataCancelamento", NULL, PDO::PARAM_NULL);
         else
             $stmt->bindParam(":dataCancelamento", $this->dataCancelamento, PDO::PARAM_NULL);
-        $stmt->bindParam(":valorTotalMercadorias", $this->valorTotalMercadorias);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
-        $stmt->bindParam(":valorFrete", $this->valorFrete);
-        $stmt->bindParam(":valorSeguro", $this->valorSeguro);
         $stmt->bindParam(":valorOutrasDespesas", $this->valorOutrasDespesas);
         $stmt->bindParam(":valorDesconto", $this->valorDesconto);
         $stmt->bindParam(":obsImpostos", $this->obsImpostos);
@@ -395,22 +354,15 @@ class NotaFiscalServico {
         $this->idEntradaSaida = $row['idEntradaSaida'];
         $this->idTomador = $row['idTomador'];
         $this->cfop = $row['cfop'];
-        $this->naturezaOperacao = $row['naturezaOperacao'];
-        $this->idFinalidade = $row['idFinalidade'];
         $this->dataInclusao = $row['dataInclusao'];
         $this->dataEmissao = $row['dataEmissao'];
         $this->dataProcessamento = $row['dataProcessamento'];
         $this->situacao = $row['situacao'];
         $this->ambiente = $row['ambiente'];
-        $this->reciboNF = $row['reciboNF'];
-        $this->protocoloNF = $row['protocoloNF'];
         $this->textoResposta = $row['textoResposta'];
         $this->textoJustificativa = $row['textoJustificativa'];
         $this->dataCancelamento = $row['dataCancelamento'];
-        $this->valorTotalMercadorias = $row['valorTotalMercadorias'];
         $this->valorTotal = $row['valorTotal'];
-        $this->valorFrete = $row['valorFrete'];
-        $this->valorSeguro = $row['valorSeguro'];
         $this->valorOutrasDespesas = $row['valorOutrasDespesas'];
         $this->valorDesconto = $row['valorDesconto'];
         $this->obsImpostos = $row['obsImpostos'];

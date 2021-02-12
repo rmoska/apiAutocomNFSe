@@ -14,26 +14,13 @@ class NotaFiscalServicoItem{
     public $unidade; 
     public $quantidade; 
     public $valorUnitario; 
-    public $valorUnitarioLiquido; 
     public $valorTotal; 
-    public $valorTotalLiquido; 
     public $cnae; 
     public $codigoServico; 
     public $cstIss; 
     public $valorBCIss; 
     public $taxaIss; 
     public $valorIss; 
-    public $cfop; 
-    public $origem; 
-    public $cstIcms; 
-    public $valorBCIcms; 
-    public $taxaIcms; 
-    public $valorIcms; 
-    public $taxaReducaoBC; 
-    public $taxaMVA; 
-    public $valorBCST; 
-    public $taxaST; 
-    public $valorST; 
     public $cstPis; 
     public $valorBCPis; 
     public $taxaPis; 
@@ -42,8 +29,6 @@ class NotaFiscalServicoItem{
     public $valorBCCofins; 
     public $taxaCofins; 
     public $valorCofins; 
-    public $valorFrete; 
-    public $valorSeguro; 
     public $valorOutrasDespesas; 
     public $valorDesconto; 
     public $valorImpAproxFed; 
@@ -61,16 +46,15 @@ class NotaFiscalServicoItem{
 
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET 
-                    idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
-                    quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
-                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, codigoServico=:codigoServico, 
+                    idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, 
+                    unidade=:unidade, quantidade=:quantidade, valorUnitario=:valorUnitario, 
+                    valorTotal=:valorTotal, cnae=:cnae, codigoServico=:codigoServico, 
                     cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
-                    cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
-                    taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST, 
                     cstPis=:cstPis, valorBCPis=:valorBCPis, taxaPis=:taxaPis, valorPis=:valorPis,
                     cstCofins=:cstCofins, valorBCCofins=:valorBCCofins, taxaCofins=:taxaCofins, valorCofins=:valorCofins,
-                    valorFrete=:valorFrete, valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
-                    valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, valorImpAproxMun=:valorImpAproxMun, observacao=:observacao";
+                    valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
+                    valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, 
+                    valorImpAproxMun=:valorImpAproxMun, observacao=:observacao";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -82,26 +66,13 @@ class NotaFiscalServicoItem{
         $this->unidade=htmlspecialchars(strip_tags($this->unidade));
         $this->quantidade=htmlspecialchars(strip_tags($this->quantidade));
         $this->valorUnitario=htmlspecialchars(strip_tags($this->valorUnitario));
-        $this->valorUnitarioLiquido=htmlspecialchars(strip_tags($this->valorUnitarioLiquido));
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
-        $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
         $this->codigoServico=htmlspecialchars(strip_tags($this->codigoServico));
         $this->cstIss=htmlspecialchars(strip_tags($this->cstIss));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
-        $this->cfop=htmlspecialchars(strip_tags($this->cfop));
-        $this->origem=htmlspecialchars(strip_tags($this->origem));
-        $this->cstIcms=htmlspecialchars(strip_tags($this->cstIcms));
-        $this->valorBCIcms=htmlspecialchars(strip_tags($this->valorBCIcms));
-        $this->taxaIcms=htmlspecialchars(strip_tags($this->taxaIcms));
-        $this->valorIcms=htmlspecialchars(strip_tags($this->valorIcms));
-        $this->taxaReducaoBC=htmlspecialchars(strip_tags($this->taxaReducaoBC));
-        $this->taxaMVA=htmlspecialchars(strip_tags($this->taxaMVA));
-        $this->valorBCST=htmlspecialchars(strip_tags($this->valorBCST));
-        $this->taxaST=htmlspecialchars(strip_tags($this->taxaST));
-        $this->valorST=htmlspecialchars(strip_tags($this->valorST));
         $this->cstPis=htmlspecialchars(strip_tags($this->cstPis));
         $this->valorBCPis=htmlspecialchars(strip_tags($this->valorBCPis));
         $this->taxaPis=htmlspecialchars(strip_tags($this->taxaPis));
@@ -110,8 +81,6 @@ class NotaFiscalServicoItem{
         $this->valorBCCofins=htmlspecialchars(strip_tags($this->valorBCCofins));
         $this->taxaCofins=htmlspecialchars(strip_tags($this->taxaCofins));
         $this->valorCofins=htmlspecialchars(strip_tags($this->valorCofins));
-        $this->valorFrete=htmlspecialchars(strip_tags($this->valorFrete));
-        $this->valorSeguro=htmlspecialchars(strip_tags($this->valorSeguro));
         $this->valorOutrasDespesas=htmlspecialchars(strip_tags($this->valorOutrasDespesas));
         $this->valorDesconto=htmlspecialchars(strip_tags($this->valorDesconto));
         $this->valorImpAproxFed=htmlspecialchars(strip_tags($this->valorImpAproxFed));
@@ -125,26 +94,13 @@ class NotaFiscalServicoItem{
         $stmt->bindParam(":unidade", $this->unidade);
         $stmt->bindParam(":quantidade", $this->quantidade);
         $stmt->bindParam(":valorUnitario", $this->valorUnitario);
-        $stmt->bindParam(":valorUnitarioLiquido", $this->valorUnitarioLiquido);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
-        $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":codigoServico", $this->codigoServico);
         $stmt->bindParam(":cstIss", $this->cstIss);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
-        $stmt->bindParam(":cfop", $this->cfop);
-        $stmt->bindParam(":origem", $this->origem);
-        $stmt->bindParam(":cstIcms", $this->cstIcms);
-        $stmt->bindParam(":valorBCIcms", $this->valorBCIcms);
-        $stmt->bindParam(":taxaIcms", $this->taxaIcms);
-        $stmt->bindParam(":valorIcms", $this->valorIcms);
-        $stmt->bindParam(":taxaReducaoBC", $this->taxaReducaoBC);
-        $stmt->bindParam(":taxaMVA", $this->taxaMVA);
-        $stmt->bindParam(":valorBCST", $this->valorBCST);
-        $stmt->bindParam(":taxaST", $this->taxaST);
-        $stmt->bindParam(":valorST", $this->valorST);
         $stmt->bindParam(":cstPis", $this->cstPis);
         $stmt->bindParam(":valorBCPis", $this->valorBCPis);
         $stmt->bindParam(":taxaPis", $this->taxaPis);
@@ -153,8 +109,6 @@ class NotaFiscalServicoItem{
         $stmt->bindParam(":valorBCCofins", $this->valorBCCofins);
         $stmt->bindParam(":taxaCofins", $this->taxaCofins);
         $stmt->bindParam(":valorCofins", $this->valorCofins);
-        $stmt->bindParam(":valorFrete", $this->valorFrete);
-        $stmt->bindParam(":valorSeguro", $this->valorSeguro);
         $stmt->bindParam(":valorOutrasDespesas", $this->valorOutrasDespesas);
         $stmt->bindParam(":valorDesconto", $this->valorDesconto);
         $stmt->bindParam(":valorImpAproxFed", $this->valorImpAproxFed);
@@ -179,16 +133,15 @@ class NotaFiscalServicoItem{
     
         // update query
         $query = "UPDATE " . $this->tableName . " SET
-                    idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, unidade=:unidade, 
-                    quantidade=:quantidade, valorUnitario=:valorUnitario, valorUnitarioLiquido=:valorUnitarioLiquido, 
-                    valorTotal=:valorTotal, valorTotalLiquido=:valorTotalLiquido, cnae=:cnae, codigoServico=:codigoServico, 
+                    idNotaFiscal=:idNotaFiscal, numeroOrdem=:numeroOrdem, idItemVenda=:idItemVenda, 
+                    unidade=:unidade, quantidade=:quantidade, valorUnitario=:valorUnitario, 
+                    valorTotal=:valorTotal, cnae=:cnae, codigoServico=:codigoServico, 
                     cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
-                    cfop=:cfop, origem=:origem, cstIcms=:cstIcms, valorBCIcms=:valorBCIcms, taxaIcms=:taxaIcms, valorIcms=:valorIcms, 
-                    taxaReducaoBC=:taxaReducaoBC, taxaMVA=:taxaMVA, valorBCST=:valorBCST, taxaST=:taxaST, valorST=:valorST, 
                     cstPis=:cstPis, valorBCPis=:valorBCPis, taxaPis=:taxaPis, valorPis=:valorPis,
                     cstCofins=:cstCofins, valorBCCofins=:valorBCCofins, taxaCofins=:taxaCofins, valorCofins=:valorCofins,
-                    valorFrete=:valorFrete, valorSeguro=:valorSeguro, valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
-                    valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, valorImpAproxMun=:valorImpAproxMun, observacao=:observacao
+                    valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
+                    valorImpAproxFed=:valorImpAproxFed, valorImpAproxEst=:valorImpAproxEst, 
+                    valorImpAproxMun=:valorImpAproxMun, observacao=:observacao
                   WHERE
                     idNotaFiscal = :idNotaFiscal";
     
@@ -202,26 +155,13 @@ class NotaFiscalServicoItem{
         $this->unidade=htmlspecialchars(strip_tags($this->unidade));
         $this->quantidade=htmlspecialchars(strip_tags($this->quantidade));
         $this->valorUnitario=htmlspecialchars(strip_tags($this->valorUnitario));
-        $this->valorUnitarioLiquido=htmlspecialchars(strip_tags($this->valorUnitarioLiquido));
         $this->valorTotal=htmlspecialchars(strip_tags($this->valorTotal));
-        $this->valorTotalLiquido=htmlspecialchars(strip_tags($this->valorTotalLiquido));
         $this->cnae=htmlspecialchars(strip_tags($this->cnae));
         $this->codigoServico=htmlspecialchars(strip_tags($this->codigoServico));
         $this->cstIss=htmlspecialchars(strip_tags($this->cstIss));
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
-        $this->cfop=htmlspecialchars(strip_tags($this->cfop));
-        $this->origem=htmlspecialchars(strip_tags($this->origem));
-        $this->cstIcms=htmlspecialchars(strip_tags($this->cstIcms));
-        $this->valorBCIcms=htmlspecialchars(strip_tags($this->valorBCIcms));
-        $this->taxaIcms=htmlspecialchars(strip_tags($this->taxaIcms));
-        $this->valorIcms=htmlspecialchars(strip_tags($this->valorIcms));
-        $this->taxaReducaoBC=htmlspecialchars(strip_tags($this->taxaReducaoBC));
-        $this->taxaMVA=htmlspecialchars(strip_tags($this->taxaMVA));
-        $this->valorBCST=htmlspecialchars(strip_tags($this->valorBCST));
-        $this->taxaST=htmlspecialchars(strip_tags($this->taxaST));
-        $this->valorST=htmlspecialchars(strip_tags($this->valorST));
         $this->cstPis=htmlspecialchars(strip_tags($this->cstPis));
         $this->valorBCPis=htmlspecialchars(strip_tags($this->valorBCPis));
         $this->taxaPis=htmlspecialchars(strip_tags($this->taxaPis));
@@ -230,8 +170,6 @@ class NotaFiscalServicoItem{
         $this->valorBCCofins=htmlspecialchars(strip_tags($this->valorBCCofins));
         $this->taxaCofins=htmlspecialchars(strip_tags($this->taxaCofins));
         $this->valorCofins=htmlspecialchars(strip_tags($this->valorCofins));
-        $this->valorFrete=htmlspecialchars(strip_tags($this->valorFrete));
-        $this->valorSeguro=htmlspecialchars(strip_tags($this->valorSeguro));
         $this->valorOutrasDespesas=htmlspecialchars(strip_tags($this->valorOutrasDespesas));
         $this->valorDesconto=htmlspecialchars(strip_tags($this->valorDesconto));
         $this->valorImpAproxFed=htmlspecialchars(strip_tags($this->valorImpAproxFed));
@@ -246,26 +184,13 @@ class NotaFiscalServicoItem{
         $stmt->bindParam(":unidade", $this->unidade);
         $stmt->bindParam(":quantidade", $this->quantidade);
         $stmt->bindParam(":valorUnitario", $this->valorUnitario);
-        $stmt->bindParam(":valorUnitarioLiquido", $this->valorUnitarioLiquido);
         $stmt->bindParam(":valorTotal", $this->valorTotal);
-        $stmt->bindParam(":valorTotalLiquido", $this->valorTotalLiquido);
         $stmt->bindParam(":cnae", $this->cnae);
         $stmt->bindParam(":codigoServico", $this->codigoServico);
         $stmt->bindParam(":cstIss", $this->cstIss);
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
-        $stmt->bindParam(":cfop", $this->cfop);
-        $stmt->bindParam(":origem", $this->origem);
-        $stmt->bindParam(":cstIcms", $this->cstIcms);
-        $stmt->bindParam(":valorBCIcms", $this->valorBCIcms);
-        $stmt->bindParam(":taxaIcms", $this->taxaIcms);
-        $stmt->bindParam(":valorIcms", $this->valorIcms);
-        $stmt->bindParam(":taxaReducaoBC", $this->taxaReducaoBC);
-        $stmt->bindParam(":taxaMVA", $this->taxaMVA);
-        $stmt->bindParam(":valorBCST", $this->valorBCST);
-        $stmt->bindParam(":taxaST", $this->taxaST);
-        $stmt->bindParam(":valorST", $this->valorST);
         $stmt->bindParam(":cstPis", $this->cstPis);
         $stmt->bindParam(":valorBCPis", $this->valorBCPis);
         $stmt->bindParam(":taxaPis", $this->taxaPis);
@@ -274,8 +199,6 @@ class NotaFiscalServicoItem{
         $stmt->bindParam(":valorBCCofins", $this->valorBCCofins);
         $stmt->bindParam(":taxaCofins", $this->taxaCofins);
         $stmt->bindParam(":valorCofins", $this->valorCofins);
-        $stmt->bindParam(":valorFrete", $this->valorFrete);
-        $stmt->bindParam(":valorSeguro", $this->valorSeguro);
         $stmt->bindParam(":valorOutrasDespesas", $this->valorOutrasDespesas);
         $stmt->bindParam(":valorDesconto", $this->valorDesconto);
         $stmt->bindParam(":valorImpAproxFed", $this->valorImpAproxFed);
@@ -409,8 +332,6 @@ class NotaFiscalServicoItem{
         $this->valorBCIss = $row['valorBCIss'];
         $this->taxaIss = $row['taxaIss'];
         $this->valorIss = $row['valorIss'];
-        $this->cfop = $row['cfop'];
-        $this->origem = $row['origem'];
         $this->valorDesconto = $row['valorDesconto'];
         $this->valorImpAproxFed = $row['valorImpAproxFed'];
         $this->valorImpAproxEst = $row['valorImpAproxEst'];
