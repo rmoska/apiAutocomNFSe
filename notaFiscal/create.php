@@ -43,7 +43,7 @@ $logMsg = new LogMsg($db);
 
 $cfg = new Config($db);
 $cfg->info();
-if (($cfg->ambiente1 != 'H') && ($cfg->ambiente1 != 'P')) {
+if (($cfg->ambiente != 'H') && ($cfg->ambiente != 'P')) {
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal. Ambiente não configurado.", "codigo" => "A01"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível emitir Nota Fiscal. Ambiente não configurado. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
