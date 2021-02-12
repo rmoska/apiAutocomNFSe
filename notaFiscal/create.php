@@ -145,8 +145,6 @@ if ($checkNF["existe"] > 0) {
     exit;
 }
 
-$logMsg->register('E', 'notaFiscal.create', $emitente->codigoMunicipio, $strData);
-
 //
 // classes específicas por município
 switch ($emitente->codigoMunicipio) {
