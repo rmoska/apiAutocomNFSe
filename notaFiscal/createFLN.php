@@ -7,6 +7,9 @@ else if ($tomador->codigoMunicipio != '4205407') $cfps = '9202';
 else $cfps = '9201';
 $notaFiscal->cfop = $cfps;
 
+
+$logMsg->register('E', 'notaFiscal.createFLN', $checkNF["idNotaFiscal"], $strData);
+
 //
 // abre transação itemVenda - notaFiscal - notaFiscalItem
 $db->beginTransaction();
