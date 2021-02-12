@@ -41,7 +41,7 @@ $database = new Database();
 $db = $database->getConnection();
 $logMsg = new LogMsg($db);
 
-$cfg = new Config();
+$cfg = new Config($db);
 $cfg->info();
 if (($cfg->ambiente1 != 'H') && ($cfg->ambiente1 != 'P')) {
     http_response_code(400);
