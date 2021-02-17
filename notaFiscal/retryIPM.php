@@ -263,7 +263,7 @@ else {
                                 "message" => "Erro no envio da NFSe !", 
                                 "resposta" => $msgRet, 
                                 "codigo" => $codMsg));
-        logErro($db, "0", $arrErr, NULL);
+//        logErro($db, "0", $arrErr, NULL);
         return;
     }
 }
