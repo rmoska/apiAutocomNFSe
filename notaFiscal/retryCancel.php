@@ -51,7 +51,7 @@ $stmt = $notaFiscal->readPendente();
 if($stmt->rowCount() == 0)
     exit;
  
-include_once '../objects/notaFiscalItem.php';
+include_once '../objects/notaFiscalServicoItem.php';
 include_once '../objects/itemVenda.php';
 include_once '../objects/emitente.php';
 include_once '../objects/tomador.php';
