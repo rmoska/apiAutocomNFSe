@@ -71,7 +71,7 @@
         if ($notaFiscalItem->observacao > '')
             $nmProd .= ' - '.$notaFiscalItem->observacao;
         $xml->writeElement("descricaoServico", trim($nmProd));
-        $xml->writeElement("idCNAE", trim($notaFiscalItem->cnae));
+        $xml->writeElement("idCNAE", trim($notaFiscalItem->codigoServico));
         $xml->writeElement("cst", $notaFiscalItem->cstIss);
         $xml->writeElement("aliquota", number_format(($notaFiscalItem->taxaIss/100),4,'.',''));
         $xml->writeElement("quantidade", number_format($notaFiscalItem->quantidade,0,'.',''));
