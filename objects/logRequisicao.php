@@ -9,7 +9,7 @@ class LogRequisicao {
     public $idLogRequisicao;
     public $dataHora;
     public $origem;
-    public $idEmitente;
+    public $documento;
     public $idVenda;
     public $requisicao;
  
@@ -23,19 +23,19 @@ class LogRequisicao {
     
         $query = "INSERT INTO " . $this->tableName . " SET
                     dataHora=:dataHora, origem=:origem, 
-                    idEmitente=:idEmitente, idVenda=:idVenda, requisicao=:requisicao";
+                    documento=:documento, idVenda=:idVenda, requisicao=:requisicao";
 
         $stmt = $this->conn->prepare($query);
 
         $this->origem=htmlspecialchars(strip_tags($this->origem));
-        $this->idEmitente=htmlspecialchars(strip_tags($this->idEmitente));
+        $this->documento=htmlspecialchars(strip_tags($this->documento));
         $this->idVenda=htmlspecialchars(strip_tags($this->idVenda));
         $this->requisicao=htmlspecialchars(strip_tags($this->requisicao), ENT_NOQUOTES);
     
         $dtHr = date('Y-m-d H:i:s');
         $stmt->bindParam(":dataHora", $dtHr);
         $stmt->bindParam(":origem", $this->origem);
-        $stmt->bindParam(":idEmitente", $this->idEmitente);
+        $stmt->bindParam(":documento", $this->documento);
         $stmt->bindParam(":idVenda", $this->idVenda);
         $stmt->bindParam(":requisicao", $this->requisicao);
 

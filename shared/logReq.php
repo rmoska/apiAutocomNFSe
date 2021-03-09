@@ -9,13 +9,13 @@ class LogReq {
         $this->conn = $db;
     }
     
-    public function register($origem, $requisicao, $idEmitente = "", $idVenda = "") { // parametros com default devem vir no final
+    public function register($origem, $requisicao, $documento = "", $idVenda = "") { // parametros com default devem vir no final
 
         include_once '../objects/logRequisicao.php';
         $logReq = new LogRequisicao($this->conn);
     
         $logReq->origem = $origem;
-        $logReq->idEmitente = $idEmitente;
+        $logReq->documento = $documento;
         $logReq->idVenda = $idVenda;
         $logReq->requisicao = $requisicao;
 
