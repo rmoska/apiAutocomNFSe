@@ -55,6 +55,9 @@ if (($cfg->ambiente != 'H') && ($cfg->ambiente != 'P')) {
 $data = json_decode(file_get_contents("php://input"));
 $strData = json_encode($data);
 
+$logReq = new LogReq($db);
+$logReq->register('notaFiscal.create', $strData, $data->documento, $data->docOrigemNumero);
+
 //
 // confere e busca Emitente
 if(empty($data->documento)) {
@@ -155,6 +158,8 @@ switch ($emitente->codigoMunicipio) {
         $arqPhp = 'createSINTESE.php'; break;
     case '3550308': // SP - São Paulo
         $arqPhp = 'createSPL.php'; break;
+    case '3548708': // SP - São Bernardo do Campo
+        $arqPhp = 'createGINFES.php'; break;
     case '4205407': // SC - Florianópolis ==> OK
         $arqPhp = 'createFLN.php'; break;
     case '4216602': // SC - São José
