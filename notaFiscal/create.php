@@ -57,7 +57,7 @@ $data = json_decode(file_get_contents("php://input"));
 $strData = json_encode($data);
 
 $logReq = new LogReq($db);
-$logReq->register('notaFiscal.create', $strData, $data->documento, $data->docOrigemNumero);
+$logReq->register('notaFiscal.create', $strData, $data->documento, $data->idVenda);
 
 //
 // confere e busca Emitente
