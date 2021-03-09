@@ -19,6 +19,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../shared/http_response_code.php';
 include_once '../shared/logMsg.php';
+include_once '../shared/logReq.php';
 include_once '../objects/emitente.php';
 
 $dirAPI = basename(dirname(dirname( __FILE__ )));
@@ -30,6 +31,8 @@ $logMsg = new LogMsg($db);
  
 $data = json_decode(file_get_contents("php://input"));
 $strData = json_encode($data); // armazena para log
+$logReq = new LogReq($db);
+$logReq->register('autorizacao.update', $strData, $data->documento, '');
 
 // confere idEmitente e documento prenchido
 if(empty($data->idEmitente) || empty($data->documento)) {
