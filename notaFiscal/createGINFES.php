@@ -329,7 +329,7 @@ $retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss , 'EnviarLoteRpsEnvio', $emite
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
 
-error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv." = ".$infoRet."\n"), 3, "../arquivosNFSe/envNFSe.log");
+//error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv." = ".$infoRet."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 
 print_r($result);

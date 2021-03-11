@@ -712,6 +712,9 @@ class comunicaNFSe {
 
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($data, $action, 'S');
+
+error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".implode($retorno)."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
             //verifica o retorno
             if (! $retorno) {
                 return array(false, 'URL de Comunicação inválida !');
