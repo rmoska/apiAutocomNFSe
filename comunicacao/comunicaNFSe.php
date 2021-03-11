@@ -707,7 +707,7 @@ class comunicaNFSe {
 
 
 
-//            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 
             //envia dados via SOAP
