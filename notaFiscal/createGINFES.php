@@ -200,7 +200,8 @@ $municTomadorTOM = $municipioTomador->buscaMunicipioTOM($tomador->codigoMunicipi
 if ($aAutoChave["incentivoCultural"] > '') $idIncCultural = $aAutoChave["incentivoCultural"];
 else $idIncCultural = '2'; // Não
 $dtEm = date("Y-m-d");
-$codigoServico = new codigoServico();
+
+$codigoServico = new codigoServico($db);
 $descServico = $codigoServico->buscaServico('LC116', $codServ);
 //
 // monta XML
