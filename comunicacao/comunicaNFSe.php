@@ -669,6 +669,64 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
+    public function transmitirNFSeGINFES( $sXml, $servico, $codMunic) {
+
+        try {
+
+            if ($this->ambiente=='H') // homologação
+                $codMunic .= '-H'; 
+
+            $this->defineURL($codMunic, $servico);
+            
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
+                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
+            }
+
+            // limpa a variavel
+            $sNFSe = $sXml;
+            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+
+            $data =
+            '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hom="http://homologacao.ginfes.com.br">
+            <soapenv:Header/>
+            <soapenv:Body>
+            <hom:RecepcionarLoteRpsV3>
+            <arg0>
+            <ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+               <versaoDados>3</versaoDados>
+            </ns2:cabecalho>
+            </arg0>
+            <arg1>'.$sNFSe.
+            '</arg1>
+            </hom:RecepcionarLoteRpsV3>
+            </soapenv:Body>
+            </soapenv:Envelope>';
+
+
+
+//            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($data, $action, 'S');
+            //verifica o retorno
+            if (! $retorno) {
+                return array(false, 'URL de Comunicação inválida !');
+            }
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+
+        return $retorno;
+    }
+
+
+    //
+    // define namespace / url e chama soap
     public function transmitirNFSeABRASF1_0( $sXml, $servico, $codMunic) {
 
         try {
@@ -679,8 +737,7 @@ class comunicaNFSe {
             $this->defineURL($codMunic, $servico);
 
 //            $action = "http://www.e-governeapps2.com.br/WS_x0020_-_x0020_NFS-e_x0020_V1.0.0.1Soap/".$servico;
-
-            http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
+//            http://tempuri.org/IEnvioLoteRPS/EnviarLoteRPS
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {

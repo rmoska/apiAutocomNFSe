@@ -202,7 +202,8 @@ else $idIncCultural = '2'; // Não
 $dtEm = date("Y-m-d");
 $codigoServico = new codigoServico();
 $descServico = $codigoServico->buscaServico('LC116', $codServ);
-
+//
+// monta XML
 include_once '../shared/utilities.php';
 $utilities = new Utilities();
 //			
@@ -210,23 +211,23 @@ $xml = new XMLWriter;
 //
 // cria XML RPS
 $xml->startElement("Rps");
-    $xml->startElement("InfRps");
+    $xml->startElement("tipos:InfRps");
     $xml->writeAttribute("id", $notaFiscal->idNotaFiscal);
-        $xml->startElement("IdentificacaoRps");
-            $xml->writeElement("Numero", $notaFiscal->idNotaFiscal); // ????????????
-            $xml->writeElement("Serie", 1);
-            $xml->writeElement("Tipo", 1);
+        $xml->startElement("tipos:IdentificacaoRps");
+            $xml->writeElement("tipos:Numero", $notaFiscal->idNotaFiscal); // ????????????
+            $xml->writeElement("tipos:Serie", 1);
+            $xml->writeElement("tipos:Tipo", 1);
         $xml->endElement(); // IdentificacaoRps
-        $xml->writeElement("DataEmissao", $dtEm);
-        $xml->writeElement("NaturezaOperacao", $notaFiscalItem->cstIss);
-        $xml->writeElement("RegimeEspecialTributacao", 6); // 6 = ME/EPP
-        $xml->writeElement("OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1 = SIM
-        $xml->writeElement("IncentivadorCultural", $idIncCultural); // 2 = NAO
-        $xml->writeElement("Status", 1); // 1 = normal
+        $xml->writeElement("tipos:DataEmissao", $dtEm);
+        $xml->writeElement("tipos:NaturezaOperacao", $notaFiscalItem->cstIss);
+        $xml->writeElement("tipos:RegimeEspecialTributacao", 6); // 6 = ME/EPP
+        $xml->writeElement("tipos:OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1 = SIM
+        $xml->writeElement("tipos:IncentivadorCultural", $idIncCultural); // 2 = NAO
+        $xml->writeElement("tipos:Status", 1); // 1 = normal
 
-        $xml->startElement("Servico");
-            $xml->startElement("Valores");
-                $xml->writeElement("ValorServicos", $vlTotServ);
+        $xml->startElement("tipos:Servico");
+            $xml->startElement("tipos:Valores");
+                $xml->writeElement("tipos:ValorServicos", $vlTotServ);
     /*
             $xml->writeElement("ValorDeducoes", 0.00);
             $xml->writeElement("ValorPis", 0.00);
@@ -238,43 +239,44 @@ $xml->startElement("Rps");
             $xml->writeElement("DescontoIncondicionado", 0.00);
             $xml->writeElement("DescontoCondicionado", 0.00);
     */
-                $xml->writeElement("IssRetido", 2); // 1=Sim 2=Não
-                $xml->writeElement("ValorIss", $notaFiscalItem->valorIss);
-                $xml->writeElement("BaseCalculo", $vlTotBC);
-                $xml->writeElement("Aliquota", $notaFiscalItem->taxaIss); 
-                $xml->writeElement("ValorLiquidoNfse", $vlTotServ);
+                $xml->writeElement("tipos:IssRetido", 2); // 1=Sim 2=Não
+                $xml->writeElement("tipos:ValorIss", $notaFiscalItem->valorIss);
+//                $xml->writeElement("tipos:ValorIssRetido", $notaFiscalItem->valorIss);
+                $xml->writeElement("tipos:BaseCalculo", $vlTotBC);
+                $xml->writeElement("tipos:Aliquota", $notaFiscalItem->taxaIss); 
+                $xml->writeElement("tipos:ValorLiquidoNfse", $vlTotServ);
             $xml->endElement(); // Valores
 
-            $xml->writeElement("ItemListaServico", $notaFiscalItem->codigoServico); 
-            $xml->writeElement("CodigoCnae", "");
-            $xml->writeElement("Discriminacao", $descServico);
-            $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
+            $xml->writeElement("tipos:ItemListaServico", $notaFiscalItem->codigoServico); 
+//            $xml->writeElement("tipos:CodigoCnae", "");
+            $xml->writeElement("tipos:Discriminacao", $descServico);
+            $xml->writeElement("tipos:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
         $xml->endElement(); // Serviço
 
-        $xml->startElement("Prestador");
-            $xml->writeElement("Cnpj", $emitente->documento);
-            $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
+        $xml->startElement("tipos:Prestador");
+            $xml->writeElement("tipos:Cnpj", $emitente->documento);
+            $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
         $xml->endElement(); // Prestador
 
 
-        $xml->startElement("Tomador");
-            $xml->startElement("IdentificacaoTomador");
-                $xml->startElement("CpfCnpj");
+        $xml->startElement("tipos:Tomador");
+            $xml->startElement("tipos:IdentificacaoTomador");
+                $xml->startElement("tipos:CpfCnpj");
                 if (strlen($tomador->documento)==14) 
-                    $xml->writeElement("Cnpj", $tomador->documento);
+                    $xml->writeElement("tipos:Cnpj", $tomador->documento);
                 else
-                    $xml->writeElement("Cpf", $tomador->documento);
+                    $xml->writeElement("tipos:Cpf", $tomador->documento);
                 $xml->endElement(); // CpfCnpj
             $xml->endElement(); // IdentificacaoTomador
-            $xml->writeElement("RazaoSocial", $tomador->nome);
-            $xml->startElement("Endereco");
-                $xml->writeElement("Endereco", $tomador->logradouro);
-                $xml->writeElement("Numero", $tomador->numero);
-                $xml->writeElement("Complemento", $tomador->complemento);
-                $xml->writeElement("Bairro", $tomador->bairro);
-                $xml->writeElement("CodigoMunicipio", $tomador->codigoMunicipio);
-                $xml->writeElement("Uf", $tomador->uf);
-                $xml->writeElement("Cep", $tomador->cep);
+            $xml->writeElement("tipos:RazaoSocial", $tomador->nome);
+            $xml->startElement("tipos:Endereco");
+                $xml->writeElement("tipos:Endereco", $tomador->logradouro);
+                $xml->writeElement("tipos:Numero", $tomador->numero);
+                $xml->writeElement("tipos:Complemento", $tomador->complemento);
+                $xml->writeElement("tipos:Bairro", $tomador->bairro);
+                $xml->writeElement("tipos:CodigoMunicipio", $tomador->codigoMunicipio);
+                $xml->writeElement("tipos:Uf", $tomador->uf);
+                $xml->writeElement("tipos:Cep", $tomador->cep);
             $xml->endElement(); // Endereco
         $xml->endElement(); // Tomador
     $xml->endElement(); // InfRps
@@ -282,7 +284,7 @@ $xml->endElement(); // Rps
 
 $xmlRps = $xml->outputMemory(true);
 
-$xmlAss = $objNFSe->signXML($xmlRps, 'InfRps', '');
+$xmlAss = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
 if ($objNFSe->errStatus) {
 
     http_response_code(401);
@@ -294,14 +296,15 @@ if ($objNFSe->errStatus) {
 //
 // Inicia o cabeçalho do documento XML
 $xml->startElement("EnviarLoteRpsEnvio");
-$xml->writeAttribute("xmlns", "http://www.abrasf.org.br/ABRASF/arquivos/nfse.xsd");
+$xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
+$xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
     $xml->startElement("LoteRps");
     $xml->writeAttribute("id", "001");
-        $xml->writeElement("NumeroLote", 1);
-        $xml->writeElement("Cnpj", $emitente->documento);
-        $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
-        $xml->writeElement("QuantidadeRps", 1);
-        $xml->startElement("ListaRps");
+        $xml->writeElement("tipos:NumeroLote", 1);
+        $xml->writeElement("tipos:Cnpj", $emitente->documento);
+        $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
+        $xml->writeElement("tipos:QuantidadeRps", 1);
+        $xml->startElement("tipos:ListaRps");
             $xml->writeRaw($xmlAss);
         $xml->endElement(); // ListaRps
     $xml->endElement(); // LoteRps
@@ -311,16 +314,13 @@ $xmlLote = $xml->outputMemory(true);
 //
 $xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
-
 $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
 $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
-fwrite($arqNFe, $xmlNFe);
+fwrite($arqNFe, $xmlAss);
 fclose($arqNFe);
-
-
 //
 // transmite NFSe
-$retEnv = $objNFSe->transmitirNFSeABRASF1_0( $xmlNFe , 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
+$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss , 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
