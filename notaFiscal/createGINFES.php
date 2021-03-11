@@ -209,6 +209,7 @@ include_once '../shared/utilities.php';
 $utilities = new Utilities();
 //			
 $xml = new XMLWriter;
+$xml->openMemory();
 //
 // cria XML RPS
 $xml->startElement("Rps");
