@@ -329,6 +329,9 @@ $retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss , 'EnviarLoteRpsEnvio', $emite
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
 
+error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv." = ".$infoRet."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
+
 print_r($result);
 print_r($info);
 
@@ -430,20 +433,5 @@ if ($infoRet['http_code'] == '200') {
         }
     }
 }
-
-if ($nuNF > 0) {
-
-    $autorizacao->nfhomologada = $nuNF;
-    $autorizacao->update($emitente->documento);
-}
-
-http_response_code(201);
-echo json_encode(array("http_code" => 201, "message" => "Autorização atualizada", 
-                       "validade" => $validade." dias",
-                       "nf-homolog" => $nuNF,
-                       "verificacao-homolog" => utf8_decode($cdVerif),
-                       "linkNF" => $linkNF));
-exit;
-
 
 ?>
