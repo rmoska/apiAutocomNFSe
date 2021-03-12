@@ -678,7 +678,7 @@ class comunicaNFSe {
 
             $this->defineURL($codMunic, $servico);
 
-            $this->urlServico = 'http://homologacao.ginfes.com.br';
+            $this->urlServico = 'https://homologacao.ginfes.com.br//ServiceGinfesImpl';
             $this->urlAction = 'http://homologacao.ginfes.com.br/ServiceGinfesImpl/RecepcionarLoteRpsV3Request';
             
             //valida o parâmetro da string do XML da NF-e
