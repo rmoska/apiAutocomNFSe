@@ -714,7 +714,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($data, $action, 'N');
+            $retorno = $this->pSendSOAPCurl($data, $action, 'S');
 
             echo '<pre>';
             print_r($retorno);
