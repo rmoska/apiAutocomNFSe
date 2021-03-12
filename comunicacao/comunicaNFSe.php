@@ -677,6 +677,9 @@ class comunicaNFSe {
                 $codMunic .= '-H'; 
 
             $this->defineURL($codMunic, $servico);
+
+            $this->urlServico = 'http://homologacao.ginfes.com.br';
+            $this->urlAction = 'http://homologacao.ginfes.com.br/ServiceGinfesImpl/RecepcionarLoteRpsV3Request';
             
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
@@ -711,7 +714,7 @@ class comunicaNFSe {
 
 
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($data, $action, 'S');
+            $retorno = $this->pSendSOAPCurl($data, $action, 'N');
 
             echo '<pre>';
             print_r($retorno);
