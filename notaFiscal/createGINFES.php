@@ -225,14 +225,14 @@ $xml->startElement("Rps");
         $xml->endElement(); // IdentificacaoRps
         $xml->writeElement("tipos:DataEmissao", $dtEmissao);
         $xml->writeElement("tipos:NaturezaOperacao", $notaFiscalItem->cstIss);
-        $xml->writeElement("tipos:RegimeEspecialTributacao", 6); // 6 = ME/EPP
+//        $xml->writeElement("tipos:RegimeEspecialTributacao", 6); // 6 = ME/EPP
         $xml->writeElement("tipos:OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1 = SIM
         $xml->writeElement("tipos:IncentivadorCultural", $idIncCultural); // 2 = NAO
         $xml->writeElement("tipos:Status", 1); // 1 = normal
 
         $xml->startElement("tipos:Servico");
             $xml->startElement("tipos:Valores");
-                $xml->writeElement("tipos:ValorServicos", $vlTotServ);
+                $xml->writeElement("tipos:ValorServicos", number_format($vlTotServ,2,'.',''));
     /*
             $xml->writeElement("ValorDeducoes", 0.00);
             $xml->writeElement("ValorPis", 0.00);
