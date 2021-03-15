@@ -216,7 +216,7 @@ $xml->openMemory();
 //
 // cria XML RPS
 $xml->startElement("tipos:Rps");
-$xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
+//$xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
     $xml->startElement("tipos:InfRps");
     $xml->writeAttribute("id", $notaFiscal->idNotaFiscal);
         $xml->startElement("tipos:IdentificacaoRps");
