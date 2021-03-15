@@ -233,23 +233,24 @@ $xml->startElement("Rps");
         $xml->startElement("tipos:Servico");
             $xml->startElement("tipos:Valores");
                 $xml->writeElement("tipos:ValorServicos", number_format($vlTotServ,2,'.',''));
-    /*
-            $xml->writeElement("ValorDeducoes", 0.00);
+
+                $xml->writeElement("ValorDeducoes", 0.00);
             $xml->writeElement("ValorPis", 0.00);
             $xml->writeElement("ValorCofins", 0.00);
             $xml->writeElement("ValorInss", 0.00);
             $xml->writeElement("ValorIr", 0.00);
             $xml->writeElement("ValorCsll", 0.00);
             $xml->writeElement("OutrasRetencoes", 0.00);
+    /*
             $xml->writeElement("DescontoIncondicionado", 0.00);
             $xml->writeElement("DescontoCondicionado", 0.00);
     */
                 $xml->writeElement("tipos:IssRetido", 2); // 1=Sim 2=Não
-                $xml->writeElement("tipos:ValorIss", $notaFiscalItem->valorIss);
-//                $xml->writeElement("tipos:ValorIssRetido", $notaFiscalItem->valorIss);
-                $xml->writeElement("tipos:BaseCalculo", $vlTotBC);
-                $xml->writeElement("tipos:Aliquota", $notaFiscalItem->taxaIss); 
-                $xml->writeElement("tipos:ValorLiquidoNfse", $vlTotServ);
+                $xml->writeElement("tipos:ValorIss", number_format($notaFiscalItem->valorIss,2,'.',''));
+                $xml->writeElement("tipos:ValorIssRetido", number_format($notaFiscalItem->valorIss,2,'.',''));
+                $xml->writeElement("tipos:BaseCalculo", number_format($vlTotBC,2,'.',''));
+                $xml->writeElement("tipos:Aliquota", number_format($notaFiscalItem->taxaIss,2,'.','')); 
+                $xml->writeElement("tipos:ValorLiquidoNfse", number_format($vlTotServ,2,'.',''));
             $xml->endElement(); // Valores
 
             $xml->writeElement("tipos:ItemListaServico", $notaFiscalItem->codigoServico); 
