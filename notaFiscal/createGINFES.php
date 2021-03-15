@@ -199,7 +199,7 @@ $municTomadorTOM = $municipioTomador->buscaMunicipioTOM($tomador->codigoMunicipi
 
 if ($aAutoChave["incentivoCultural"] > '') $idIncCultural = $aAutoChave["incentivoCultural"];
 else $idIncCultural = '2'; // Não
-$dtEm = date("Y-m-d");
+$dtEmissao = date("Y-m-d").'T'.date("Y:i:s");
 
 $codigoServico = new codigoServico($db);
 //
@@ -223,7 +223,7 @@ $xml->startElement("Rps");
             $xml->writeElement("tipos:Serie", 1);
             $xml->writeElement("tipos:Tipo", 1);
         $xml->endElement(); // IdentificacaoRps
-        $xml->writeElement("tipos:DataEmissao", $dtEm);
+        $xml->writeElement("tipos:DataEmissao", $dtEmissao);
         $xml->writeElement("tipos:NaturezaOperacao", $notaFiscalItem->cstIss);
         $xml->writeElement("tipos:RegimeEspecialTributacao", 6); // 6 = ME/EPP
         $xml->writeElement("tipos:OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1 = SIM
