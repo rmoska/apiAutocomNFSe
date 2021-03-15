@@ -199,7 +199,7 @@ $municTomadorTOM = $municipioTomador->buscaMunicipioTOM($tomador->codigoMunicipi
 
 if ($aAutoChave["incentivoCultural"] > '') $idIncCultural = $aAutoChave["incentivoCultural"];
 else $idIncCultural = '2'; // Não
-$dtEmissao = date("Y-m-d").'T'.date("Y:i:s");
+$dtEmissao = date("Y-m-d").'T'.date("H:i:s");
 
 $codigoServico = new codigoServico($db);
 //
