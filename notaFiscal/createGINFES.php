@@ -202,12 +202,15 @@ else $idIncCultural = '2'; // Não
 $dtEm = date("Y-m-d");
 
 $codigoServico = new codigoServico($db);
-$descServico = $codigoServico->buscaServico('LC116', $codServ);
 //
 // monta XML
 include_once '../shared/utilities.php';
 $utilities = new Utilities();
 //			
+$descServico = $codigoServico->buscaServico('LC116', $codServ);
+$descServico = $utilities->limpaEspeciais($descServico);
+$descServico = trim($utilities->limpaAcentos($descServico));
+//
 $xml = new XMLWriter;
 $xml->openMemory();
 //
@@ -251,7 +254,7 @@ $xml->startElement("Rps");
 
             $xml->writeElement("tipos:ItemListaServico", $notaFiscalItem->codigoServico); 
 //            $xml->writeElement("tipos:CodigoCnae", "");
-            $xml->writeElement("tipos:Discriminacao", trim($utilities->limpaEspeciais($descServico)));
+            $xml->writeElement("tipos:Discriminacao", $descServico);
             $xml->writeElement("tipos:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
         $xml->endElement(); // Serviço
 
