@@ -325,6 +325,12 @@ $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6)
 $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
 fwrite($arqNFe, $xmlAss);
 fclose($arqNFe);
+
+
+$caminhoArq = "../arquivosNFSe/sbc.xml";
+$xmlAss = simplexml_load_file($caminhoArq);
+
+
 //
 // transmite NFSe
 $retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss , 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
