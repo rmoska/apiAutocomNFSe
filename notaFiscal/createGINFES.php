@@ -213,6 +213,21 @@ $descServico = trim($utilities->limpaAcentos($descServico));
 //
 $xml = new XMLWriter;
 $xml->openMemory();
+
+
+//
+// Inicia o cabeçalho do documento XML
+$xml->startElement("EnviarLoteRpsEnvio");
+$xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
+$xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
+    $xml->startElement("LoteRps");
+    $xml->writeAttribute("id", "001");
+        $xml->writeElement("tipos:NumeroLote", 1);
+        $xml->writeElement("tipos:Cnpj", $emitente->documento);
+        $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
+        $xml->writeElement("tipos:QuantidadeRps", 1);
+        $xml->startElement("tipos:ListaRps");
+
 //
 // cria XML RPS
 $xml->startElement("tipos:Rps");
@@ -288,9 +303,13 @@ $xml->startElement("tipos:Rps");
     $xml->endElement(); // InfRps
 $xml->endElement(); // Rps
 
+$xml->endElement(); // ListaRps
+$xml->endElement(); // LoteRps
+$xml->endElement(); // EnviarLoteRpsEnvio
+
 $xmlRps = $xml->outputMemory(true);
 
-$xmlAss = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
+$xmlLote = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
 if ($objNFSe->errStatus) {
 
     http_response_code(401);
@@ -299,6 +318,10 @@ if ($objNFSe->errStatus) {
     exit;
 }
 
+$xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
+
+
+/*
 //
 // Inicia o cabeçalho do documento XML
 $xml->startElement("EnviarLoteRpsEnvio");
@@ -319,6 +342,7 @@ $xml->endElement(); // EnviarLoteRpsEnvio
 $xmlLote = $xml->outputMemory(true);
 //
 $xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
+*/
 
 $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
 $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
