@@ -216,7 +216,6 @@ $xml->openMemory();
 //
 // cria XML RPS
 $xml->startElement("Rps");
-//$xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
     $xml->startElement("InfRps");
     $xml->writeAttribute("id", $notaFiscal->idNotaFiscal);
         $xml->startElement("IdentificacaoRps");
@@ -235,13 +234,13 @@ $xml->startElement("Rps");
             $xml->startElement("Valores");
                 $xml->writeElement("ValorServicos", number_format($vlTotServ,2,'.',''));
 
-                $xml->writeElement("ValorDeducoes", "0.00");
+//                $xml->writeElement("ValorDeducoes", "0.00");
                 $xml->writeElement("ValorPis", "0.00");
                 $xml->writeElement("ValorCofins", "0.00");
                 $xml->writeElement("ValorInss", "0.00");
                 $xml->writeElement("ValorIr", "0.00");
                 $xml->writeElement("ValorCsll", "0.00");
-                $xml->writeElement("OutrasRetencoes", "0.00");
+//                $xml->writeElement("OutrasRetencoes", "0.00");
     /*
             $xml->writeElement("tipos:DescontoIncondicionado", 0.00);
             $xml->writeElement("tipos:DescontoCondicionado", 0.00);
@@ -307,12 +306,12 @@ $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_
 $xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
     $xml->startElement("LoteRps");
     $xml->writeAttribute("id", "001");
-        $xml->writeElement("tipos:NumeroLote", 1);
-        $xml->writeElement("tipos:Cnpj", $emitente->documento);
-        $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
-        $xml->writeElement("tipos:QuantidadeRps", 1);
-        $xml->startElement("tipos:ListaRps");
-            $xml->writeRaw($xmlRps);
+        $xml->writeElement("NumeroLote", 1);
+        $xml->writeElement("Cnpj", $emitente->documento);
+        $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);
+        $xml->writeElement("QuantidadeRps", 1);
+        $xml->startElement("ListaRps");
+            $xml->writeRaw($xmlAss);
         $xml->endElement(); // ListaRps
     $xml->endElement(); // LoteRps
 $xml->endElement(); // EnviarLoteRpsEnvio
