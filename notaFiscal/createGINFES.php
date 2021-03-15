@@ -215,7 +215,7 @@ $xml = new XMLWriter;
 $xml->openMemory();
 //
 // cria XML RPS
-$xml->startElement("Rps");
+$xml->startElement("tipos:Rps");
     $xml->startElement("tipos:InfRps");
     $xml->writeAttribute("id", $notaFiscal->idNotaFiscal);
         $xml->startElement("tipos:IdentificacaoRps");
@@ -290,7 +290,6 @@ $xml->endElement(); // Rps
 
 $xmlRps = $xml->outputMemory(true);
 
-/*
 $xmlAss = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
 if ($objNFSe->errStatus) {
 
@@ -299,7 +298,6 @@ if ($objNFSe->errStatus) {
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-*/
 
 //
 // Inicia o cabeçalho do documento XML
@@ -313,7 +311,7 @@ $xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
         $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
         $xml->writeElement("tipos:QuantidadeRps", 1);
         $xml->startElement("tipos:ListaRps");
-            $xml->writeRaw($xmlRps);
+            $xml->writeRaw($xmlAss);
         $xml->endElement(); // ListaRps
     $xml->endElement(); // LoteRps
 $xml->endElement(); // EnviarLoteRpsEnvio
