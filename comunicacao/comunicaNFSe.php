@@ -720,7 +720,7 @@ class comunicaNFSe {
             print_r($retorno);
             echo '</pre>';
 
-error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".implode($retorno)."\n"), 3, "../arquivosNFSe/envNFSe.log");
+error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
             //verifica o retorno
             if (! $retorno) {
