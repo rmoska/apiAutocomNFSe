@@ -234,16 +234,16 @@ $xml->startElement("Rps");
             $xml->startElement("tipos:Valores");
                 $xml->writeElement("tipos:ValorServicos", number_format($vlTotServ,2,'.',''));
 
-                $xml->writeElement("ValorDeducoes", 0.00);
-            $xml->writeElement("ValorPis", 0.00);
-            $xml->writeElement("ValorCofins", 0.00);
-            $xml->writeElement("ValorInss", 0.00);
-            $xml->writeElement("ValorIr", 0.00);
-            $xml->writeElement("ValorCsll", 0.00);
-            $xml->writeElement("OutrasRetencoes", 0.00);
+                $xml->writeElement("tipos:ValorDeducoes", "0.00");
+                $xml->writeElement("tipos:ValorPis", "0.00");
+                $xml->writeElement("tipos:ValorCofins", "0.00");
+                $xml->writeElement("tipos:ValorInss", "0.00");
+                $xml->writeElement("tipos:ValorIr", "0.00");
+                $xml->writeElement("tipos:ValorCsll", "0.00");
+                $xml->writeElement("tipos:OutrasRetencoes", "0.00");
     /*
-            $xml->writeElement("DescontoIncondicionado", 0.00);
-            $xml->writeElement("DescontoCondicionado", 0.00);
+            $xml->writeElement("tipos:DescontoIncondicionado", 0.00);
+            $xml->writeElement("tipos:DescontoCondicionado", 0.00);
     */
                 $xml->writeElement("tipos:IssRetido", 2); // 1=Sim 2=Não
                 $xml->writeElement("tipos:ValorIss", number_format($notaFiscalItem->valorIss,2,'.',''));
