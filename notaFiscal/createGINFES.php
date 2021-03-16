@@ -326,14 +326,9 @@ $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-n
 fwrite($arqNFe, $xmlAss);
 fclose($arqNFe);
 
-
-//$caminhoArq = "../arquivosNFSe/sbc.xml";
-//$xmlAss = simplexml_load_file($caminhoArq);
-
-
 //
 // transmite NFSe
-$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss , 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
+$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss, 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
