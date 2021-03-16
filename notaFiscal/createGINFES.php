@@ -291,8 +291,6 @@ $xml->endElement(); // Rps
 
 $xmlRps = $xml->outputMemory(true);
 
-error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLRPS = ".$xmlRps."\n"), 3, "../arquivosNFSe/envNFSe.log");
-
 /*
 $xmlAss = $objNFSe->signXML($xmlRps, 'InfRps', '');
 if ($objNFSe->errStatus) {
@@ -321,11 +319,8 @@ $xml->writeAttribute("xmlns:ns1", "http://www.ginfes.com.br/tipos_v03.xsd");
 $xml->endElement(); // EnviarLoteRpsEnvio
 //
 $xmlLote = $xml->outputMemory(true);
-
-error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLLote = ".$xmlLote."\n"), 3, "../arquivosNFSe/envNFSe.log");
-
 //
-$xmlAss = $objNFSe->signXML($xmlLote, 'ns2:LoteRps', '');
+$xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLAss = ".$xmlAss."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
