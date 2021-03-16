@@ -215,6 +215,18 @@ $xml = new XMLWriter;
 $xml->openMemory();
 //
 // cria XML RPS
+
+$xml->startElement("EnviarLoteRpsEnvio");
+$xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
+    $xml->startElement("LoteRps");
+    $xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
+    $xml->writeAttribute("id", "001");
+        $xml->writeElement("tipos:NumeroLote", 1);
+        $xml->writeElement("tipos:Cnpj", $emitente->documento);
+        $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
+        $xml->writeElement("tipos:QuantidadeRps", 1);
+        $xml->startElement("tipos:ListaRps");
+
 $xml->startElement("tipos:Rps");
     $xml->startElement("tipos:InfRps");
     $xml->writeAttribute("id", $notaFiscal->idNotaFiscal);
@@ -287,9 +299,13 @@ $xml->startElement("tipos:Rps");
     $xml->endElement(); // InfRps
 $xml->endElement(); // Rps
 
+$xml->endElement(); // ListaRps
+$xml->endElement(); // LoteRps
+$xml->endElement(); // EnviarLoteRpsEnvio
+
 $xmlRps = $xml->outputMemory(true);
 
-$xmlAss = $objNFSe->signXML($xmlRps, 'InfRps', '');
+$xmlLote = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
 if ($objNFSe->errStatus) {
 
     http_response_code(401);
@@ -297,6 +313,10 @@ if ($objNFSe->errStatus) {
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
+
+$xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
+
+/*
 //
 // Inicia o cabeçalho do documento XML
 $xml->startElement("EnviarLoteRpsEnvio");
@@ -319,6 +339,7 @@ $xmlLote = $xml->outputMemory(true);
 $xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLAss = ".$xmlAss."\n"), 3, "../arquivosNFSe/envNFSe.log");
+*/
 
 $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
 $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
