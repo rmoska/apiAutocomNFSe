@@ -681,8 +681,6 @@ class comunicaNFSe {
             $this->urlServico = 'https://homologacao.ginfes.com.br//ServiceGinfesImpl';
             $this->urlAction = 'http://homologacao.ginfes.com.br/ServiceGinfesImpl/RecepcionarLoteRpsV3Request';
 
-error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XML = ".$sXml."\n"), 3, "../arquivosNFSe/envNFSe.log");
-
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
                 return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
