@@ -305,7 +305,7 @@ $xml->endElement(); // EnviarLoteRpsEnvio
 
 $xmlRps = $xml->outputMemory(true);
 
-$xmlLote = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
+$xmlLote = $objNFSe->signXML($xmlRps, 'InfRps', '');
 if ($objNFSe->errStatus) {
 
     http_response_code(401);
