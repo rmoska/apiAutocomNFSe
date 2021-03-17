@@ -676,7 +676,7 @@ class comunicaNFSe {
             if ($this->ambiente=='H') // homologação
                 $codMunic .= '-H'; 
 
-            $this->defineURL($codMunic, $servico);
+//            $this->defineURL($codMunic, $servico);
 
             $this->urlServico = 'https://homologacao.ginfes.com.br//ServiceGinfesImpl';
             $this->urlAction = 'http://homologacao.ginfes.com.br/ServiceGinfesImpl/RecepcionarLoteRpsV3Request';
@@ -705,6 +705,75 @@ class comunicaNFSe {
             <arg1>'.$sNFSe.
             '</arg1>
             </hom:RecepcionarLoteRpsV3>
+            </soapenv:Body>
+            </soapenv:Envelope>';
+
+
+
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
+
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($data, $action, 'S');
+
+            echo '<pre>';
+            print_r($retorno);
+            echo '</pre>';
+
+error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n"), 3, "../arquivosNFSe/envNFSe.log");
+
+            //verifica o retorno
+            if (! $retorno) {
+                return array(false, 'URL de Comunicação inválida !');
+            }
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+
+        return $retorno;
+    }
+
+
+    //
+    // define namespace / url e chama soap
+    public function transmitirNFSeMANAUS( $sXml, $servico, $codMunic) {
+
+        try {
+
+            if ($this->ambiente=='H') // homologação
+                $codMunic .= '-H'; 
+
+//            $this->defineURL($codMunic, $servico);
+
+            $this->urlServico = 'https://nfse-prd.manaus.am.gov.br/nfse/servlet/arecepcionarloterps?wsdl';
+            $this->urlAction = 'http://www.e-nfs.com.br/action/ARECEPCIONARLOTERPS.Execute';
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
+                return array(false, 'XML de NF-e para autorizacao recebido no parametro parece invalido, verifique');
+            }
+
+            // limpa a variavel
+            $sNFSe = $sXml;
+            //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
+            $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
+            $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
+
+            $data =
+            '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">
+            <soapenv:Header/>
+            <soapenv:Body>
+
+            <e:RecepcionarLoteRPS.Execute>
+                <e:Nfsecabecmsg>
+                    <cabecalho versao="201001">
+                        <versaoDados>V2010</versaoDados>
+                    </cabecalho>
+                </e:Nfsecabecmsg>
+                <e:Nfsedadosmsg>'.$sNFSe.'
+                </e:Nfsedadosmsg>
+            </e:RecepcionarLoteRPS.Execute>
             </soapenv:Body>
             </soapenv:Envelope>';
 
