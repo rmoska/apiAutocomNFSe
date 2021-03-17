@@ -767,7 +767,7 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
 
             <e:RecepcionarLoteRPS.Execute>
                 <e:Nfsecabecmsg>
-                    <cabecalho versao=201001>
+                    <cabecalho versao="201001">
                         <versaoDados>V2010</versaoDados>
                     </cabecalho>
                 </e:Nfsecabecmsg>
