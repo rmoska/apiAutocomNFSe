@@ -747,7 +747,7 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
 //            $this->defineURL($codMunic, $servico);
 
             $this->urlServico = 'https://nfse-prd.manaus.am.gov.br/nfse/servlet/arecepcionarloterps?wsdl';
-            $this->urlAction = 'http://www.e-nfs.com.br/action/ARECEPCIONARLOTERPS.Execute';
+            $this->urlAction = 'http://www.e-nfs.com.braction/ARECEPCIONARLOTERPS.Execute';
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
@@ -771,7 +771,8 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
                         <versaoDados>V2010</versaoDados>
                     </cabecalho>
                 </e:Nfsecabecmsg>
-                <e:Nfsedadosmsg>
+                <e:Nfsedadosmsg>'.
+                    $sNFSe.'
                 </e:Nfsedadosmsg>
             </e:RecepcionarLoteRPS.Execute>
             </soapenv:Body>
