@@ -771,8 +771,8 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
                         <versaoDados>V2010</versaoDados>
                     </cabecalho>
                 </e:Nfsecabecmsg>
-                <e:Nfsedadosmsg>'.
-                    $sNFSe.'
+                <e:Nfsedadosmsg>
+                    <![CDATA['.$sNFSe.']]>
                 </e:Nfsedadosmsg>
             </e:RecepcionarLoteRPS.Execute>
             </soapenv:Body>
