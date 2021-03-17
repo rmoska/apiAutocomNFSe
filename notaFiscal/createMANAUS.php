@@ -155,8 +155,7 @@ $stmt = $autorizacaoChave->buscaChave();
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
     $aAutoChave[$row['chave']] = $row['valor'];
 }
-if ( !isset($aAutoChave["login"]) ||
-     !isset($aAutoChave["senhaWeb"]) ||
+if ( !isset($aAutoChave["incentivoCultural"]) ||
      !isset($aAutoChave["optanteSN"]) ) {
 
         http_response_code(400);
