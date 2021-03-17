@@ -289,7 +289,7 @@ $xml->endElement(); // Rps
 
 $xmlRps = $xml->outputMemory(true);
 
-$xmlLote = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
+$xmlAss = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
 if ($objNFSe->errStatus) {
 
     http_response_code(401);
