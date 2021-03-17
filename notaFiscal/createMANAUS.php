@@ -326,7 +326,7 @@ fclose($arqNFe);
 
 //
 // transmite NFSe
-$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss, 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
+$retEnv = $objNFSe->transmitirNFSeMANAUS( $xmlAss, 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
