@@ -764,10 +764,10 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
             $data .= '<soapenv:Header/>';
             $data .= '<soapenv:Body>';
             $data .= '<e:RecepcionarLoteRPS.Execute>';
-            $data .= '<nfseCabecMsg><![CDATA[<?xml version="1.0" encoding="UTF-8"?><cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="201001"><versaoDados>V2010</versaoDados></cabecalho>]]></nfseCabecMsg>';
-            $data .= '<nfseDadosMsg><![CDATA[<?xml version="1.0" encoding="UTF-8"?>';
+            $data .= '<Nfsecabecmsg><![CDATA[<cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"  versao="201001"><versaoDados>V2010</versaoDados></cabecalho>]]></Nfsecabecmsg>';
+            $data .= '<e:Nfsedadosmsg><![CDATA[';
             $data .= $sNFSe;
-            $data .= ']]></nfseDadosMsg>';
+            $data .= ']]></e:Nfsedadosmsg>';
             $data .= '</e:RecepcionarLoteRPS.Execute>';
             $data .= '</soapenv:Body></soapenv:Envelope>';
 
