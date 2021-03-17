@@ -760,24 +760,16 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
-            $data =
-            '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">
-            <soapenv:Header/>
-            <soapenv:Body>
-
-            <e:RecepcionarLoteRPS.Execute>
-                <e:Nfsecabecmsg>
-                    <cabecalho versao="201001">
-                        <versaoDados>V2010</versaoDados>
-                    </cabecalho>
-                </e:Nfsecabecmsg>
-                <e:Nfsedadosmsg>'.
-                    $sNFSe.'
-                </e:Nfsedadosmsg>
-            </e:RecepcionarLoteRPS.Execute>
-            </soapenv:Body>
-            </soapenv:Envelope>';
-
+            $data = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">';
+            $data .= '<soapenv:Header/>';
+            $data .= '<soapenv:Body>';
+            $data .= '<e:RecepcionarLoteRPS.Execute>';
+            $data .= '<nfseCabecMsg><![CDATA[<?xml version="1.0" encoding="UTF-8"?><cabecalho xmlns="http://www.abrasf.org.br/nfse.xsd" versao="201001"><versaoDados>V2010</versaoDados></cabecalho>]]></nfseCabecMsg>';
+            $data .= '<nfseDadosMsg><![CDATA[<?xml version="1.0" encoding="UTF-8"?>';
+            $data .= $sNFSe;
+            $data .= ']]></nfseDadosMsg>';
+            $data .= '</e:RecepcionarLoteRPS.Execute>';
+            $data .= '</soapenv:Body></soapenv:Envelope>';
 
 
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
