@@ -765,15 +765,16 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
             <soapenv:Header/>
             <soapenv:Body>
 
-            <RecepcionarLoteRPS.Execute>
-                <Nfsecabecmsg>
+            <e:RecepcionarLoteRPS.Execute>
+                <e:Nfsecabecmsg>
                     <cabecalho xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" versao="201001">
                         <versaoDados>V2010</versaoDados>
                     </cabecalho>
-                </Nfsecabecmsg>
-                <Nfsedadosmsg>'.$sNFSe.'
-                </Nfsedadosmsg>
-            </RecepcionarLoteRPS.Execute>
+                </e:Nfsecabecmsg>
+                <e:Nfsedadosmsg>'.
+                    $sNFSe.'
+                </e:Nfsedadosmsg>
+            </e:RecepcionarLoteRPS.Execute>
             </soapenv:Body>
             </soapenv:Envelope>';
 
