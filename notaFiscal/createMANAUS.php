@@ -302,7 +302,7 @@ $xml->startElement("EnviarLoteRpsEnvio");
 //$xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
     $xml->startElement("LoteRps");
 //    $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/tipos_v03.xsd");
-    $xml->writeAttribute("id", "001");
+    $xml->writeAttribute("id", "LOTE001");
         $xml->writeElement("NumeroLote", 1);
         $xml->writeElement("Cnpj", $emitente->documento);
         $xml->writeElement("InscricaoMunicipal", $autorizacao->cmc);

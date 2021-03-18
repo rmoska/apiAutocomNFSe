@@ -145,7 +145,7 @@ class comunicaNFSe {
             $this->errStatus = true;
             return false;
          }
-         $id = trim($node->getAttribute("Id"));
+         $id = trim($node->getAttribute("id"));
          $idnome = preg_replace('/[^0-9]/','', $id);
          //extrai os dados da tag para uma string
          $dados = $node->C14N(false,false,NULL,NULL);
