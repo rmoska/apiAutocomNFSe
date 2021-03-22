@@ -252,7 +252,7 @@ $xml->startElement("Rps");
             $xml->writeElement("ItemListaServico", $notaFiscalItem->codigoServico); 
 //            $xml->writeElement("tipos:CodigoCnae", "");
             $xml->writeElement("Discriminacao", $descServico);
-            $xml->writeElement("CodigoTributacaoMunicipio", $notaFiscalItem->codigoServico); // Município de prestação do serviço
+//            $xml->writeElement("CodigoTributacaoMunicipio", $notaFiscalItem->codigoServico); // Município de prestação do serviço
             $xml->writeElement("CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
         $xml->endElement(); // Serviço
 
