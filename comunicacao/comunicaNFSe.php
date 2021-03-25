@@ -759,7 +759,7 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
             //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
-
+/*
             $data = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">';
             $data .= '<soapenv:Header/>';
             $data .= '<soapenv:Body>';
@@ -768,7 +768,17 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
             $data .= '<e:Nfsedadosmsg><![CDATA['.$sNFSe.']]></e:Nfsedadosmsg>';
             $data .= '</e:RecepcionarLoteRPS.Execute>';
             $data .= '</soapenv:Body></soapenv:Envelope>';
+*/
 
+            $data = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">
+                     <soapenv:Header/>
+                     <soapenv:Body>
+                     <e:RecepcionarLoteRPS.Execute>';
+            $data = '<e:Nfsecabecmsg><cabecalho versao="201001"><versaoDados>V2010</versaoDados></cabecalho></e:Nfsecabecmsg>';
+            $data = '<e:Nfsedadosmsg>'.$sNFSe.'</e:Nfsedadosmsg>';
+            $data = '</e:RecepcionarLoteRPS.Execute>
+                     </soapenv:Body>
+                     </soapenv:Envelope>';
 
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
