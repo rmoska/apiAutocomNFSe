@@ -775,7 +775,7 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
                      <soapenv:Body>
                      <e:RecepcionarLoteRPS.Execute>';
             $data = '<e:Nfsecabecmsg><cabecalho versao="201001"><versaoDados>V2010</versaoDados></cabecalho></e:Nfsecabecmsg>';
-            $data = '<e:Nfsedadosmsg>'.$sNFSe.'</e:Nfsedadosmsg>';
+            $data = '<e:Nfsedadosmsg><![CDATA['.$sNFSe.']]</e:Nfsedadosmsg>';
             $data = '</e:RecepcionarLoteRPS.Execute>
                      </soapenv:Body>
                      </soapenv:Envelope>';
