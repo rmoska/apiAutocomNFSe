@@ -775,12 +775,16 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
             $data .= '</soapenv:Body></soapenv:Envelope>';
 */
 
+$cab = htmlspecialchars('<cabecalho versao="201001"><versaoDados>V2010</versaoDados></cabecalho>');
+$xnf = htmlspecialchars($sNFSe);
+
+
             $data = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">
                      <soapenv:Header/>
                      <soapenv:Body>
                      <e:RecepcionarLoteRPS.Execute>';
-            $data .= '<e:Nfsecabecmsg><![CDATA[<cabecalho versao="201001"><versaoDados>V2010</versaoDados></cabecalho>]]</e:Nfsecabecmsg>';
-            $data .= '<e:Nfsedadosmsg><![CDATA['.$sNFSe.']]</e:Nfsedadosmsg>';
+            $data .= '<e:Nfsecabecmsg>'.$cab.'</e:Nfsecabecmsg>';
+            $data .= '<e:Nfsedadosmsg>'.$xnf.'</e:Nfsedadosmsg>';
             $data .= '</e:RecepcionarLoteRPS.Execute>
                      </soapenv:Body>
                      </soapenv:Envelope>';
