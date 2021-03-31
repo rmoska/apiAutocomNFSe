@@ -118,7 +118,7 @@ $params = array(
     'f1' => $cFile
 );
 
-$retEnv = $objNFSe->transmitirNFSeIpm( $params );
+$retEnv = $objNFSe->transmitirNFSeIpm( $params, $emitente->codigoMunicipio, 'EnvioNFSe' );
 
 $result = $retEnv[0];
 //echo $result;

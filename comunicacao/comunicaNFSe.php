@@ -745,12 +745,7 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
                 $codMunic .= '-H'; 
 
 //            $this->defineURL($codMunic, $servico);
-
-            $this->urlServico = 'https://nfsev-prd.manaus.am.gov.br/nfsev/servlet/arecepcionarloterps';
-            
-            //'https://nfsev-prd.manaus.am.gov.br/nfsev/servlet/arecepcionarloterps?wsdl';
-
-            
+            $this->urlServico = 'https://nfsev-prd.manaus.am.gov.br/nfsev/servlet/arecepcionarloterps?wsdl';
 
 //            $this->urlAction = 'http://www.e-nfs.com.br/action/ARECEPCIONARLOTERPS.Execute';
 
@@ -764,27 +759,16 @@ error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n
             //remove <?xml version="1.0" encoding=... e demais caracteres indesejados
             $sNFSe = preg_replace("/<\?xml.*\?>/", "", $sNFSe);
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
-/*
-            $data = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">';
-            $data .= '<soapenv:Header/>';
-            $data .= '<soapenv:Body>';
-            $data .= '<e:RecepcionarLoteRPS.Execute>';
-            $data .= '<e:Nfsecabecmsg><![CDATA[<cabecalho versao="201001"><versaoDados>V2010</versaoDados></cabecalho>]]></e:Nfsecabecmsg>';
-            $data .= '<e:Nfsedadosmsg><![CDATA['.$sNFSe.']]></e:Nfsedadosmsg>';
-            $data .= '</e:RecepcionarLoteRPS.Execute>';
-            $data .= '</soapenv:Body></soapenv:Envelope>';
-*/
 
-$cab = htmlspecialchars('<cabecalho versao="201001"><versaoDados>V2010</versaoDados></cabecalho>');
-$xnf = htmlspecialchars($sNFSe);
-
+            $xmlCab = htmlspecialchars('<cabecalho versao="201001"><versaoDados>V2010</versaoDados></cabecalho>');
+            $xmlNF = htmlspecialchars($sNFSe);
 
             $data = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="http://www.e-nfs.com.br">
                      <soapenv:Header/>
                      <soapenv:Body>
                      <e:RecepcionarLoteRPS.Execute>';
-            $data .= '<e:Nfsecabecmsg>'.$cab.'</e:Nfsecabecmsg>';
-            $data .= '<e:Nfsedadosmsg>'.$xnf.'</e:Nfsedadosmsg>';
+            $data .= '<e:Nfsecabecmsg>'.$xmlCab.'</e:Nfsecabecmsg>';
+            $data .= '<e:Nfsedadosmsg>'.$xmlNF.'</e:Nfsedadosmsg>';
             $data .= '</e:RecepcionarLoteRPS.Execute>
                      </soapenv:Body>
                      </soapenv:Envelope>';
