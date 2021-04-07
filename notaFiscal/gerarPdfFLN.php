@@ -65,7 +65,7 @@ class gerarPdf {
         $pdf->MultiCell(90, 4, utf8_decode($emitente->nome), 0, 'C', 0); 
         $pdf->SetFont('Arial', '', 9);
         $pdf->SetXY(10,23);
-        $pdf->Cell(90, 4, utf8_decode($emitente->logradouro.', '.$emitente->numero.' - '.$emitente->complemento), 0, 1, 'C'); 
+        $pdf->CellFitScale(90, 4, utf8_decode($emitente->logradouro.', '.$emitente->numero.' - '.$emitente->complemento), 0, 1, 'C'); 
         $pdf->SetX(10);
         $pdf->Cell(90, 4, utf8_decode($emitente->bairro.' - '.$municipioEmitente->nome.' - '.$emitente->uf.' - '.$utilities->mask($emitente->cep,"#####-###")), 0, 1, 'C'); 
         $pdf->SetX(10);
