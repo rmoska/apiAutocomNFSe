@@ -16,7 +16,7 @@ function logErro($db, $statusErr, $arrMsg, $objNF){
 
     if ($statusErr == 0) {
 
-        $logMsg->register('A', 'notaFiscal.retry', $arrMsg['message'], $strData);
+        $logMsg->register('A', 'notaFiscal.retryCancel', $arrMsg['message'], $strData);
     }
     else if ($statusErr == 1) {
 
@@ -26,11 +26,11 @@ function logErro($db, $statusErr, $arrMsg, $objNF){
         $objNF->textoJustificativa = $arrMsg['error'];
         $objNF->update();
 
-        $logMsg->register('E', 'notaFiscal.retry', $arrMsg['message'], $arrMsg['error']);
+        $logMsg->register('E', 'notaFiscal.retryCancel', $arrMsg['message'], $arrMsg['error']);
     }
     else if ($statusErr == 3) {
 
-        $logMsg->register('S', 'notaFiscal.retry', $arrMsg['message'], $strData);
+        $logMsg->register('S', 'notaFiscal.retryCancel', $arrMsg['message'], $strData);
     }   
 }
 
