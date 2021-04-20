@@ -9,7 +9,7 @@ if( empty($data->idNotaFiscal) ||
     $strData = json_encode($data);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos.", "codigo" => "A10"));
 //    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.cancel', 'Não foi possível cancelar Nota Fiscal. Dados incompletos.', $strData);
+    $logMsg->register('E', 'notaFiscal.cancelFLN', 'Não foi possível cancelar Nota Fiscal. Dados incompletos.', $strData);
     exit;
 }
 
@@ -25,7 +25,7 @@ $autorizacao->readOne();
 if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
     echo json_encode(array("http_code" => "401", "message" => "Não foi possível cancelar Nota Fiscal. Token não disponível.", "codigo" => "A06"));
-    $logMsg->register('E', 'notaFiscal.cancel', 'Não foi possível cancelar Nota Fiscal. Token não disponível.', $strData);
+    $logMsg->register('E', 'notaFiscal.cancelFLN', 'Não foi possível cancelar Nota Fiscal. Token não disponível.', $strData);
     exit;
 }
 
@@ -104,7 +104,7 @@ if ($info['http_code'] == '200')
 
         echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(C01)", "erro" => $retorno[1], "codigo" => "A00"));
 //        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(C01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.cancel', 'Não foi possível atualizar Nota Fiscal.(C01).', $retorno[1]);
+        $logMsg->register('E', 'notaFiscal.cancelFLN', 'Não foi possível atualizar Nota Fiscal.(C01).', $retorno[1]);
         exit;
     }
     else {
@@ -140,7 +140,7 @@ else
 
         echo json_encode(array("http_code" => "503", "message" => "Erro no cancelamento da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !", "codigo" => "P05"));
 //        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('A', 'notaFiscal.cancel', 'Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', $notaFiscal->idNotaFiscal);
+        $logMsg->register('A', 'notaFiscal.cancelFLN', 'Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', $notaFiscal->idNotaFiscal);
         exit;
     }
     else {
@@ -151,7 +151,7 @@ else
 
             echo json_encode(array("http_code" => "401", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description, "codigo" => "P05"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('A', 'notaFiscal.cancel', 'Erro no cancelamento da NFPSe ! idNotaFiscal='.$notaFiscal->idNotaFiscal, "(".$dados->error.") ".$dados->error_description);
+            $logMsg->register('A', 'notaFiscal.cancelFLN', 'Erro no cancelamento da NFPSe ! idNotaFiscal='.$notaFiscal->idNotaFiscal, "(".$dados->error.") ".$dados->error_description);
             exit;
         }
         else {
@@ -160,7 +160,7 @@ else
             $msgRet = (string) $xmlNFRet->message;
             echo json_encode(array("http_code" => "401", "message" => "Erro no cancelamento da NFSe !(2)", "resposta" => $msgRet, "codigo" => "P10"));
 //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'notaFiscal.create', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
+            $logMsg->register('E', 'notaFiscal.createFLN', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
             exit;
         }
     }

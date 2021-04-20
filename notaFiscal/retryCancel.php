@@ -103,10 +103,13 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $municipio = new Municipio($db);
     $provedor = $municipio->buscaMunicipioProvedor($emitente->codigoMunicipio);
 
-    $jsonObj = '{"idNotaFiscal":$notaFiscal->idNotaFiscal,
-                 "idEmitente":$notaFiscal->idEmitente,
-                 "motivo":"Venda Cancelada"}';
+    $jsonObj = '{"idNotaFiscal": '.$notaFiscal->idNotaFiscal.',
+                 "idEmitente": '.$notaFiscal->idEmitente.',
+                 "motivo": "Venda Cancelada"}';
     $data = json_decode($jsonObj);
+
+    $strData = json_encode($data);
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] data= ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
 
     $arqPhp = ''; 
     if ($provedor > '')
