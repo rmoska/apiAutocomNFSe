@@ -44,7 +44,7 @@ $dirAPI = basename(dirname(dirname( __FILE__ )));
 
 $notaFiscal = new NotaFiscalServico($db);
  
-$stmt = $notaFiscal->readPendente();
+$stmt = $notaFiscal->readPendente('C'); // pendentes por Timeout
 
 //
 // se não encontrou registros, encerra processamento

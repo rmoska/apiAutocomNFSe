@@ -412,10 +412,10 @@ class NotaFiscalServico {
 
     //
     // read notaFiscal - Pendentes por Timeout/Serv.Indisponível
-    function readPendente(){
+    function readPendente($situacao){
     
         // select all query
-        $query = "SELECT idNotaFiscal FROM " . $this->tableName . " WHERE situacao = 'T' ORDER BY idNotaFiscal";
+        $query = "SELECT idNotaFiscal FROM " . $this->tableName . " WHERE situacao = '".$situacao."' ORDER BY idNotaFiscal";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
