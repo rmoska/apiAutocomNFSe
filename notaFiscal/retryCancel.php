@@ -101,6 +101,10 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $municipio = new Municipio($db);
     $provedor = $municipio->buscaMunicipioProvedor($emitente->codigoMunicipio);
 
+    $data['idNotaFiscal'] = $notaFiscal->idNotaFiscal;
+    $data['idEmitente'] = $notaFiscal->idEmitente;
+    $data['motivo'] = 'Venda Cancelada';
+
     $arqPhp = ''; 
     if ($provedor > '')
         $arqPhp = 'cancel'.$provedor.'.php'; 

@@ -6,7 +6,6 @@
 if( empty($data->idNotaFiscal) ||
     empty($data->idEmitente) ) {
 
-    http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos."));
     $strData = json_encode($data);
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
@@ -25,7 +24,6 @@ $notaFiscal->idNotaFiscal = $data->idNotaFiscal;
 $notaFiscal->readOne();
 if (!($notaFiscal->numero > 0)) {
 
-    http_response_code(400);
     echo json_encode(array("http_code" => "400", 
                             "message" => "Nota Fiscal não encontrada. Não foi possível cancelar. idNF=".$data->idNotaFiscal));
     exit;
@@ -35,7 +33,6 @@ $notaFiscal->textoJustificativa = $data->motivo;
 // check emitente
 if ($notaFiscal->idEmitente != $data->idEmitente) {
 
-    http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada."));
     exit;
 }
@@ -44,7 +41,6 @@ $emitente->idEmitente = $notaFiscal->idEmitente;
 $emitente->readOne();
 if (!($emitente->documento > '')) {
 
-    http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
     exit;
 }
@@ -65,7 +61,6 @@ if ( !isset($aAutoChave["login"]) ||
     !isset($aAutoChave["senhaWeb"]) ) {
 
     $db->rollBack();
-    http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. Dados de Autorização incompletos."));
     exit;
 };
@@ -150,7 +145,6 @@ if ($info['http_code'] == '200') {
             $retorno = $notaFiscal->update();
             if(!$retorno[0]) {
 
-                http_response_code(500);
                 echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
                 $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
@@ -159,7 +153,6 @@ if ($info['http_code'] == '200') {
             else {
 
                 // set response code - 201 created
-                http_response_code(201);
                 echo json_encode(array("http_code" => "201", 
                                         "message" => "Nota Fiscal CANCELADA", 
                                         "idNotaFiscal" => $notaFiscal->idNotaFiscal,
@@ -183,7 +176,6 @@ if ($info['http_code'] == '200') {
     $notaFiscal->textoResposta = $cdVerif;
     $notaFiscal->update();
 
-    http_response_code(401);
     echo json_encode(array("http_code" => "401", 
                            "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                            "message" => "Erro no cancelamento da NFSe !", 
@@ -200,14 +192,12 @@ else { // http_code <> 200
         //
         if(!$retorno[0]){
 
-            http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível.", "codigo" => "A00"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
             $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal. Serviço indisponível.', $retorno[1]);
             exit;
         }
 
-        http_response_code(503);
         echo json_encode(array("http_code" => "503", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                 "message" => "Erro no cancelamento da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !",
@@ -224,7 +214,6 @@ else { // http_code <> 200
             $msgRet = utf8_decode($result);
         $codMsg = "P00"; // $utilities->codificaMsg($msgRet);
 
-        http_response_code(401);
         echo json_encode(array("http_code" => "401", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
                                 "message" => "Erro no cancelamento da NFSe !", 

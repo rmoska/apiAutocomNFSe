@@ -6,7 +6,6 @@ if( empty($data->idNotaFiscal) ||
     empty($data->idEmitente) ||
     empty($data->motivo) ) {
 
-    http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos.", "codigo" => "A10"));
 //    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.cancel', 'Não foi possível cancelar Nota Fiscal. Dados incompletos.', $strData);
@@ -24,7 +23,6 @@ $autorizacao->codigoMunicipio = $emitente->codigoMunicipio;
 $autorizacao->readOne();
 if(!$autorizacao->getToken($notaFiscal->ambiente)){
 
-    http_response_code(401);
     echo json_encode(array("http_code" => "401", "message" => "Não foi possível cancelar Nota Fiscal. Token não disponível.", "codigo" => "A06"));
     $logMsg->register('E', 'notaFiscal.cancel', 'Não foi possível cancelar Nota Fiscal. Token não disponível.', $strData);
     exit;
@@ -103,7 +101,6 @@ if ($info['http_code'] == '200')
     $retorno = $notaFiscal->update();
     if(!$retorno[0]){
 
-        http_response_code(500);
         echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.(C01)", "erro" => $retorno[1], "codigo" => "A00"));
 //        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal.(C01). Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('E', 'notaFiscal.cancel', 'Não foi possível atualizar Nota Fiscal.(C01).', $retorno[1]);
@@ -122,7 +119,6 @@ if ($info['http_code'] == '200')
         $notaFiscal->update();
     
         // set response code - 201 created
-        http_response_code(201);
         echo json_encode(array("http_code" => "201", 
                                 "message" => "Nota Fiscal CANCELADA", 
                                 "idNotaFiscal" => $notaFiscal->idNotaFiscal,
@@ -141,7 +137,6 @@ else
         $notaFiscal->textoJustificativa = "Problemas no servidor (Indisponivel ou Tempo de espera excedido) !";
         $retorno = $notaFiscal->update();
 
-        http_response_code(503);
         echo json_encode(array("http_code" => "503", "message" => "Erro no cancelamento da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !", "codigo" => "P05"));
 //        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).\n"), 3, "../arquivosNFSe/apiErrors.log");
         $logMsg->register('A', 'notaFiscal.cancel', 'Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', $notaFiscal->idNotaFiscal);
@@ -153,7 +148,6 @@ else
         $dados = json_decode($result);
         if (isset($dados->error)) {
 
-            http_response_code(500);
             echo json_encode(array("http_code" => "401", "message" => "Erro no envio da NFSe !(1)", "resposta" => "(".$dados->error.") ".$dados->error_description, "codigo" => "P05"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(1) (".$dados->error.") ".$dados->error_description ."\n"), 3, "../arquivosNFSe/apiErrors.log");
             $logMsg->register('A', 'notaFiscal.cancel', 'Erro no cancelamento da NFPSe ! idNotaFiscal='.$notaFiscal->idNotaFiscal, "(".$dados->error.") ".$dados->error_description);
@@ -163,7 +157,6 @@ else
 
             $xmlNFRet = simplexml_load_string(trim($result));
             $msgRet = (string) $xmlNFRet->message;
-            http_response_code(500);
             echo json_encode(array("http_code" => "401", "message" => "Erro no cancelamento da NFSe !(2)", "resposta" => $msgRet, "codigo" => "P10"));
 //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
             $logMsg->register('E', 'notaFiscal.create', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
