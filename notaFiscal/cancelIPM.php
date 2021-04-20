@@ -9,6 +9,7 @@ if( empty($data->idNotaFiscal) ||
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos."));
     $strData = json_encode($data);
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'notaFiscal.cancelIPM', 'Não foi possível cancelar Nota Fiscal. Dados incompletos.', $strData);
     exit;
 }
 
@@ -16,34 +17,7 @@ include_once '../objects/autorizacao.php';
 include_once '../objects/autorizacaoChave.php';
 include_once '../objects/municipio.php';
 
-
-// set notaFiscal property values
-$notaFiscal->idNotaFiscal = $data->idNotaFiscal;
-
-// check NF já gerada para esta Venda
-$notaFiscal->readOne();
-if (!($notaFiscal->numero > 0)) {
-
-    echo json_encode(array("http_code" => "400", 
-                            "message" => "Nota Fiscal não encontrada. Não foi possível cancelar. idNF=".$data->idNotaFiscal));
-    exit;
-}
 $notaFiscal->textoJustificativa = $data->motivo;
-
-// check emitente
-if ($notaFiscal->idEmitente != $data->idEmitente) {
-
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não confere com Nota original. Nota Fiscal não pode ser cancelada."));
-    exit;
-}
-$emitente = new Emitente($db);
-$emitente->idEmitente = $notaFiscal->idEmitente;
-$emitente->readOne();
-if (!($emitente->documento > '')) {
-
-    echo json_encode(array("http_code" => "400", "message" => "Emitente não cadastrado. Nota Fiscal não pode ser cancelada."));
-    exit;
-}
 
 // buscar dados conexão
 $autorizacao = new Autorizacao($db);
@@ -62,6 +36,7 @@ if ( !isset($aAutoChave["login"]) ||
 
     $db->rollBack();
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível gerar Nota Fiscal. Dados de Autorização incompletos."));
+    $logMsg->register('E', 'notaFiscal.cancelIPM', 'Não foi possível gerar Nota Fiscal. Dados de Autorização incompletos.', '');
     exit;
 };
 
@@ -72,11 +47,9 @@ $objNFSe = new ComunicaNFSe($arraySign);
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
 $municipioEmitente->buscaMunicipioTOM($emitente->codigoMunicipio);
-
 //			
 $xml = new XMLWriter;
 $xml->openMemory();
-
 // Inicia o cabeçalho do documento XML
 $xml->startElement("nfse");
     $xml->startElement("nf");
@@ -147,7 +120,7 @@ if ($info['http_code'] == '200') {
 
                 echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
                 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-                $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
+                $logMsg->register('E', 'notaFiscal.cancelIPM', 'Não foi possível atualizar Nota Fiscal.', $retorno[1]);
                 exit;
             }
             else {
@@ -159,7 +132,7 @@ if ($info['http_code'] == '200') {
                                         "numeroNF" => $notaFiscal->numero,
                                         "xml" => '',
                                         "pdf" => $linkPDF));
-                $logMsg->register('S', 'notaFiscal.cancel', 'Nota Fiscal cancelada', $strData);
+                $logMsg->register('S', 'notaFiscal.cancelIPM', 'Nota Fiscal cancelada', $strData);
                 exit;
             }
         }
@@ -182,7 +155,7 @@ if ($info['http_code'] == '200') {
                            "resposta" => $cdVerif, 
                            "codigo" => $codMsg));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no cancelamento da NFPSe ! idNotaFiscal =".$notaFiscal->idNotaFiscal."  (".$cdVerif.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-    $logMsg->register('E', 'notaFiscal.create', 'Erro no cancelamento da NFPSe ! ('.$cdVerif.') ', $strData);
+    $logMsg->register('E', 'notaFiscal.cancelIPM', 'Erro no cancelamento da NFPSe ! ('.$cdVerif.') ', $strData);
     exit;
 }
 else { // http_code <> 200
@@ -194,7 +167,7 @@ else { // http_code <> 200
 
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível.", "codigo" => "A00"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Serviço indisponível. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'notaFiscal.create', 'Não foi possível atualizar Nota Fiscal. Serviço indisponível.', $retorno[1]);
+            $logMsg->register('E', 'notaFiscal.cancelIPM', 'Não foi possível atualizar Nota Fiscal. Serviço indisponível.', $retorno[1]);
             exit;
         }
 
@@ -203,7 +176,7 @@ else { // http_code <> 200
                                 "message" => "Erro no cancelamento da NFSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido) !",
                                 "codigo" => "P05"));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido). idNotaFiscal=".$notaFiscal->idNotaFiscal."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', 'idNotaFiscal='.$notaFiscal->idNotaFiscal);
+        $logMsg->register('E', 'notaFiscal.cancelIPM', 'Erro no cancelamento da NFPSe ! Problemas no servidor (Indisponivel ou Tempo de espera excedido).', 'idNotaFiscal='.$notaFiscal->idNotaFiscal);
         exit;
     }
     else {
@@ -220,7 +193,7 @@ else { // http_code <> 200
                                 "resposta" => $msgRet, 
                                 "codigo" => $codMsg));
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no cancelamento da NFPSe ! (".$msgRet.") ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'notaFiscal.create', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
+        $logMsg->register('E', 'notaFiscal.cancelIPM', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
         exit;
     }
 }

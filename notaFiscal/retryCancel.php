@@ -51,11 +51,7 @@ $stmt = $notaFiscal->readPendente('C'); // pendentes por Timeout
 if($stmt->rowCount() == 0)
     exit;
  
-include_once '../objects/notaFiscalServicoItem.php';
-include_once '../objects/itemVenda.php';
 include_once '../objects/emitente.php';
-include_once '../objects/tomador.php';
-include_once '../objects/autorizacao.php';
 include_once '../objects/municipio.php';
 include_once '../shared/logMsg.php';
 include_once '../shared/utilities.php';
@@ -76,29 +72,6 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $emitente->idEmitente = $notaFiscal->idEmitente;
     $emitente->readOne();
 
-    $notaFiscalItem = new NotaFiscalServicoItem($db);
-    $arrayNotaFiscalItem = $notaFiscalItem->read($notaFiscal->idNotaFiscal);
-
-    $totalItens = 0;
-    $vlTotBC = 0; 
-    $vlTotISS = 0; 
-    $vlTotServ = 0; 
-    foreach ( $arrayNotaFiscalItem as $notaFiscalItem ) {
-
-        $totalItens += floatval($notaFiscalItem->valorTotal);
-        $vlTotServ += $notaFiscalItem->valorTotal;
-        $vlTotBC += $notaFiscalItem->valorBCIss; 
-        $vlTotISS += $notaFiscalItem->valorIss; 
-    }
-    if (number_format($totalItens,2,'.','') != number_format($notaFiscal->valorTotal,2,'.','')) {
-
-        $arrErr = array("http_code" => "400", "message" => "Não foi possível emitir Nota Fiscal. idNF=".$notaFiscal->idNotaFiscal, 
-                        "erro" => "Valor dos itens(".number_format($totalItens,2,'.','').") não fecha com Valor Total da Nota(".number_format($notaFiscal->valorTotal,2,'.','').")", 
-                        "codigo" => "A04");
-        logErro($db, "1", $arrErr, $notaFiscal);
-        continue;
-    }
-
     // identifica Municipio para emissão NFSe
     $municipio = new Municipio($db);
     $provedor = $municipio->buscaMunicipioProvedor($emitente->codigoMunicipio);
@@ -107,9 +80,6 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
                  "idEmitente": '.$notaFiscal->idEmitente.',
                  "motivo": "Venda Cancelada"}';
     $data = json_decode($jsonObj);
-
-    $strData = json_encode($data);
-    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] data= ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
 
     $arqPhp = ''; 
     if ($provedor > '')

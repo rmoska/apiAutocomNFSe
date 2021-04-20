@@ -8,7 +8,7 @@ if( empty($data->idNotaFiscal) ||
 
     $strData = json_encode($data);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível cancelar Nota Fiscal. Dados incompletos.", "codigo" => "A10"));
-//    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível cancelar Nota Fiscal. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
     $logMsg->register('E', 'notaFiscal.cancelFLN', 'Não foi possível cancelar Nota Fiscal. Dados incompletos.', $strData);
     exit;
 }
