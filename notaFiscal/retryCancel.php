@@ -57,7 +57,9 @@ include_once '../objects/emitente.php';
 include_once '../objects/tomador.php';
 include_once '../objects/autorizacao.php';
 include_once '../objects/municipio.php';
+include_once '../shared/logMsg.php';
 include_once '../shared/utilities.php';
+$logMsg = new LogMsg($db);
 $utilities = new Utilities();
 
 while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -101,9 +103,10 @@ while ($rNF = $stmt->fetch(PDO::FETCH_ASSOC)){
     $municipio = new Municipio($db);
     $provedor = $municipio->buscaMunicipioProvedor($emitente->codigoMunicipio);
 
-    $data['idNotaFiscal'] = $notaFiscal->idNotaFiscal;
-    $data['idEmitente'] = $notaFiscal->idEmitente;
-    $data['motivo'] = 'Venda Cancelada';
+    $jsonObj = '{"idNotaFiscal":$notaFiscal->idNotaFiscal,
+                 "idEmitente":$notaFiscal->idEmitente,
+                 "motivo":"Venda Cancelada"}';
+    $data = json_decode($jsonObj);
 
     $arqPhp = ''; 
     if ($provedor > '')
