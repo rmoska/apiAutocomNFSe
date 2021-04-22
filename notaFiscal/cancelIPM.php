@@ -132,7 +132,7 @@ if ($info['http_code'] == '200') {
                                         "numeroNF" => $notaFiscal->numero,
                                         "xml" => '',
                                         "pdf" => $linkPDF));
-                $logMsg->register('S', 'notaFiscal.cancelIPM', 'Nota Fiscal cancelada', $strData);
+//                $logMsg->register('S', 'notaFiscal.cancelIPM', 'Nota Fiscal cancelada', $strData);
                 exit;
             }
         }
