@@ -217,7 +217,7 @@ $xml->openMemory();
 // cria XML RPS
 $xml->startElement("tipos:Rps");
     $xml->startElement("tipos:InfRps");
-    $xml->writeAttribute("id", $notaFiscal->idNotaFiscal);
+    $xml->writeAttribute("Id", $notaFiscal->idNotaFiscal);
         $xml->startElement("tipos:IdentificacaoRps");
             $xml->writeElement("tipos:Numero", $notaFiscal->idNotaFiscal); // ????????????
             $xml->writeElement("tipos:Serie", 1);
@@ -308,7 +308,7 @@ $xml->startElement("EnviarLoteRpsEnvio");
 $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
     $xml->startElement("LoteRps");
     $xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
-    $xml->writeAttribute("id", "001");
+    $xml->writeAttribute("Id", "001");
         $xml->writeElement("tipos:NumeroLote", 1);
         $xml->writeElement("tipos:Cnpj", $emitente->documento);
         $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
