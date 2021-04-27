@@ -245,9 +245,9 @@ $xml->startElement("tipos:Rps");
 //                $xml->writeElement("tipos:DescontoCondicionado", 0.00);
                 $xml->writeElement("tipos:IssRetido", 2); // 1=Sim 2=Não
                 $xml->writeElement("tipos:ValorIss", number_format($notaFiscalItem->valorIss,2,'.',''));
-                $xml->writeElement("tipos:ValorIssRetido", number_format($notaFiscalItem->valorIss,2,'.',''));
+                $xml->writeElement("tipos:ValorIssRetido", '0.00');
                 $xml->writeElement("tipos:BaseCalculo", number_format($vlTotBC,2,'.',''));
-                $xml->writeElement("tipos:Aliquota", number_format($notaFiscalItem->taxaIss,2,'.','')); 
+                $xml->writeElement("tipos:Aliquota", number_format($notaFiscalItem->taxaIss/100,4,'.','')); 
                 $xml->writeElement("tipos:ValorLiquidoNfse", number_format($vlTotServ,2,'.',''));
             $xml->endElement(); // Valores
 
