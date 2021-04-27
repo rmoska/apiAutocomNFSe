@@ -290,7 +290,7 @@ $xml->endElement(); // Rps
 $xmlRps = $xml->outputMemory(true);
 
 
-$xmlRps = str_replace('tipos:', '', $xmlRps);
+//$xmlRps = str_replace('tipos:', '', $xmlRps);
 
 
 $xmlAss = $objNFSe->signXML($xmlRps, 'InfRps', ''); //tipos:
@@ -314,7 +314,7 @@ $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_
         $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
         $xml->writeElement("tipos:QuantidadeRps", 1);
         $xml->startElement("tipos:ListaRps");
-            $xml->writeRaw($xmlAss);
+            $xml->writeRaw($xmlRps); // $xmlAss
         $xml->endElement(); // ListaRps
     $xml->endElement(); // LoteRps
 $xml->endElement(); // EnviarLoteRpsEnvio
@@ -324,18 +324,18 @@ $xmlLote = $xml->outputMemory(true);
 //$xmlLote = str_replace('tipos:', '', $xmlLote);
 
 //
-$xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
+//$xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
-error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLAss = ".$xmlAss."\n"), 3, "../arquivosNFSe/envNFSe.log");
+//error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLAss = ".$xmlAss."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
 $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
-fwrite($arqNFe, $xmlAss);
+fwrite($arqNFe, $xmlLote);
 fclose($arqNFe);
 
 //
 // transmite NFSe
-$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss, 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
+$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlLote, 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
