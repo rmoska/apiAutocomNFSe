@@ -254,7 +254,7 @@ $xml->startElement("tipos:Rps");
             $xml->writeElement("tipos:ItemListaServico", $notaFiscalItem->codigoServico); 
 //            $xml->writeElement("tipos:CodigoCnae", "");
             $xml->writeElement("tipos:Discriminacao", $descServico);
-            $xml->writeElement("tipos:CodigoTributacaoMunicipio", '620150101'); //$notaFiscalItem->codigoServico); // Município de prestação do serviço
+            $xml->writeElement("tipos:CodigoTributacaoMunicipio", $notaFiscalItem->codigoServico); // Município de prestação do serviço
             $xml->writeElement("tipos:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
         $xml->endElement(); // Serviço
 
@@ -321,21 +321,21 @@ $xml->endElement(); // EnviarLoteRpsEnvio
 //
 $xmlLote = $xml->outputMemory(true);
 
-//$xmlLote = str_replace('tipos:', '', $xmlLote);
+$xmlLote = str_replace('tipos:', '', $xmlLote);
 
-//
-//$xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
+
+$xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
 //error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLAss = ".$xmlAss."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
 $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
-fwrite($arqNFe, $xmlLote);
+fwrite($arqNFe, $xmlAss);
 fclose($arqNFe);
 
 //
 // transmite NFSe
-$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlLote, 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
+$retEnv = $objNFSe->transmitirNFSeGINFES( $xmlAss, 'EnviarLoteRpsEnvio', $emitente->codigoMunicipio);
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
