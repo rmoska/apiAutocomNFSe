@@ -292,7 +292,7 @@ $xmlRps = $xml->outputMemory(true);
 
 //$xmlRps = str_replace('tipos:', '', $xmlRps);
 
-
+/*
 $xmlAss = $objNFSe->signXML($xmlRps, 'InfRps', ''); //tipos:
 if ($objNFSe->errStatus) {
 
@@ -301,7 +301,7 @@ if ($objNFSe->errStatus) {
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
-
+*/
 //
 // Inicia o cabeçalho do documento XML
 $xml->startElement("EnviarLoteRpsEnvio");
