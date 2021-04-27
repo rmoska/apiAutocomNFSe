@@ -293,7 +293,7 @@ $xmlRps = $xml->outputMemory(true);
 $xmlRps = str_replace('tipos:', '', $xmlRps);
 
 
-$xmlAss = $objNFSe->signXML($xmlRps, 'tipos:InfRps', '');
+$xmlAss = $objNFSe->signXML($xmlRps, 'InfRps', ''); //tipos:
 if ($objNFSe->errStatus) {
 
     http_response_code(401);
