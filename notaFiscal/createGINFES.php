@@ -217,7 +217,7 @@ $xml->openMemory();
 // cria XML RPS
 $xml->startElement("tipos:Rps");
     $xml->startElement("tipos:InfRps");
-    $xml->writeAttribute("Id", $notaFiscal->idNotaFiscal);
+//    $xml->writeAttribute("Id", $notaFiscal->idNotaFiscal);
         $xml->startElement("tipos:IdentificacaoRps");
             $xml->writeElement("tipos:Numero", $notaFiscal->idNotaFiscal); // ????????????
             $xml->writeElement("tipos:Serie", 1);
@@ -226,7 +226,7 @@ $xml->startElement("tipos:Rps");
         $xml->writeElement("tipos:DataEmissao", $dtEmissao);
         $xml->writeElement("tipos:NaturezaOperacao", $notaFiscalItem->cstIss);
         $xml->writeElement("tipos:RegimeEspecialTributacao", 6); // 6 = ME/EPP
-        $xml->writeElement("tipos:OptanteSimplesNacional", $aAutoChave["optanteSN"]); // 1 = SIM
+        $xml->writeElement("tipos:OptanteSimplesNacional", 2); //$aAutoChave["optanteSN"]); // 1 = SIM
         $xml->writeElement("tipos:IncentivadorCultural", $idIncCultural); // 2 = NAO
         $xml->writeElement("tipos:Status", 1); // 1 = normal
 
@@ -254,7 +254,7 @@ $xml->startElement("tipos:Rps");
             $xml->writeElement("tipos:ItemListaServico", $notaFiscalItem->codigoServico); 
 //            $xml->writeElement("tipos:CodigoCnae", "");
             $xml->writeElement("tipos:Discriminacao", $descServico);
-            $xml->writeElement("tipos:CodigoTributacaoMunicipio", $notaFiscalItem->codigoServico); // Município de prestação do serviço
+            $xml->writeElement("tipos:CodigoTributacaoMunicipio", '620150101'); //$notaFiscalItem->codigoServico); // Município de prestação do serviço
             $xml->writeElement("tipos:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
         $xml->endElement(); // Serviço
 
@@ -283,6 +283,9 @@ $xml->startElement("tipos:Rps");
                 $xml->writeElement("tipos:Uf", $tomador->uf);
                 $xml->writeElement("tipos:Cep", $tomador->cep);
             $xml->endElement(); // Endereco
+            $xml->startElement("tipos:Contato");
+                $xml->writeElement("tipos:Email", $tomador->email);
+            $xml->endElement(); // Contato
         $xml->endElement(); // Tomador
     $xml->endElement(); // InfRps
 $xml->endElement(); // Rps
