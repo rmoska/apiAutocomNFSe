@@ -321,8 +321,7 @@ $xml->endElement(); // EnviarLoteRpsEnvio
 //
 $xmlLote = $xml->outputMemory(true);
 
-$xmlLote = str_replace('tipos:', '', $xmlLote);
-
+//$xmlLote = str_replace('tipos:', '', $xmlLote);
 
 $xmlAss = $objNFSe->signXML($xmlLote, 'LoteRps', '');
 
