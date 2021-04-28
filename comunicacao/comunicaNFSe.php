@@ -679,7 +679,7 @@ class comunicaNFSe {
 //            $this->defineURL($codMunic, $servico);
 
             $this->urlServico = 'https://homologacao.ginfes.com.br//ServiceGinfesImpl';
-            $this->urlAction = 'http://homologacao.ginfes.com.br/ServiceGinfesImpl/RecepcionarLoteRpsV3'; // Request
+            $this->urlAction = ''; //'http://homologacao.ginfes.com.br/ServiceGinfesImpl/RecepcionarLoteRpsV3Request';
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
@@ -693,12 +693,13 @@ class comunicaNFSe {
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
             $data =
-            '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hom="http://homologacao.ginfes.com.br">
+            '<?xml version="1.0" encoding="UTF-8"?>
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
             <soapenv:Header/>
             <soapenv:Body>
-            <hom:RecepcionarLoteRpsV3>
+            <hom:RecepcionarLoteRpsV3 xmlns:hom="http://homologacao.ginfes.com.br">
             <arg0>
-            <ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd"    >
                <versaoDados>3</versaoDados>
             </ns2:cabecalho>
             </arg0>
@@ -708,6 +709,7 @@ class comunicaNFSe {
             </soapenv:Body>
             </soapenv:Envelope>';
 
+//            <ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$this->urlServico." = ".$this->urlAction." = ".$data."\n"), 3, "../arquivosNFSe/envNFSe.log");
