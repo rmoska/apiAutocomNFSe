@@ -693,11 +693,10 @@ class comunicaNFSe {
             $sNFSe = str_replace(array("\r","\n","\s"), "", $sNFSe);
 
             $data =
-            '<?xml version="1.0" encoding="UTF-8"?>
-            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+            '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hom="http://homologacao.ginfes.com.br">
             <soapenv:Header/>
             <soapenv:Body>
-            <hom:RecepcionarLoteRpsV3 xmlns:hom="http://homologacao.ginfes.com.br">
+            <hom:RecepcionarLoteRpsV3>
             <arg0>
             <ns2:cabecalho versao="3" xmlns:ns2="http://www.ginfes.com.br/cabecalho_v03.xsd"    >
                <versaoDados>3</versaoDados>

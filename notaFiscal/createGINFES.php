@@ -221,7 +221,7 @@ $xml->startElement("EnviarLoteRpsEnvio");
 $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
     $xml->startElement("LoteRps");
     $xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
-    $xml->writeAttribute("id", "001");
+    $xml->writeAttribute("Id", "001");
         $xml->writeElement("tipos:NumeroLote", 1);
         $xml->writeElement("tipos:Cnpj", $emitente->documento);
         $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
@@ -267,7 +267,7 @@ $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_
                         $xml->writeElement("tipos:ItemListaServico", $notaFiscalItem->codigoServico); 
             //            $xml->writeElement("tipos:CodigoCnae", "");
                         $xml->writeElement("tipos:Discriminacao", $descServico);
-                        $xml->writeElement("tipos:CodigoTributacaoMunicipio", '620150101'); //$notaFiscalItem->codigoServico); // Município de prestação do serviço
+//                        $xml->writeElement("tipos:CodigoTributacaoMunicipio", '620150101'); //$notaFiscalItem->codigoServico); // Município de prestação do serviço
                         $xml->writeElement("tipos:CodigoMunicipio", $emitente->codigoMunicipio); // Município de prestação do serviço
                     $xml->endElement(); // Serviço
 
