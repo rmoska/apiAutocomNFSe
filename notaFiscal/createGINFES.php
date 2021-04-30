@@ -433,8 +433,9 @@ if ($infoRet['http_code'] == '200') {
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
 
+            $msgRet = "Erro na emissão da Nota Fiscal - ".$cdVerif;
             $arrOK = array("http_code" => "401", 
-                           "message" => "Erro na emissão da Nota Fiscal - ");
+                           "message" => $msgRet);
             echo json_encode($arrOK);
 
         }
