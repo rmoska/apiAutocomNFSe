@@ -427,6 +427,11 @@ echo 'R='.$respEnv;
             $respEnv = str_replace("ns3:", "", $respEnv);
             $respEnv = str_replace("/ns3:", "/", $respEnv);
 
+            $respEnv = str_replace("&lt;", "<", $respEnv);
+            $respEnv = str_replace("&gt;", ">", $respEnv);
+            $respEnv = str_replace("&quot;", "'", $respEnv);
+            
+
 echo 'R='.$respEnv;
 
             $msgResp = simplexml_load_string($respEnv);

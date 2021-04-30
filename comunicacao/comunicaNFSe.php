@@ -710,9 +710,9 @@ class comunicaNFSe {
             //envia dados via SOAP
             $retorno = $this->pSendSOAPCurl($data, $action, 'S');
 
-            echo '<pre>';
-            print_r($retorno);
-            echo '</pre>';
+//            echo '<pre>';
+//            print_r($retorno);
+//            echo '</pre>';
 
 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] RETORNO=".implode($retorno)."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
