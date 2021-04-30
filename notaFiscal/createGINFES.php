@@ -435,11 +435,11 @@ echo 'R='.$respEnv;
 
             $msgResp = simplexml_load_string($respEnv);
 
-echo $msgResp;
+echo 'X='.$msgResp;
 
-            $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
-            $msg = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-            $correcao = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
+            $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
+            $msg = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+            $correcao = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
