@@ -317,30 +317,7 @@ $xml->endElement(); // EnviarLoteRpsEnvio
 
 $xmlRps = $xml->outputMemory(true);
 
-/*
-//
-// Inicia o cabeçalho do documento XML
-$xml->startElement("EnviarLoteRpsEnvio");
-$xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
-    $xml->startElement("LoteRps");
-    $xml->writeAttribute("xmlns:tipos", "http://www.ginfes.com.br/tipos_v03.xsd");
-    $xml->writeAttribute("Id", "001");
-        $xml->writeElement("tipos:NumeroLote", 1);
-        $xml->writeElement("tipos:Cnpj", $emitente->documento);
-        $xml->writeElement("tipos:InscricaoMunicipal", $autorizacao->cmc);
-        $xml->writeElement("tipos:QuantidadeRps", 1);
-        $xml->startElement("tipos:ListaRps");
-            $xml->writeRaw($xmlRps); // $xmlAss
-        $xml->endElement(); // ListaRps
-    $xml->endElement(); // LoteRps
-$xml->endElement(); // EnviarLoteRpsEnvio
-//
-$xmlLote = $xml->outputMemory(true);
-*/
-
 $xmlAss = $objNFSe->signXML($xmlRps, 'LoteRps', '');
-
-//error_log(utf8_decode("[".date("Y-m-d H:i:s")."] XMLAss = ".$xmlAss."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
 $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
@@ -440,13 +417,17 @@ if ($infoRet['http_code'] == '200') {
         //erros de validacao do webservice
         else if(strstr($respEnv,'ListaMensagemRetorno')){
 
-            $respEnv = str_replace("<s:", "<", $respEnv);
-            $respEnv = str_replace("</s:", "</", $respEnv);
+            $respEnv = str_replace("<hom:", "<", $respEnv);
+            $respEnv = str_replace("</hom:", "</", $respEnv);
+            $respEnv = str_replace("<ns2:", "<", $respEnv);
+            $respEnv = str_replace("</ns2:", "</", $respEnv);
+            $respEnv = str_replace("<ns3:", "<", $respEnv);
+            $respEnv = str_replace("</ns3:", "</", $respEnv);
             $msgResp = simplexml_load_string($respEnv);
 
-            $codigo = (string) $msgResp->Body->GerarNfseResponse->GerarNfseResult->ListaMensagemRetorno->MensagemRetorno->Codigo;
-            $msg = (string) utf8_decode($msgResp->Body->GerarNfseResponse->GerarNfseResult->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-            $correcao = (string) utf8_decode($msgResp->Body->GerarNfseResponse->GerarNfseResult->ListaMensagemRetorno->MensagemRetorno->Correcao);
+            $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
+            $msg = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+            $correcao = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
