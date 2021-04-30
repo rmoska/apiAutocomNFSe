@@ -417,9 +417,6 @@ if ($infoRet['http_code'] == '200') {
         //erros de validacao do webservice
         else if(strstr($respEnv,'ListaMensagemRetorno')){
 
-echo 'R='.$respEnv;
-
-
             $respEnv = str_replace("hom:", "", $respEnv);
             $respEnv = str_replace("/hom:", "/", $respEnv);
             $respEnv = str_replace("ns2:", "", $respEnv);
@@ -438,7 +435,8 @@ echo 'R='.$respEnv;
 
             $msgResp = simplexml_load_string($respEnv);
 
-print_r($msgResp);
+$arrResp=object2array($msgResp); 
+print_r($arrResp);
 
             $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
             $msg = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
