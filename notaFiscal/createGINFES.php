@@ -420,7 +420,7 @@ if ($infoRet['http_code'] == '200') {
 
             $arrRem = array('hom:', 'ns2:', 'ns3:', '&quot;', "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>");
             $arrSub = array('', '', '', "'", '');
-            $xmlData = str_replace($arrRem, $arrSub, $respEnv);
+            $respEnv = str_replace($arrRem, $arrSub, $respEnv);
             
             $respEnv = substr($respEnv, strpos($respEnv, '<RecepcionarLoteRpsV3Response'));
             $respEnv = substr($respEnv, 0, strpos($respEnv, '</RecepcionarLoteRpsV3Response>')+31);
