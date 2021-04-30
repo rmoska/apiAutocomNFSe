@@ -98,6 +98,12 @@ foreach ( $data->itemServico as $item ) {
     $notaFiscalItem->valorBCIss = $notaFiscalItem->valorTotal;
     $notaFiscalItem->taxaIss = $item->taxaIss;
     $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
+    $retIss = 'N';
+    if ($item->retencaoIss == 'S') { // padrão retenção Iss = N
+        $retIss = 'S';
+        $notaFiscalItem->valorIssRetido = $notaFiscalItem->valorIss;
+    }
+    $notaFiscalItem->retencaoIss = $retIss;
 
     $retorno = $notaFiscalItem->create();
     if(!$retorno[0]){
@@ -247,18 +253,19 @@ $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_
                         $xml->startElement("tipos:Valores");
                             $xml->writeElement("tipos:ValorServicos", number_format($vlTotServ,2,'.',''));
 
-                            $xml->writeElement("tipos:ValorPis", "0.00");
-                            $xml->writeElement("tipos:ValorCofins", "0.00");
-                            $xml->writeElement("tipos:ValorCsll", "0.00");
+            //                $xml->writeElement("tipos:ValorPis", "0.00");
+            //                $xml->writeElement("tipos:ValorCofins", "0.00");
+            //                $xml->writeElement("tipos:ValorCsll", "0.00");
             //                $xml->writeElement("ValorInss", "0.00");
             //                $xml->writeElement("ValorIr", "0.00");
             //                $xml->writeElement("ValorDeducoes", "0.00");
             //                $xml->writeElement("OutrasRetencoes", "0.00");
             //                $xml->writeElement("tipos:DescontoIncondicionado", 0.00);
             //                $xml->writeElement("tipos:DescontoCondicionado", 0.00);
-                            $xml->writeElement("tipos:IssRetido", 2); // 1=Sim 2=Não
+                            $retIss = 2; if ($notaFiscalItem->retencaoIss=='S') $retIss = 1;
+                            $xml->writeElement("tipos:IssRetido", $retIss); // 1=Sim 2=Não
                             $xml->writeElement("tipos:ValorIss", number_format($notaFiscalItem->valorIss,2,'.',''));
-                            $xml->writeElement("tipos:ValorIssRetido", '0.00');
+                            $xml->writeElement("tipos:ValorIssRetido", number_format($notaFiscalItem->valorIssRetido,2,'.',''));
                             $xml->writeElement("tipos:BaseCalculo", number_format($vlTotBC,2,'.',''));
                             $xml->writeElement("tipos:Aliquota", number_format($notaFiscalItem->taxaIss/100,4,'.','')); 
                             $xml->writeElement("tipos:ValorLiquidoNfse", number_format($vlTotServ,2,'.',''));

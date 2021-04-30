@@ -21,6 +21,8 @@ class NotaFiscalServicoItem{
     public $valorBCIss; 
     public $taxaIss; 
     public $valorIss; 
+    public $retencaoIss; 
+    public $valorIssRetido; 
     public $cstPis; 
     public $valorBCPis; 
     public $taxaPis; 
@@ -50,6 +52,7 @@ class NotaFiscalServicoItem{
                     unidade=:unidade, quantidade=:quantidade, valorUnitario=:valorUnitario, 
                     valorTotal=:valorTotal, cnae=:cnae, codigoServico=:codigoServico, 
                     cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
+                    retencaoIss=:retencaoIss, valorIssRetido=:valorIssRetido, 
                     cstPis=:cstPis, valorBCPis=:valorBCPis, taxaPis=:taxaPis, valorPis=:valorPis,
                     cstCofins=:cstCofins, valorBCCofins=:valorBCCofins, taxaCofins=:taxaCofins, valorCofins=:valorCofins,
                     valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
@@ -73,6 +76,8 @@ class NotaFiscalServicoItem{
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
+        $this->retencaoIss=htmlspecialchars(strip_tags($this->retencaoIss));
+        $this->valorIssRetido=htmlspecialchars(strip_tags($this->valorIssRetido));
         $this->cstPis=htmlspecialchars(strip_tags($this->cstPis));
         $this->valorBCPis=htmlspecialchars(strip_tags($this->valorBCPis));
         $this->taxaPis=htmlspecialchars(strip_tags($this->taxaPis));
@@ -101,6 +106,8 @@ class NotaFiscalServicoItem{
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
+        $stmt->bindParam(":retencaoIss", $this->retencaoIss);
+        $stmt->bindParam(":valorIssRetido", $this->valorIssRetido);
         $stmt->bindParam(":cstPis", $this->cstPis);
         $stmt->bindParam(":valorBCPis", $this->valorBCPis);
         $stmt->bindParam(":taxaPis", $this->taxaPis);
@@ -137,6 +144,7 @@ class NotaFiscalServicoItem{
                     unidade=:unidade, quantidade=:quantidade, valorUnitario=:valorUnitario, 
                     valorTotal=:valorTotal, cnae=:cnae, codigoServico=:codigoServico, 
                     cstIss=:cstIss, valorBCIss=:valorBCIss, taxaIss=:taxaIss, valorIss=:valorIss, 
+                    retencaoIss=:retencaoIss, valorIssRetido=:valorIssRetido, 
                     cstPis=:cstPis, valorBCPis=:valorBCPis, taxaPis=:taxaPis, valorPis=:valorPis,
                     cstCofins=:cstCofins, valorBCCofins=:valorBCCofins, taxaCofins=:taxaCofins, valorCofins=:valorCofins,
                     valorOutrasDespesas=:valorOutrasDespesas, valorDesconto=:valorDesconto,
@@ -162,6 +170,8 @@ class NotaFiscalServicoItem{
         $this->valorBCIss=htmlspecialchars(strip_tags($this->valorBCIss));
         $this->taxaIss=htmlspecialchars(strip_tags($this->taxaIss));
         $this->valorIss=htmlspecialchars(strip_tags($this->valorIss));
+        $this->retencaoIss=htmlspecialchars(strip_tags($this->retencaoIss));
+        $this->valorIssRetido=htmlspecialchars(strip_tags($this->valorIssRetido));
         $this->cstPis=htmlspecialchars(strip_tags($this->cstPis));
         $this->valorBCPis=htmlspecialchars(strip_tags($this->valorBCPis));
         $this->taxaPis=htmlspecialchars(strip_tags($this->taxaPis));
@@ -191,6 +201,8 @@ class NotaFiscalServicoItem{
         $stmt->bindParam(":valorBCIss", $this->valorBCIss);
         $stmt->bindParam(":taxaIss", $this->taxaIss);
         $stmt->bindParam(":valorIss", $this->valorIss);
+        $stmt->bindParam(":retencaoIss", $this->retencaoIss);
+        $stmt->bindParam(":valorIssRetido", $this->valorIssRetido);
         $stmt->bindParam(":cstPis", $this->cstPis);
         $stmt->bindParam(":valorBCPis", $this->valorBCPis);
         $stmt->bindParam(":taxaPis", $this->taxaPis);
@@ -332,6 +344,8 @@ class NotaFiscalServicoItem{
         $this->valorBCIss = $row['valorBCIss'];
         $this->taxaIss = $row['taxaIss'];
         $this->valorIss = $row['valorIss'];
+        $this->retencaoIss = $row['retencaoIss'];
+        $this->valorIssRetido = $row['valorIssRetido'];
         $this->valorDesconto = $row['valorDesconto'];
         $this->valorImpAproxFed = $row['valorImpAproxFed'];
         $this->valorImpAproxEst = $row['valorImpAproxEst'];
