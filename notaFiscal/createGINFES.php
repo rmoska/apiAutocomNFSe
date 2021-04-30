@@ -99,6 +99,7 @@ foreach ( $data->itemServico as $item ) {
     $notaFiscalItem->taxaIss = $item->taxaIss;
     $notaFiscalItem->valorIss = ($item->valor*$item->quantidade)*($item->taxaIss/100);
     $retIss = 'N';
+    $notaFiscalItem->valorIssRetido = 0;
     if ($item->retencaoIss == 'S') { // padrão retenção Iss = N
         $retIss = 'S';
         $notaFiscalItem->valorIssRetido = $notaFiscalItem->valorIss;
