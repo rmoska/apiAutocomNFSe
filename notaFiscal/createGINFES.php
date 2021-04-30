@@ -435,8 +435,7 @@ echo 'R='.$respEnv;
 
             $msgResp = simplexml_load_string($respEnv);
 
-$arrResp=object2array($msgResp); 
-print_r($arrResp);
+echo $msgResp;
 
             $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
             $msg = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
