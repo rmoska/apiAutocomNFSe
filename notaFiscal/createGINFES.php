@@ -432,6 +432,11 @@ if ($infoRet['http_code'] == '200') {
             $correcao = (string) utf8_decode($msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
+
+            $arrOK = array("http_code" => "401", 
+                           "message" => "Erro na emissão da Nota Fiscal - ".$cdVerif);
+            echo json_encode($arrOK);
+
         }
         // erro inesperado
         else {
