@@ -428,8 +428,8 @@ if ($infoRet['http_code'] == '200') {
             $msgResp = simplexml_load_string($respEnv);
 
             $codigo = (string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
-            $msg = utf8_decode((string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-            $correcao = utf8_decode((string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
+            $msg = ((string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+            $correcao = ((string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
 
