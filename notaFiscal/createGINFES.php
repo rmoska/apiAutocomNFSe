@@ -334,8 +334,8 @@ $infoRet = $retEnv[1];
 error_log(utf8_decode("[".date("Y-m-d H:i:s")."] ".$respEnv." = ".$infoRet."\n"), 3, "../arquivosNFSe/envNFSe.log");
 
 
-print_r($result);
-print_r($info);
+//print_r($result);
+//print_r($info);
 
 
 if ($infoRet['http_code'] == '200') {
@@ -417,12 +417,18 @@ if ($infoRet['http_code'] == '200') {
         //erros de validacao do webservice
         else if(strstr($respEnv,'ListaMensagemRetorno')){
 
+echo 'R='.$respEnv;
+
+
             $respEnv = str_replace("<hom:", "<", $respEnv);
             $respEnv = str_replace("</hom:", "</", $respEnv);
             $respEnv = str_replace("<ns2:", "<", $respEnv);
             $respEnv = str_replace("</ns2:", "</", $respEnv);
             $respEnv = str_replace("<ns3:", "<", $respEnv);
             $respEnv = str_replace("</ns3:", "</", $respEnv);
+
+echo 'R='.$respEnv;
+
             $msgResp = simplexml_load_string($respEnv);
 
             $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
