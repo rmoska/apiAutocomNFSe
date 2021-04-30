@@ -431,6 +431,8 @@ echo 'R='.$respEnv;
             $respEnv = str_replace("&gt;", ">", $respEnv);
             $respEnv = str_replace("&quot;", "'", $respEnv);
             
+            $respEnv = str_replace("<?xml version='1.0' encoding='UTF-8' standalone='yes'?>", "", $respEnv);
+            
 
 echo 'R='.$respEnv;
 
