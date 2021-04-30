@@ -385,7 +385,6 @@ if ($infoRet['http_code'] == '200') {
         else {
     
             // set response code - 201 created
-            http_response_code(201);
             $arrOK = array("http_code" => "201", 
                                     "message" => "Nota Fiscal emitida", 
                                     "idNotaFiscal" => $notaFiscal->idNotaFiscal,
@@ -417,19 +416,12 @@ if ($infoRet['http_code'] == '200') {
         //erros de validacao do webservice
         else if(strstr($respEnv,'ListaMensagemRetorno')){
 
-            $respEnv = str_replace("hom:", "", $respEnv);
-            $respEnv = str_replace("/hom:", "/", $respEnv);
-            $respEnv = str_replace("ns2:", "", $respEnv);
-            $respEnv = str_replace("/ns2:", "/", $respEnv);
-            $respEnv = str_replace("ns3:", "", $respEnv);
-            $respEnv = str_replace("/ns3:", "/", $respEnv);
+            $respEnv = htmlspecialchars_decode($respEnv, ENT_NOQUOTES);
 
-            $respEnv = str_replace("&lt;", "<", $respEnv);
-            $respEnv = str_replace("&gt;", ">", $respEnv);
-            $respEnv = str_replace("&quot;", "'", $respEnv);
+            $arrRem = array('hom:', 'ns2:', 'ns3:', '&quot;', "<?xml version='1.0' encoding='UTF-8' standalone='yes'?>");
+            $arrSub = array('', '', '', "'", '');
+            $xmlData = str_replace($arrRem, $arrSub, $respEnv);
             
-            $respEnv = str_replace("<?xml version='1.0' encoding='UTF-8' standalone='yes'?>", "", $respEnv);
-
             $respEnv = substr($respEnv, strpos($respEnv, '<RecepcionarLoteRpsV3Response'));
             $respEnv = substr($respEnv, 0, strpos($respEnv, '</RecepcionarLoteRpsV3Response>')+31);
 
