@@ -429,17 +429,15 @@ if ($infoRet['http_code'] == '200') {
             $respEnv = str_replace("&quot;", "'", $respEnv);
             
             $respEnv = str_replace("<?xml version='1.0' encoding='UTF-8' standalone='yes'?>", "", $respEnv);
-            
 
-echo 'R='.$respEnv;
+            $respEnv = substr($respEnv, strpos($respEnv, '<RecepcionarLoteRpsV3Response'));
+            $respEnv = substr($respEnv, 0, strpos($respEnv, '</RecepcionarLoteRpsV3Response>')+31);
 
             $msgResp = simplexml_load_string($respEnv);
 
-echo 'X='.$msgResp;
-
-            $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
-            $msg = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-            $correcao = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
+            $codigo = (string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
+            $msg = (string) utf8_decode($msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
+            $correcao = (string) utf8_decode($msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
         }
