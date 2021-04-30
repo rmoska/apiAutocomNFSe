@@ -420,16 +420,18 @@ if ($infoRet['http_code'] == '200') {
 echo 'R='.$respEnv;
 
 
-            $respEnv = str_replace("<hom:", "<", $respEnv);
-            $respEnv = str_replace("</hom:", "</", $respEnv);
-            $respEnv = str_replace("<ns2:", "<", $respEnv);
-            $respEnv = str_replace("</ns2:", "</", $respEnv);
-            $respEnv = str_replace("<ns3:", "<", $respEnv);
-            $respEnv = str_replace("</ns3:", "</", $respEnv);
+            $respEnv = str_replace("hom:", "", $respEnv);
+            $respEnv = str_replace("/hom:", "/", $respEnv);
+            $respEnv = str_replace("ns2:", "", $respEnv);
+            $respEnv = str_replace("/ns2:", "/", $respEnv);
+            $respEnv = str_replace("ns3:", "", $respEnv);
+            $respEnv = str_replace("/ns3:", "/", $respEnv);
 
 echo 'R='.$respEnv;
 
             $msgResp = simplexml_load_string($respEnv);
+
+print_r($msgResp);
 
             $codigo = (string) $msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
             $msg = (string) utf8_decode($msgResp->Body->RecepcionarLoteRpsV3Response->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
