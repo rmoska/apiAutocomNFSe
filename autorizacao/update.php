@@ -92,6 +92,7 @@ switch ($emitente->codigoMunicipio) {
         $arqPhp = 'updateCuritiba.php'; break;
     case '4205407': // SC - Florianópolis
         $arqPhp = 'updateFLN.php'; break;
+    case '4209300': // SC - Lages
     case '4216602': // SC - São José
         $arqPhp = 'updateBETHA.php'; break;
     case '4202305': // SC - Biguaçu
