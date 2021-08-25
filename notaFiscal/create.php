@@ -166,7 +166,8 @@ switch ($emitente->codigoMunicipio) {
     case '4205407': // SC - Florianópolis ==> OK
         $arqPhp = 'createFLN.php'; break;
     case '4216602': // SC - São José
-        $arqPhp = 'createBETHA.php'; break;
+    case '4209300': // SC - Lages
+            $arqPhp = 'createBETHA.php'; break;
     case '4202305': // SC - Biguaçu
     case '4211900': // SC - Palhoça ==> OK
         $arqPhp = 'createIPM.php'; break;

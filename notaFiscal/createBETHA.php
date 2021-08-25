@@ -462,7 +462,7 @@ if ($infoRet['http_code'] == '200') {
     }
     else {
 
-        $notaFiscal->deleteCompletoTransaction();
+//        $notaFiscal->deleteCompletoTransaction();
 
         //erro na comunicacao SOAP
         if(strstr($respEnv,'Fault')){
@@ -516,7 +516,7 @@ else {
         $retorno = $notaFiscal->update();
         if($retorno[0]){
 
-            $notaFiscal->deleteCompletoTransaction();
+//            $notaFiscal->deleteCompletoTransaction();
 
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar a Nota Fiscal. Serviço indisponível."));
@@ -533,7 +533,7 @@ else {
     }
     else {
 
-        $notaFiscal->deleteCompletoTransaction();
+//        $notaFiscal->deleteCompletoTransaction();
 
         //erro na comunicacao SOAP
         if(strstr($respEnv,'Fault')){

@@ -223,6 +223,11 @@ $xml->openMemory();
 //
 // cria XML RPS
 
+$nuRps = $autorizacao->rps;
+if (!($nuRps > 0))
+    $nuRps = 0;
+$nuRps++;
+
 // Inicia o cabeçalho do documento XML
 $xml->startElement("EnviarLoteRpsEnvio");
 $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd");
@@ -239,8 +244,8 @@ $xml->writeAttribute("xmlns", "http://www.ginfes.com.br/servico_enviar_lote_rps_
                 $xml->startElement("tipos:InfRps");
             //    $xml->writeAttribute("Id", $notaFiscal->idNotaFiscal);
                     $xml->startElement("tipos:IdentificacaoRps");
-                        $xml->writeElement("tipos:Numero", $notaFiscal->idNotaFiscal); // ????????????
-                        $xml->writeElement("tipos:Serie", 1);
+                        $xml->writeElement("tipos:Numero", $nuRps);
+                        $xml->writeElement("tipos:Serie", $autorizacao->serie);
                         $xml->writeElement("tipos:Tipo", 1);
                     $xml->endElement(); // IdentificacaoRps
                     $xml->writeElement("tipos:DataEmissao", $dtEmissao);
@@ -342,6 +347,14 @@ if ($infoRet['http_code'] == '200') {
 
     // se retorna ListaNfse - processou com sucesso
     if(strstr($respEnv,'NovaNfse')){
+        //
+        // atualiza rps 
+        $autorizacao->rps = $nuRps;
+        $retorno = $autorizacao->update();
+        if (!$retorno[0]) {
+            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar sequencial RPS. idNF=".$notaFiscal->idNotaFiscal." Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
+            $logMsg->register('E', 'notaFiscal.createGINFES', 'Não foi possível atualizar sequencial RPS. idNF='.$notaFiscal->idNotaFiscal, $retorno[1]);
+        }
 
         $respEnv = str_replace("<s:", "<", $respEnv);
         $respEnv = str_replace("</s:", "</", $respEnv);
@@ -368,14 +381,11 @@ if ($infoRet['http_code'] == '200') {
         $notaFiscal->situacao = "F";
         $notaFiscal->dataProcessamento = $dtProc;
         //
-        // update notaFiscal
+        // atualiza notaFiscal
         $retorno = $notaFiscal->update();
     
         if(!$retorno[0]) {
 
-            // força update simples
-            $notaFiscal->updateSituacao("F");
-    
             http_response_code(500);
             echo json_encode(array("http_code" => "500", "message" => "Não foi possível atualizar Nota Fiscal.", "erro" => $retorno[1], "codigo" => "A00"));
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível atualizar Nota Fiscal. Erro=".$retorno[1]."\n"), 3, "../arquivosNFSe/apiErrors.log");
@@ -428,14 +438,13 @@ if ($infoRet['http_code'] == '200') {
             $msgResp = simplexml_load_string($respEnv);
 
             $codigo = (string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Codigo;
-            $msg = ((string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem);
-            $correcao = ((string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao);
+            $msg = (string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Mensagem;
+            $correcao = (string) $msgResp->return->EnviarLoteRpsResposta->ListaMensagemRetorno->MensagemRetorno->Correcao;
             $cdVerif = $codigo.' - '.$msg.' - '.$correcao;
             error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro Autorização => ".$cdVerif."\n"), 3, "../arquivosNFSe/apiErrors.log");
 
-            $msgRet = "Erro na emissão da Nota Fiscal - ".$cdVerif;
             $arrOK = array("http_code" => "401", 
-                           "message" => $msgRet);
+                           "message" => "Erro na emissão da Nota Fiscal - ".$cdVerif);
             echo json_encode($arrOK);
 
         }

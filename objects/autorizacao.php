@@ -17,6 +17,8 @@ class Autorizacao{
     public $certificado;
     public $senha;
     public $dataValidade;
+    public $serie;
+    public $rps;
     public $mensagemnf;
     public $token;
     public $nfhomologada;
@@ -32,7 +34,8 @@ class Autorizacao{
         // query to insert record
         $query = "INSERT INTO " . $this->tableName . " SET
                     idEmitente=:idEmitente, codigoMunicipio=:codigoMunicipio, crt=:crt, cnae=:cnae, 
-                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, dataValidade=:dataValidade,
+                    aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, certificado=:certificado, senha=:senha, 
+                    dataValidade=:dataValidade, serie=:serie, rps=:rps, 
                     mensagemnf=:mensagemnf, dthrinc=:dthrinc";
     
         // prepare query
@@ -48,6 +51,8 @@ class Autorizacao{
         $this->certificado=htmlspecialchars(strip_tags($this->certificado));
         $this->senha=htmlspecialchars(strip_tags($this->senha));
         $this->dataValidade=htmlspecialchars(strip_tags($this->dataValidade));
+        $this->serie=htmlspecialchars(strip_tags($this->serie));
+        $this->rps=htmlspecialchars(strip_tags($this->rps));
         $this->mensagemnf=htmlspecialchars(strip_tags($this->mensagemnf));
     
         // bind values
@@ -61,6 +66,8 @@ class Autorizacao{
         $stmt->bindParam(":certificado", $this->certificado);
         $stmt->bindParam(":senha", $this->senha);
         $stmt->bindParam(":dataValidade", $this->dataValidade);
+        $stmt->bindParam(":serie", $this->serie);
+        $stmt->bindParam(":rps", $this->rps);
         $stmt->bindParam(":mensagemnf", $this->mensagemnf);
         $dthr = date('Y-m-d H:i:s');
         $stmt->bindParam(":dthrinc", $dthr);
@@ -103,7 +110,7 @@ class Autorizacao{
         $query = "UPDATE " . $this->tableName . " SET
                     crt=:crt, cnae=:cnae, aedf=:aedf, cmc=:cmc, senhaWeb=:senhaWeb, 
                     certificado=:certificado, senha=:senha, dataValidade=:dataValidade,
-                    mensagemnf=:mensagemnf, nfhomologada=:nfhomologada, dthralt=:dthralt
+                    serie=:serie, rps=:rps, mensagemnf=:mensagemnf, nfhomologada=:nfhomologada, dthralt=:dthralt
                   WHERE
                     idEmitente = :idEmitente AND codigoMunicipio=:codigoMunicipio";
 
@@ -121,6 +128,8 @@ class Autorizacao{
         $this->certificado=htmlspecialchars(strip_tags($this->certificado));
         $this->senha=htmlspecialchars(strip_tags($this->senha));
         $this->dataValidade=htmlspecialchars(strip_tags($this->dataValidade));
+        $this->serie=htmlspecialchars(strip_tags($this->serie));
+        $this->rps=htmlspecialchars(strip_tags($this->rps));
         $this->mensagemnf=htmlspecialchars(strip_tags($this->mensagemnf));
         $this->nfhomologada=htmlspecialchars(strip_tags($this->nfhomologada));
 
@@ -135,6 +144,8 @@ class Autorizacao{
         $stmt->bindParam(":certificado", $this->certificado);
         $stmt->bindParam(":senha", $this->senha);
         $stmt->bindParam(":dataValidade", $this->dataValidade);
+        $stmt->bindParam(":serie", $this->serie);
+        $stmt->bindParam(":rps", $this->rps);
         $stmt->bindParam(":mensagemnf", $this->mensagemnf);
         $stmt->bindParam(":nfhomologada", $this->nfhomologada);
         $dthr = date('Y-m-d H:i:s');
@@ -215,6 +226,8 @@ class Autorizacao{
         $this->certificado = $row['certificado'];
         $this->senha = $row['senha'];
         $this->dataValidade = $row['dataValidade'];
+        $this->serie = $row['serie'];
+        $this->rps = $row['rps'];
         $this->mensagemnf = $row['mensagemnf'];
         $this->token = $row['token'];
         $this->nfhomologada = $row['nfhomologada'];
