@@ -6,6 +6,7 @@
  * incentivoFiscal : 1=sim 2=nao
  */
 if( empty($data->idEmitente) ||
+    empty($data->documento) ||
     empty($data->crt) ||
     empty($data->certificado) ||
     empty($data->senha) ||
