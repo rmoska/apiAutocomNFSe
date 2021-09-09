@@ -12,6 +12,7 @@ class Municipio{
     public $codigoUFMunicipio;
     public $codigoTOM;
     public $codigoModerna;
+    public $codigoSIAFI;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -33,6 +34,23 @@ class Municipio{
         $this->idCodigoEstado = $row['idCodigoEstado'];
         $this->nome = $row['nome'];
 
+    }
+
+    function buscaMunicipioSIAFI($codMun){
+ 
+        // query to read single record
+        $query = "SELECT codigoSIAFI FROM municipioTOM WHERE codigoIBGE = ? LIMIT 0,1";
+
+        $stmt = $this->conn->prepare( $query );
+        $stmt->bindParam(1, $this->codigoUFMunicipio);
+        $stmt->execute();
+
+        $this->codigoSIAFI = 0;
+        if ($stmt->rowCount() >0) {
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->codigoSIAFI = $row['codigo'];
+        }
     }
 
     function buscaMunicipioTOM($codMun){

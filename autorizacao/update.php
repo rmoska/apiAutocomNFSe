@@ -84,6 +84,8 @@ if (!isset($emitente->codigoMunicipio)) {
 //
 // especificação do provedor
 switch ($emitente->codigoMunicipio) {
+    case '2111300': // MA - São Luis
+        $arqPhp = 'updateDSF.php'; break;
     case '2927408': // BA - Salvador
         $arqPhp = 'updateABRASF1_0.php'; break;
     case '3135456': // MG - Jenipapo de Minas

@@ -620,6 +620,32 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
+    public function transmitirNFSeDSF( $sXml, $codMunic, $servico) {
+
+        try {
+
+            $this->defineURL($codMunic, $servico);
+
+            //valida o parâmetro da string do XML da NF-e
+            if (empty($sXml)) { 
+                return array(false, 'Parâmetros de envio da NFSe inválidos, verifique');
+            }
+            //envia dados via SOAP
+            $retorno = $this->pSendSOAPCurl($sXml, 'enviarSincrono', 'S', 'S');
+            //verifica o retorno
+            if (! $retorno) {
+
+                return array(false, 'URL de Comunicação inválida !');
+            }
+        } catch(Exception $e){
+
+            $result = false;
+        }        
+        return $retorno;
+    }
+
+    //
+    // define namespace / url e chama soap
     public function transmitirNFSeCuritiba( $sXml, $servico) {
 
         try {
