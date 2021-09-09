@@ -58,6 +58,7 @@ if($retorno[0]){
     $validade = $objNFSe->certDaysToExpire;
 
 	include_once '../shared/utilities.php';
+	$utilities = new Utilities($db);
 	include_once '../objects/municipio.php';
 
 	$municipioEmitente = new Municipio($db);
