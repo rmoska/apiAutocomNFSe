@@ -56,6 +56,9 @@ if($retorno[0]){
         exit;
     }
     $validade = $objNFSe->certDaysToExpire;
+	$dataValidade = new DateTime(date('Y-m-d'));
+	$dataValidade->add(new DateInterval('P'.$validade.'D'));
+	$autorizacao->dataValidade = $dataValidade->format('Y-m-d');
 
 	include_once '../shared/utilities.php';
 	$utilities = new Utilities($db);
@@ -187,7 +190,6 @@ if($retorno[0]){
         error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
         exit;
     }
-
     //
     // monta bloco padrão DSF
     $xmlEnv = '<?xml version="1.0" encoding="utf-8"?>';
@@ -199,6 +201,16 @@ if($retorno[0]){
     $xmlEnv .= '</dsf:enviarSincrono>';
     $xmlEnv .= '</soapenv:Body>';
     $xmlEnv .= '</soapenv:Envelope>';
+
+
+
+    // salva xml rps
+    $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
+    $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
+    fwrite($arqNFe, $xmlEnv);
+    fclose($arqNFe);
+
+
 
     $retEnv = $objNFSe->transmitirNFSeDSF($xmlEnv, $emitente->codigoMunicipio, 'GerarNfse');
 
