@@ -151,10 +151,10 @@ if ($checkNF["existe"] > 0) {
 //
 // classes específicas por município
 switch ($emitente->codigoMunicipio) {
-    
-    
     case '1302603': // AM - Manaus
         $arqPhp = 'createMANAUS.php'; break;
+    case '2111300': // MA - São Luis
+        $arqPhp = 'updateDSF.php'; break;
     case '2927408': // BA - Salvador
         $arqPhp = 'createABRASF1_0.php'; break;
     case '3135456': // MG - Jenipapo de Minas

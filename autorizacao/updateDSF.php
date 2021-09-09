@@ -21,7 +21,6 @@ if( empty($data->idEmitente) ||
 }
 
 include_once '../objects/autorizacao.php';
-include_once '../objects/autorizacaoChave.php';
  
 $autorizacao = new Autorizacao($db);
 $autorizacao->idEmitente = $data->idEmitente;
@@ -58,7 +57,9 @@ if($retorno[0]){
     }
     $validade = $objNFSe->certDaysToExpire;
 
-    $municipioEmitente = new Municipio($db);
+	include_once '../objects/municipio.php';
+
+	$municipioEmitente = new Municipio($db);
     $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
     $municipioEmitente->readUFMunicipio();
     $municipioEmitente->buscaMunicipioSIAFI($emitente->codigoMunicipio);
