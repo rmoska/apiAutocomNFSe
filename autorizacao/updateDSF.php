@@ -196,9 +196,9 @@ if($retorno[0]){
     $xmlEnv .= '<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
     $xmlEnv .= 'xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dsf="http://dsfnet.com.br">';
     $xmlEnv .= '<soapenv:Body>';
-    $xmlEnv .= '<dsf:ReqEnvioLoteRPS soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
+    $xmlEnv .= '<dsf:Enviar soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
     $xmlEnv .= '<mensagemXml xsi:type="xsd:string"><![CDATA['.$xmlAss.']]></mensagemXml>';
-    $xmlEnv .= '</dsf:ReqEnvioLoteRPS>';
+    $xmlEnv .= '</dsf:Enviar>';
     $xmlEnv .= '</soapenv:Body>';
     $xmlEnv .= '</soapenv:Envelope>';
 
