@@ -203,13 +203,11 @@ if($retorno[0]){
     $xmlEnv .= '</soapenv:Envelope>';
 
 
-
     // salva xml rps
     $idChaveNFSe = substr(str_pad($notaFiscal->idNotaFiscal,6,'0',STR_PAD_LEFT),0,6);
     $arqNFe = fopen("../arquivosNFSe/".$emitente->documento."/rps/".$idChaveNFSe."-nfse.xml","wt");
     fwrite($arqNFe, $xmlEnv);
     fclose($arqNFe);
-
 
 
     $retEnv = $objNFSe->transmitirNFSeDSF($xmlEnv, $emitente->codigoMunicipio, 'GerarNfse');
