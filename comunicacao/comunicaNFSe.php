@@ -622,9 +622,14 @@ class comunicaNFSe {
     // define namespace / url e chama soap
     public function transmitirNFSeDSF( $sXml, $codMunic, $servico) {
 
+        error_log(utf8_decode("transmitirNFSeDSF"."\n"), 3, "../arquivosNFSe/dsf.log");
+
         try {
 
             $this->defineURL($codMunic, $servico);
+
+            error_log(utf8_decode($this->urlServico."\n"), 3, "../arquivosNFSe/dsf.log");
+
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { 
