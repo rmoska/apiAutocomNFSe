@@ -57,6 +57,7 @@ if($retorno[0]){
     }
     $validade = $objNFSe->certDaysToExpire;
 
+	include_once '../shared/utilities.php';
 	include_once '../objects/municipio.php';
 
 	$municipioEmitente = new Municipio($db);
@@ -79,7 +80,7 @@ if($retorno[0]){
 	$xml->startElement("Cabecalho");
 		$xml->writeElement("CodCidade", $municipioEmitente->codigoSIAFI); // 0921 = São Luís/MA
 		$xml->writeElement("CPFCNPJRemetente", $emitente->documento);
-		$xml->writeElement("RazaoSocialRemetente", limpaCaractNFe(retiraAcentos($nmRazSocialEmp)));
+		$xml->writeElement("RazaoSocialRemetente", trim($utilities->limpaEspeciais($nmRazSocialEmp)));
 		$xml->writeElement("transacao", "true");
 		$xml->writeElement("dtInicio", date('Y-m-d')); // $notaFiscalServico->dataEmissao);
 		$xml->writeElement("dtFim", date('Y-m-d')); //$notaFiscalServico->dataEmissao);
