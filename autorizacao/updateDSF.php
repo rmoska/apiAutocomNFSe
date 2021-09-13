@@ -167,7 +167,7 @@ if($retorno[0]){
 
 //            foreach ( $arrayItemNF as $notaFiscalItem ) {
 
-                $xml->startElement("item");
+                $xml->startElement("Item");
                 $xml->writeElement("DiscriminacaoServico", 'Serviço Teste'); //limpaCaractNFe(retiraAcentos($nmProd)));
                 $xml->writeElement("Quantidade", 1.00); //number_format($notaFiscalItem->quantidade,4,'.',''));
                 $xml->writeElement("ValorUnitario", 1.00); //number_format($notaFiscalItem->valorUnitario,4,'.',''));
