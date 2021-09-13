@@ -7,6 +7,7 @@
  */
 if( empty($data->idEmitente) ||
     empty($data->documento) ||
+    empty($data->cmc) ||
     empty($data->crt) ||
     empty($data->certificado) ||
     empty($data->senha) ||
@@ -67,12 +68,7 @@ if($retorno[0]){
 	$municipioEmitente = new Municipio($db);
     $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
     $municipioEmitente->readUFMunicipio();
-
-    echo 'M='.$municipioEmitente->codigoUFMunicipio.'='.$municipioEmitente->nome;
-
     $municipioEmitente->buscaMunicipioSIAFI($emitente->codigoMunicipio);
-
-    echo 'Ms='.$municipioEmitente->codigoSIAFI;
 
     //
     // emite nota de teste
@@ -89,7 +85,7 @@ if($retorno[0]){
 	$xml->startElement("Cabecalho");
 		$xml->writeElement("CodCidade", $municipioEmitente->codigoSIAFI); // 0921 = São Luís/MA
 		$xml->writeElement("CPFCNPJRemetente", $emitente->documento);
-		$xml->writeElement("RazaoSocialRemetente", trim($utilities->limpaEspeciais($nmRazSocialEmp)));
+		$xml->writeElement("RazaoSocialRemetente", trim($utilities->limpaEspeciais($emitente->nome)));
 		$xml->writeElement("transacao", "true");
 		$xml->writeElement("dtInicio", date('Y-m-d')); // $notaFiscalServico->dataEmissao);
 		$xml->writeElement("dtFim", date('Y-m-d')); //$notaFiscalServico->dataEmissao);
@@ -120,7 +116,7 @@ if($retorno[0]){
 			$hashRPS = sha1($concatRPS);
 			//
 			$xml->writeElement("Assinatura", $hashRPS);
-			$xml->writeElement("InscricaoMunicipalPrestador", $emitente->cmc);
+			$xml->writeElement("InscricaoMunicipalPrestador", str_pad($emitente->cmc,11,'0',STR_PAD_LEFT));
 			$xml->writeElement("RazaoSocialPrestador", trim($utilities->limpaEspeciais($emitente->nome)));
 			$xml->writeElement("TipoRPS", "RPS");
 			$xml->writeElement("SerieRPS", "NF");
