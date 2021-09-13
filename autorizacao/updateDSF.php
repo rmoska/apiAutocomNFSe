@@ -67,7 +67,12 @@ if($retorno[0]){
 	$municipioEmitente = new Municipio($db);
     $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
     $municipioEmitente->readUFMunicipio();
+
+    echo 'M='.$municipioEmitente->codigoMunicipio.'='.$municipioEmitente->nome;
+
     $municipioEmitente->buscaMunicipioSIAFI($emitente->codigoMunicipio);
+
+    echo 'Ms='.$municipioEmitente->codigoMunicipio.'='.$municipioEmitente->nome;
 
     //
     // emite nota de teste
