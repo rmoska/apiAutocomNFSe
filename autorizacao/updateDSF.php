@@ -198,7 +198,7 @@ if($retorno[0]){
     $xmlEnv .= 'xmlns:dsf="http://sistemas.semfaz.saoluis.ma.gov.br/WsNFe2/LoteRps.jws">';
     $xmlEnv .= '<soapenv:Body>';
     $xmlEnv .= '<dsf:enviarSincrono soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">';
-    $xmlEnv .= '<mensagemXml xsi:type="xsd:string"><![CDATA['.$xmlAss.']]></mensagemXml>';
+    $xmlEnv .= '<mensagemXml xsi:type="xsd:string">'.$xmlAss.'></mensagemXml>';
     $xmlEnv .= '</dsf:enviarSincrono>';
     $xmlEnv .= '</soapenv:Body>';
     $xmlEnv .= '</soapenv:Envelope>';
