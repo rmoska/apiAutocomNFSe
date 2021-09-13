@@ -49,7 +49,7 @@ class Municipio{
         if ($stmt->rowCount() >0) {
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->codigoSIAFI = $row['codigo'];
+            $this->codigoSIAFI = $row['codigoSIAFI'];
         }
     }
 
