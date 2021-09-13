@@ -631,7 +631,7 @@ class comunicaNFSe {
                 return array(false, 'Parâmetros de envio da NFSe inválidos, verifique');
             }
             //envia dados via SOAP
-            $retorno = $this->pSendSOAPCurl($sXml, 'enviarSincrono', 'S', 'S');
+            $retorno = $this->pSendSOAPCurl($sXml, '', 'S', 'N');
             //verifica o retorno
             if (! $retorno) {
 
