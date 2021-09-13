@@ -125,8 +125,8 @@ if($retorno[0]){
 			$xml->writeElement("SituacaoRPS", "N");
 			$xml->writeElement("SeriePrestacao", "99");
 			// tomador
-//			$xml->writeElement("InscricaoMunicipalTomador", str_pad($nuInscrMunicDest,8,'0',STR_PAD_LEFT));
-			$xml->writeElement("CPFCNPJTomador", '00003118290072'); //$tomador->documento);
+			$xml->writeElement("InscricaoMunicipalTomador", '00000000000');
+			$xml->writeElement("CPFCNPJTomador", '03118290072'); //$tomador->documento);
 			$xml->writeElement("RazaoSocialTomador", 'Tomador Teste API'); //trim($utilities->limpaEspeciais($tomador->nome)));
 			$xml->writeElement("TipoLogradouroTomador", ""); // informação não disponível
 			$xml->writeElement("LogradouroTomador", 'Rua Marechal Guilherme'); //trim($utilities->limpaEspeciais($tomador->logradouro)));
