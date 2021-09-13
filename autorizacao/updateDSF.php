@@ -193,7 +193,7 @@ if($retorno[0]){
     //
     // monta bloco padrão DSF
     $xmlEnv = '<?xml version="1.0" encoding="utf-8"?>';
-    $xmlEnv .= '<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
+    $xmlEnv .= '<Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ';
     $xmlEnv .= 'xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" '.
     $xmlEnv .= 'xmlns:dsf="http://sistemas.semfaz.saoluis.ma.gov.br/WsNFe2/LoteRps.jws">';
     $xmlEnv .= '<soapenv:Body>';
@@ -201,7 +201,7 @@ if($retorno[0]){
     $xmlEnv .= '<mensagemXml xsi:type="xsd:string"><![CDATA['.$xmlAss.']]></mensagemXml>';
     $xmlEnv .= '</dsf:enviarSincrono>';
     $xmlEnv .= '</soapenv:Body>';
-    $xmlEnv .= '</soapenv:Envelope>';
+    $xmlEnv .= '</Envelope>';
 
 
     // salva xml rps
