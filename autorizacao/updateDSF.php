@@ -138,7 +138,7 @@ if($retorno[0]){
 			$xml->writeElement("CEPTomador", $emitente->cep);
 			$xml->writeElement("EmailTomador", $emitente->email);
 			//
-			$xml->writeElement("CodigoAtividade", '008630561'); //str_pad($autorizacao->cnae,9,'0',STR_PAD_LEFT)); // str_pad($notaFiscalItem->cnae,9,'0',STR_PAD_LEFT));
+			$xml->writeElement("CodigoAtividade", '863056100'); //str_pad($autorizacao->cnae,9,'0',STR_PAD_LEFT)); // str_pad($notaFiscalItem->cnae,9,'0',STR_PAD_LEFT));
 			$xml->writeElement("CodigoServico", '0401'); //str_pad($autorizacao->cnae,5,'0',STR_PAD_LEFT)); // str_pad($notaFiscalItem->cnae,9,'0',STR_PAD_LEFT));
 			$xml->writeElement("AliquotaAtividade", "2.0000"); //$notaFiscalItem->taxaIss);
 			$xml->writeElement("TipoRecolhimento", "A"); // "A" receber | "R"etido na fonte
