@@ -9,8 +9,6 @@ if( empty($data->idEmitente) ||
     empty($data->documento) ||
     empty($data->cmc) ||
     empty($data->crt) ||
-    empty($data->certificado) ||
-    empty($data->senha) ||
     empty($data->optanteSN) ||
     empty($data->cnae) ||
     empty($data->codigoServico) ||
@@ -25,6 +23,7 @@ if( empty($data->idEmitente) ||
 }
 
 include_once '../objects/autorizacao.php';
+include_once '../objects/autorizacaoChave.php';
  
 $autorizacao = new Autorizacao($db);
 $autorizacao->idEmitente = $data->idEmitente;
