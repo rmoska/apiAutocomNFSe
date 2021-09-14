@@ -193,11 +193,11 @@ foreach ( $arrayItemNF as $notaFiscalItem ) {
 
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
-$municipioEmitente->buscaMunicipioTOM($emitente->codigoMunicipio);
+$municipioEmitente->buscaMunicipioSIAFI();
 
 $municipioTomador = new Municipio($db);
 $municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
-$municTomadorTOM = $municipioTomador->buscaMunicipioTOM($tomador->codigoMunicipio);
+$municTomadorTOM = $municipioTomador->buscaMunicipioSIAFI();
 
 if ($aAutoChave["incentivoCultural"] > '') $idIncCultural = $aAutoChave["incentivoCultural"];
 else $idIncCultural = '2'; // Não

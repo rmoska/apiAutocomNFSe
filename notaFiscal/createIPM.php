@@ -176,11 +176,11 @@ foreach ( $arrayItemNF as $notaFiscalItem ) {
 
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
-$municipioEmitente->buscaMunicipioTOM($emitente->codigoMunicipio);
+$municipioEmitente->buscaMunicipioSIAFI();
 
 $municipioTomador = new Municipio($db);
 $municipioTomador->codigoUFMunicipio = $tomador->codigoMunicipio;
-$municTomadorTOM = $municipioTomador->buscaMunicipioTOM($tomador->codigoMunicipio);
+$municTomadorTOM = $municipioTomador->buscaMunicipioSIAFI();
 
 include_once '../shared/utilities.php';
 $utilities = new Utilities();
@@ -208,7 +208,7 @@ if ($notaFiscal->ambiente == "H") // HOMOLOGAÇÃO
     $xml->endElement(); // nf
     $xml->startElement("prestador");
         $xml->writeElement("cpfcnpj", $emitente->documento);
-        $xml->writeElement("cidade", $municipioEmitente->codigoTOM); // Palhoça
+        $xml->writeElement("cidade", $municipioEmitente->codigoSIAFI); // Palhoça
     $xml->endElement(); // prestador
     $xml->startElement("tomador");
         if (strlen($tomador->documento)==14) $tipoTomador = 'J'; else $tipoTomador = 'F';
@@ -224,7 +224,7 @@ if ($notaFiscal->ambiente == "H") // HOMOLOGAÇÃO
         if($tomador->complemento > '')
             $xml->writeElement("complemento", $tomador->complemento);
         $xml->writeElement("bairro", $tomador->bairro);
-        $xml->writeElement("cidade", $municipioTomador->codigoTOM);
+        $xml->writeElement("cidade", $municipioTomador->codigoSIAFI);
         $xml->writeElement("cep", $tomador->cep);
     $xml->endElement(); // tomador
     // ITENS
@@ -234,7 +234,7 @@ if ($notaFiscal->ambiente == "H") // HOMOLOGAÇÃO
 
         $xml->startElement("lista");
             $xml->writeElement("tributa_municipio_prestador", "N");
-            $xml->writeElement("codigo_local_prestacao_servico", $municipioEmitente->codigoTOM);
+            $xml->writeElement("codigo_local_prestacao_servico", $municipioEmitente->codigoSIAFI);
             $xml->writeElement("unidade_codigo", 1);
             $xml->writeElement("unidade_quantidade", number_format($notaFiscalItem->quantidade,0,',',''));
             $xml->writeElement("unidade_valor_unitario", number_format($notaFiscalItem->valorUnitario,4,',',''));

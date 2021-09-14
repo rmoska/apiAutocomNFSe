@@ -46,7 +46,7 @@ $objNFSe = new ComunicaNFSe($arraySign);
 
 $municipioEmitente = new Municipio($db);
 $municipioEmitente->codigoUFMunicipio = $emitente->codigoMunicipio;
-$municipioEmitente->buscaMunicipioTOM($emitente->codigoMunicipio);
+$municipioEmitente->buscaMunicipioSIAFI();
 //			
 $xml = new XMLWriter;
 $xml->openMemory();
@@ -59,7 +59,7 @@ $xml->startElement("nfse");
     $xml->endElement(); // nf
     $xml->startElement("prestador");
         $xml->writeElement("cpfcnpj", $emitente->documento);
-        $xml->writeElement("cidade", $municipioEmitente->codigoTOM); // Palhoça = 8233
+        $xml->writeElement("cidade", $municipioEmitente->codigoSIAFI); // Palhoça = 8233
     $xml->endElement(); // prestador
 $xml->endElement(); // nfse
 //

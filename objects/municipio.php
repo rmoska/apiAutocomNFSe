@@ -10,7 +10,6 @@ class Municipio{
     public $idCodigoEstado;
     public $nome;
     public $codigoUFMunicipio;
-    public $codigoTOM;
     public $codigoModerna;
     public $codigoSIAFI;
  
@@ -36,10 +35,10 @@ class Municipio{
 
     }
 
-    function buscaMunicipioSIAFI($codMun){
+    function buscaMunicipioSIAFI(){
  
         // query to read single record
-        $query = "SELECT codigoSIAFI FROM municipioTOM WHERE codigoIBGE = ? LIMIT 0,1";
+        $query = "SELECT codigoSIAFI FROM municipioRelacao WHERE codigoIBGE = ? LIMIT 0,1";
 
         $stmt = $this->conn->prepare( $query );
         $stmt->bindParam(1, $this->codigoUFMunicipio);
@@ -97,7 +96,6 @@ class Municipio{
         $stmt->bindParam(1, $codMun);
         $stmt->execute();
 
-        $codigoTOM = 0;
         if ($stmt->rowCount() >0) {
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);

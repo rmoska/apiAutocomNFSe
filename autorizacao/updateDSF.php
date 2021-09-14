@@ -12,8 +12,11 @@ if( empty($data->idEmitente) ||
     empty($data->certificado) ||
     empty($data->senha) ||
     empty($data->optanteSN) ||
-    empty($data->codigoServico) ) {
-
+    empty($data->cnae) ||
+    empty($data->codigoServico) ||
+    empty($data->certificado) ||
+    empty($data->senha) ) {
+    
     http_response_code(400);
     echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
     $strData = json_encode($data);
@@ -46,6 +49,18 @@ else {
 }
 
 if($retorno[0]){
+
+    $aAutoChave = array("optanteSN" => $data->optanteSN, "codigoServico" => $data->codigoServico);
+
+    $autorizacaoChave = new AutorizacaoChave($db);
+    $autorizacaoChave->idAutorizacao = $autorizacao->idAutorizacao;
+
+    foreach($aAutoChave as $chave => $valor) {
+
+        $autorizacaoChave->chave = $chave;
+        $autorizacaoChave->valor = $valor;
+        $retorno = $autorizacaoChave->update();
+    }
 
     include_once '../comunicacao/comunicaNFSe.php';
     $arraySign = array("sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
@@ -138,8 +153,8 @@ if($retorno[0]){
 			$xml->writeElement("CEPTomador", $emitente->cep);
 			$xml->writeElement("EmailTomador", $emitente->email);
 			//
-			$xml->writeElement("CodigoAtividade", '863056100'); //str_pad($autorizacao->cnae,9,'0',STR_PAD_LEFT)); // str_pad($notaFiscalItem->cnae,9,'0',STR_PAD_LEFT));
-			$xml->writeElement("CodigoServico", '0401'); //str_pad($autorizacao->cnae,5,'0',STR_PAD_LEFT)); // str_pad($notaFiscalItem->cnae,9,'0',STR_PAD_LEFT));
+			$xml->writeElement("CodigoAtividade", str_pad($autorizacao->cnae,9,'0',STR_PAD_LEFT)); // str_pad($notaFiscalItem->cnae,9,'0',STR_PAD_LEFT));
+			$xml->writeElement("CodigoServico", str_pad($data->codigoServico,5,'0',STR_PAD_LEFT)); // str_pad($notaFiscalItem->cnae,9,'0',STR_PAD_LEFT));
 			$xml->writeElement("AliquotaAtividade", "2.0000"); //$notaFiscalItem->taxaIss);
 			$xml->writeElement("TipoRecolhimento", "A"); // "A" receber | "R"etido na fonte
 			$xml->writeElement("MunicipioPrestacao", $municipioEmitente->codigoSIAFI); 
