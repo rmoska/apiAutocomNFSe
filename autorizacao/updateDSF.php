@@ -214,7 +214,7 @@ if($retorno[0]){
     //
     // busca configuração do provedor 
     include_once '../objects/configAcesso.php';
-    $configAcesso = new configAcesso(); 
+    $configAcesso = new configAcesso($db); 
     $configAcesso->codigoMunicipio = $emitente->codigoMunicipio;
     $configAcesso->ambiente = $notafiscal->ambiente;
     $configAcesso->readOne();
