@@ -625,7 +625,7 @@ class comunicaNFSe {
         try {
 
             //$this->defineURL($codMunic, $servico);
-            $this->defineWSDL($codMunic, $ambiente);
+            //$this->defineWSDL($codMunic, $ambiente);
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { 
