@@ -102,7 +102,7 @@ if($retorno[0]){
         // tag definidora para ambiente homologação / produção
         //$xml->writeElement("TokenEnvio", ''); 
         $xml->writeElement("CodCidade", $municipioEmitente->codigoSIAFI); // 0921 = São Luís/MA
-		$xml->writeElement("CPFCNPJRemetente", $emitente->documento);
+		$xml->writeElement("CPFCNPJRemetente", '10014978000166'); // $emitente->documento);
 		$xml->writeElement("RazaoSocialRemetente", trim($utilities->limpaEspeciais($emitente->nome)));
 		$xml->writeElement("transacao", "true");
 		$xml->writeElement("dtInicio", date('Y-m-d')); // $notaFiscalServico->dataEmissao);
@@ -134,7 +134,7 @@ if($retorno[0]){
 			$hashRPS = sha1($concatRPS);
 			//
 			$xml->writeElement("Assinatura", $hashRPS);
-			$xml->writeElement("InscricaoMunicipalPrestador", str_pad($emitente->cmc,11,'0',STR_PAD_LEFT));
+			$xml->writeElement("InscricaoMunicipalPrestador", '00064096001'); //str_pad($emitente->cmc,11,'0',STR_PAD_LEFT));
 			$xml->writeElement("RazaoSocialPrestador", trim($utilities->limpaEspeciais($emitente->nome)));
 			$xml->writeElement("TipoRPS", "RPS");
 			$xml->writeElement("SerieRPS", "NF");
