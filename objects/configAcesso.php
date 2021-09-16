@@ -102,7 +102,10 @@ class configAcesso{
         $stmt->bindParam(2, $this->ambiente);
      
         $stmt->execute();
-     
+
+        error_log(utf8_decode("[".date("Y-m-d H:i:s"). $stmt ."\n"), 3, "../arquivosNFSe/apiErrors.log");
+       
+
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
      
         $this->idConfig = $row['idConfig'];
