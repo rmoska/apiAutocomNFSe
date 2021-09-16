@@ -16,10 +16,11 @@ if( empty($data->idEmitente) ||
     empty($data->senha) ) {
     
     http_response_code(400);
-    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos."));
-    $strData = json_encode($data);
+    echo json_encode(array("http_code" => "400", "message" => "Não foi possível incluir Autorização. Dados incompletos.", "codigo" => "A06"));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Autorização. Dados incompletos. ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
+    $logMsg->register('E', 'autorizacao.update', 'Não foi possível incluir Autorização. Dados incompletos.', $strData);
     exit;
+
 }
 
 include_once '../objects/autorizacao.php';
@@ -65,10 +66,11 @@ if($retorno[0]){
     $arraySign = array("sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $objNFSe = new ComunicaNFSe($arraySign);
     if ($objNFSe->errStatus){
+
         http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível incluir Certificado.", "erro" => $objNFSe->errMsg));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível incluir Certificado. Erro=".$objNFSe->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        exit;
+        echo json_encode(array("http_code" => "401", "message" => "Certificado inválido.", "erro" => $certificado->errMsg, "codigo" => "A01"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Certificado inválido. Erro=".$certificado->errMsg." Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'autorizacao.update', 'Certificado inválido.', 'Erro='.$certificado->errMsg.' Emitente='.$autorizacao->idEmitente);
     }
     $validade = $objNFSe->certDaysToExpire;
 	$dataValidade = new DateTime(date('Y-m-d'));
@@ -97,7 +99,9 @@ if($retorno[0]){
 	$xml->writeAttribute("xsi:schemaLocation", "http://localhost:8080/WsNFe2/lote http://localhost:8080/WsNFe2/xsd/ReqEnvioLoteRPS.xsd");
 
 	$xml->startElement("Cabecalho");
-		$xml->writeElement("CodCidade", $municipioEmitente->codigoSIAFI); // 0921 = São Luís/MA
+        // tag definidora para ambiente homologação / produção
+        //$xml->writeElement("TokenEnvio", ''); 
+        $xml->writeElement("CodCidade", $municipioEmitente->codigoSIAFI); // 0921 = São Luís/MA
 		$xml->writeElement("CPFCNPJRemetente", $emitente->documento);
 		$xml->writeElement("RazaoSocialRemetente", trim($utilities->limpaEspeciais($emitente->nome)));
 		$xml->writeElement("transacao", "true");
@@ -201,11 +205,34 @@ if($retorno[0]){
     $xmlAss = $objNFSe->signXML($xmlNFe, 'Lote');
     if ($objNFSe->errStatus) {
 
-        http_response_code(401);
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. ".$objNFSe->errMsg));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML.", "erro" => $certificado->errMsg, "codigo" => "A02"));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente=".$autorizacao->idEmitente." ERRO=".$certificado->errMsg."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'autorizacao.update', 'Não foi possível gerar Nota Fiscal Homologacao. Problemas na assinatura do XML. Emitente='.$autorizacao->idEmitente, $certificado->errMsg);
         exit;
     }
+
+    //
+    // busca configuração do provedor 
+    include_once '../objects/configAcesso.php';
+    $configAcesso = new configAcesso(); 
+    $configAcesso->codigoMunicipio = $emitente->codigoMunicipio;
+    $configAcesso->ambiente = $notafiscal->ambiente;
+    $configAcesso->readOne();
+
+    if ($configAcesso->idConfig > 0) {
+
+        $objNFSe->urlServico = $configAcesso->wsdl;
+        $objNFSe->urlNamespace = $configAcesso->namespace;
+        $objNFSe->urlAction = $configAcesso->action;    
+    }
+    else {
+
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Configurações do servidor não definidas. Município = ".$emitente->codigomunicipio));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Configurações do servidor não definidas. Municipio= ".$emitente->codigomunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'autorizacao.update', 'Não foi possível gerar Nota Fiscal Homologacao. Configurações do servidor não definidas. Municipio= '.$emitente->codigomunicipio, '');
+        exit;
+    }
+
     //
     // monta bloco padrão DSF
     $xmlEnv = '<?xml version="1.0" encoding="utf-8"?>';

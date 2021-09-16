@@ -486,19 +486,6 @@ class comunicaNFSe {
         $this->urlAction = $configUrl->read($secao, $servico.'Action');
     }
 
-    public function defineWSDL($codMunic, $ambiente) {
-
-        include_once '../objects/configAcesso.php';
-
-        $configAcesso = new configAcesso(); 
-        $configAcesso->codigoMunicipio = $codMunic;
-        $configAcesso->ambiente = $ambiente;
-        $configAcesso->readOne();
-        $this->urlServico = $configAcesso->wsdl;
-        $this->urlNamespace = $configAcesso->namespace;
-        $this->urlAction = $configAcesso->action;
-    }
-
     //
     // define namespace / url e chama soap
     public function transmitirNFSeBetha($servico, $sXml, $ambiente) {
