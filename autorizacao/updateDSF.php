@@ -216,7 +216,7 @@ if($retorno[0]){
     include_once '../objects/configAcesso.php';
     $configAcesso = new configAcesso($db); 
     $configAcesso->codigoMunicipio = $emitente->codigoMunicipio;
-    $configAcesso->ambiente = $notafiscal->ambiente;
+    $configAcesso->ambiente = 'H';
     $configAcesso->readOne();
 
     if ($configAcesso->idConfig > 0) {
