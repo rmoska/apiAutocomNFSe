@@ -227,9 +227,9 @@ if($retorno[0]){
     }
     else {
 
-        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Configurações do servidor não definidas. Município = ".$emitente->codigomunicipio));
-        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Configurações do servidor não definidas. Municipio= ".$emitente->codigomunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
-        $logMsg->register('E', 'autorizacao.update', 'Não foi possível gerar Nota Fiscal Homologacao. Configurações do servidor não definidas. Municipio= '.$emitente->codigomunicipio, '');
+        echo json_encode(array("http_code" => "401", "message" => "Não foi possível gerar Nota Fiscal. Configurações do servidor não definidas. Município = ".$emitente->codigoMunicipio));
+        error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Configurações do servidor não definidas. Municipio= ".$emitente->codigoMunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
+        $logMsg->register('E', 'autorizacao.update', 'Não foi possível gerar Nota Fiscal Homologacao. Configurações do servidor não definidas. Municipio= '.$emitente->codigoMunicipio, '');
         exit;
     }
 
