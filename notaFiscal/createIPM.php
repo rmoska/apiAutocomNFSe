@@ -279,13 +279,15 @@ $params = array(
 $retEnv = $objNFSe->transmitirNFSeIpm( $params , $emitente->codigoMunicipio, 'EnvioNFSe');
 
 $result = $retEnv[0];
-print_r($result);
+//print_r($result);
 $info = $retEnv[1];
-print_r($info);
+//print_r($info);
 
 if ($info['http_code'] == '200') {
 
-    if ($xmlNFRet = @simplexml_load_string($result)) {
+    $xmlNFRet = @simplexml_load_string($result);
+
+    if ($xmlNFRet !== FALSE) {
 
         $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
         if ($notaFiscal->ambiente == "H") { // HOMOLOGAÇÃO
