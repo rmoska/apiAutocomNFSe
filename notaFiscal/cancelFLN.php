@@ -160,7 +160,7 @@ else
             $msgRet = (string) $xmlNFRet->message;
             echo json_encode(array("http_code" => "401", "message" => "Erro no cancelamento da NFSe !(2)", "resposta" => $msgRet, "codigo" => "P10"));
 //            error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Erro no envio da NFPSe !(2) (".$msgRet.")\n"), 3, "../arquivosNFSe/apiErrors.log");
-            $logMsg->register('E', 'notaFiscal.createFLN', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
+            $logMsg->register('E', 'notaFiscal.cancelFLN', 'Erro no cancelamento da NFPSe ! ('.$msgRet.') ', $strData);
             exit;
         }
     }
