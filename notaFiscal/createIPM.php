@@ -293,11 +293,11 @@ if ($info['http_code'] == '200') {
         if ($notaFiscal->ambiente == "H") { // HOMOLOGAÇÃO
             if (intval($codRet[0])==285) { // NFSe válida para emissao (IPM não emite NF homologação, apenas valida XML)
                 $nuNF = 1; // 
-                $cdVerif = (string)$xmlNFRet->mensagem->codigo; //
+                $cdVerif = 'HOMOLOGAÇÃO - '.(string)$xmlNFRet->mensagem->codigo; //
             }
             else {
                 $nuNF = 0; // 
-                $cdVerif = (string)$xmlNFRet->mensagem->codigo;
+                $cdVerif = 'HOMOLOGAÇÃO - '.(string)$xmlNFRet->mensagem->codigo;
             }
         } 
         else {
