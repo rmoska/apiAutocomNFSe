@@ -293,9 +293,10 @@ if ($info['http_code'] == '200') {
         if ($notaFiscal->ambiente == "H") { // HOMOLOGAÇÃO
             if (intval($codRet[0])==285) { // NFSe válida para emissao (IPM não emite NF homologação, apenas valida XML)
                 $nuNF = 1; // 
-                $cdVerif = 'OK'; //
+                $cdVerif = (string)$xmlNFRet->mensagem->codigo; //
             }
             else {
+                $nuNF = 0; // 
                 $cdVerif = (string)$xmlNFRet->mensagem->codigo;
             }
         } 
@@ -362,10 +363,12 @@ if ($info['http_code'] == '200') {
     $notaFiscal->textoResposta = $cdVerif;
     $notaFiscal->update();
 
+    if ($nuNF>0) $msg = 'Sucesso no envio da NFSe !';
+    else $msg = 'Erro no envio da NFSe !';
     http_response_code(401);
     echo json_encode(array("http_code" => "401", 
                            "idNotaFiscal" => $notaFiscal->idNotaFiscal,
-                           "message" => "Erro no envio da NFSe !", 
+                           "message" => $msg, 
                            "resposta" => $cdVerif, 
                            "codigo" => $codMsg));
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] 1.Erro no envio da NFPSe ! idNotaFiscal =".$notaFiscal->idNotaFiscal."  (".$cdVerif.") ".$objNFSe->urlServico." - ".$strData."\n"), 3, "../arquivosNFSe/apiErrors.log");
