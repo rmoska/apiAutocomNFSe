@@ -168,7 +168,10 @@ if($retorno[0]){
 
     if ($info['http_code'] == '200') {
         //
-        if ($xmlNFRet = @simplexml_load_string($result)) {
+        $xmlNFRet = @simplexml_load_string($result);
+
+        if ($xmlNFRet !== FALSE) {
+            
             $codRet = explode(" ", $xmlNFRet->mensagem->codigo);
             if (intval($codRet[0])==285) { // NFSe válida para emissao (IPM não emite NF homologação, apenas valida XML)
                 $nuNF = 1; // seta número para considerar NF emitida
