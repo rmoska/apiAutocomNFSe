@@ -160,7 +160,7 @@ if ( !isset($aAutoChave["login"]) ||
 };
 
 include_once '../comunicacao/comunicaNFSe.php';
-$arraySign = array("sisEmit" => 2, "tpAmb" => "P", "cnpj" => $emitente->documento, "keyPass" => "@SEM_CERTIFICADO#");
+$arraySign = array("conn" => $db, "sisEmit" => 2, "tpAmb" => "P", "cnpj" => $emitente->documento, "keyPass" => "@SEM_CERTIFICADO#");
 $objNFSe = new ComunicaNFSe($arraySign);
 
 // montar xml nfse

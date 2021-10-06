@@ -95,11 +95,11 @@ class configAcesso{
  
         $this->idConfig = 0; // conferência para registro não encontrado
  
-        $query = "SELECT * FROM " . $this->tableName . " WHERE codigoMunicipio = :codMunic AND ambiente = :amb LIMIT 0,1";
+        $query = "SELECT * FROM " . $this->tableName . " WHERE codigoMunicipio = ? AND ambiente = ? LIMIT 0,1";
         $stmt = $this->conn->prepare( $query );
      
-        $stmt->bindParam(':codMunic', $this->codigoMunicipio);
-        $stmt->bindParam(':amb', $this->ambiente);
+        $stmt->bindParam(1, $this->codigoMunicipio);
+        $stmt->bindParam(2, $this->ambiente);
      
         $stmt->execute();
 
