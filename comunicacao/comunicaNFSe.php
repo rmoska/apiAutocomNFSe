@@ -42,6 +42,7 @@ class comunicaNFSe {
     private $cnpj;
     private $keyPass;
     private $arqDir;
+    private $conn;
 
     public $urlNamespace;
     public $urlServico;
@@ -62,6 +63,7 @@ class comunicaNFSe {
         //obtem o path da biblioteca
         $this->raizDir = dirname(dirname( __FILE__ )) . '/';
 
+        $this->conn = $arraySign["conn"];
         $this->sisEmit = $arraySign["sisEmit"];
         $this->ambiente = $arraySign["tpAmb"];
         $this->cnpj = $arraySign["cnpj"];
@@ -486,6 +488,17 @@ class comunicaNFSe {
         $this->urlAction = $configUrl->read($secao, $servico.'Action');
     }
 
+    public function buscaURL($codMunic, $servico) {
+
+        include_once '../objects/configAcesso.php';
+        $cfgAcesso = new configAcesso($this->conn);
+        $cfgAcesso->codigoMunicipio = $codMunic;
+        $cfgAcesso->ambiente = $this->ambiente;
+        $cfgAcesso->readOne();
+        $this->urlServico = $cfgAcesso->wsdl;
+        $this->urlAction = $cfgAcesso->action;
+    }
+
     //
     // define namespace / url e chama soap
     public function transmitirNFSeBetha($servico, $sXml, $ambiente) {
@@ -540,7 +553,8 @@ class comunicaNFSe {
 
         try {
 
-            $this->defineURL($codMunic, $servico);
+//            $this->defineURL($codMunic, $servico);
+            $this->buscaURL($codMunic, $servico);
 //            $this->urlServico = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
 
             //valida o parâmetro da string do XML da NF-e
