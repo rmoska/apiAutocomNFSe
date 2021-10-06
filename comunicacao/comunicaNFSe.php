@@ -494,6 +494,7 @@ class comunicaNFSe {
         $cfgAcesso = new configAcesso($this->conn);
         $cfgAcesso->codigoMunicipio = $codMunic;
         $cfgAcesso->ambiente = $this->ambiente;
+        $cfgAcesso->metodo = $servico;
         $cfgAcesso->readOne();
         $this->urlServico = $cfgAcesso->wsdl;
         $this->urlAction = $cfgAcesso->action;
@@ -554,7 +555,7 @@ class comunicaNFSe {
         try {
 
 //            $this->defineURL($codMunic, $servico);
-            $this->buscaURL($codMunic, $servico);
+            $this->buscaURL($codMunic, 'geral');
 //            $this->urlServico = "http://sync.nfs-e.net/datacenter/include/nfw/importa_nfw/nfw_import_upload.php?eletron=1"; // resposta em xml
 
             //valida o parâmetro da string do XML da NF-e
