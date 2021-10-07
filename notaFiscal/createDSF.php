@@ -412,7 +412,7 @@ else {
     //	
     // cria objeto certificado
     include_once '../comunicacao/comunicaNFSe.php';
-    $arraySign = array("sisEmit" => 1, "tpAmb" => $notafiscal->ambiente, "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+    $arraySign = array("conn" => $db, "sisEmit" => 1, "tpAmb" => $notafiscal->ambiente, "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $objNFSe = new ComunicaNFSe($arraySign);
     if ($objNFSe->errStatus){
 
@@ -435,6 +435,7 @@ else {
 // fecha atualizações
 $db->commit();
 
+/*
 //
 // busca configuração do provedor 
 include_once '../objects/configAcesso.php';
@@ -455,6 +456,7 @@ else {
     error_log(utf8_decode("[".date("Y-m-d H:i:s")."] Não foi possível gerar Nota Fiscal. Configurações do servidor não definidas. Municipio= ".$emitente->codigomunicipio."\n"), 3, "../arquivosNFSe/apiErrors.log");
     exit;
 }
+*/
 
 //
 // monta bloco padrão DSF
@@ -468,7 +470,7 @@ $xmlEnv .= '</dsf:enviarSincrono>';
 $xmlEnv .= '</soapenv:Body>';
 $xmlEnv .= '</soapenv:Envelope>';
 
-$retEnv = $objNFSe->transmitirNFSeDSF($xmlEnv, $emitente->codigoMunicipio, 'GerarNfse');
+$retEnv = $objNFSe->transmitirNFSeDSF($xmlEnv, $emitente->codigoMunicipio, 'enviarRetorno');
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];

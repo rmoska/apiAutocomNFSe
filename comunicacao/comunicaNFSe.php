@@ -488,13 +488,17 @@ class comunicaNFSe {
         $this->urlAction = $configUrl->read($secao, $servico.'Action');
     }
 
-    public function buscaURL($codMunic, $servico) {
+    //
+    //===================================================================================
+    // busca pelas chaves município/ambiente/metodo os valores de namespace, wsdl, action
+    //===================================================================================
+    public function buscaURL($codMunic, $metodo) {
 
         include_once '../objects/configAcesso.php';
         $cfgAcesso = new configAcesso($this->conn);
         $cfgAcesso->codigoMunicipio = $codMunic;
         $cfgAcesso->ambiente = $this->ambiente;
-        $cfgAcesso->metodo = $servico;
+        $cfgAcesso->metodo = $metodo;
         $cfgAcesso->readOne();
         $this->urlServico = $cfgAcesso->wsdl;
         $this->urlAction = $cfgAcesso->action;
@@ -502,13 +506,17 @@ class comunicaNFSe {
 
     //
     // define namespace / url e chama soap
-    public function transmitirNFSeBetha($servico, $sXml, $ambiente) {
+    public function transmitirNFSeBetha($codMunic, $metodo, $servico, $sXml) {
 
+/*        
         $this->namespace = 'http://www.betha.com.br/e-nota-contribuinte-ws';
         if ($this->ambiente=='P') // produção
             $this->urlServico = 'http://e-gov.betha.com.br/e-nota-contribuinte-ws/nfseWS?wsdl';
         else // homologação
             $this->urlServico = 'http://e-gov.betha.com.br/e-nota-contribuinte-test-ws/nfseWS?wsdl';
+*/
+
+        $this->buscaURL($codMunic, 'geral');
 
         //valida o parâmetro da string do XML da NF-e
         if (empty($sXml)) { // || ! simplexml_load_string($sXml)) {
@@ -640,7 +648,7 @@ class comunicaNFSe {
         try {
 
             //$this->defineURL($codMunic, $servico);
-            //$this->defineWSDL($codMunic, $ambiente);
+            $this->buscaURL($codMunic, $servico);
 
             //valida o parâmetro da string do XML da NF-e
             if (empty($sXml)) { 

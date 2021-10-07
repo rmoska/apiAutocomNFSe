@@ -63,7 +63,7 @@ if($retorno[0]){
     }
 
     include_once '../comunicacao/comunicaNFSe.php';
-    $arraySign = array("sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+    $arraySign = array("conn" => $db, "sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $objNFSe = new ComunicaNFSe($arraySign);
     if ($objNFSe->errStatus){
 

@@ -61,7 +61,7 @@ if($retorno[0]){
     }
 
     include_once '../comunicacao/comunicaNFSe.php';
-    $arraySign = array("sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+    $arraySign = array("conn" => $db, "sisEmit" => 1, "tpAmb" => "H", "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $objNFSe = new ComunicaNFSe($arraySign);
     if ($objNFSe->errStatus){
         http_response_code(401);
@@ -154,7 +154,7 @@ if($retorno[0]){
     $xmlEnv .= ']]>';
     $xmlEnv .= '</nfseDadosMsg>';
 
-    $retEnv = $objNFSe->transmitirNFSeBetha('GerarNfse', $xmlEnv, "H");
+    $retEnv = $objNFSe->transmitirNFSeBetha($emitente->codigoMunicipio, 'geral', 'GerarNfse', $xmlEnv);
 
     $respEnv = $retEnv[0];
     $infoRet = $retEnv[1];

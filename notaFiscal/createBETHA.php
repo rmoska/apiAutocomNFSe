@@ -362,7 +362,7 @@ else {
     //	
     // cria objeto certificado
     include_once '../comunicacao/comunicaNFSe.php';
-    $arraySign = array("sisEmit" => 1, "tpAmb" => $notafiscal->ambiente, "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
+    $arraySign = array("conn" => $db, "sisEmit" => 1, "tpAmb" => $notafiscal->ambiente, "cnpj" => $emitente->documento, "keyPass" => $autorizacao->senha);
     $objNFSe = new ComunicaNFSe($arraySign);
     if ($objNFSe->errStatus){
         http_response_code(401);
@@ -399,7 +399,7 @@ $xmlEnv .= $xmlAss;
 $xmlEnv .= ']]>';
 $xmlEnv .= '</nfseDadosMsg>';
 
-$retEnv = $objNFSe->transmitirNFSeBetha('GerarNfse', $xmlEnv, $notaFiscal->ambiente);
+$retEnv = $objNFSe->transmitirNFSeBetha($emitente->codigoMunicipio, 'geral', 'GerarNfse', $xmlEnv);
 
 $respEnv = $retEnv[0];
 $infoRet = $retEnv[1];
