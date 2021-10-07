@@ -500,6 +500,7 @@ class comunicaNFSe {
         $cfgAcesso->ambiente = $this->ambiente;
         $cfgAcesso->metodo = $metodo;
         $cfgAcesso->readOne();
+        $this->urlNamespace = $cfgAcesso->namespace;
         $this->urlServico = $cfgAcesso->wsdl;
         $this->urlAction = $cfgAcesso->action;
     }
@@ -531,7 +532,7 @@ class comunicaNFSe {
 
         $data = '';
         $data .= '<?xml version="1.0" encoding="utf-8"?>';
-        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="'.$this->namespace.'">';
+        $data .= '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:e="'.$this->urlNamespace.'">';
         $data .= '<soapenv:Header/>';
         $data .= '<soapenv:Body>';
         $data .= '<e:'.$servico.'>';
