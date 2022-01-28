@@ -151,34 +151,43 @@ if ($checkNF["existe"] > 0) {
 //
 // classes específicas por município
 switch ($emitente->codigoMunicipio) {
-    case '1302603': // AM - Manaus
+    // AM
+    case '1302603': // Manaus
         $arqPhp = 'createMANAUS.php'; break;
-    case '2111300': // MA - São Luis
-        $arqPhp = 'updateDSF.php'; break;
-    case '2927408': // BA - Salvador
+    // BA
+    case '2927408': // Salvador
         $arqPhp = 'createABRASF1_0.php'; break;
-    case '3135456': // MG - Jenipapo de Minas
+    // MA
+    case '2111300': // São Luis
+        $arqPhp = 'updateDSF.php'; break;
+    // MG
+    case '3135456': // Jenipapo de Minas
         $arqPhp = 'createSINTESE.php'; break;
-    case '3550308': // SP - São Paulo
-        $arqPhp = 'createSPL.php'; break;
-    case '3548708': // SP - São Bernardo do Campo
-        $arqPhp = 'createGINFES.php'; break;
-    case '4205407': // SC - Florianópolis ==> OK
+    // SC
+    case '4205407': // Florianópolis ==> OK
         $arqPhp = 'createFLN.php'; break;
-    case '4216602': // SC - São José
-    case '4209300': // SC - Lages
+    case '4216602': // São José
+    case '4209300': // Lages
             $arqPhp = 'createBETHA.php'; break;
-    case '4202305': // SC - Biguaçu
-    case '4211900': // SC - Palhoça ==> OK
+    case '4202305': // Biguaçu
+    case '4211900': // Palhoça ==> OK
         $arqPhp = 'createIPM.php'; break;
-    case '4204202': // SC - Chapecó
-    case '4208203': // SC - Itajaí
+    case '4204202': // Chapecó
+    case '4208203': // Itajaí
         $arqPhp = 'createPUBLICA.php'; break;
-    case '4202008': // SC - Balneário Camboriú
+    case '4202008': // Balneário Camboriú
         $arqPhp = 'createSIMPLISS.php'; break;
-    case '4218707': // SC - Tubarão
+    case '4218707': // Tubarão
         $arqPhp = 'createMODERNA.php'; break;
-    case '4305108': // RS - Caxias do Sul
+    // SP
+    case '3543402': // Ribeirão Preto
+        $arqPhp = 'createISSNET.php'; break;
+    case '3550308': // São Paulo
+        $arqPhp = 'createSPL.php'; break;
+    case '3548708': // São Bernardo do Campo
+        $arqPhp = 'createGINFES.php'; break;
+    // RS
+    case '4305108': // Caxias do Sul
         $arqPhp = 'createINFISC.php'; break;
     default:
         $arqPhp = ''; break;
